@@ -1,11 +1,22 @@
 # YACRS
 Web based classroom response software
 
-Server requirements: a web server with PHP and MySQL (Development done with Apache 2.2.17, PHP 5.3.5, MySQL 5.5.8)
+## Requirements
+* [Docker](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
+* Currently requires an LDAP host for authentication. (LTI alternative coming soon)
 
-Currently requires an LDAP host for authentication. (LTI alternative coming soon)
+# How To Run
+To run in a development environment execute the following command (maybe as root):
+```
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
 
-<hr/>
+* YACRS: 127.0.0.1:4000
+* PhpMyAdmin: 127.0.0.1:4001
+* MySql 3306: 127.0.0.1:4002
+
+## Copyright and Licence
 YACRS is Copyright (c) 2013-2015, The University of Glasgow and is written by 
 Niall S F Barr (niall.barr@glasgow.ac.uk)
 

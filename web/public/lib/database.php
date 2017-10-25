@@ -437,7 +437,7 @@ class session
 	var $endtime;
 	var $sessionstarttime;
 	var $sessionOpen;
-	var $activeSubsession_id; //foreign key
+	var $activeSubsession_id = -1; //foreign key
 	var $sessionendtime;
 	var $visible;
 	var $allowGuests;
@@ -586,7 +586,7 @@ class session
 		$query .= ", endtime='".dataConnection::time2db($this->endtime)."' ";
 		$query .= ", sessionstarttime='".dataConnection::time2db($this->sessionstarttime)."' ";
 		$query .= ", sessionOpen='".(($this->sessionOpen===false)?0:1)."' ";
-		$query .= ", activeSubsession_id='".dataConnection::safe($this->activeSubsession_id)."' ";
+		//$query .= ", activeSubsession_id='".dataConnection::safe($this->activeSubsession_id)."' ";
 		$query .= ", sessionendtime='".dataConnection::time2db($this->sessionendtime)."' ";
 		$query .= ", visible='".(($this->visible===false)?0:1)."' ";
 		$query .= ", allowGuests='".(($this->allowGuests===false)?0:1)."' ";
@@ -1750,7 +1750,7 @@ class systemQuestionLookup
 	//[[USERCODE_systemQuestionLookup]] Put code for custom class members in this block.
 	static function all()
 	{
-        $query = "SELECT yacrs_systemquestionlookup.*, title FROM yacrs_systemquestionlookup LEFT JOIN (yacrs_question) ON (yacrs_systemquestionlookup.qu_id = yacrs_question.id) WHERE 1 ORDER BY title ASC;";
+        $query = "SELECT yacrs_systemQuestionLookup.*, title FROM yacrs_systemQuestionLookup LEFT JOIN (yacrs_question) ON (yacrs_systemQuestionLookup.qu_id = yacrs_question.id) WHERE 1 ORDER BY title ASC;";
 		//$query = "SELECT * FROM yacrs_systemQuestionLookup WHERE 1 ORDER BY name ASC;";
 		$result = dataConnection::runQuery($query);
         $output = array();
@@ -1786,7 +1786,7 @@ class questionInstance
 	var $title;
 	var $theQuestion_id; //foreign key
 	var $inSession_id; //foreign key
-	var $subsession_id; //foreign key
+	//var $subsession_id; //foreign key
 	var $starttime;
 	var $endtime;
 	var $screenshot;
@@ -1798,7 +1798,7 @@ class questionInstance
 		$this->title = "";
 		$this->theQuestion_id = null; // foreign key, needs dealt with.
 		$this->inSession_id = null; // foreign key, needs dealt with.
-		$this->subsession_id = null; // foreign key, needs dealt with.
+		//$this->subsession_id = null; // foreign key, needs dealt with.
 		$this->starttime = time();
 		$this->endtime = time();
 		$this->screenshot = "";
@@ -1813,7 +1813,7 @@ class questionInstance
 		$this->title = $asArray['title'];
 		$this->theQuestion_id = $asArray['theQuestion_id']; // foreign key, check code
 		$this->inSession_id = $asArray['inSession_id']; // foreign key, check code
-		$this->subsession_id = $asArray['subsession_id']; // foreign key, check code
+		//$this->subsession_id = $asArray['subsession_id']; // foreign key, check code
 		$this->starttime = dataConnection::db2time($asArray['starttime']);
 		$this->endtime = dataConnection::db2time($asArray['endtime']);
 		$this->screenshot = $asArray['screenshot'];
@@ -1857,7 +1857,8 @@ class questionInstance
 	function insert()
 	{
 		//#Any required insert methods for foreign keys need to be called here.
-		$query = "INSERT INTO yacrs_questionInstance(title, theQuestion_id, inSession_id, subsession_id, starttime, endtime, screenshot, extras) VALUES(";
+        $query = "INSERT INTO yacrs_questionInstance(title, theQuestion_id, inSession_id, starttime, endtime, screenshot, extras) VALUES(";
+        //$query = "INSERT INTO yacrs_questionInstance(title, theQuestion_id, inSession_id, subsession_id, starttime, endtime, screenshot, extras) VALUES(";
 		$query .= "'".dataConnection::safe($this->title)."', ";
 		if($this->theQuestion_id!==null)
 			$query .= "'".dataConnection::safe($this->theQuestion_id)."', ";
@@ -1867,10 +1868,10 @@ class questionInstance
 			$query .= "'".dataConnection::safe($this->inSession_id)."', ";
 		else
 			$query .= "null, ";
-		if($this->subsession_id!==null)
-			$query .= "'".dataConnection::safe($this->subsession_id)."', ";
-		else
-			$query .= "null, ";
+		//if($this->subsession_id!==null)
+		//	$query .= "'".dataConnection::safe($this->subsession_id)."', ";
+		//else
+		//	$query .= "null, ";
 		$query .= "'".dataConnection::time2db($this->starttime)."', ";
 		$query .= "'".dataConnection::time2db($this->endtime)."', ";
 		$query .= "'".dataConnection::safe($this->screenshot)."', ";
@@ -1889,7 +1890,7 @@ class questionInstance
 		$query .= "SET title='".dataConnection::safe($this->title)."' ";
 		$query .= ", theQuestion_id='".dataConnection::safe($this->theQuestion_id)."' ";
 		$query .= ", inSession_id='".dataConnection::safe($this->inSession_id)."' ";
-		$query .= ", subsession_id='".dataConnection::safe($this->subsession_id)."' ";
+		//$query .= ", subsession_id='".dataConnection::safe($this->subsession_id)."' ";
 		$query .= ", starttime='".dataConnection::time2db($this->starttime)."' ";
 		$query .= ", endtime='".dataConnection::time2db($this->endtime)."' ";
 		$query .= ", screenshot='".dataConnection::safe($this->screenshot)."' ";
@@ -2342,7 +2343,7 @@ class message
 	var $id; //primary key
 	var $user_id; //foreign key
 	var $session_id; //foreign key
-	var $subsession_id; //foreign key
+	//var $subsession_id; //foreign key
 	var $isTeacherQu;
 	var $private;
 	var $posted;
@@ -2354,7 +2355,7 @@ class message
 		$this->id = null; //primary key
 		$this->user_id = null; // foreign key, needs dealt with.
 		$this->session_id = null; // foreign key, needs dealt with.
-		$this->subsession_id = null; // foreign key, needs dealt with.
+		//$this->subsession_id = null; // foreign key, needs dealt with.
 		$this->isTeacherQu = false;
 		$this->private = false;
 		$this->posted = time();
@@ -2369,7 +2370,7 @@ class message
 		$this->id = $asArray['id'];
 		$this->user_id = $asArray['user_id']; // foreign key, check code
 		$this->session_id = $asArray['session_id']; // foreign key, check code
-		$this->subsession_id = $asArray['subsession_id']; // foreign key, check code
+		//$this->subsession_id = $asArray['subsession_id']; // foreign key, check code
 		$this->isTeacherQu = ($asArray['isTeacherQu']==0)?false:true;
 		$this->private = ($asArray['private']==0)?false:true;
 		$this->posted = dataConnection::db2time($asArray['posted']);
@@ -2414,7 +2415,8 @@ class message
 	function insert()
 	{
 		//#Any required insert methods for foreign keys need to be called here.
-		$query = "INSERT INTO yacrs_message(user_id, session_id, subsession_id, isTeacherQu, private, posted, message, replyTo_id) VALUES(";
+        //$query = "INSERT INTO yacrs_message(user_id, session_id, subsession_id, isTeacherQu, private, posted, message, replyTo_id) VALUES(";
+        $query = "INSERT INTO yacrs_message(user_id, session_id, isTeacherQu, private, posted, message, replyTo_id) VALUES(";
 		if($this->user_id!==null)
 			$query .= "'".dataConnection::safe($this->user_id)."', ";
 		else
@@ -2423,10 +2425,10 @@ class message
 			$query .= "'".dataConnection::safe($this->session_id)."', ";
 		else
 			$query .= "null, ";
-		if($this->subsession_id!==null)
-			$query .= "'".dataConnection::safe($this->subsession_id)."', ";
-		else
-			$query .= "null, ";
+		//if($this->subsession_id!==null)
+		//	$query .= "'".dataConnection::safe($this->subsession_id)."', ";
+		//else
+		//	$query .= "null, ";
 		$query .= "'".(($this->isTeacherQu===false)?0:1)."', ";
 		$query .= "'".(($this->private===false)?0:1)."', ";
 		$query .= "'".dataConnection::time2db($this->posted)."', ";
@@ -2448,7 +2450,7 @@ class message
 		$query = "UPDATE yacrs_message ";
 		$query .= "SET user_id='".dataConnection::safe($this->user_id)."' ";
 		$query .= ", session_id='".dataConnection::safe($this->session_id)."' ";
-		$query .= ", subsession_id='".dataConnection::safe($this->subsession_id)."' ";
+		//$query .= ", subsession_id='".dataConnection::safe($this->subsession_id)."' ";
 		$query .= ", isTeacherQu='".(($this->isTeacherQu===false)?0:1)."' ";
 		$query .= ", private='".(($this->private===false)?0:1)."' ";
 		$query .= ", posted='".dataConnection::time2db($this->posted)."' ";

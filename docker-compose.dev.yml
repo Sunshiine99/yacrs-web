@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    volumes:
+        - ./web:/var/www
+    ports:
+        - "4000:80"
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin"
+    ports:
+        - "4001:80"
+    links:
+        - db
+  db:
+    ports:
+        - "4002:3306"

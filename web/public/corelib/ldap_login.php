@@ -1,54 +1,72 @@
 <?php
 function checkLogin($username, $password, &$error=false)
 {
-	global $CFG;
+    //global $CFG;
+
+    $uinfo = array();
+    $uinfo['uname'] = $username;
+    $uinfo['gn'] = "Joe";
+    $uinfo['sn'] = "Bloggs";
+    $uinfo['email'] = "joebloggs@exmple.com";
+    if(substr($username, 0, 5) == "admin") {
+        $uinfo['isAdmin'] = true;
+        $uinfo['sessionCreator'] = true;
+    }
+    else {
+        $uinfo['isAdmin'] = false;
+        $uinfo['sessionCreator'] = false;
+    }
+    return $uinfo;
+
+
+    /*
     if(strlen(trim($password))==0)
         return false;
     $error = false;
     $clrtime = time()+5; // For paranoid prevention of timing to narrow username/password guesses
-	$cookiehash = $CFG['cookiehash'];
-	$ldap_host = $CFG['ldaphost'];
-	$ds = @ldap_connect($ldap_host);
-	if(isset($CFG['ldapbinduser'])) {
-    	ldap_bind($ds, $CFG['ldapbinduser'], $CFG['ldapbindpass']);
+    $cookiehash = $CFG['cookiehash'];
+    $ldap_host = $CFG['ldaphost'];
+    $ds = @ldap_connect($ldap_host);
+    if(isset($CFG['ldapbinduser'])) {
+        ldap_bind($ds, $CFG['ldapbinduser'], $CFG['ldapbindpass']);
     }
-   	if(!$ds)
+       if(!$ds)
     {
            $error = 'failed to contact LDAP server';
            return false;
     }
-	$sr = @ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
-   	if(!$sr)
+    $sr = @ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
+       if(!$sr)
     {
            $error = 'failed to contact LDAP server';
            return false;
     }
     $entry = ldap_first_entry($ds, $sr);
-	if($entry)
+    if($entry)
     {
         $user_dn = ldap_get_dn($ds, $entry);
-		$ok = @ldap_bind( $ds, $user_dn, $password);
-	    //ldap_free_result( $sr );
-	    if($ok)
-	    {
-			$sr = ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
-			$count = ldap_count_entries( $ds, $sr );
-			if($count>0)
-			{
-			    $records = ldap_get_entries($ds, $sr );
-			    $record = $records[0];
+        $ok = @ldap_bind( $ds, $user_dn, $password);
+        //ldap_free_result( $sr );
+        if($ok)
+        {
+            $sr = ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
+            $count = ldap_count_entries( $ds, $sr );
+            if($count>0)
+            {
+                $records = ldap_get_entries($ds, $sr );
+                $record = $records[0];
                 return uinfoFromLDAP($record);
-			}
-			else
-				$error = "No Identity vault entry found.<br/>";
-			ldap_free_result( $sr );
-	    }
-	    else
-	    {
+            }
+            else
+                $error = "No Identity vault entry found.<br/>";
+            ldap_free_result( $sr );
+        }
+        else
+        {
             while($clrtime < time()) sleep(1); // Paranoid prevention of timing to narrow username/password guesses
             $error = 'Incorrect password';
-	    	return false; //Incorrect password
-	    }
+            return false; //Incorrect password
+        }
     }
     else
     {
@@ -56,10 +74,13 @@ function checkLogin($username, $password, &$error=false)
         $error = 'Incorrect username';
         return false; //Incorrect username
     }
+    */
 }
 
 function uinfoFromLDAP($record)
 {
+    return null;
+    /*
     global $CFG;
     $uinfo = array();
     //echo '<pre>'; print_r($record); echo '</pre>';
@@ -100,4 +121,5 @@ function uinfoFromLDAP($record)
         }
     }
     return $uinfo;
+    */
 }

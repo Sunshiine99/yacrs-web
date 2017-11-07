@@ -1,0 +1,10 @@
+{
+  "name": "yacrs_web",
+  "description": "Yet another class response system",
+  "config": {
+    "vendor-dir": "src/vendor"
+  },
+  "require": {
+    "league/plates": "3.*"
+  }
+}

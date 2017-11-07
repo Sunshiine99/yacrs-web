@@ -1,4 +1,8 @@
 <?php
+require_once(dirname(__FILE__) . "/src/autoload.php");
+$CFG['templates'] = dirname(__FILE__) . "/src/templates/";
+$CFG['baseUrl'] = "http://127.0.0.1:4000/";
+
 
 date_default_timezone_set('UTC');
 //if((!isset($noSSLok))||($noSSLok==false)) include_once('corelib/force_ssl.php');  // To allow non-SSL use, comment out this line

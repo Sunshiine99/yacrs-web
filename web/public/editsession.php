@@ -8,6 +8,9 @@ require_once('lib/database.php');
 include_once('corelib/mobile.php');
 require_once('lib/shared_funcs.php');
 include_once('lib/lti_funcs.php');
+
+$template = new templateMerge($TEMPLATE);
+
 $uinfo = checkLoggedInUser();
 
 $template->pageData['pagetitle'] = $CFG['sitetitle'];

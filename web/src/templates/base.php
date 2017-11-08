@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/bootstrap-theme.css" />
     <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/font-awesome.css" />
     <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/yacrs-base.css" />
+    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/yacrs-theme.css" />
 </head>
 <body>
 <div id="pageHeader">

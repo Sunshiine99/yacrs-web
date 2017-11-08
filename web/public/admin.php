@@ -25,11 +25,9 @@ require_once('config.php');
 require_once('lib/database.php');
 require_once('lib/forms.php');
 include_once('corelib/mobile.php');
+
+
 $template = new templateMerge($TEMPLATE);
-if($deviceType=='mobile')
-    $template->pageData['modechoice'] = "<a href='{$_SERVER['PHP_SELF']}?mode=computer'>Use computer mode</a>";
-else
-    $template->pageData['modechoice'] = "<a href='{$_SERVER['PHP_SELF']}?mode=mobile'>Use mobile mode</a>";
 
 $uinfo = checkLoggedInUser();
 
@@ -46,9 +44,8 @@ if($uinfo==false)
     $template->pageData['loginBox'] = loginBox($uinfo, $loginError);//."<p style='text-align:right;'><a href='join.php'>Or click here for guest/anonymous access</a></p>";
 }
 elseif(!$uinfo['isAdmin'])
-{
     header("Location: index.php");
-}
+
 else
 {
     $disp = requestStr('disp', '');

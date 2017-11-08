@@ -26,7 +26,7 @@ $data = [
 $data["breadcrumbs"]->addItem("YACRS", $CFG["baseUrl"]);
 $data["breadcrumbs"]->addItem("Edit a session");
 
-die($templates->render("session/edit", $data));
+//die($templates->render("session/edit", $data));
 
 
 

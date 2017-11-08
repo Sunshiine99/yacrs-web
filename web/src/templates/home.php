@@ -94,9 +94,6 @@ $this->layout("template",
 
 <?php endif; ?>
 
-<?php // Load user info ?>
-<?php $user = userInfo::retrieve_by_username($uinfo['uname']); ?>
-
 <h2 class="page-section">My settings</h2>
 
 <?php // If sms is setup
@@ -110,11 +107,6 @@ $this->layout("template",
         echo "<p>To associate a phone with your username text \"link {$user->username} $code\" (without quotes) to {$CFG['smsnumber']}.</p>";
     }
 ?>
-
-
-
-
-
 
 <?php // If user is an admin, show a link to admin page ?>
 <?php if($uinfo['sessionCreator']):?>

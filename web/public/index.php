@@ -110,6 +110,61 @@ else
     else
     {
 
+        // Array of sessions that the user has access to modify as a staff member
+        $staffSessions = array();
+
+        // If the user can create sessions, load a list of the sessions the user has access to
+        if($uinfo['sessionCreator'])
+        {
+
+            // Load staff sessions
+            $staffSessions = session::retrieve_session_matching('ownerID', $uinfo['uname']);
+
+            // If no sessions loaded, use an empty array
+            if($staffSessions === false)
+                $staffSessions = array();
+
+            // Merge my sessions with those which I have access to
+            $staffSessions = array_merge($staffSessions, session::teacherExtraSessions($uinfo['uname']));
+        }
+
+        // Load user sessions
+        $slist = sessionMember::retrieve_sessionMember_matching('userID', $uinfo['uname']);
+
+        // Array of
+        $sessions = array();
+
+        // If slist array is set
+        if($slist)
+        {
+
+            // Loop for every session in slist
+            foreach($slist as $s)
+            {
+
+                // Get session from slist item
+                $sess = session::retrieve_session($s->session_id);
+
+                // If session exists and it is visisble, add it to the array of sessions to show
+                if(($sess)&&($sess->visible))
+                    $sessions[] = $sess;
+            }
+        }
+
+
+        $data["staffSessions"] = $staffSessions;
+        $data["sessions"] = $sessions;
+        $data["uinfo"] = $uinfo;
+
+
+        die($templates->render("home", $data));
+
+
+
+
+
+
+
         // Session code input box
 	    $template_old->pageData['mainBody'] = sessionCodeinput();
 

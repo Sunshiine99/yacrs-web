@@ -5,6 +5,7 @@ $this->layout("template",
         "title" => $title,
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
+        "uinfo" => $uinfo,
     ]
 );
 ?>

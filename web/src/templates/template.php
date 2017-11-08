@@ -17,14 +17,14 @@ $this->push("header"); ?>
                 </div>
             </div>
             <?php if($uinfo): ?>
-            <div class="col-xs-6">
-                <div id="logoutLink">
-                    <div class="loginBox">
-                        USER NAME <a href="/logout/"><i class="fa fa-lock"></i> Log out</a>
+                <div class="col-xs-6">
+                    <div id="logoutLink">
+                        <div class="loginBox">
+                            <?=$uinfo["gn"]?> <?=$uinfo["sn"]?><a href="<?=$CFG["baseUrl"]?>?logout"><i class="fa fa-lock"></i> Log out</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php endif; ?>
+            <?php endif ?>
         </div>
     </div>
 <?php $this->stop(); ?>

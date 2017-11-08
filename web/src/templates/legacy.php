@@ -4,6 +4,7 @@ $this->layout("base",
         "CFG" => $CFG,
         "title" => $title,
         "description" => $description,
+        "uinfo" => $uinfo,
     ]
 );
 

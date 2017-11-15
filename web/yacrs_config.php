@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . "/src/autoload.php");
 $CFG['templates'] = dirname(__FILE__) . "/src/templates/";
-$CFG['baseUrl'] = "http://127.0.0.1:4000/";
+$CFG['baseUrl'] = getenv("BASE_URL");
 
 
 date_default_timezone_set('UTC');

@@ -16,8 +16,6 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 * PhpMyAdmin: 127.0.0.1:4001
 * MySql 3306: 127.0.0.1:4002
 
-It will accept any username or password. Any username prefixed with "admin" will be an admin.
-
 ## Copyright and Licence
 YACRS is Copyright (c) 2013-2015, The University of Glasgow and is written by 
 Niall S F Barr (niall.barr@glasgow.ac.uk)

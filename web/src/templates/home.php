@@ -110,7 +110,7 @@ $this->layout("template",
 ?>
 
 <?php // If user is an admin, show a link to admin page ?>
-<?php if($uinfo['sessionCreator']):?>
+<?php if($uinfo['isAdmin']):?>
     <a href="admin.php" class="btn btn-danger">
         <i class="fa fa-wrench"></i> YACRS administration
     </a>

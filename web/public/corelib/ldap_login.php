@@ -8,7 +8,12 @@ function checkLogin($username, $password, &$error=false)
     $uinfo['gn'] = "Joe";
     $uinfo['sn'] = "Bloggs";
     $uinfo['email'] = "joebloggs@exmple.com";
-    if(substr($username, 0, 5) == "admin") {
+
+    if(substr($username, 0, 5) == "teach") {
+        $uinfo['isAdmin'] = false;
+        $uinfo['sessionCreator'] = true;
+    }
+    elseif(substr($username, 0, 5) == "admin") {
         $uinfo['isAdmin'] = true;
         $uinfo['sessionCreator'] = true;
     }
@@ -16,6 +21,11 @@ function checkLogin($username, $password, &$error=false)
         $uinfo['isAdmin'] = false;
         $uinfo['sessionCreator'] = false;
     }
+
+    if($password != "orangemonkey") {
+	return false;
+    }
+
     return $uinfo;
 
 

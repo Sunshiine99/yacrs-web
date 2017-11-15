@@ -5,6 +5,7 @@
     "vendor-dir": "src/vendor"
   },
   "require": {
-    "league/plates": "3.*"
+    "league/plates": "3.*",
+    "mikecao/flight": "^1.3"
   }
 }

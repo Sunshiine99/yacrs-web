@@ -4,7 +4,7 @@ FROM php:5.6-apache
 RUN docker-php-ext-install mysqli
 
 # Apache and PHP configuration
-# RUN a2enmod rewrite
+RUN a2enmod rewrite
 ADD docker/apache/vhost.conf /etc/apache2/sites-enabled/000-default.conf
 ADD docker/php/php.ini /usr/local/etc/php/php.ini
 

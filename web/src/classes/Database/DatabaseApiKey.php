@@ -62,7 +62,7 @@ class DatabaseApiKey
             return false;
 
         // If key has expired, return false
-        if($rows[0]["created"] > 0)
+        if($rows[0]["created"] <= 0)
             return false;
 
         return true;

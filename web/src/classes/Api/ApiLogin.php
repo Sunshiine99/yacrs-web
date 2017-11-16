@@ -45,8 +45,14 @@ class ApiLogin
      * Logout API page
      */
     public static function logout() {
-        $output["error"]["code"] = "notImplemented";
-        $output["error"]["message"] = "Not Implemented";
+
+        // Check required parameters
+        $key = Api::checkParameter("key");
+
+        // Logout user by making API key expire
+        DatabaseApiKey::apiKeyExpire($key);
+
+        $output["success"] = true;
         Api::output($output);
     }
 }

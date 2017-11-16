@@ -67,4 +67,18 @@ class DatabaseApiKey
 
         return true;
     }
+
+    public static function apiKeyExpire($key) {
+
+        // Escape database key
+        $key = DatabaseAccess::safe($key);
+
+        // Run database query
+        $sql = "UPDATE `yacrs_apiKey`
+                SET `created`=0
+                WHERE `yacrs_apiKey`.`key`='$key'";
+        $rows = DatabaseAccess::runQuery($sql);
+
+        return true;
+    }
 }

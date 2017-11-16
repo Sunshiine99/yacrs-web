@@ -24,7 +24,11 @@ class ApiLogin
 
         // Otherwise, output key and details
         else {
-            $output["key"] = "2d1c5aedf340d670d9e05739f2e87e377e661bb7c8db19b287b465959161efd4";
+
+            // Get new api key
+            $apiKey = DatabaseApiKey::newApiKey();
+
+            $output["key"] = $apiKey;
             $output["details"]["username"] = $uinfo["uname"];
             $output["details"]["givenname"] = $uinfo["gn"];
             $output["details"]["surname"] = $uinfo["sn"];
@@ -32,6 +36,7 @@ class ApiLogin
             $output["details"]["isAdmin"] = $uinfo["isAdmin"];
             $output["details"]["sessionCreator"] = $uinfo["sessionCreator"];
         }
+
 
         Api::output($output);
     }

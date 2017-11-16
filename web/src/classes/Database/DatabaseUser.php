@@ -67,8 +67,8 @@ class DatabaseUser
     }
 
     public static function retrieve_userInfo($id) {
-        $query = "SELECT * FROM yacrs_userInfo WHERE id='".dataConnection::safe($id)."';";
-        $result = dataConnection::runQuery($query);
+        $query = "SELECT * FROM yacrs_userInfo WHERE id='".DatabaseAccess::safe($id)."';";
+        $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
             return new userInfo($result[0]);
@@ -79,8 +79,8 @@ class DatabaseUser
 
 
     public static function retrieve_by_username($username) {
-        $query = "SELECT * FROM yacrs_userInfo WHERE username='".dataConnection::safe($username)."';";
-        $result = dataConnection::runQuery($query);
+        $query = "SELECT * FROM yacrs_userInfo WHERE username='".DatabaseAccess::safe($username)."';";
+        $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
             return new userInfo($result[0]);
@@ -92,13 +92,13 @@ class DatabaseUser
     public static function retrieve_userInfo_matching($field, $value, $from=0, $count=-1, $sort=null) {
         if(preg_replace('/\W/','',$field)!== $field)
             return false; // not a permitted field name;
-        $query = "SELECT * FROM yacrs_userInfo WHERE $field='".dataConnection::safe($value)."'";
+        $query = "SELECT * FROM yacrs_userInfo WHERE $field='".DatabaseAccess::safe($value)."'";
         if(($sort !== null)&&(preg_replace('/\W/','',$sort)!== $sort))
             $query .= " ORDER BY ".$sort;
         if(($count != -1)&&(is_int($count))&&(is_int($from)))
             $query .= " LIMIT ".$count." OFFSET ".$from;
         $query .= ';';
-        $result = dataConnection::runQuery($query);
+        $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
             $output = array();
@@ -113,34 +113,34 @@ class DatabaseUser
     public function insert() {
         //#Any required insert methods for foreign keys need to be called here.
         $query = "INSERT INTO yacrs_userInfo(username, name, email, nickname, phone, sessionCreator, isAdmin, teacherPrefs) VALUES(";
-        $query .= "'".dataConnection::safe($this->username)."', ";
-        $query .= "'".dataConnection::safe($this->name)."', ";
-        $query .= "'".dataConnection::safe($this->email)."', ";
-        $query .= "'".dataConnection::safe($this->nickname)."', ";
-        $query .= "'".dataConnection::safe($this->phone)."', ";
+        $query .= "'".DatabaseAccess::safe($this->username)."', ";
+        $query .= "'".DatabaseAccess::safe($this->name)."', ";
+        $query .= "'".DatabaseAccess::safe($this->email)."', ";
+        $query .= "'".DatabaseAccess::safe($this->nickname)."', ";
+        $query .= "'".DatabaseAccess::safe($this->phone)."', ";
         $query .= "'".(($this->sessionCreator===false)?0:1)."', ";
         $query .= "'".(($this->isAdmin===false)?0:1)."', ";
-        $query .= "'".dataConnection::safe(serialize($this->teacherPrefs))."');";
-        dataConnection::runQuery("BEGIN;");
-        $result = dataConnection::runQuery($query);
-        $result2 = dataConnection::runQuery("SELECT LAST_INSERT_ID() AS id;");
-        dataConnection::runQuery("COMMIT;");
+        $query .= "'".DatabaseAccess::safe(serialize($this->teacherPrefs))."');";
+        DatabaseAccess::runQuery("BEGIN;");
+        $result = DatabaseAccess::runQuery($query);
+        $result2 = DatabaseAccess::runQuery("SELECT LAST_INSERT_ID() AS id;");
+        DatabaseAccess::runQuery("COMMIT;");
         $this->id = $result2[0]['id'];
         return $this->id;
     }
 
     public function update() {
         $query = "UPDATE yacrs_userInfo ";
-        $query .= "SET username='".dataConnection::safe($this->username)."' ";
-        $query .= ", name='".dataConnection::safe($this->name)."' ";
-        $query .= ", email='".dataConnection::safe($this->email)."' ";
-        $query .= ", nickname='".dataConnection::safe($this->nickname)."' ";
-        $query .= ", phone='".dataConnection::safe($this->phone)."' ";
+        $query .= "SET username='".DatabaseAccess::safe($this->username)."' ";
+        $query .= ", name='".DatabaseAccess::safe($this->name)."' ";
+        $query .= ", email='".DatabaseAccess::safe($this->email)."' ";
+        $query .= ", nickname='".DatabaseAccess::safe($this->nickname)."' ";
+        $query .= ", phone='".DatabaseAccess::safe($this->phone)."' ";
         $query .= ", sessionCreator='".(($this->sessionCreator===false)?0:1)."' ";
         $query .= ", isAdmin='".(($this->isAdmin===false)?0:1)."' ";
-        $query .= ", teacherPrefs='".dataConnection::safe(serialize($this->teacherPrefs))."' ";
-        $query .= "WHERE id='".dataConnection::safe($this->id)."';";
-        return dataConnection::runQuery($query);
+        $query .= ", teacherPrefs='".DatabaseAccess::safe(serialize($this->teacherPrefs))."' ";
+        $query .= "WHERE id='".DatabaseAccess::safe($this->id)."';";
+        return DatabaseAccess::runQuery($query);
     }
 
     public static function count($where_name=null, $equals_value=null) {
@@ -148,8 +148,8 @@ class DatabaseUser
         if($where_name==null)
             $query .= '1;';
         else
-            $query .= "$where_name='".dataConnection::safe($equals_value)."';";
-        $result = dataConnection::runQuery($query);
+            $query .= "$where_name='".DatabaseAccess::safe($equals_value)."';";
+        $result = DatabaseAccess::runQuery($query);
         if($result == false)
             return 0;
         else
@@ -173,8 +173,8 @@ class DatabaseUser
     //[[USERCODE_userInfo]] Put code for custom class members in this block.
 
     public static function retrieveByMobileNo($mobileNo) {
-        $query = "SELECT * FROM yacrs_userInfo WHERE phone='".dataConnection::safe($mobileNo)."';";
-        $result = dataConnection::runQuery($query);
+        $query = "SELECT * FROM yacrs_userInfo WHERE phone='".DatabaseAccess::safe($mobileNo)."';";
+        $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)==1)    // If duplicated just return none for now...
         {
             $output = new userInfo($result[0]);
@@ -191,7 +191,7 @@ class DatabaseUser
         if(($count != -1)&&(is_int($count))&&(is_int($from)))
             $query .= " LIMIT ".$count." OFFSET ".$from;
         $query .= ';';
-        $result = dataConnection::runQuery($query);
+        $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
             $output = array();
@@ -205,13 +205,13 @@ class DatabaseUser
 
     public static function search_userInfo($searchTerm, $from=0, $count=-1) {
         $query = "SELECT * FROM yacrs_userInfo";
-        $query .= " WHERE username LIKE '%".dataConnection::safe($searchTerm)."%'";
-        $query .= " OR name LIKE '%".dataConnection::safe($searchTerm)."%'";
+        $query .= " WHERE username LIKE '%".DatabaseAccess::safe($searchTerm)."%'";
+        $query .= " OR name LIKE '%".DatabaseAccess::safe($searchTerm)."%'";
         $query .= " ORDER BY name ASC";
         if(($count != -1)&&(is_int($count))&&(is_int($from)))
             $query .= " LIMIT ".$count." OFFSET ".$from;
         $query .= ';';
-        $result = dataConnection::runQuery($query);
+        $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
             $output = array();

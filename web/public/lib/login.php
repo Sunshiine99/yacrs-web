@@ -1,5 +1,5 @@
 <?php
-require_once('corelib/ldap_login.php');
+require_once(dirname(__FILE__) . '/../corelib/ldap_login.php');
 
 function checkLoggedInUser($allowLogin = true, &$error = false)
 {

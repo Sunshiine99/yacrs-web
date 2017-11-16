@@ -6,8 +6,8 @@ $CFG['baseUrl'] = getenv("BASE_URL");
 
 date_default_timezone_set('UTC');
 //if((!isset($noSSLok))||($noSSLok==false)) include_once('corelib/force_ssl.php');  // To allow non-SSL use, comment out this line
-require_once('corelib/templateMerge.php');
-include('lib/login.php');
+require_once(dirname(__FILE__) . '/public/corelib/templateMerge.php');
+include(dirname(__FILE__) . "/public/lib/login.php");
 //include_once('lib/libfuncs.php');
 
 $TEMPLATE = 'html/template.html';

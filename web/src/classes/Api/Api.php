@@ -28,4 +28,13 @@ class Api
 
         return $_REQUEST[$parameter];
     }
+
+    /**
+     * Check API key
+     * @param $key
+     * @return bool
+     */
+    public static function checkApiKey($key) {
+        return DatabaseApiKey::checkApiKey($key);
+    }
 }

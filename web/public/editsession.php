@@ -37,7 +37,7 @@ else
     $esform->disable('allowTeacherQu');
     if(requestSet('sessionID'))
     {
-        $thisSession = session::retrieve_session(requestInt('sessionID'));
+        $thisSession = DatabaseSession::retrieveSession(requestInt('sessionID'));
     }
     else
     {
@@ -68,8 +68,8 @@ else
 	case FORM_SUBMITTED_VALID:
         if(!$thisSession)
         {
-            $thisSession = new session();
-            $thisSession->ownerID = $uinfo['uname'];
+            $thisSession = new DatabaseSession();
+            $thisSession->setOwnerID($uinfo['uname']);
         }
 	    $esform->getData($thisSession);
         if(isset($esform->customScoring))

@@ -22,38 +22,39 @@ function checkLoggedInUser($allowLogin = true, &$error = false)
            //# Should also check by e-mail
            //#Some thinking & probably refactoring needed to make sure LTI and OpenID
            //# logins can be supported.
-        	$user = userInfo::retrieve_by_username($uinfo['uname']);
+        	$user = DatabaseUser::retrieveByUsername($uinfo['uname']);
             if($user == false)
             {
-            	$user = new userInfo();
-                $user->username = $uinfo['uname'];
-                $user->name = $uinfo['gn'].' '.$uinfo['sn'];
-                $user->email = $uinfo['email'];
+            	$user = new DatabaseUser();
+                $user->setUsername($uinfo['uname']);
+                $user->setName($uinfo['gn'].' '.$uinfo['sn']);
+                $user->setEmail($uinfo['email']);
                 if(isset($uinfo['sessionCreator']))
-	                $user->sessionCreator = $uinfo['sessionCreator'];
+	                $user->setSessionCreator($uinfo['sessionCreator']);
                 else
-                    $user->sessionCreator = false;
+                    $user->setSessionCreator(false);
                 $user->Insert();
             }
             else
             {
                 if(isset($uinfo['sessionCreator']))  // sessionCreator defined by local login, e.g. staff flag in LDAP
                 {
-                	$uinfo['sessionCreator'] = $user->sessionCreator||$uinfo['sessionCreator'];
-                    if($uinfo['sessionCreator'] != $user->sessionCreator)
+
+                	$uinfo['sessionCreator'] = $user->isSessionCreator()||$uinfo['sessionCreator'];
+                    if($uinfo['sessionCreator'] != $user->isSessionCreator())
                     {
-                        $user->sessionCreator = $uinfo['sessionCreator'];
+                        $user->setSessionCreator($uinfo['sessionCreator']);
                         $user->update();
                     }
                 }
                 else   // sessionCreator defined in YACRS
                 {
-                    if($user->sessionCreator)
+                    if($user->isSessionCreator())
                         $uinfo['sessionCreator'] = true;
                 }
-                if($user->isAdmin)
+                if($user->isAdmin())
                     $uinfo['isAdmin'] = true;
-                elseif((isset($CFG['adminname']))&&($CFG['adminname']==$user->username))
+                elseif((isset($CFG['adminname']))&&($CFG['adminname']==$user->getUsername()))
                     $uinfo['isAdmin'] = true;
             }
         }

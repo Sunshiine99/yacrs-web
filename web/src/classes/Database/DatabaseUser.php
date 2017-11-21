@@ -6,31 +6,31 @@ class DatabaseUser
      * Primary Key
      * @var int|null
      */
-    private $id;
+    var $id;
 
     /** @var string */
-    private $username;
+    var $username;
 
     /** @var string */
-    private $name;
+    var $name;
 
     /** @var string */
-    private $email;
+    var $email;
 
     /** @var string */
-    private $nickname;
+    var $nickname;
 
     /** @var string */
-    private $phone;
+    var $phone;
 
     /** @var bool */
-    private $sessionCreator;
+    var $sessionCreator;
 
     /** @var bool */
-    private $isAdmin;
+    var $isAdmin;
 
     /** @var string */
-    private $teacherPrefs;
+    var $teacherPrefs;
 
     /**
      * DatabaseUser constructor.
@@ -66,30 +66,30 @@ class DatabaseUser
         $this->teacherPrefs = unserialize($asArray['teacherPrefs']);
     }
 
-    public static function retrieve_userInfo($id) {
+    public static function retrieveUserInfo($id) {
         $query = "SELECT * FROM yacrs_userInfo WHERE id='".DatabaseAccess::safe($id)."';";
         $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
-            return new userInfo($result[0]);
+            return new DatabaseUser($result[0]);
         }
         else
             return false;
     }
 
 
-    public static function retrieve_by_username($username) {
+    public static function retrieveByUsername($username) {
         $query = "SELECT * FROM yacrs_userInfo WHERE username='".DatabaseAccess::safe($username)."';";
         $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)!=0)
         {
-            return new userInfo($result[0]);
+            return new DatabaseUser($result[0]);
         }
         else
             return false;
     }
 
-    public static function retrieve_userInfo_matching($field, $value, $from=0, $count=-1, $sort=null) {
+    public static function retrieveUserInfoMatching($field, $value, $from=0, $count=-1, $sort=null) {
         if(preg_replace('/\W/','',$field)!== $field)
             return false; // not a permitted field name;
         $query = "SELECT * FROM yacrs_userInfo WHERE $field='".DatabaseAccess::safe($value)."'";
@@ -103,7 +103,7 @@ class DatabaseUser
         {
             $output = array();
             foreach($result as $r)
-                $output[] = new userInfo($r);
+                $output[] = new DatabaseUser($r);
             return $output;
         }
         else
@@ -177,14 +177,14 @@ class DatabaseUser
         $result = DatabaseAccess::runQuery($query);
         if(sizeof($result)==1)    // If duplicated just return none for now...
         {
-            $output = new userInfo($result[0]);
+            $output = new DatabaseUser($result[0]);
             return $output;
         }
         else
             return false;
     }
 
-    public static function retrieve_all_userInfo($from=0, $count=-1, $sort=null) {
+    public static function retrieveAllUserInfo($from=0, $count=-1, $sort=null) {
         $query = "SELECT * FROM yacrs_userInfo ";
         if($sort !== null)
             $query .= " ORDER BY ".$sort;
@@ -196,14 +196,14 @@ class DatabaseUser
         {
             $output = array();
             foreach($result as $r)
-                $output[] = new userInfo($r);
+                $output[] = new DatabaseUser($r);
             return $output;
         }
         else
             return false;
     }
 
-    public static function search_userInfo($searchTerm, $from=0, $count=-1) {
+    public static function searchUserInfo($searchTerm, $from=0, $count=-1) {
         $query = "SELECT * FROM yacrs_userInfo";
         $query .= " WHERE username LIKE '%".DatabaseAccess::safe($searchTerm)."%'";
         $query .= " OR name LIKE '%".DatabaseAccess::safe($searchTerm)."%'";
@@ -216,7 +216,7 @@ class DatabaseUser
         {
             $output = array();
             foreach($result as $r)
-                $output[] = new userInfo($r);
+                $output[] = new DatabaseUser($r);
             return $output;
         }
         else

@@ -30,9 +30,9 @@ class Api
     }
 
     /**
-     * Check API key
-     * @param $key
-     * @return bool
+     * Checks api key
+     * @param string $key
+     * @return null|string Username or null if failure
      */
     public static function checkApiKey($key) {
         return DatabaseApiKey::checkApiKey($key);

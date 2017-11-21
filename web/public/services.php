@@ -322,19 +322,7 @@ else
         }
         break;
     case 'sessionlist':
-   	    $sessions = session::retrieve_session_matching('ownerID', $uinfo['uname']);
-        if($sessions === false)
-            $sessions = array();
-        $sessions = array_merge($sessions, session::teacherExtraSessions($uinfo['uname']));
-        $data['sessionInfo'] = array();
-        if($sessions !== false)
-        {
-	        foreach($sessions as $s)
-	        {
-	            $ctime = strftime("%Y-%m-%d %H:%M", $s->created);
-	            $data['sessionInfo'][] = array('attributes'=>array('id'=>$s->id),'ownerID'=>$s->ownerID, 'title'=>$s->title, 'created'=>$ctime);
-	        }
-        }
+        $data['sessionInfo'] = Sessions::getUserOwnedSessions($uinfo['uname']);
         break;
     case 'sessiondetail':
         if(isset($_REQUEST['id']))

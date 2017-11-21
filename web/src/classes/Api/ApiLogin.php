@@ -26,7 +26,7 @@ class ApiLogin
         else {
 
             // Get new api key
-            $apiKey = DatabaseApiKey::newApiKey();
+            $apiKey = DatabaseApiKey::newApiKey($uinfo["uname"]);
 
             $output["key"] = $apiKey;
             $output["details"]["username"] = $uinfo["uname"];

@@ -427,542 +427,123 @@ class lticonsumer
 
 class session
 {
-	var $id; //primary key
-	var $ownerID;
-	var $title;
-	var $created;
-	var $questions;
-	var $currentQuestion;
-	var $questionMode;
-	var $endtime;
-	var $sessionstarttime;
-	var $sessionOpen;
-	var $activeSubsession_id = -1; //foreign key
-	var $sessionendtime;
-	var $visible;
-	var $allowGuests;
-	var $multiSession;
-	var $ublogRoom;
-	var $maxMessagelength;
-	var $allowQuReview;
-	var $allowTeacherQu;
-	var $courseIdentifier;
-	var $defaultQuActiveSecs;
-	var $extras;
+    /** @var DatabaseSession */
+    private $databaseSession;
 
-	function __construct($asArray=null)
-	{
-		$this->id = null; //primary key
-		$this->ownerID = "";
-		$this->title = "";
-		$this->created = time();
-		$this->questions = "";
-		$this->currentQuestion = "0";
-		$this->questionMode = "0";
-		$this->endtime = time();
-		$this->sessionstarttime = time();
-		$this->sessionOpen = false;
-		$this->activeSubsession_id = null; // foreign key, needs dealt with.
-		$this->sessionendtime = time();
-		$this->visible = false;
-		$this->allowGuests = false;
-		$this->multiSession = false;
-		$this->ublogRoom = "0";
-		$this->maxMessagelength = "0";
-		$this->allowQuReview = false;
-		$this->allowTeacherQu = false;
-		$this->courseIdentifier = "";
-		$this->defaultQuActiveSecs = "0";
-		$this->extras = false;
-		if($asArray!==null)
-			$this->fromArray($asArray);
+	public function __construct($asArray=null) {
+		$this->databaseSession = new DatabaseSession($asArray);
+		return $this->databaseSession;
 	}
 
-	function fromArray($asArray)
-	{
-		$this->id = $asArray['id'];
-		$this->ownerID = $asArray['ownerID'];
-		$this->title = $asArray['title'];
-		$this->created = dataConnection::db2time($asArray['created']);
-		$this->questions = $asArray['questions'];
-		$this->currentQuestion = $asArray['currentQuestion'];
-		$this->questionMode = $asArray['questionMode'];
-		$this->endtime = dataConnection::db2time($asArray['endtime']);
-		$this->sessionstarttime = dataConnection::db2time($asArray['sessionstarttime']);
-		$this->sessionOpen = ($asArray['sessionOpen']==0)?false:true;
-		$this->activeSubsession_id = $asArray['activeSubsession_id']; // foreign key, check code
-		$this->sessionendtime = dataConnection::db2time($asArray['sessionendtime']);
-		$this->visible = ($asArray['visible']==0)?false:true;
-		$this->allowGuests = ($asArray['allowGuests']==0)?false:true;
-		$this->multiSession = ($asArray['multiSession']==0)?false:true;
-		$this->ublogRoom = $asArray['ublogRoom'];
-		$this->maxMessagelength = $asArray['maxMessagelength'];
-		$this->allowQuReview = ($asArray['allowQuReview']==0)?false:true;
-		$this->allowTeacherQu = ($asArray['allowTeacherQu']==0)?false:true;
-		$this->courseIdentifier = $asArray['courseIdentifier'];
-		$this->defaultQuActiveSecs = $asArray['defaultQuActiveSecs'];
-		$this->extras = unserialize($asArray['extras']);
+    public static function retrieve_session($id) {
+		return DatabaseSession::retrieveSession($id);
 	}
 
-	static function retrieve_session($id)
-	{
-		$query = "SELECT * FROM yacrs_session WHERE id='".dataConnection::safe($id)."';";
-		$result = dataConnection::runQuery($query);
-		if(sizeof($result)!=0)
-		{
-			return new session($result[0]);
-		}
-		else
-			return false;
+    public static function retrieve_session_matching($field, $value, $from=0, $count=-1, $sort=null) {
+	    return DatabaseSession::retrieveSessionMatching($field, $value, $from, $count, $sort);
 	}
 
-	static function retrieve_session_matching($field, $value, $from=0, $count=-1, $sort=null)
-	{
-	    if(preg_replace('/\W/','',$field)!== $field)
-	        return false; // not a permitted field name;
-	    $query = "SELECT * FROM yacrs_session WHERE $field='".dataConnection::safe($value)."'";
-	    if(($sort !== null)&&(preg_replace('/\W/','',$sort)!== $sort))
-	        $query .= " ORDER BY ".$sort;
-	    if(($count != -1)&&(is_int($count))&&(is_int($from)))
-	        $query .= " LIMIT ".$count." OFFSET ".$from;
-	    $query .= ';';
-	    $result = dataConnection::runQuery($query);
-	    if(sizeof($result)!=0)
-	    {
-	        $output = array();
-	        foreach($result as $r)
-	            $output[] = new session($r);
-	        return $output;
-	    }
-	    else
-	        return false;
+    public function insert() {
+		return $this->databaseSession->insert();
 	}
 
-	function insert()
-	{
-		//#Any required insert methods for foreign keys need to be called here.
-		$query = "INSERT INTO yacrs_session(ownerID, title, created, questions, currentQuestion, questionMode, endtime, sessionstarttime, sessionOpen, activeSubsession_id, sessionendtime, visible, allowGuests, multiSession, ublogRoom, maxMessagelength, allowQuReview, allowTeacherQu, courseIdentifier, defaultQuActiveSecs, extras) VALUES(";
-		$query .= "'".dataConnection::safe($this->ownerID)."', ";
-		$query .= "'".dataConnection::safe($this->title)."', ";
-		$query .= "'".dataConnection::time2db($this->created)."', ";
-		$query .= "'".dataConnection::safe($this->questions)."', ";
-		$query .= "'".dataConnection::safe($this->currentQuestion)."', ";
-		$query .= "'".dataConnection::safe($this->questionMode)."', ";
-		$query .= "'".dataConnection::time2db($this->endtime)."', ";
-		$query .= "'".dataConnection::time2db($this->sessionstarttime)."', ";
-		$query .= "'".(($this->sessionOpen===false)?0:1)."', ";
-		if($this->activeSubsession_id!==null)
-			$query .= "'".dataConnection::safe($this->activeSubsession_id)."', ";
-		else
-			$query .= "null, ";
-		$query .= "'".dataConnection::time2db($this->sessionendtime)."', ";
-		$query .= "'".(($this->visible===false)?0:1)."', ";
-		$query .= "'".(($this->allowGuests===false)?0:1)."', ";
-		$query .= "'".(($this->multiSession===false)?0:1)."', ";
-		$query .= "'".dataConnection::safe($this->ublogRoom)."', ";
-		$query .= "'".dataConnection::safe($this->maxMessagelength)."', ";
-		$query .= "'".(($this->allowQuReview===false)?0:1)."', ";
-		$query .= "'".(($this->allowTeacherQu===false)?0:1)."', ";
-		$query .= "'".dataConnection::safe($this->courseIdentifier)."', ";
-		$query .= "'".dataConnection::safe($this->defaultQuActiveSecs)."', ";
-		$query .= "'".dataConnection::safe(serialize($this->extras))."');";
-		dataConnection::runQuery("BEGIN;");
-		$result = dataConnection::runQuery($query);
-		$result2 = dataConnection::runQuery("SELECT LAST_INSERT_ID() AS id;");
-		dataConnection::runQuery("COMMIT;");
-		$this->id = $result2[0]['id'];
-		return $this->id;
+    public function update() {
+        return $this->databaseSession->update();
 	}
 
-	function update()
-	{
-		$query = "UPDATE yacrs_session ";
-		$query .= "SET ownerID='".dataConnection::safe($this->ownerID)."' ";
-		$query .= ", title='".dataConnection::safe($this->title)."' ";
-		$query .= ", created='".dataConnection::time2db($this->created)."' ";
-		$query .= ", questions='".dataConnection::safe($this->questions)."' ";
-		$query .= ", currentQuestion='".dataConnection::safe($this->currentQuestion)."' ";
-		$query .= ", questionMode='".dataConnection::safe($this->questionMode)."' ";
-		$query .= ", endtime='".dataConnection::time2db($this->endtime)."' ";
-		$query .= ", sessionstarttime='".dataConnection::time2db($this->sessionstarttime)."' ";
-		$query .= ", sessionOpen='".(($this->sessionOpen===false)?0:1)."' ";
-		//$query .= ", activeSubsession_id='".dataConnection::safe($this->activeSubsession_id)."' ";
-		$query .= ", sessionendtime='".dataConnection::time2db($this->sessionendtime)."' ";
-		$query .= ", visible='".(($this->visible===false)?0:1)."' ";
-		$query .= ", allowGuests='".(($this->allowGuests===false)?0:1)."' ";
-		$query .= ", multiSession='".(($this->multiSession===false)?0:1)."' ";
-		$query .= ", ublogRoom='".dataConnection::safe($this->ublogRoom)."' ";
-		$query .= ", maxMessagelength='".dataConnection::safe($this->maxMessagelength)."' ";
-		$query .= ", allowQuReview='".(($this->allowQuReview===false)?0:1)."' ";
-		$query .= ", allowTeacherQu='".(($this->allowTeacherQu===false)?0:1)."' ";
-		$query .= ", courseIdentifier='".dataConnection::safe($this->courseIdentifier)."' ";
-		$query .= ", defaultQuActiveSecs='".dataConnection::safe($this->defaultQuActiveSecs)."' ";
-		$query .= ", extras='".dataConnection::safe(serialize($this->extras))."' ";
-		$query .= "WHERE id='".dataConnection::safe($this->id)."';";
-		return dataConnection::runQuery($query);
+	public static function count($where_name=null, $equals_value=null) {
+		return DatabaseSession::count($where_name, $equals_value);
 	}
 
-	static function count($where_name=null, $equals_value=null)
-	{
-		$query = "SELECT COUNT(*) AS count FROM yacrs_session WHERE ";
-		if($where_name==null)
-			$query .= '1;';
-		else
-			$query .= "$where_name='".dataConnection::safe($equals_value)."';";
-		$result = dataConnection::runQuery($query);
-		if($result == false)
-			return 0;
-		else
-			return $result['0']['count'];
+    public function get_teachers_count() {
+        return $this->databaseSession->getTeachersCount();
 	}
 
+    public function get_teachers($from=0, $count=-1, $sort=null) {
+        return $this->databaseSession->getTeachers($from, $count, $sort);
+    }
 
-	//1:n relationship to extraTeachers
-	function get_teachers_count()
-	{
-	    $query = "SELECT COUNT(*) AS count FROM extraTeachers WHERE parent_id = {$this->id};";
-	    $result = dataConnection::runQuery($query);
-	    if($result == false)
-	        return 0;
-	    else
-	        return $result['0']['count'];
+    public function toXML() {
+        return $this->databaseSession->toXML();
 	}
 
-	function get_teachers($from=0, $count=-1, $sort=null)
-    {
-        $query = "SELECT * FROM yacrs_extraTeachers WHERE session_id='$this->id'";
-        if(($sort !== null)&&(preg_replace('/\W/','',$sort)!== $sort))
-            $query .= " ORDER BY ".$sort;
-        if(($count != -1)&&(is_int($count))&&(is_int($from)))
-            $query .= " LIMIT ".$count." OFFSET ".$from;
-        $query .= ';';
-        $result = dataConnection::runQuery($query);
-        if(sizeof($result)!=0)
-        {
-            $output = array();
-            foreach($result as $r)
-                $output[] = new extraTeachers($r);
-            return $output;
-        }
-        else
-            return false;
+    public static function deleteSession($id) {
+        DatabaseSession::deleteSession($id);
     }
 
-    function toXML()
-	{
-		$out = "<session>\n";
-		$out .= '<id>'.htmlentities($this->id)."</id>\n";
-		$out .= '<ownerID>'.htmlentities($this->ownerID)."</ownerID>\n";
-		$out .= '<title>'.htmlentities($this->title)."</title>\n";
-		$out .= '<created>'.htmlentities($this->created)."</created>\n";
-		$out .= '<questions>'.htmlentities($this->questions)."</questions>\n";
-		$out .= '<currentQuestion>'.htmlentities($this->currentQuestion)."</currentQuestion>\n";
-		$out .= '<questionMode>'.htmlentities($this->questionMode)."</questionMode>\n";
-		$out .= '<endtime>'.htmlentities($this->endtime)."</endtime>\n";
-		$out .= '<sessionstarttime>'.htmlentities($this->sessionstarttime)."</sessionstarttime>\n";
-		$out .= '<sessionOpen>'.htmlentities($this->sessionOpen)."</sessionOpen>\n";
-		$out .= '<activeSubsession>'.htmlentities($this->activeSubsession)."</activeSubsession>\n";
-		$out .= '<sessionendtime>'.htmlentities($this->sessionendtime)."</sessionendtime>\n";
-		$out .= '<visible>'.htmlentities($this->visible)."</visible>\n";
-		$out .= '<allowGuests>'.htmlentities($this->allowGuests)."</allowGuests>\n";
-		$out .= '<multiSession>'.htmlentities($this->multiSession)."</multiSession>\n";
-		$out .= '<ublogRoom>'.htmlentities($this->ublogRoom)."</ublogRoom>\n";
-		$out .= '<maxMessagelength>'.htmlentities($this->maxMessagelength)."</maxMessagelength>\n";
-		$out .= '<allowQuReview>'.htmlentities($this->allowQuReview)."</allowQuReview>\n";
-		$out .= '<allowTeacherQu>'.htmlentities($this->allowTeacherQu)."</allowTeacherQu>\n";
-		$out .= '<courseIdentifier>'.htmlentities($this->courseIdentifier)."</courseIdentifier>\n";
-		$out .= '<defaultQuActiveSecs>'.htmlentities($this->defaultQuActiveSecs)."</defaultQuActiveSecs>\n";
-		$out .= '<extras>'.htmlentities($this->extras)."</extras>\n";
-		$out .= "</session>\n";
-		return $out;
-	}
-	//[[USERCODE_session]] Put code for custom class members in this block.
-
-    static function deleteSession($id)
-    {
-        //Get the session
-        $s = session::retrieve_session($id);
-        //Delete each question instance (including images)
-        if(strlen(trim($s->questions)))
-        {
-            $qis = explode(',',$s->questions);
-            foreach($qis as $qi)
-            {
-            	questionInstance::deleteInstance($qi);  // also deletes responses
-            }
-        }
-        //Delete sessionmember links
-        $s->clearSessionMembers();
-        //Delete any blog posts
-        $s->clearSessionMessages();
-        //Delete any LTI link
-        $query = "DELETE FROM yacrs_ltisessionlink WHERE session_id='{$id}';";
-		dataConnection::runQuery($query);
-        //Delete any additional teacher links
-        $query = "DELETE FROM yacrs_extraTeachers WHERE session_id='{$id}';";
-		dataConnection::runQuery($query);
-        //Delete the session.
-		$query = "DELETE FROM yacrs_session WHERE id='{$id}';";
-		dataConnection::runQuery($query);
+    private function clearSessionMembers() {
+        $this->databaseSession->clearSessionMembers();
     }
 
-    private function clearSessionMembers()
-    {
-		$query = "DELETE FROM yacrs_sessionMember WHERE session_id='{$this->id}';";
-		dataConnection::runQuery($query);
+    public function removeSessionMember($id) {
+        $this->databaseSession->removeSessionMember($id);
     }
 
-    public function removeSessionMember($id)
-    {
-		$query = "DELETE FROM yacrs_sessionMember WHERE session_id='{$this->id}' AND id='{$id}';";
-		dataConnection::runQuery($query);
+    private function clearSessionMessages() {
+        $this->databaseSession->clearSessionMessages();
     }
 
-    private function clearSessionMessages()
-    {
-        $query = "DELETE FROM yacrs_message_tag_link WHERE `message_id` IN (SELECT id FROM yacrs_message WHERE session_id='$this->id');";
-		dataConnection::runQuery($query);
-		$query = "DELETE FROM yacrs_message WHERE session_id='{$this->id}';";
-		dataConnection::runQuery($query);
+    public function addQuestion($qu) {
+        return $this->databaseSession->addQuestion($qu);
     }
 
-    function addQuestion($qu)
-    {
-       $qi = new questionInstance();
-       $qi->theQuestion_id = $qu->id;
-	   $qi->inSession_id = $this->id;
-       $qi->title = $qu->title;
-       $qi->insert();
-       $this->questions = trim($this->questions.','.$qi->id," \t\r\n,");
-       $this->update();
-       return $qi;
+    public function isStaffInSession($userid) {
+        return $this->databaseSession->isStaffInSession($userid);
     }
 
-    function isStaffInSession($userid)
-    {
-    	if(trim($userid)==trim($this->ownerID))
-            return true;
-        else
-        {
-            $ets = $this->getExtraTeacherIDs();
-            if(in_array($userid, $ets))
-                return true;
-        }
-        return false;
-    }
-
-	static function retrieve_all_sessions($from=0, $count=-1, $sort=null)
-	{
- 	    $query = "SELECT * FROM yacrs_session ";
-	    if($sort !== null)
-	        $query .= " ORDER BY ".$sort;
-	    if(($count != -1)&&(is_int($count))&&(is_int($from)))
-	        $query .= " LIMIT ".$count." OFFSET ".$from;
-	    $query .= ';';
-	    $result = dataConnection::runQuery($query);
-	    if(sizeof($result)!=0)
-	    {
-	        $output = array();
-	        foreach($result as $r)
-	            $output[] = new session($r);
-	        return $output;
-	    }
-	    else
-	        return false;
+	public static function retrieve_all_sessions($from=0, $count=-1, $sort=null) {
+        return DatabaseSession::retrieveAllSessions($from, $count, $sort);
 	}
 
-    function getExtraTeacherIDs()
-    {
-        $et = array();
-        $eTeachers = $this->get_teachers();
-        if(is_array($eTeachers))
-        {
-            foreach($eTeachers as $t)
-            {
-                $et[] = $t->teacherID;
-            }
-        }
-        return $et;
+    public function getExtraTeacherIDs() {
+        return $this->databaseSession->getExtraTeacherIDs();
     }
 
-    function updateExtraTeachers($teachers)
-    {
-        if(!is_array($teachers))
-        {
-        	$teachers = explode(',', $teachers);
-        }
-        foreach($teachers as &$t)
-        {
-            $t = trim($t);
-        }
-        $knownTeachers = $this->get_teachers();
-        $ktIDs = array();
-        if(is_array($knownTeachers))
-        {
-	        foreach($knownTeachers as $kt)
-	        {
-	        	if(!in_array($kt->teacherID, $teachers))
-	            {
-	                $this->removeExtraTeacher($kt->id);
-	            }
-	            else
-	            {
-	                $ktIDs[] = $kt->teacherID;
-	            }
-	        }
-        }
-        foreach($teachers as &$t)
-        {
-           	if((strlen($t))&&(!in_array($t, $ktIDs)))
-            {
-            	$kt = new extraTeachers();
-                $kt->teacherID = $t;
-                $kt->session_id = $this->id;
-                $kt->insert();
-            }
-        }
+    public function updateExtraTeachers($teachers) {
+        $this->databaseSession->updateExtraTeachers($teachers);
     }
 
-    public function removeExtraTeacher($id)
-    {
-		$query = "DELETE FROM yacrs_extraTeachers WHERE session_id='{$this->id}' AND id='{$id}';";
-		dataConnection::runQuery($query);
+    public function removeExtraTeacher($id) {
+        $this->databaseSession->removeExtraTeacher($id);
     }
 
-    public static function teacherExtraSessions($teacherID)
-    {
-        $sessions = array();
-		$ets = extraTeachers::retrieve_extraTeachers_matching('teacherID', $teacherID);
-        if(is_array($ets))
-        {
-            $done = array();  // This is because a bug in an earlier version of YACRS occasionaly created duplicate entries.
-            foreach($ets as $s)
-            {
-                if(!in_array($s->session_id, $done))
-                {
-                    $done[] = $s->session_id;
-	                $ses = session::retrieve_session($s->session_id);
-	                if($ses !== false)
-	                {
-	                    $sessions[] = $ses;
-	                }
-                }
-            }
-        }
-        return $sessions;
+    public static function teacherExtraSessions($teacherID) {
+        return DatabaseSession::teacherExtraSessions($teacherID);
     }
-
-	//[[USERCODE_session]] WEnd of custom class members.
 }
 
 class extraTeachers
 {
-	var $id; //primary key
-	var $session_id; //foreign key
-	var $teacherID;
+	private $databaseExtraTeachers;
 
-	function __construct($asArray=null)
-	{
-		$this->id = null; //primary key
-		$this->session_id = null; // foreign key, needs dealt with.
-		$this->teacherID = "";
-		if($asArray!==null)
-			$this->fromArray($asArray);
+    public function __construct($asArray=null) {
+		$this->databaseExtraTeachers = new DatabaseExtraTeachers($asArray);
+		return $this->databaseExtraTeachers;
 	}
 
-	function fromArray($asArray)
-	{
-		$this->id = $asArray['id'];
-		$this->session_id = $asArray['session_id']; // foreign key, check code
-		$this->teacherID = $asArray['teacherID'];
+    public static function retrieve_extraTeachers($id) {
+		return DatabaseExtraTeachers::retrieveExtraTeachers($id);
 	}
 
-	static function retrieve_extraTeachers($id)
-	{
-		$query = "SELECT * FROM yacrs_extraTeachers WHERE id='".dataConnection::safe($id)."';";
-		$result = dataConnection::runQuery($query);
-		if(sizeof($result)!=0)
-		{
-			return new extraTeachers($result[0]);
-		}
-		else
-			return false;
+    public static function retrieve_extraTeachers_matching($field, $value, $from=0, $count=-1, $sort=null) {
+        return DatabaseExtraTeachers::retrieveExtraTeachersMatching($field, $value, $from, $count, $sort);
 	}
 
-	static function retrieve_extraTeachers_matching($field, $value, $from=0, $count=-1, $sort=null)
-	{
-	    if(preg_replace('/\W/','',$field)!== $field)
-	        return false; // not a permitted field name;
-	    $query = "SELECT * FROM yacrs_extraTeachers WHERE $field='".dataConnection::safe($value)."'";
-	    if(($sort !== null)&&(preg_replace('/\W/','',$sort)!== $sort))
-	        $query .= " ORDER BY ".$sort;
-	    if(($count != -1)&&(is_int($count))&&(is_int($from)))
-	        $query .= " LIMIT ".$count." OFFSET ".$from;
-	    $query .= ';';
-	    $result = dataConnection::runQuery($query);
-	    if(sizeof($result)!=0)
-	    {
-	        $output = array();
-	        foreach($result as $r)
-	            $output[] = new extraTeachers($r);
-	        return $output;
-	    }
-	    else
-	        return false;
+    public function insert() {
+		return $this->databaseExtraTeachers->insert();
 	}
 
-	function insert()
-	{
-		//#Any required insert methods for foreign keys need to be called here.
-		$query = "INSERT INTO yacrs_extraTeachers(session_id, teacherID) VALUES(";
-		if($this->session_id!==null)
-			$query .= "'".dataConnection::safe($this->session_id)."', ";
-		else
-			$query .= "null, ";
-		$query .= "'".dataConnection::safe($this->teacherID)."');";
-		dataConnection::runQuery("BEGIN;");
-		$result = dataConnection::runQuery($query);
-		$result2 = dataConnection::runQuery("SELECT LAST_INSERT_ID() AS id;");
-		dataConnection::runQuery("COMMIT;");
-		$this->id = $result2[0]['id'];
-		return $this->id;
+    public function update() {
+        return $this->databaseExtraTeachers->update();
 	}
 
-	function update()
-	{
-		$query = "UPDATE yacrs_extraTeachers ";
-		$query .= "SET session_id='".dataConnection::safe($this->session_id)."' ";
-		$query .= ", teacherID='".dataConnection::safe($this->teacherID)."' ";
-		$query .= "WHERE id='".dataConnection::safe($this->id)."';";
-		return dataConnection::runQuery($query);
-	}
+    public static function count($where_name=null, $equals_value=null) {
+        return DatabaseExtraTeachers::count($where_name, $equals_value);
+    }
 
-	static function count($where_name=null, $equals_value=null)
-	{
-		$query = "SELECT COUNT(*) AS count FROM yacrs_extraTeachers WHERE ";
-		if($where_name==null)
-			$query .= '1;';
-		else
-			$query .= "$where_name='".dataConnection::safe($equals_value)."';";
-		$result = dataConnection::runQuery($query);
-		if($result == false)
-			return 0;
-		else
-			return $result['0']['count'];
+	public function toXML() {
+        return $this->databaseExtraTeachers->update();
 	}
-
-	function toXML()
-	{
-		$out = "<extraTeachers>\n";
-		$out .= '<id>'.htmlentities($this->id)."</id>\n";
-		$out .= '<session>'.htmlentities($this->session)."</session>\n";
-		$out .= '<teacherID>'.htmlentities($this->teacherID)."</teacherID>\n";
-		$out .= "</extraTeachers>\n";
-		return $out;
-	}
-	//[[USERCODE_extraTeachers]] Put code for custom class members in this block.
-
-	//[[USERCODE_extraTeachers]] WEnd of custom class members.
 }
 
 class subsession
@@ -1236,16 +817,16 @@ class userInfo
 	}
 
 	static function retrieve_userInfo($id) {
-	    return DatabaseUser::retrieve_userInfo($id);
+	    return DatabaseUser::retrieveUserInfo($id);
 	}
 
 
 	static function retrieve_by_username($username) {
-        return DatabaseUser::retrieve_by_username($username);
+        return DatabaseUser::retrieveByUsername($username);
 	}
 
 	static function retrieve_userInfo_matching($field, $value, $from=0, $count=-1, $sort=null) {
-        return DatabaseUser::retrieve_userInfo_matching($field, $value, $from, $count, $sort);
+        return DatabaseUser::retrieveUserInfoMatching($field, $value, $from, $count, $sort);
 	}
 
     public function insert() {
@@ -1265,11 +846,11 @@ class userInfo
 	}
 
     public static function retrieve_all_userInfo($from=0, $count=-1, $sort=null) {
-	    return DatabaseUser::retrieve_all_userInfo($from, $count, $sort);
+	    return DatabaseUser::retrieveAllUserInfo($from, $count, $sort);
 	}
 
 	public static function search_userInfo($searchTerm, $from=0, $count=-1) {
-	    return DatabaseUser::search_userInfo($searchTerm, $from, $count);
+	    return DatabaseUser::searchUserInfo($searchTerm, $from, $count);
 	}
 }
 

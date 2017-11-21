@@ -6,7 +6,7 @@ services:
     ports:
         - "4000:80"
     environment:
-      - BASE_URL=http://127.0.0.1:4000/
+      - BASE_URL=http://130.209.251.22:4000/
   phpmyadmin:
     image: "phpmyadmin/phpmyadmin"
     ports:

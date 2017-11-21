@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . "/src/autoload.php");
 $CFG['templates'] = dirname(__FILE__) . "/src/templates/";
 $CFG['baseUrl'] = getenv("BASE_URL");
 
-$CFG["login"]["type"] = "any";
+$CFG["login"]["type"] = "ldap";
 
 $CFG['ldaphost'] = '130.209.13.173';
 $CFG['ldapcontext'] = 'o=Gla';
@@ -65,9 +65,9 @@ $DBCFG['db_name']  = getenv("MYSQL_DATABASE");
 
 //There probably needs to be someone who can set up LTI, make users into sessionCreaters etc.
 //Set one username to be this - probably the LDAP username of the person setting this up.
-$CFG['adminname'] = '2198207s';
+$CFG['adminname'] = 'admin';
 //Ideally don't set this field - rely on LDAP. If you're not using LDAP you'll need to set
 //a password here. It can be plain text, or (prefereably) the value returned by md5($CFG['cookiehash'].'your_password');
-//$CFG['adminpwd'] = '';
+$CFG['adminpwd'] = 'orangemonkey';
 
 ?>

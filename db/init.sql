@@ -12,3 +12,31 @@ CREATE TABLE yacrs_response(id INTEGER PRIMARY KEY AUTO_INCREMENT, user_id INTEG
 CREATE TABLE yacrs_message(id INTEGER PRIMARY KEY AUTO_INCREMENT, user_id INTEGER, session_id INTEGER, subsession_id INTEGER, isTeacherQu INTEGER, private INTEGER, posted DATETIME, message TEXT, replyTo_id INTEGER);
 CREATE TABLE yacrs_message_tag_link(message_id INTEGER, tag_id INTEGER);
 CREATE TABLE yacrs_tag(id INTEGER PRIMARY KEY AUTO_INCREMENT, text VARCHAR(20), session_id INTEGER);
+
+CREATE TABLE `yacrs_apiKey` (
+  `id` int(11) NOT NULL,
+  `username` varchar(80) NOT NULL,
+  `key` varchar(64) NOT NULL,
+  `created` bigint(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `yacrs_apiKey`
+--
+ALTER TABLE `yacrs_apiKey`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `key` (`key`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `yacrs_apiKey`
+--
+ALTER TABLE `yacrs_apiKey`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;

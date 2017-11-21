@@ -25,13 +25,13 @@ class LoginTypeLdap implements LoginType
         }
         if(!$ds)
         {
-            //$error = 'failed to contact LDAP server';
+            //echo 'failed to contact LDAP server';
             return false;
         }
         $sr = @ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
         if(!$sr)
         {
-            //$error = 'failed to contact LDAP server';
+            //echo 'failed to contact LDAP server';
             return false;
         }
         $entry = ldap_first_entry($ds, $sr);
@@ -48,23 +48,23 @@ class LoginTypeLdap implements LoginType
                 {
                     $records = ldap_get_entries($ds, $sr );
                     $record = $records[0];
-                    return uinfoFromLDAP($record);
+                    return self::uinfoFromLDAP($record);
                 }
                 else
-                    //$error = "No Identity vault entry found.<br/>";
+                    //echo "No Identity vault entry found.<br/>";
                 ldap_free_result( $sr );
             }
             else
             {
                 while($clrtime < time()) sleep(1); // Paranoid prevention of timing to narrow username/password guesses
-                //$error = 'Incorrect password';
+                //echo 'Incorrect password';
                 return false; //Incorrect password
             }
         }
         else
         {
             while($clrtime < time()) sleep(1); // Paranoid prevention of timing to narrow username/password guesses
-            //$error = 'Incorrect username';
+            //echo 'Incorrect username';
             return false; //Incorrect username
         }
     }

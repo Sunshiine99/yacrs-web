@@ -9,14 +9,15 @@ function checkLoggedInUser($allowLogin = true, &$error = false)
 	global $CFG;
     $error = false;
     $uinfo = false;
-	if(($allowLogin )&&(isset($_REQUEST['uname']))&&(isset($_REQUEST['pwd'])))
-    {
-        if(session_id()!=='')
-   	        session_destroy(); // Just to clear out old LTI info.
-        if((isset($CFG['adminname']))&&($CFG['adminname']==$_REQUEST['uname'])&&(isset($CFG['adminpwd']))&&($CFG['adminpwd']!=''))
+	if(($allowLogin )&&(isset($_REQUEST['uname']))&&(isset($_REQUEST['pwd']))) {
+        if (session_id() !== '')
+            session_destroy(); // Just to clear out old LTI info.
+        if ((isset($CFG['adminname'])) && ($CFG['adminname'] == $_REQUEST['uname']) && (isset($CFG['adminpwd'])) && ($CFG['adminpwd'] != ''))
             $uinfo = checkSuperLogin($_REQUEST['uname'], $_REQUEST['pwd']);
-        else
-            $uinfo = checkLogin($_REQUEST['uname'], $_REQUEST['pwd']);
+
+        else {
+            $uinfo = Login::checkLogin($_REQUEST['uname'], $_REQUEST['pwd'], $CFG["login"]["type"]);
+        }
         if($uinfo)
         {
            //# Should also check by e-mail

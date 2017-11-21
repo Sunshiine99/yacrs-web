@@ -7,6 +7,8 @@ class ApiLogin
      * Login API page
      */
     public static function login() {
+        global $CFG;
+
         $output = [];
 
         // Check required parameters
@@ -14,7 +16,7 @@ class ApiLogin
         $password = Api::checkParameter("password");
 
         // Attempt to login, get user details if success false if not
-        $uinfo = Login::checkLogin($username, $password);
+        $uinfo = Login::checkLogin($username, $password, $CFG["login"]["type"]);
 
         // If invalid login, output an error
         if(!$uinfo) {

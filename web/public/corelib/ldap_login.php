@@ -1,4 +1,6 @@
 <?php
+// TODO: CAN THIS FILE BE REMOVED NOW
+
 function checkLogin($username, $password, &$error=false)
 {
     //global $CFG;

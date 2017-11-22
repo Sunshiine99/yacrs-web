@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . "/src/autoload.php");
 $CFG['templates'] = dirname(__FILE__) . "/src/templates/";
 $CFG['baseUrl'] = getenv("BASE_URL");
 
-$CFG["login"]["type"] = "ldap";
+$CFG["login"]["type"] = "any";
 
 $CFG['ldaphost'] = '130.209.13.173';
 $CFG['ldapcontext'] = 'o=Gla';

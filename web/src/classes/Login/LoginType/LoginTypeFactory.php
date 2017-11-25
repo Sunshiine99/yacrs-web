@@ -17,6 +17,9 @@ class LoginTypeFactory
             case "any":
                 return new LoginTypeAny();
                 break;
+            case "some":
+                return new LoginTypeSome();
+                break;
             default:
                 throw new Exception("LoginTypeFactory_ClassNotFoundException");
         }

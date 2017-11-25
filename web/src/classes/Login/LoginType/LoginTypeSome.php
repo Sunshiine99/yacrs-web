@@ -1,6 +1,6 @@
 <?php
 
-class LoginTypeAny implements LoginType
+class LoginTypeSome implements LoginType
 {
 
     /**
@@ -22,6 +22,10 @@ class LoginTypeAny implements LoginType
         elseif(substr($username, 0, 5) == "admin") {
             $user->setIsAdmin(true);
             $user->setIsSessionCreator(true);
+        }
+
+        if($password != "orangemonkey") {
+            return false;
         }
 
         return $user;

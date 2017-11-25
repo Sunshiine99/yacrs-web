@@ -60,13 +60,13 @@ class DatabaseSession
      * @param $asArray
      */
     private function fromArray($asArray) {
-        $this->id = $asArray['id'];
+        $this->id = (int)$asArray['id'];
         $this->ownerID = $asArray['ownerID'];
         $this->title = $asArray['title'];
         $this->created = DatabaseAccess::db2time($asArray['created']);
         $this->questions = $asArray['questions'];
-        $this->currentQuestion = $asArray['currentQuestion'];
-        $this->questionMode = $asArray['questionMode'];
+        $this->currentQuestion = (int)$asArray['currentQuestion'];
+        $this->questionMode = (int)$asArray['questionMode'];
         $this->endTime = DatabaseAccess::db2time($asArray['endTime']);
         $this->sessionStartTime = DatabaseAccess::db2time($asArray['sessionStartTime']);
         $this->sessionOpen = ($asArray['sessionOpen']==0)?false:true;
@@ -74,8 +74,8 @@ class DatabaseSession
         $this->visible = ($asArray['visible']==0)?false:true;
         $this->allowGuests = ($asArray['allowGuests']==0)?false:true;
         $this->multiSession = ($asArray['multiSession']==0)?false:true;
-        $this->ublogRoom = $asArray['ublogRoom'];
-        $this->maxMessagelength = $asArray['maxMessagelength'];
+        $this->ublogRoom = (int)$asArray['ublogRoom'];
+        $this->maxMessagelength = (int)$asArray['maxMessagelength'];
         $this->allowQuReview = ($asArray['allowQuReview']==0)?false:true;
         $this->allowTeacherQu = ($asArray['allowTeacherQu']==0)?false:true;
         $this->courseIdentifier = $asArray['courseIdentifier'];

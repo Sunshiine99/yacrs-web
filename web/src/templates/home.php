@@ -1,17 +1,18 @@
 <?php
 $this->layout("template",
     [
-        "CFG" => $CFG,
+        "config" => $config,
         "title" => $title,
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
+        "user" => $user
     ]
 );
 ?>
 
 <div id="box">
     <h2 class="page-section">Join a session</h2>
-    <form method="POST" action="vote.php" class="form-horizontal">
+    <form method="POST" action="<?=$config["baseUrl"]?>sessions/join/" class="form-horizontal">
         <div class="form-group">
             <label for="sessionID" class="col-sm-4 control-label">Session number</label>
             <div class="col-sm-8">
@@ -30,86 +31,21 @@ $this->layout("template",
 <?php if($user->isSessionCreator()):?>
     <div class="row">
         <div class="col-sm-8 col-sm-push-4">
-            <a class="btn btn-primary" href="editsession.php">
+            <a class="btn btn-primary" href="<?=$config["baseUrl"]?>sessions/new/">
                 <i class="fa fa-plus-circle"></i> Create a new clicker session
             </a>
         </div>
     </div>
 <?php endif; ?>
 
-<?php // If user can create sessions, show the user's sessions ?>
-<?php if($user->isSessionCreator()):?>
-    <h2 class="page-section">My sessions (staff)</h2>
-
-    <?php // If user has no sessions, tell them that ?>
-    <?php if(sizeof($staffSessions) == 0): ?>
-        <p>No sessions found</p>
-
-    <?php // Otherwise, list the sessions ?>
-    <?php else: ?>
-        <ul class="session-list">
-            <?php foreach($staffSessions as $s): ?>
-                <?php $ctime = strftime("%A %e %B %Y at %H:%M", $s->getCreated()); ?>
-                <li>
-                    <p class='session-title'>
-                        <a href='runsession.php?sessionID=<?=$s->getId()?>'><?=$s->getTitle()?></a>
-                        <span class='user-badge session-id'>
-                            <i class='fa fa-hashtag'></i> <?=$s->getId()?>
-                        </span>
-                    </p>
-                    <p class='session-details'> Created <?=$ctime?></p>
-                    <span class='feature-links'>
-                        <a href='editsession.php?sessionID=<?=$s->getId()?>'>
-                            <i class='fa fa-pencil'></i> Edit
-                        </a>
-                        <a href='confirmdelete.php?sessionID=<?=$s->getId()?>'>
-                            <i class='fa fa-trash-o'></i> Delete
-                        </a>
-                    </span>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-<?php endif; ?>
-
 <h2 class="page-section">My sessions</h2>
-
-<?php // If user has no sessions, tell them that ?>
-<?php if(sizeof($sessions) == 0): ?>
-    <p>No sessions found</p>
-
-    <?php // Otherwise, list the sessions ?>
-<?php else: ?>
-    <ul>
-        <?php foreach($sessions as $s): ?>
-            <li><a href='vote.php?sessionID=<?=$s->id?>'><?=$s->title?></a>
-                <?php // If this sessions can be reviewed ?>
-                <?php if((isset($s->extras['allowFullReview']))&&($s->extras['allowFullReview'])): ?>
-                    (<a href='review.php?sessionID=<?=$s->id?>'>Review previous answers</a>)
-                <?php endif; ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-
-<?php endif; ?>
+<?=$this->fetch("sessions/list", ["sessions"=>$sessions, "config"=>$config])?>
 
 <h2 class="page-section">My settings</h2>
 
-<?php // If sms is setup
-if((isset($CFG['smsnumber']))&&(strlen($CFG['smsnumber']))) {
-
-    // Add SMS details if so
-    $code = substr(md5($CFG['cookiehash'].$user->getUsername()),0,4);
-    if(strlen($user->getPhone()))
-        echo "<p>Current phone for SMS: {$user->getPhone()}</p>";
-
-    echo "<p>To associate a phone with your username text \"link {$user->getUsername()} $code\" (without quotes) to {$CFG['smsnumber']}.</p>";
-}
-?>
-
 <?php // If user is an admin, show a link to admin page ?>
-<?php if($uinfo['isAdmin']):?>
-    <a href="admin.php" class="btn btn-danger">
+<?php if($user->isAdmin()):?>
+    <a href="<?=$config["baseUrl"]?>admin/" class="btn btn-danger">
         <i class="fa fa-wrench"></i> YACRS administration
     </a>
 <?php endif; ?>

@@ -1,10 +1,10 @@
 <?php
 $this->layout("base",
     [
-        "CFG" => $CFG,
+        "config" => $config,
         "title" => $title,
         "description" => $description,
-        "uinfo" => $uinfo,
+        "user" => $user,
     ]
 );
 
@@ -13,14 +13,16 @@ $this->push("header"); ?>
         <div class="row">
             <div class="col-xs-6">
                 <div id="branding">
-                    <h1 class="logo">Class Response</h1>
+                    <a href="<?=$config["baseUrl"]?>">
+                        <h1 class="logo">Class Response</h1>
+                    </a>
                 </div>
             </div>
-            <?php if($uinfo): ?>
+            <?php if($user): ?>
                 <div class="col-xs-6">
                     <div id="logoutLink">
                         <div class="loginBox">
-                            <?=$uinfo["gn"]?> <?=$uinfo["sn"]?><a href="<?=$CFG["baseUrl"]?>?logout"><i class="fa fa-lock"></i> Log out</a>
+                            <?=$user->getGivenName()?> <?=$user->getSurname()?><a href="<?=$config["baseUrl"]?>logout/"><i class="fa fa-lock"></i> Log out</a>
                         </div>
                     </div>
                 </div>

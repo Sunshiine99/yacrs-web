@@ -29,10 +29,15 @@ class ApiSessions
         // Required parameters
         $key = Api::checkParameter("key");
 
+        // Check the API Key and get the username of the user
+        $username = Api::checkApiKey($key);
+
         // Convert ID to integer
         $id = (int)$id;
 
         $session = DatabaseSession::retrieveSession($id);
+
+
 
         if(!$session) {
             $output["error"]["code"]    = "invalidSessionId";

@@ -4,11 +4,12 @@
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $this->e($title) ?></title>
-    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/bootstrap-theme.css" />
-    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/yacrs-base.css" />
-    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($CFG["baseUrl"]) ?>html/yacrs-theme.css" />
+    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($config["baseUrl"]) ?>html/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($config["baseUrl"]) ?>html/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($config["baseUrl"]) ?>html/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($config["baseUrl"]) ?>html/yacrs-base.css" />
+    <link rel="stylesheet" type="text/css" media="Screen" href="<?= $this->e($config["baseUrl"]) ?>html/yacrs-theme.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div id="pageHeader">

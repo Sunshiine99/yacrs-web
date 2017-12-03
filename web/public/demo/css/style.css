@@ -1,0 +1,126 @@
+body {
+    padding-top: 5rem;
+}
+
+html, body {
+    height: 100%;
+    background-color: #F7F7F7;
+    font-family: "nimbus-sans",sans-serif
+}
+
+    body .navbar {
+        background-color: #563D7C!important;
+    }
+
+        body .navbar .navbar-toggler {
+            color: #fff;
+            border-color: #fff;
+            outline: 0;
+            cursor: pointer;
+        }
+
+            body .navbar .navbar-toggler .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E")
+            }
+
+        body .navbar .navbar-text,
+        body .navbar a.nav-link,
+        body .navbar a.nav-link:link,
+        body .navbar a.nav-link:visited,
+        body .navbar a.nav-link:active {
+            color: #fff!important;
+            outline: 0;
+        }
+
+        body .navbar a.nav-link.disabled {
+            color: #868e96!important;
+        }
+
+        body .navbar .navbar-brand {}
+            body .navbar .navbar-brand img {
+                height: 54px;
+            }
+
+        body .navbar .nav-item .navbar-text {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+    body main {
+        overflow:auto;
+        min-height: 100%;
+
+        /* Footer Height + Padding */
+        padding-bottom:275px;
+        background-color: #fff;
+    }
+
+        body main .jumbotron {
+            background-color: #F7F7F7;
+        }
+
+            body main .jumbotron h1 {
+                margin: 0;
+            }
+
+        body main .session-list {
+            width: 100%;
+        }
+
+            body main .session-list .actions {
+                margin-top: 5px;
+            }
+
+                body main .session-list .actions .btn {
+                    border-color: #ccc;
+                }
+
+                body main .session-list .list-group-item {}
+
+                    body main .session-list .list-group-item .session-number {
+                        color: #B59079;
+                    }
+
+                    body main .session-list .list-group-item .session-date {
+                        display: block;
+                    }
+
+    body footer {
+        position: relative;
+        margin-top: -250px;
+        height: 250px;
+        clear:both;
+        padding-top:20px;
+        background-color: #F7F7F7;
+    }
+
+        body footer h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+
+        body footer ul {
+            margin: 0;
+            padding: 0;
+        }
+
+            body footer ul li {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+.list-group > .list-group-item:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+.element-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn {
+    cursor: pointer;
+}

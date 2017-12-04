@@ -5,7 +5,7 @@ var mcqEditTemplate = '\
         <div class="form-group">\
             <label class="col-sm-2 control-label" for="question">Question</label>\
             <div class="col-sm-10">\
-                <input class="form-control" name="question" id="question" value="" size="80" type="text" tabindex="1">\
+                <input class="form-control" name="question" id="mcQuestion" value="" size="80" type="text" tabindex="1">\
             </div>\
         </div>\
         <div class="form-group">\
@@ -29,12 +29,12 @@ var textEditTemplate = '\
         <div class="form-group">\
             <label class="col-sm-2 control-label" for="question">Question</label>\
             <div class="col-sm-10">\
-                <input class="form-control" name="question" id="question" value="" size="80" type="text" tabindex="1">\
+                <input class="form-control" name="question" id="textQuestion" value="" size="80" type="text" tabindex="1">\
             </div>\
         </div>\
         <div class="form-group">\
             <div class="col-sm-10 col-sm-offset-2">\
-                <input class="submit btn btn-primary" name="submit" value="Create" type="submit" tabindex="1">\
+                <input class="submit btn btn-primary" name="submit" id="createButton" value="Create" type="submit" tabindex="1">\
             </div>\
         </div>\
     </form>';

@@ -124,7 +124,6 @@ class PageSessionsRunQuestions
             array_push($data['choices'], $row["choice"]);
             $data['question'] = $row["question"];
         }
-        //TODO need to display the question text and options in the edit question page
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -142,6 +141,55 @@ class PageSessionsRunQuestions
     }
 
     public static function editSubmit($sessionID, $questionID) {
-        echo $questionID;
+
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $config = Flight::get("config");
+
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        $question = $_POST["question"];
+        $sql = "UPDATE `yacrs_questions`
+                SET `question` = '$question'
+                WHERE `questionID` = '$questionID'";
+        $result = $mysqli->query($sql);
+
+        //TODO should not delete
+
+        $sql = "DELETE FROM `yacrs_questionsMcqChoices`
+                WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        //TODO implement for text question
+        if($_POST["questionType"] == "mcq") {
+
+            foreach($_POST as $key => $value) {
+
+                // If this is one of the MCQ choices
+                if(substr($key, 0, 11) == "mcq-choice-") {
+                    $sql = "INSERT INTO `yacrs_questionsMcqChoices` (`questionID`, `choice`)
+                        VALUES ('$questionID', '$value'); ";
+                    $result = $mysqli->query($sql);
+                }
+            }
+        }
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
+        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."sessions/$sessionID/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."sessions/$sessionID/run/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."sessions/$sessionID/run/questions/");
+
+        header("Location: " . $config["baseUrl"] . "sessions/$sessionID/run/");
+        die();
     }
 }

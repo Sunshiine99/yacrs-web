@@ -16,7 +16,7 @@ var mcqEditTemplate = '\
         </div>\
         <div class="form-group">\
             <div class="col-sm-10 col-sm-offset-2">\
-                <input class="submit btn btn-primary" name="submit" value="Create" type="submit" tabindex="1">\
+                <input class="submit btn btn-primary" id="createButton" name="submit" value="Create" type="submit" tabindex="1">\
                 <a id="mcq-add-option" class="btn btn-default pull-right">Add Another Option</a>\
             </div>\
         </div>\

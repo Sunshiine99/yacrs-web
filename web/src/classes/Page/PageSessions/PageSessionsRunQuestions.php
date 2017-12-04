@@ -117,8 +117,9 @@ class PageSessionsRunQuestions
                   AND q.`questionID` = qc.`questionID`";
         $result = $mysqli->query($sql);
 
+        //create an array of choices
         $data['choices'] = array();
-        // Get the row from the database
+        // for every row from the database get the choice
         while($row = $result->fetch_assoc()) {
             array_push($data['choices'], $row["choice"]);
             $data['question'] = $row["question"];

@@ -5,9 +5,7 @@ $this->layout("template",
         "title" => $title,
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
-        "user" => $user,
-        "question" => $question,
-        "choices" => $choices
+        "user" => $user
     ]
 );
 ?>
@@ -19,6 +17,10 @@ $this->layout("template",
 <?php $this->push("postContent"); ?>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit-template.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit.js"></script>
+<script>
+    mcqEditTemplate = mcqEditTemplate.replace("id=\"question\" value=\"\"", "id=\"question\" value=\"<?=$question?>\"");
+    mcqInit(<?=json_encode($choices)?>);
+</script>
 <?php $this->end(); ?>
 
 <h2 class="page-section">

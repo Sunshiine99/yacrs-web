@@ -166,46 +166,31 @@ class PageSessionsRunQuestions
             else break;
         }
 
-        //TODO should not delete
-        $sql = "DELETE FROM `yacrs_sessionQuestions`
-                WHERE `yacrs_sessionQuestions`.`questionID` = $questionID";
+        $question = $_POST["question"];
+        $sql = "UPDATE `yacrs_questions`
+                SET yacrs_questions.question = $question;
+                WHERE `yacrs_questions`.`questionID` = $questionID";
         $result = $mysqli->query($sql);
+
+        //TODO should not delete
 
         $sql = "DELETE FROM `yacrs_questionsMcqChoices`
                 WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
         $result = $mysqli->query($sql);
 
-        $sql = "DELETE FROM `yacrs_questions`
-                WHERE `yacrs_questions`.`questionID` = $questionID";
-        $result = $mysqli->query($sql);
-
-        $question = new QuestionMcq($_POST["question"]);
-
+        //TODO implement for text question
         if($_POST["questionType"] == "mcq") {
 
             foreach($_POST as $key => $value) {
 
                 // If this is one of the MCQ choices
                 if(substr($key, 0, 11) == "mcq-choice-") {
-                    $question->addChoice($value);
+                    $sql = "INSERT INTO `yacrs_questionsMcqChoices` (`questionID`, `choice`)
+                        VALUES ('$questionID', '$value'); ";
+                    $result = $mysqli->query($sql);
                 }
             }
         }
-        else if($_POST["questionType"] == "mcq") {
-
-            foreach($_POST as $key => $value) {
-
-                // If this is one of the MCQ choices
-                if(substr($key, 0, 11) == "mcq-choice-") {
-                    $question->addChoice($value);
-                }
-            }
-        }
-        // Insert question into the database
-        $questionID = DatabaseQuestion::insert($question, $mysqli);
-
-        // Insert question session combo into DatabaseSession
-        DatabaseSessionQuestion::insert($sessionID, $questionID, $mysqli);
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();

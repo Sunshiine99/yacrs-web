@@ -40,6 +40,7 @@ Flight::route("/logout/", array("PageLogout", "logout"));
 
 Flight::route("/sessions/", array("PageSessions", "sessions"));
 
+Flight::route("POST /sessions/@id:[0-9]*/", array("PageSessions", "viewSubmit"));
 Flight::route("/sessions/@id:[0-9]*/", array("PageSessions", "view"));
 
 Flight::route("POST /sessions/@id:[0-9]*/run/", array("PageSessionsRun", "runSubmit"));

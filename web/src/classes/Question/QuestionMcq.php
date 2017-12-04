@@ -34,8 +34,8 @@ class QuestionMcq extends Question
      * @param $choice
      * @param bool $correct
      */
-    public function addChoice($choice, $correct = false) {
-        array_push($this->choices, new QuestionMcqChoice($choice, $correct));
+    public function addChoice($choice, $correct = false, $choiceID = null) {
+        array_push($this->choices, new QuestionMcqChoice($choice, $correct, $choiceID));
     }
 
     /**

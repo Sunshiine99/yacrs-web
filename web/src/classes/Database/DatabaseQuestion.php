@@ -57,7 +57,7 @@ class DatabaseQuestion
 
         // Loop for every MCQ choice
         while($row = $result->fetch_assoc()) {
-            $question->addChoice($row["choice"], $row["correct"]);
+            $question->addChoice($row["choice"], $row["correct"], $row["ID"]);
         }
 
         return $question;

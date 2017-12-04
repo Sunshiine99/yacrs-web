@@ -61,6 +61,9 @@ class DatabaseSessionQuestion
             $question->setActive($row["active"]);
             $question->setSessionQuestionID($row["ID"]);
 
+            print_r($row);
+            die();
+
             if($row["active"]) {
                 $output["active"] = true;
             }
@@ -69,6 +72,30 @@ class DatabaseSessionQuestion
         }
 
         return $output;
+    }
+
+    /**
+     * @param int $sessionQuestionID
+     * @param mysqli $mysqli
+     * @return Question|null
+     */
+    public static function loadQuestion($sessionQuestionID, $mysqli) {
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
+
+        // Run SQL query to get question ID
+        $sql = "SELECT `ID`, `questionID`
+                FROM `yacrs_sessionQuestions` as sq
+                WHERE sq.`ID` = $sessionQuestionID
+                LIMIT 1";
+        $result = $mysqli->query($sql);
+
+        // Fetch the row returned from the table
+        $row = $result->fetch_assoc();
+
+        $question = DatabaseQuestion::load($row["questionID"], $mysqli);
+        $question->setSessionQuestionID($row["ID"]);
+
+        return $question;
     }
 
     /**
@@ -93,7 +120,12 @@ class DatabaseSessionQuestion
         // Fetch the row returned from the table
         $row = $result->fetch_assoc();
 
+        if($result->num_rows <= 0) {
+            return null;
+        }
+
         $question = DatabaseQuestion::load($row["questionID"], $mysqli);
+        $question->setSessionQuestionID($row["ID"]);
 
         return $question;
     }

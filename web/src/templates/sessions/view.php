@@ -10,6 +10,10 @@ $this->layout("template",
 );
 ?>
 
+<?php $this->push("postContent"); ?>
+    <script src="<?=$config["baseUrl"]?>js/sessions/view.js"></script>
+<?php $this->end(); ?>
+
 <?php
 // If no question active
 if($question === null):
@@ -18,15 +22,18 @@ if($question === null):
         No active question.
     </div>
     <a class="pull-right" href=".">Refresh</a>
-<?php else:
 
+<?php else:
     $type = $question->getType();
 
     if($this->exists("sessions/view/$type")) {
-        $this->insert("sessions/view/$type", ["question" => $question]);
+        $this->insert("sessions/view/$type", ["question" => $question, "response" => $response]);
     }
     else {
         echo "Invalid Question Type";
     }
-endif;
-?>
+endif; ?>
+
+<?php if($response): ?>
+    <a id="answer-update" class="btn btn-success">Update Answer</a>
+<?php endif; ?>

@@ -2,6 +2,7 @@
 
 class QuestionMcqChoice
 {
+    private $choiceID = null;
     private $choice = null;
     private $correct = false;
 
@@ -10,15 +11,30 @@ class QuestionMcqChoice
      * @param null $choice
      * @param bool $correct
      */
-    public function __construct($choice, $correct = false) {
+    public function __construct($choice, $correct = false, $choiceID = null) {
         $this->choice = $choice;
         $this->correct = $correct;
+        $this->choiceID = $choiceID;
     }
 
     public function toArray() {
         $output["choice"] = $this->choice;
         $output["correct"] = $this->correct;
         return $output;
+    }
+
+    /**
+     * @return null
+     */
+    public function getChoiceID() {
+        return $this->choiceID;
+    }
+
+    /**
+     * @param null $choiceID
+     */
+    public function setChoiceID($choiceID) {
+        $this->choiceID = $choiceID;
     }
 
     /**

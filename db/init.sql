@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Dec 01, 2017 at 04:48 PM
+-- Generation Time: Dec 04, 2017 at 03:45 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.0.21
 
@@ -68,6 +68,44 @@ INSERT INTO `yacrs_questionTypes` (`ID`, `name`) VALUES
 (1, 'mcq'),
 (2, 'text'),
 (3, 'textlong');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_response`
+--
+
+CREATE TABLE `yacrs_response` (
+  `ID` int(11) NOT NULL,
+  `sessionQuestionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `response` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_responseMcq`
+--
+
+CREATE TABLE `yacrs_responseMcq` (
+  `ID` int(11) NOT NULL,
+  `sessionQuestionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `choiceID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionAlias`
+--
+
+CREATE TABLE `yacrs_sessionAlias` (
+  `ID` int(11) NOT NULL,
+  `alias` varchar(30) NOT NULL,
+  `sessionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -154,6 +192,26 @@ ALTER TABLE `yacrs_questionTypes`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `yacrs_response`
+--
+ALTER TABLE `yacrs_response`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `yacrs_responseMcq`
+--
+ALTER TABLE `yacrs_responseMcq`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `yacrs_sessionAlias`
+--
+ALTER TABLE `yacrs_sessionAlias`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `alias` (`alias`),
+  ADD KEY `yacrs_sessionAlias_sessionID` (`sessionID`);
+
+--
 -- Indexes for table `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessionQuestions`
@@ -202,6 +260,21 @@ ALTER TABLE `yacrs_questionsMcqChoices`
 ALTER TABLE `yacrs_questionTypes`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `yacrs_response`
+--
+ALTER TABLE `yacrs_response`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `yacrs_responseMcq`
+--
+ALTER TABLE `yacrs_responseMcq`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `yacrs_sessionAlias`
+--
+ALTER TABLE `yacrs_sessionAlias`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessionQuestions`
@@ -236,6 +309,12 @@ ALTER TABLE `yacrs_questions`
 --
 ALTER TABLE `yacrs_questionsMcqChoices`
   ADD CONSTRAINT `Structure yacrs_questionsMcqChoice_questionID` FOREIGN KEY (`questionID`) REFERENCES `yacrs_questions` (`questionID`);
+
+--
+-- Constraints for table `yacrs_sessionAlias`
+--
+ALTER TABLE `yacrs_sessionAlias`
+  ADD CONSTRAINT `yacrs_sessionAlias_sessionID` FOREIGN KEY (`sessionID`) REFERENCES `yacrs_sessions` (`sessionID`);
 
 --
 -- Constraints for table `yacrs_sessionQuestions`

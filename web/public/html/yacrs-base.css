@@ -478,3 +478,10 @@ h1, h2, h3, .adminSections > li, .adminSections > li a {
 
 }
 
+
+
+
+/******************************/
+.display-none {
+	display: none !important;
+}

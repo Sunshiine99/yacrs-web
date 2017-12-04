@@ -20,31 +20,30 @@ $("#questionType").change(function() {
  * Multiple Choice Questions
  *******************************************************************************************/
 
-function mcqInit() {
-    $("#editQuestion").html(mcqEditTemplate);
+function mcqInit(arr) {
+    if (typeof arr === 'undefined') {
 
-    for (i = 0; i < 4; i++) {
-        var id = "mcq-choice-"+i;
+        $("#editQuestion").html(mcqEditTemplate);
+        for (i = 0; i < 4; i++) {
+            var id = "mcq-choice-"+i;
 
-        // Add the input group
-        $("#mcq-choices").append(mcqInputGroup(id));
-
-        var choice = $("#"+id);
-
-        // If the first, don't round bottom
-        if(i === 0) {
-            choice.addClass("not-rounded-bottom");
+            // Add the input group
+            $("#mcq-choices").append(mcqInputGroup(id));
         }
+    }
+    else {
+        $("#editQuestion").html(mcqEditTemplate);
 
-        // If the last, don't round both
-        else if(i === 4-1) {
-            choice.addClass("not-rounded-top");
-        }
+        for (i = 0; i < arr.length; i++) {
+            var id = "mcq-choice-" + i;
 
-        // Otherwise, don't round top or bottom
-        else {
-            choice.addClass("not-rounded-both");
+            // Add the input group
+            $("#mcq-choices").append(mcqInputGroup(id));
+
+            console.log($("#" + id + " input"));
+            $("#" + id + " input").val(arr[i]);
         }
+        $("#createButton").val("Edit");
     }
 
     $("#mcq-add-option").click(function() {
@@ -106,7 +105,7 @@ function mcqInit() {
 
 function mcqInputGroup(id) {
     return '<div id="'+id+'"class="input-group mcq-choice">\
-                <input name="'+id+'" type="text" class="form-control" tabindex="1">\
+                <input name="'+id+'" type="text" class="form-control" value="" tabindex="1">\
                 <span class="input-group-btn">\
                 <button class="delete btn btn-default" type="button" tabindex="2">\
                     <i class="fa fa-trash-o" aria-hidden="true"></i>\

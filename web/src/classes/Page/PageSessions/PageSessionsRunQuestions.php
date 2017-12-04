@@ -155,21 +155,10 @@ class PageSessionsRunQuestions
 
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
-        $choices = array();
-        $i = 0;
-        while(true){
-            $id = "mcq-choice-" . $i;
-            if (array_key_exists($id,$_POST)){
-                array_push($choices, $_POST[$id]);
-                $i++;
-            }
-            else break;
-        }
-
         $question = $_POST["question"];
         $sql = "UPDATE `yacrs_questions`
-                SET yacrs_questions.question = $question;
-                WHERE `yacrs_questions`.`questionID` = $questionID";
+                SET `question` = '$question'
+                WHERE `questionID` = '$questionID'";
         $result = $mysqli->query($sql);
 
         //TODO should not delete

@@ -99,6 +99,31 @@ class PageSessionsRunQuestions
             header("Location: " . $config["baseUrl"]);
             die();
         }
+        // Get the question
+        $question = DatabaseQuestion::load($questionID, $mysqli);
+        // If it is null go to home
+        if($question == null){
+            header("Location: " . $config["baseUrl"]);
+            die();
+        }
+        //Get the choices and the question text
+        $sql = "SELECT
+                    q.`question` as question,
+                    qc.`choice` as choice
+                FROM
+                    `yacrs_questions` as q,
+                    `yacrs_questionsMcqChoices` as qc
+                WHERE q.`questionID` = '$questionID'
+                  AND q.`questionID` = qc.`questionID`";
+        $result = $mysqli->query($sql);
+
+        $data['choices'] = array();
+        // Get the row from the database
+        while($row = $result->fetch_assoc()) {
+            array_push($data['choices'], $row["choice"]);
+            $data['question'] = $row["question"];
+        }
+        //TODO need to display the question text and options in the edit question page
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -107,12 +132,12 @@ class PageSessionsRunQuestions
         $breadcrumbs->addItem($sessionID, $config["baseUrl"]."sessions/$sessionID/");
         $breadcrumbs->addItem("Run", $config["baseUrl"]."sessions/$sessionID/run/");
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."sessions/$sessionID/run/questions/");
-        $breadcrumbs->addItem("New");
+        $breadcrumbs->addItem("Edit");
 
         $data["session"] = $session;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("sessions/run/questions/add", $data);
+        echo $templates->render("sessions/run/questions/edit", $data);
     }
 
     public static function editSubmit($sessionID, $questionID) {

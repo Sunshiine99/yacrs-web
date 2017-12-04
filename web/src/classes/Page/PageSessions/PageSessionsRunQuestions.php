@@ -124,7 +124,6 @@ class PageSessionsRunQuestions
             array_push($data['choices'], $row["choice"]);
             $data['question'] = $row["question"];
         }
-        //TODO need to display the question text and options in the edit question page
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -142,6 +141,81 @@ class PageSessionsRunQuestions
     }
 
     public static function editSubmit($sessionID, $questionID) {
-        echo $questionID;
+
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $config = Flight::get("config");
+
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        $choices = array();
+        $i = 0;
+        while(true){
+            $id = "mcq-choice-" . $i;
+            if (array_key_exists($id,$_POST)){
+                array_push($choices, $_POST[$id]);
+                $i++;
+            }
+            else break;
+        }
+
+        //TODO should not delete
+        $sql = "DELETE FROM `yacrs_sessionQuestions`
+                WHERE `yacrs_sessionQuestions`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        $sql = "DELETE FROM `yacrs_questionsMcqChoices`
+                WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        $sql = "DELETE FROM `yacrs_questions`
+                WHERE `yacrs_questions`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        $question = new QuestionMcq($_POST["question"]);
+
+        if($_POST["questionType"] == "mcq") {
+
+            foreach($_POST as $key => $value) {
+
+                // If this is one of the MCQ choices
+                if(substr($key, 0, 11) == "mcq-choice-") {
+                    $question->addChoice($value);
+                }
+            }
+        }
+        else if($_POST["questionType"] == "mcq") {
+
+            foreach($_POST as $key => $value) {
+
+                // If this is one of the MCQ choices
+                if(substr($key, 0, 11) == "mcq-choice-") {
+                    $question->addChoice($value);
+                }
+            }
+        }
+        // Insert question into the database
+        $questionID = DatabaseQuestion::insert($question, $mysqli);
+
+        // Insert question session combo into DatabaseSession
+        DatabaseSessionQuestion::insert($sessionID, $questionID, $mysqli);
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
+        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."sessions/$sessionID/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."sessions/$sessionID/run/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."sessions/$sessionID/run/questions/");
+
+        header("Location: " . $config["baseUrl"] . "sessions/$sessionID/run/");
+        die();
     }
 }

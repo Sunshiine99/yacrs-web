@@ -43,8 +43,9 @@ function mcqInit(arr) {
             console.log($("#" + id + " input"));
             $("#" + id + " input").val(arr[i]);
         }
-        $("#createButton").val("Edit");
     }
+    $("#createButton").val("Edit");
+
 
     $("#mcq-add-option").click(function() {
         var choices = $('#mcq-choices');

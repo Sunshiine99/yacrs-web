@@ -18,8 +18,15 @@ $this->layout("template",
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit-template.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit.js"></script>
 <script>
-    mcqEditTemplate = mcqEditTemplate.replace("id=\"question\" value=\"\"", "id=\"question\" value=\"<?=$question?>\"");
-    mcqInit(<?=json_encode($choices)?>);
+    var selected = $('#questionType').find(":selected").text();
+    if(selected == "Multiple Choice Question"){
+        mcqEditTemplate = mcqEditTemplate.replace("id=\"mcQuestion\" value=\"\"", "id=\"mcQuestion\" value=\"<?=$question?>\"");
+        mcqInit(<?=json_encode($choices)?>);
+    }
+    else{
+        textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+    }
+    $("#createButton").val("Edit");
 </script>
 <?php $this->end(); ?>
 
@@ -29,7 +36,6 @@ $this->layout("template",
 
 <form action="/editquestion.php" method="POST" class="form-horizontal">
     <input name="selectQuestionType_form_code" value="8acab4c527c7ff2adb0898459f63c1bd" type="hidden">
-    <input name="sessionID" value="981" type="hidden">
     <div class="form-group">
         <label class="col-sm-2 control-label" for="qu">Type</label>
         <div class="col-sm-10">
@@ -40,6 +46,7 @@ $this->layout("template",
             </select>
         </div>
     </div>
+
 
 </form>
 

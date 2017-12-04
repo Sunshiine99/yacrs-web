@@ -8,7 +8,26 @@ Flight::set('flight.log_errors', true);
 
 Flight::set("config", $config);
 Flight::set("templates", new League\Plates\Engine(dirname(__FILE__)."/../src/templates/"));
-Flight::set("data", ["config" => $config]);
+
+
+// If an alert is in the session
+if(isset($_SESSION["yacrs_alert"])) {
+
+    // If the session has expired, remove the alert from the session
+    if((isset($_SESSION["yacrs_alert"]["expire"]) ? $_SESSION["yacrs_alert"]["expire"] : 0) < time()) {
+        unset($_SESSION["yacrs_alert"]);
+    }
+
+    // Otherwise, add the alert to the page data
+    else {
+        $data["alert"] = new Alert($_SESSION["yacrs_alert"]["alert"]);
+        unset($_SESSION["yacrs_alert"]);
+    }
+}
+
+$data["config"] = $config;
+Flight::set("data", $data);
+
 Flight::set("databaseConnect",
     function() use ($config) {
 

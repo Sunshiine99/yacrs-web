@@ -5,6 +5,8 @@ $this->layout("base",
         "title" => $title,
         "description" => $description,
         "user" => $user,
+        "alert" => $alert,
+        "breadcrumbs"=>$breadcrumbs
     ]
 );
 
@@ -29,10 +31,6 @@ $this->push("header"); ?>
             <?php endif ?>
         </div>
     </div>
-<?php $this->stop(); ?>
-
-<?php $this->push("preContent"); ?>
-    <?=$this->fetch("partials/breadcrumb", ["breadcrumbs"=>$breadcrumbs])?>
 <?php $this->stop(); ?>
 
 <?=$this->section("content")?>

@@ -91,7 +91,17 @@ class PageSessions
 
         // If question is not active
         if(!$question->isActive()) {
-            die("Error");
+
+            // Create a new alert to display next time the user views a page
+            $alert = new Alert();
+            $alert->setType("danger");
+            $alert->setTitle("Error Updating Answer");
+            $alert->setMessage("The answer you submitted was for a question which is no longer active");
+            Alert::displayAlertSession($alert);
+
+            // Forward the user back
+            header("Location: .");
+            die();
         }
 
         // If MCQ

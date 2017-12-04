@@ -18,7 +18,9 @@
 <div id="main">
     <div class="container">
         <?=$this->section('preContent')?>
+        <?=$this->insert("partials/breadcrumb", ["breadcrumbs"=>$breadcrumbs])?>
         <div id="content">
+            <?=$this->insert("partials/alert", ["alert" => $alert]);?>
             <?=$this->section('content')?>
         </div>
         <?=$this->section('postContent')?>

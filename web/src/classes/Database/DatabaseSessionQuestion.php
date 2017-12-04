@@ -61,9 +61,6 @@ class DatabaseSessionQuestion
             $question->setActive($row["active"]);
             $question->setSessionQuestionID($row["ID"]);
 
-            print_r($row);
-            die();
-
             if($row["active"]) {
                 $output["active"] = true;
             }
@@ -83,7 +80,7 @@ class DatabaseSessionQuestion
         $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
         // Run SQL query to get question ID
-        $sql = "SELECT `ID`, `questionID`
+        $sql = "SELECT `ID`, `questionID`, `active`
                 FROM `yacrs_sessionQuestions` as sq
                 WHERE sq.`ID` = $sessionQuestionID
                 LIMIT 1";
@@ -94,6 +91,7 @@ class DatabaseSessionQuestion
 
         $question = DatabaseQuestion::load($row["questionID"], $mysqli);
         $question->setSessionQuestionID($row["ID"]);
+        $question->setActive($row["active"]);
 
         return $question;
     }

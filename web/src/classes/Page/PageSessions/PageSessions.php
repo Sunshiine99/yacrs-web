@@ -88,6 +88,7 @@ class PageSessions
         // Load database session question
         $question = DatabaseSessionQuestion::loadQuestion($_POST["sessionQuestionID"], $mysqli);
 
+
         // If question is not active
         if(!$question->isActive()) {
             die("Error");

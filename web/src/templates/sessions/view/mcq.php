@@ -27,5 +27,12 @@
     ?>
     <hr>
 
-    <input name="submit" value="Submit Answer" class="answer-submit btn btn-primary display-none" type="submit">
+    <?php
+    $class = "";
+    if($response) {
+        $class = " display-none";
+    }
+    ?>
+
+    <input name="submit" value="Submit Answer" class="answer-submit btn btn-primary <?=$class?>" type="submit">
 </form>

@@ -15,8 +15,25 @@ class PageSessionsJoin
     public static function submit() {
         $config = Flight::get("config");
 
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
         // Get the session ID
         $sessionID = $_POST["sessionID"];
+
+        // If this session ID is not numeric check if it is an alias
+        if(!is_numeric($sessionID)) {
+
+            // Load session alias ID
+            $sessionAliasID = DatabaseSessionAlias::loadSessionID($sessionID, $mysqli);
+
+            // Set session ID if one was found from the alias
+            if($sessionAliasID !== null) {
+                $sessionID = $sessionAliasID;
+            }
+        }
+
 
         // If invalid session ID, forward home
         if(!preg_match("/^[0-9]*$/", $sessionID)) {

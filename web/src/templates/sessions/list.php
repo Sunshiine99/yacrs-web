@@ -17,16 +17,16 @@
                 </p>
                 <p class='session-details'> Created <?=$ctime?></p>
                 <span class='feature-links'>
-                        <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/run/'>
-                            <i class='fa fa-play'></i> Run
-                        </a>
-                        <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/edit/'>
-                            <i class='fa fa-pencil'></i> Edit
-                        </a>
-                        <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/delete/'>
-                            <i class='fa fa-trash-o'></i> Delete
-                        </a>
-                    </span>
+                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/run/'>
+                        <i class='fa fa-play'></i> Run
+                    </a>
+                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/edit/'>
+                        <i class='fa fa-pencil'></i> Edit
+                    </a>
+                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/delete/'>
+                        <i class='fa fa-trash-o'></i> Delete
+                    </a>
+                </span>
             </li>
         <?php endforeach; ?>
     </ul>

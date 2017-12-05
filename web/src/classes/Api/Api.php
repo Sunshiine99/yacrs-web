@@ -32,9 +32,10 @@ class Api
     /**
      * Checks api key
      * @param string $key
-     * @return null|string Username or null if failure
+     * @param mysqli $mysqli
+     * @return User|null
      */
-    public static function checkApiKey($key) {
-        return DatabaseApiKey::checkApiKey($key);
+    public static function checkApiKey($key, $mysqli) {
+        return DatabaseApiKey::checkApiKey($key, $mysqli);
     }
 }

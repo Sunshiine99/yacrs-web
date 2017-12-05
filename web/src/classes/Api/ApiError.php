@@ -22,4 +22,12 @@ class ApiError
         Api::output($output);
         die();
     }
+
+    public static function permissionDenied() {
+        $output = [];
+        $output["error"]["code"]    = "permissionDenied";
+        $output["error"]["message"] = "You do not have permission to view this page";
+        Api::output($output);
+        die();
+    }
 }

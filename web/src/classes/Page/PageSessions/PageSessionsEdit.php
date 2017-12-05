@@ -18,7 +18,7 @@ class PageSessionsEdit
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
         // If the session is invalid or the user cannot edit this page, forward home
-        if($session === null || $session->checkIfUserCanEdit($user)) {
+        if($session === null || !$session->checkIfUserCanEdit($user)) {
             header("Location: "  . $config["baseUrl"]);
             die();
         }

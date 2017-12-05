@@ -24,8 +24,8 @@ Flight::set("databaseConnect",
 //Flight::route("/", array("PageHome", "home"));
 Flight::route("/login", array("ApiLogin", "login"));
 Flight::route("/logout", array("ApiLogin", "logout"));
-Flight::route("/sessions/", array("ApiSessions", "listSessions"));
-Flight::route("/sessions/@id:[0-9-]*/", array("ApiSessions", "details"));
+Flight::route("/session/", array("ApiSession", "listSessions"));
+Flight::route("/session/@id:[0-9-]*/", array("ApiSession", "details"));
 
 
 Flight::map('error', array("ApiError", "handler"));

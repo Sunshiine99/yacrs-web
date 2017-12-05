@@ -32,7 +32,7 @@ class ApiLogin
         else {
 
             // Get new api key
-            $apiKey = DatabaseApiKey::newApiKey($username, $mysqli);
+            $apiKey = DatabaseApiKey::newApiKey($user, $mysqli);
 
             $output["key"] = $apiKey;
             $output["details"]["username"] = $user->getUsername();
@@ -54,6 +54,10 @@ class ApiLogin
 
         // Check required parameters
         $key = Api::checkParameter("key");
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
 
         // Logout user by making API key expire
         DatabaseApiKey::apiKeyExpire($key, $mysqli);

@@ -13,15 +13,15 @@ class DatabaseApiKey
 
     /**
      * Creates new API key
-     * @param string $username
+     * @param User $user
      * @param mysqli $mysqli
      * @return string|null
      */
-    public static function newApiKey($username, $mysqli) {
+    public static function newApiKey($user, $mysqli) {
         $i = 0;
 
         // Make username database safe
-        $username = Database::safe($username, $mysqli);
+        $username = Database::safe($user->getUsername(), $mysqli);
 
         // Generate new api key
         $key = self::generateApiKey();
@@ -36,20 +36,22 @@ class DatabaseApiKey
         // Key creation time
         $created = time();
 
+        $isSessionCreator   = $user->isSessionCreator() ? "1"   : "0";
+        $isAdmin            = $user->isAdmin()          ? "1"   : "0";
+
         // Run SQL Query
-        $sql = "INSERT INTO `yacrs_apiKey` (`key`, `created`, `username`)
-                VALUES ('$key', $created, '$username');";
+        $sql = "INSERT INTO `yacrs_apiKey` (`key`, `created`, `username`, `isSessionCreator`, `isAdmin`)
+                VALUES ('$key', $created, '$username', '$isSessionCreator', '$isAdmin');";
         $result = $mysqli->query($sql);
 
         return ($result ? $key : null);
     }
 
-
     /**
      * Checks api key
      * @param string $key
      * @param mysqli $mysqli
-     * @return bool
+     * @return User|null
      */
     public static function checkApiKey($key="", $mysqli) {
 
@@ -57,7 +59,7 @@ class DatabaseApiKey
         $key = Database::safe($key, $mysqli);
 
         // Run database query
-        $sql = "SELECT `key`, `created`
+        $sql = "SELECT `username`, `key`, `created`, `isSessionCreator`, `isAdmin`
                 FROM `yacrs_apiKey`
                 WHERE `yacrs_apiKey`.`key` = '$key'";
         $result = $mysqli->query($sql);
@@ -70,9 +72,16 @@ class DatabaseApiKey
 
         // If key has expired, return false
         if($row["created"] <= 0)
-            return false;
+            return null;
 
-        return true;
+        $user = new User();
+        $user->setUsername($row["username"]);
+        $user->setIsSessionCreator($row["isSessionCreator"]=="1"?true:false);
+        $user->setIsAdmin($row["isAdmin"]=="1"?true:false);
+
+        $user = DatabaseUser::loadDetails($user, $mysqli);
+
+        return $user;
     }
 
     /**

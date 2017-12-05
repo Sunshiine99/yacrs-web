@@ -61,20 +61,20 @@ class Session
      * @param array $array
      */
     private function fromArray($array = []) {
-        $this->sessionID                = isset($array["sessionID"])                ? $array["sessionID"]               : $this->sessionID;
-        $this->owner                    = isset($array["owner"])                    ? $array["owner"]                   : $this->owner;
-        $this->title                    = isset($array["title"])                    ? $array["title"]                   : $this->title;
-        $this->courseID                 = isset($array["courseID"])                 ? $array["courseID"]                : $this->courseID;
-        $this->allowGuests              = isset($array["allowGuests"])              ? $array["allowGuests"]             : $this->allowGuests;
-        $this->onSessionList            = isset($array["onSessionList"])            ? $array["onSessionList"]           : $this->onSessionList;
-        $this->questionControlMode      = isset($array["questionControlMode"])      ? $array["questionControlMode"]     : $this->questionControlMode;
-        $this->defaultTimeLimit         = isset($array["defaultTimeLimit"])         ? $array["defaultTimeLimit"]        : $this->defaultTimeLimit;
-        $this->allowModifyAnswer        = isset($array["allowModifyAnswer"])        ? $array["allowModifyAnswer"]       : $this->allowModifyAnswer;
-        $this->allowQuestionReview      = isset($array["allowQuestionReview"])      ? $array["allowQuestionReview"]     : $this->allowQuestionReview;
-        $this->classDiscussionEnabled   = isset($array["classDiscussionEnabled"])   ? $array["classDiscussionEnabled"]  : $this->classDiscussionEnabled;
-        $this->additionalUsers          = isset($array["additionalUsers"])          ? $array["additionalUsers"]         : $this->additionalUsers;
-        $this->created                  = isset($array["created"])                  ? $array["created"]                 : $this->created;
-        $this->lastUpdate               = isset($array["lastUpdate"])               ? $array["lastUpdate"]              : $this->lastUpdate;
+        $this->sessionID                = intval(isset($array["sessionID"])                 ? $array["sessionID"]               : $this->sessionID);
+        $this->owner                    = strval(isset($array["owner"])                     ? $array["owner"]                   : $this->owner);
+        $this->title                    = strval(isset($array["title"])                     ? $array["title"]                   : $this->title);
+        $this->courseID                 = strval(isset($array["courseID"])                  ? $array["courseID"]                : $this->courseID);
+        $this->allowGuests              = boolval(isset($array["allowGuests"])              ? $array["allowGuests"]             : $this->allowGuests);
+        $this->onSessionList            = boolval(isset($array["onSessionList"])            ? $array["onSessionList"]           : $this->onSessionList);
+        $this->questionControlMode      = intval(isset($array["questionControlMode"])      ? $array["questionControlMode"]     : $this->questionControlMode);
+        $this->defaultTimeLimit         = intval(isset($array["defaultTimeLimit"])          ? $array["defaultTimeLimit"]        : $this->defaultTimeLimit);
+        $this->allowModifyAnswer        = boolval(isset($array["allowModifyAnswer"])        ? $array["allowModifyAnswer"]       : $this->allowModifyAnswer);
+        $this->allowQuestionReview      = boolval(isset($array["allowQuestionReview"])      ? $array["allowQuestionReview"]     : $this->allowQuestionReview);
+        $this->classDiscussionEnabled   = boolval(isset($array["classDiscussionEnabled"])   ? $array["classDiscussionEnabled"]  : $this->classDiscussionEnabled);
+        $this->additionalUsers          = isset($array["additionalUsers"])                      ? $array["additionalUsers"]         : $this->additionalUsers;
+        $this->created                  = intval(isset($array["created"])                   ? $array["created"]                 : $this->created);
+        $this->lastUpdate               = intval(isset($array["lastUpdate"])                ? $array["lastUpdate"]              : $this->lastUpdate);
 
         if(isset($array["additionalUsersCsv"])) {
             $this->setAdditionalUsersCsv($array["additionalUsersCsv"]);

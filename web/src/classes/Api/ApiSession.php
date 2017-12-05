@@ -14,6 +14,7 @@ class ApiSession
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
+        // Get user from API
         $user = Api::checkApiKey($key, $mysqli);
 
         // Check the API Key and get the username of the user

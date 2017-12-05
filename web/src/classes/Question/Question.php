@@ -34,6 +34,9 @@ class Question
     public function toArray() {
         $output["type"] = $this->type;
         $output["question"] = $this->question;
+        $output["created"] = $this->created;
+        $output["lastUpdate"] = $this->lastUpdate;
+        $output["active"] = $this->active;
         return $output;
     }
 
@@ -48,7 +51,7 @@ class Question
      * @param int $questionID
      */
     public function setQuestionID($questionID) {
-        $this->questionID = $questionID;
+        $this->questionID = intval($questionID);
     }
 
     /**
@@ -62,7 +65,7 @@ class Question
      * @param int $sessionQuestionID
      */
     public function setSessionQuestionID($sessionQuestionID) {
-        $this->sessionQuestionID = $sessionQuestionID;
+        $this->sessionQuestionID = intval($sessionQuestionID);
     }
 
     /**
@@ -104,7 +107,7 @@ class Question
      * @param int $created
      */
     public function setCreated($created) {
-        $this->created = $created;
+        $this->created = intval($created);
     }
 
     /**
@@ -118,7 +121,7 @@ class Question
      * @param int $lastUpdate
      */
     public function setLastUpdate($lastUpdate) {
-        $this->lastUpdate = $lastUpdate;
+        $this->lastUpdate = intval($lastUpdate);
     }
 
     /**
@@ -132,6 +135,6 @@ class Question
      * @param bool $active
      */
     public function setActive($active) {
-        $this->active = $active;
+        $this->active = boolval($active);
     }
 }

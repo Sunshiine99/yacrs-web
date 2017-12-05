@@ -26,6 +26,7 @@ Flight::route("/login", array("ApiLogin", "login"));
 Flight::route("/logout", array("ApiLogin", "logout"));
 Flight::route("/session/", array("ApiSession", "listSessions"));
 Flight::route("/session/@id:[0-9-]*/", array("ApiSession", "details"));
+Flight::route("/session/@id:[0-9-]*/question/", array("ApiQuestion", "listSessionQuestion"));
 
 
 Flight::map('error', array("ApiError", "handler"));

@@ -13,7 +13,7 @@ class QuestionMcqChoice
      */
     public function __construct($choice, $correct = false, $choiceID = null) {
         $this->choice = $choice;
-        $this->correct = $correct;
+        $this->correct = boolval($correct);
         $this->choiceID = $choiceID;
     }
 
@@ -62,6 +62,6 @@ class QuestionMcqChoice
      * @param bool $correct
      */
     public function setCorrect($correct) {
-        $this->correct = $correct;
+        $this->correct = boolval($correct);
     }
 }

@@ -25,14 +25,25 @@ class Question
 
     /**
      * Question constructor.
-     * @param $question
+     * @param $array
      */
-    public function __construct($question) {
-        $this->question = $question;
+    public function __construct($array = []) {
+        $this->fromArray($array);
+    }
+
+    private function fromArray($array = []) {
+        $this->setQuestionID(       isset($array["sessionID"])         ? $array["sessionID"]         : $this->getQuestionID());
+        $this->setSessionQuestionID(isset($array["sessionQuestionID"]) ? $array["sessionQuestionID"] : $this->getSessionQuestionID());
+        $this->setType(             isset($array["type"])              ? $array["type"]              : $this->getType());
+        $this->setQuestion(         isset($array["question"])          ? $array["question"]          : $this->getQuestion());
+        $this->setCreated(          isset($array["created"])           ? $array["created"]           : $this->getCreated());
+        $this->setLastUpdate(       isset($array["lastUpdate"])        ? $array["lastUpdate"]        : $this->getLastUpdate());
+        $this->setActive(           isset($array["active"])            ? $array["active"]            : $this->isActive());
     }
 
     public function toArray() {
         $output["type"] = $this->type;
+        $output["sessionQuestionID"] = $this->sessionQuestionID;
         $output["question"] = $this->question;
         $output["created"] = $this->created;
         $output["lastUpdate"] = $this->lastUpdate;

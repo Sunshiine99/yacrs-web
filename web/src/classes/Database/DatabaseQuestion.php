@@ -14,6 +14,8 @@ class DatabaseQuestion
         // Run SQL query to get question
         $sql = "SELECT
                     q.`question` as question,
+                    q.`created` as created,
+                    q.`lastUpdate` as lastUpdate,
                     qt.`name` as type
                 FROM
                     `yacrs_questions` as q,
@@ -27,7 +29,7 @@ class DatabaseQuestion
 
         // Setup new question
         try {
-            $question = QuestionFactory::create($row["type"], $row["question"]);
+            $question = QuestionFactory::create($row["type"], $row);
         }
         catch(Exception $e) { return null; }
 
@@ -130,7 +132,7 @@ class DatabaseQuestion
                     '$text',
                     '$correct')";
             $result = $mysqli->query($sql);
-            echo $sql . "</br></br></br>";
+            //echo $sql . "</br></br></br>";
         }
     }
 

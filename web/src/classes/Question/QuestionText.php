@@ -6,8 +6,8 @@ class QuestionText extends Question
     /**
      * QuestionText constructor.
      */
-    public function __construct($question) {
-        parent::__construct($question);
+    public function __construct($array) {
+        parent::__construct($array);
         $this->type = "text";
     }
 }

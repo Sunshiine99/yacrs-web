@@ -7,15 +7,12 @@ class ApiSession
      */
     public static function listSessions() {
 
-        // Required parameters
-        $key = Api::checkParameter("key");
-
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
         // Get user from API
-        $user = Api::checkApiKey($key, $mysqli);
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
 
         // Check the API Key and get the username of the user
         if(!$user) {
@@ -35,14 +32,11 @@ class ApiSession
 
     public static function details($sessionID) {
 
-        // Required parameters
-        $key = Api::checkParameter("key");
-
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        $user = Api::checkApiKey($key, $mysqli);
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
 
         // Check the API Key and get the username of the user
         if(!$user) {

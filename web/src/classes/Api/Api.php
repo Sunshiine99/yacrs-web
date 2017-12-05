@@ -36,6 +36,12 @@ class Api
      * @return User|null
      */
     public static function checkApiKey($key, $mysqli) {
+
+        // If session has user, return the user from session
+        if(isset($_SESSION["yacrs_user"])) {
+            return new User($_SESSION["yacrs_user"]);
+        }
+
         return DatabaseApiKey::checkApiKey($key, $mysqli);
     }
 }

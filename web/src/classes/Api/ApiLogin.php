@@ -52,15 +52,20 @@ class ApiLogin
      */
     public static function logout() {
 
-        // Check required parameters
-        $key = Api::checkParameter("key");
+        if(isset($_SESSION["yacrs_user"])) {
+            unset($_SESSION["yacrs_user"]);
+        }
 
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
+        if(isset($_REQUEST["key"])) {
+            $key = Api::checkParameter("key");
 
-        // Logout user by making API key expire
-        DatabaseApiKey::apiKeyExpire($key, $mysqli);
+            // Connect to database
+            $databaseConnect = Flight::get("databaseConnect");
+            $mysqli = $databaseConnect();
+
+            // Logout user by making API key expire
+            DatabaseApiKey::apiKeyExpire($key, $mysqli);
+        }
 
         $output["success"] = true;
         Api::output($output);

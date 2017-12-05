@@ -36,7 +36,7 @@ class DatabaseSessionQuestion
     public static function loadSessionQuestions($sessionID, $mysqli) {
         $sessionID  = Database::safe($sessionID, $mysqli);
 
-        $sql = "SELECT sq.`ID`, sq.`questionID`, q.`question`, qt.`name` as type, sq.`active`, q.`created`, q.`lastUpdate`
+        $sql = "SELECT sq.`ID` as sessionQuestionID, sq.`questionID`, q.`question`, qt.`name` as type, sq.`active`, q.`created`, q.`lastUpdate`
                 FROM
                     `yacrs_sessionQuestions` as sq,
                     `yacrs_questions` as q,
@@ -53,13 +53,7 @@ class DatabaseSessionQuestion
         // Loop for each row in result
         while($row = $result->fetch_assoc()) {
 
-            $question = new Question($row["question"]);
-            $question->setQuestionID($row["questionID"]);
-            $question->setType($row["type"]);
-            $question->setCreated($row["created"]);
-            $question->setLastUpdate($row["lastUpdate"]);
-            $question->setActive($row["active"]);
-            $question->setSessionQuestionID($row["ID"]);
+            $question = new Question($row);
 
             if($row["active"]) {
                 $output["active"] = true;
@@ -142,7 +136,7 @@ class DatabaseSessionQuestion
                 SET `active` = '$active'
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
-
+        
         return isset($result);
     }
 }

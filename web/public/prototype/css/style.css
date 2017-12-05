@@ -2,10 +2,9 @@ body {
     padding-top: 5rem;
 }
 
-.jumbotron .display-3,
-.jumbotron .lead,
-.navbar-brand .navbar-brand-text {
-    font-family: 'Lato Light', sans-serif;
+.jumbotron .display-3 {
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
 }
 
 html, body {

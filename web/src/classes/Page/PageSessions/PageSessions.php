@@ -55,8 +55,9 @@ class PageSessions
             if($question->getType() == "mcq") {
                 $response = DatabaseResponseMcq::load($question->getSessionQuestionID(), $user->getId(), $mysqli);
             }
+
             else {
-                die("NOT IMPLEMENTED");
+                $response = DatabaseResponse::load($question->getSessionQuestionID(), $user->getId(), $mysqli);
             }
         }
 
@@ -133,7 +134,19 @@ class PageSessions
         }
 
         else {
-            die("NOT IMPLEMENTED");
+
+            // Load existing response, if it exists
+            $response = DatabaseResponse::load($_POST["sessionQuestionID"], $user->getId(), $mysqli);
+
+            // If an existing response was found
+            if($response) {
+                DatabaseResponse::update($response->getResponseID(), $_POST["answer"], $mysqli);
+            }
+
+            // Otherwise, insert the response
+            else {
+                DatabaseResponse::insert($_POST["sessionQuestionID"], $user->getId(), $_POST["answer"], $mysqli);
+            }
         }
 
         header("Location: .");

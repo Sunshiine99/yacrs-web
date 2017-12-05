@@ -56,9 +56,9 @@ class PageSessionsRunQuestions
             die();
         }
 
-        $question = new QuestionMcq($_POST["question"]);
+        $question = QuestionFactory::create($_POST["questionType"], $_POST["question"]);
 
-        if($_POST["questionType"] == "mcq") {
+        if($question->getType() == "mcq") {
 
             foreach($_POST as $key => $value) {
 

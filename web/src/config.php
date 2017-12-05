@@ -2,7 +2,7 @@
 
 $config["title"] = "YACRS";
 
-$config["baseUrl"] = getenv("BASE_URL");
+$config["baseUrl"] = isset($_SERVER['HTTPS']) ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . "/";
 
 $config["login"]["type"] = "any";
 

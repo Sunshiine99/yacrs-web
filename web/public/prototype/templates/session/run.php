@@ -24,7 +24,9 @@ $this->layout("template",
     </ol>
 </nav>
 
-<h1>Session #1</h1>
+<div class="page-header">
+    <h1>Session Title</h1>
+</div>
 <h2 class="pull-left">Session Questions</h2>
 <a href="#" class="btn btn-primary pull-right">Add Question</a>
 

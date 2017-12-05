@@ -5,7 +5,7 @@ $this->layout("base",
         "title" => $title,
         "description" => $description,
         "user" => $user,
-        "logo" => "img/uofg/logo.png",
+        "logo" => "img/uofg/logo-retina.png",
         "footer" => "partials/footer-uofg"
     ]
 );

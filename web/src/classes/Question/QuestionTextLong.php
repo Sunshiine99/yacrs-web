@@ -5,7 +5,7 @@ class QuestionTextLong extends QuestionText
     /**
      * QuestionText constructor.
      */
-    public function __construct($array) {
+    public function __construct($array = []) {
         parent::__construct($array);
         $this->type = "textlong";
     }

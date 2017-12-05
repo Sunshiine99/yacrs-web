@@ -9,7 +9,7 @@ class QuestionMcq extends Question
      * QuestionMcq constructor.
      * @param array|null $array
      */
-    public function __construct($array) {
+    public function __construct($array = []) {
         parent::__construct($array);
         $this->setChoices(isset($array["choices"]) ? $array["choices"] : $this->getChoices());
         $this->type = "mcq";

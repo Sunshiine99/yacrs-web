@@ -23,6 +23,16 @@ class ApiLegacyLogin
             die();
         }
 
+        $data["serverInfo"]["courseIdSupported"] = "0";
+
+        // Add all of the generic questions
+        $i = 0;
+        foreach(QuestionGeneric::getQuestions() as $question) {
+            $data["serverInfo"]["globalQuType"][$i]["0"] = $question["nameShort"];
+            $data["serverInfo"]["globalQuType"][$i]["attributes"]["id"] = -$i;
+            $i++;
+        }
+
         ApiLegacy::sendResponse("login", $errors, $data, $config);
     }
 }

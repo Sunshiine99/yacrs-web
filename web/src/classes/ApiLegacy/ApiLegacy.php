@@ -10,19 +10,52 @@ class ApiLegacy
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
+        if($_REQUEST["action"] == "login") {
+            $username = $_REQUEST["uname"];
+            $password = $_REQUEST["pwd"];
+            ApiLegacyLogin::login($username, $password, $config, $mysqli);
+            die();
+        }
+
+        // Get details of logged in user
+        $user = Login::checkUserLoggedIn();
+
+        // If user is not logged in, display error
+        if(!$user) {
+            $error[0] = "You must be logged in first.";
+            self::sendResponse(null, $error, [], $config);
+            die();
+        }
+
+        // If user is not session creator, display error
+        if(!$user->isSessionCreator() && !$user->isAdmin()) {
+            $error[0] = "User ".$user->getUsername()." does not have permission to create and run sessions.";
+            self::sendResponse(null, $error, [], $config);
+            die();
+        }
+
         // Switch on action
         switch ($_REQUEST["action"]) {
 
-            // Login
-            case "login":
-                $username = $_REQUEST["uname"];
-                $password = $_REQUEST["pwd"];
-                ApiLegacyLogin::login($username, $password, $config, $mysqli);
+            // The Session List
+            case "sessionlist":
+                ApiLegacySession::sessionList($user, $config, $mysqli);
+                break;
+
+            // The Session Details
+            case "sessiondetail":
+                ApiLegacySession::sessionDetail($user, $config, $mysqli);
                 break;
 
             default:
-                self::sendResponse(null, [], [], $config);
+                $error[0] = "Unrecognised action '".$_REQUEST["action"]."'.";
+                self::sendResponse(null, $error, [], $config);
         }
+    }
+
+    private static function ensureSessionCreator($user) {
+
+        die();
     }
 
     public static function sendResponse($messageName, $errors, $data, $config) {

@@ -136,7 +136,7 @@ class DatabaseSessionQuestion
                 SET `active` = '$active'
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
-        
+
         return isset($result);
     }
 }

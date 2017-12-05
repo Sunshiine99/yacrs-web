@@ -232,9 +232,14 @@ class DatabaseSession
 
         $sessions = [];
 
+        // TODO
+        $username = DatabaseUser::getUsername($userId, $mysqli);
+
         // Loop for every row and add additional user
         while($row = $result->fetch_assoc()) {
-            array_push($sessions, new Session($row));
+            $session = new Session($row);
+            $session->setOwner($username);
+            array_push($sessions, $session);
         }
 
         return $sessions;

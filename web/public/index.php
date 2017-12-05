@@ -81,4 +81,10 @@ Flight::route("/sessions/@id:[0-9]*/edit/", array("PageSessionsEdit", "edit"));
 Flight::route("POST /sessions/new/", array("PageSessionsNew", "submit"));
 Flight::route("/sessions/new/", array("PageSessionsNew", "add"));
 
+/**************************************************************
+ * API
+ **************************************************************/
+
+
+
 Flight::start();

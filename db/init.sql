@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Dec 04, 2017 at 03:45 PM
+-- Generation Time: Dec 05, 2017 at 11:13 AM
 -- Server version: 5.7.19
 -- PHP Version: 7.0.21
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `yacrs`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_apiKey`
+--
+
+CREATE TABLE `yacrs_apiKey` (
+  `id` int(11) NOT NULL,
+  `username` varchar(80) NOT NULL,
+  `key` varchar(64) NOT NULL,
+  `created` bigint(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -172,6 +185,13 @@ CREATE TABLE `yacrs_user` (
 --
 
 --
+-- Indexes for table `yacrs_apiKey`
+--
+ALTER TABLE `yacrs_apiKey`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `key` (`key`);
+
+--
 -- Indexes for table `yacrs_questions`
 --
 ALTER TABLE `yacrs_questions`
@@ -244,6 +264,11 @@ ALTER TABLE `yacrs_user`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `yacrs_apiKey`
+--
+ALTER TABLE `yacrs_apiKey`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `yacrs_questions`
 --

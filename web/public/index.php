@@ -85,6 +85,7 @@ Flight::route("/sessions/new/", array("PageSessionsNew", "add"));
  * API
  **************************************************************/
 
+Flight::route("/services.php", array("ApiLegacy", "api"));
 
 
 Flight::start();

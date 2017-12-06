@@ -3,6 +3,23 @@
 class LoginTypeLdap implements LoginType
 {
 
+    private static function getCfg() {
+        // LDAP server IP
+        $CFG['ldaphost'] = '130.209.13.173';
+        // LDAP context or list of contexts
+        $CFG['ldapcontext'] = 'o=Gla';
+        // LDAP Bind details
+        #$CFG['ldapbinduser'] = '';
+        #$CFG['ldapbindpass'] = '';
+        // LDAP fields and values that result in sessionCreator (teacher) status
+        $CFG['ldap_sessionCreator_rules'] = array();
+        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'dn', 'contains'=>'ou=staff');
+        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'homezipcode', 'match'=>'PGR');
+        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'uid', 'regex'=>'/^[a-z]{2,3}[0-9]+[a-z]$/');
+        //$CFG['ldap_sessionCreator_rules'][] = array('field'=>'mail', 'regex'=>'/[a-zA-Z]+\.[a-zA-Z]+.*?@glasgow\.ac\.uk/');
+        return $CFG;
+    }
+
     /**
      * Checks login details. Returns userinfo array if success.
      * @param $username
@@ -11,7 +28,7 @@ class LoginTypeLdap implements LoginType
      */
     public static function checkLogin($username, $password)
     {
-        global $CFG;
+        $CFG = self::getCfg();
 
         if(strlen(trim($password))==0)
             return false;
@@ -48,7 +65,7 @@ class LoginTypeLdap implements LoginType
                 {
                     $records = ldap_get_entries($ds, $sr );
                     $record = $records[0];
-                    return self::uinfoFromLDAP($record);
+                    return self::userFromLDAP($record);
                 }
                 else
                     //echo "No Identity vault entry found.<br/>";
@@ -69,21 +86,8 @@ class LoginTypeLdap implements LoginType
         }
     }
 
-    private function userFromLDAP($record) {
-
-        // LDAP server IP
-        $CFG['ldaphost'] = '130.209.13.173';
-        // LDAP context or list of contexts
-        $CFG['ldapcontext'] = 'o=Gla';
-        // LDAP Bind details
-        #$CFG['ldapbinduser'] = '';
-        #$CFG['ldapbindpass'] = '';
-        // LDAP fields and values that result in sessionCreator (teacher) status
-        $CFG['ldap_sessionCreator_rules'] = array();
-        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'dn', 'contains'=>'ou=staff');
-        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'homezipcode', 'match'=>'PGR');
-        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'uid', 'regex'=>'/^[a-z]{2,3}[0-9]+[a-z]$/');
-        //$CFG['ldap_sessionCreator_rules'][] = array('field'=>'mail', 'regex'=>'/[a-zA-Z]+\.[a-zA-Z]+.*?@glasgow\.ac\.uk/');
+    private static function userFromLDAP($record) {
+        $CFG = self::getCfg();
 
         $user = new User();
         $user->setUsername($record['uid'][0]);

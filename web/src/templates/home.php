@@ -34,14 +34,16 @@ $this->layout("template",
 </div>
 <?php $this->stop(); ?>
 
-<div style="display:block;">
-    <div class="float-left">
-        <h1>My Sessions</h1>
-    </div>
-    <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
-        <div class="float-right">
-            <a href="<?=$config["baseUrl"]?>session/new/" class="btn btn-primary">New Session</a>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="float-left">
+            <h1>My Sessions</h1>
         </div>
-    <?php endif; ?>
+        <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
+            <div class="float-right">
+                <a href="<?=$config["baseUrl"]?>session/new/" class="btn btn-primary">New Session</a>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 <?= $this->fetch("session/list", ["sessions" => $sessions, "config" => $config]) ?>

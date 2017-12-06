@@ -1,11 +1,10 @@
-<?php // If user has no sessions, tell them that ?>
-<?php if(sizeof($sessions) == 0): ?>
-    <p>No sessions found</p>
-
-    <?php // Otherwise, list the sessions ?>
-<?php else: ?>
-    <ul class="list-group session-list">
-    <?php foreach($sessions as $s): ?>
+<ul class="list-group session-list">
+    <li class="no-sessions">
+        No Sessions Found
+    </li>
+    <?php // If user has sessions, display them ?>
+    <?php if(sizeof($sessions) > 0): ?>
+        <?php foreach($sessions as $s): ?>
             <?php $created = strftime("%A %e %B %Y at %H:%M", $s->getCreated()); ?>
             <li class="list-group-item session-item">
                 <div class="pull-left">
@@ -18,7 +17,7 @@
                         <i class="fa fa-hashtag"></i><?=$s->getSessionID()?>
                     </span>
                     <span class="session-date text-muted">
-                        Created <?=$created?>
+                        Createdxx <?=$created?>
                     </span>
                 </div>
                 <div class="actions-confirm-delete">
@@ -34,7 +33,7 @@
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$s->getSessionID()?>">
                             <i class="fa fa-check"></i> Confirm
                         </button>
                         <button type="button" class="btn btn-light btn-light-border cancel">
@@ -44,33 +43,5 @@
                 </div>
             </li>
         <?php endforeach; ?>
-    </ul>
-    <!--
-    <ul class="session-list">
-        <?php foreach($sessions as $s): ?>
-            <?php //$s = new Session(); ?>
-            <?php $ctime = strftime("%A %e %B %Y at %H:%M", $s->getCreated()); ?>
-            <li>
-                <p class='session-title'>
-                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/'><?=$s->getTitle()?></a>
-                    <span class='user-badge session-id'>
-                            <i class='fa fa-hashtag'></i> <?=$s->getSessionID()?>
-                        </span>
-                </p>
-                <p class='session-details'> Created <?=$ctime?></p>
-                <span class='feature-links'>
-                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/run/'>
-                        <i class='fa fa-play'></i> Run
-                    </a>
-                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/edit/'>
-                        <i class='fa fa-pencil'></i> Edit
-                    </a>
-                    <a href='<?=$config["baseUrl"]?>sessions/<?=$s->getSessionID()?>/delete/'>
-                        <i class='fa fa-trash-o'></i> Delete
-                    </a>
-                </span>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-    -->
-<?php endif; ?>
+    <?php endif; ?>
+</ul>

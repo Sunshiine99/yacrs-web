@@ -103,6 +103,14 @@ html, body {
             width: 100%;
         }
 
+            body main .session-list li.no-sessions {
+                display: none;
+            }
+
+            body main .session-list li.no-sessions:only-child {
+                display: inline!important;
+            }
+
 
             body main .session-list .actions,
             body main .session-list .confirm-delete {

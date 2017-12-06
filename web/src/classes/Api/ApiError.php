@@ -30,4 +30,12 @@ class ApiError
         Api::output($output);
         die();
     }
+
+    public static function unknown() {
+        $output = [];
+        $output["error"]["code"]    = "unknownError";
+        $output["error"]["message"] = "Unknown Error";
+        Api::output($output);
+        die();
+    }
 }

@@ -188,6 +188,10 @@ class DatabaseSession
                   AND sau.`userID` = u.`userID`";
         $result = $mysqli->query($sql);
 
+        if(!$result) {
+            return null;
+        }
+
         // Loop for every row and add additional user
         while($row = $result->fetch_assoc()) {
             $session->addAdditionalUser($row["username"]);
@@ -243,5 +247,29 @@ class DatabaseSession
         }
 
         return $sessions;
+    }
+
+    /**
+     * Delete a session
+     * @param int $sessionID
+     * @param mysqli $mysqli
+     * @return bool
+     */
+    public static function delete($sessionID, $mysqli) {
+
+        // Make variables safe for database use
+        $sessionID = Database::safe($sessionID, $mysqli);
+
+        $sql = "DELETE FROM `yacrs_sessionsAdditionalUsers`
+                WHERE `yacrs_sessionsAdditionalUsers`.`sessionID` = $sessionID;
+                DELETE FROM `yacrs_sessionQuestions`
+                WHERE `yacrs_sessionQuestions`.`sessionID` = $sessionID;
+                DELETE FROM `yacrs_sessionAlias`
+                WHERE `yacrs_sessionAlias`.`sessionID` = $sessionID;
+                DELETE FROM `yacrs_sessions`
+                WHERE `yacrs_sessions`.`sessionID` = $sessionID;";
+        $result = $mysqli->multi_query($sql);
+
+        return $result ? true : false;
     }
 }

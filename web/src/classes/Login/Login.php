@@ -21,17 +21,19 @@ class Login
     /**
      * @param string $username
      * @param string $password
-     * @param string $type
+     * @param array $config
      * @param mysqli $mysqli
      * @return User|bool
      */
-    public static function checkLogin($username, $password, $type, $mysqli) {
+    public static function checkLogin($username, $password, $config, $mysqli) {
+
+        $type = $config["login"]["type"];
 
         // Load given login type class
         $login = LoginTypeFactory::create($type);
 
         // Check login details with given login type
-        $user = $login::checkLogin($username, $password);
+        $user = $login::checkLogin($username, $password, $config);
 
         // If invalid user details, return false
         if(!$user)

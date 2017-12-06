@@ -14,7 +14,7 @@ class ApiLegacyLogin
         $data = [];
 
         // Log the user in
-        $user = Login::checkLogin($username, $password, $config["login"]["type"], $mysqli);
+        $user = Login::checkLogin($username, $password, $config, $mysqli);
 
         // If incorrect login, output error
         if(!$user) {

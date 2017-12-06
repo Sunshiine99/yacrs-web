@@ -3,53 +3,35 @@
 class LoginTypeLdap implements LoginType
 {
 
-    private static function getCfg() {
-        // LDAP server IP
-        $CFG['ldaphost'] = '130.209.13.173';
-        // LDAP context or list of contexts
-        $CFG['ldapcontext'] = 'o=Gla';
-        // LDAP Bind details
-        #$CFG['ldapbinduser'] = '';
-        #$CFG['ldapbindpass'] = '';
-        // LDAP fields and values that result in sessionCreator (teacher) status
-        $CFG['ldap_sessionCreator_rules'] = array();
-        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'dn', 'contains'=>'ou=staff');
-        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'homezipcode', 'match'=>'PGR');
-        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'uid', 'regex'=>'/^[a-z]{2,3}[0-9]+[a-z]$/');
-        //$CFG['ldap_sessionCreator_rules'][] = array('field'=>'mail', 'regex'=>'/[a-zA-Z]+\.[a-zA-Z]+.*?@glasgow\.ac\.uk/');
-        return $CFG;
-    }
-
     /**
-     * Checks login details. Returns userinfo array if success.
+     * Checks login username and password
      * @param $username
      * @param $password
-     * @return array|bool
+     * @param array $config
+     * @return User|null
      */
-    public static function checkLogin($username, $password)
-    {
-        $CFG = self::getCfg();
+    public static function checkLogin($username, $password, $config = []) {
 
         if(strlen(trim($password))==0)
-            return false;
+            return null;
         //$error = false;
         $clrtime = time()+5; // For paranoid prevention of timing to narrow username/password guesses
-        $cookiehash = $CFG['cookiehash'];
-        $ldap_host = $CFG['ldaphost'];
+        $ldap_host = $config["ldap"]["host"];
         $ds = @ldap_connect($ldap_host);
-        if(isset($CFG['ldapbinduser'])) {
-            ldap_bind($ds, $CFG['ldapbinduser'], $CFG['ldapbindpass']);
+        if(isset($config["ldap"]["bind"])) {
+            ldap_bind($ds, $config["ldap"]["bind"]["user"], $config["ldap"]["bind"]["pass"]);
         }
-        if(!$ds)
-        {
+
+        if(!$ds) {
             //echo 'failed to contact LDAP server';
-            return false;
+            return null;
         }
-        $sr = @ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
+
+        $sr = @ldap_search($ds, $config["ldap"]["context"], 'cn='.$username);
         if(!$sr)
         {
             //echo 'failed to contact LDAP server';
-            return false;
+            return null;
         }
         $entry = ldap_first_entry($ds, $sr);
         if($entry)
@@ -59,13 +41,13 @@ class LoginTypeLdap implements LoginType
             //ldap_free_result( $sr );
             if($ok)
             {
-                $sr = ldap_search($ds, $CFG['ldapcontext'], 'cn='.$username);
+                $sr = ldap_search($ds, $config["ldap"]["context"], 'cn='.$username);
                 $count = ldap_count_entries( $ds, $sr );
                 if($count>0)
                 {
                     $records = ldap_get_entries($ds, $sr );
                     $record = $records[0];
-                    return self::userFromLDAP($record);
+                    return self::userFromLDAP($record, $config);
                 }
                 else
                     //echo "No Identity vault entry found.<br/>";
@@ -75,20 +57,18 @@ class LoginTypeLdap implements LoginType
             {
                 while($clrtime < time()) sleep(1); // Paranoid prevention of timing to narrow username/password guesses
                 //echo 'Incorrect password';
-                return false; //Incorrect password
+                return null; //Incorrect password
             }
         }
         else
         {
             while($clrtime < time()) sleep(1); // Paranoid prevention of timing to narrow username/password guesses
             //echo 'Incorrect username';
-            return false; //Incorrect username
+            return null; //Incorrect username
         }
     }
 
-    private static function userFromLDAP($record) {
-        $CFG = self::getCfg();
-
+    private static function userFromLDAP($record, $config) {
         $user = new User();
         $user->setUsername($record['uid'][0]);
         $user->setGivenName($record['givenname'][0]);
@@ -99,9 +79,9 @@ class LoginTypeLdap implements LoginType
         elseif(isset($record['emailaddress'][0]))
             $user->setEmail($record['emailaddress'][0]);
 
-        if(is_array($CFG['ldap_sessionCreator_rules'])) {
+        if(is_array($config["ldap"]["sessionCreatorRules"])) {
 
-            foreach($CFG['ldap_sessionCreator_rules'] as $rule) {
+            foreach($config["ldap"]["sessionCreatorRules"] as $rule) {
 
                 if(isset($record[$rule['field']])) {
 

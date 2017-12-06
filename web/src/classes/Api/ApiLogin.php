@@ -20,7 +20,7 @@ class ApiLogin
         $mysqli = $databaseConnect();
 
         // Check whether login is valid
-        $user = Login::checkLogin($username, $password, $config["login"]["type"], $mysqli);
+        $user = Login::checkLogin($username, $password, $config, $mysqli);
 
         // If invalid login, output an error
         if(!$user) {

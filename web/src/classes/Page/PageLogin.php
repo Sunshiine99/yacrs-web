@@ -28,7 +28,7 @@ class PageLogin
         $user = Login::checkLogin(
             $_POST["username"],
             $_POST["password"],
-            $config["login"]["type"],
+            $config,
             $mysqli);
 
         // Forward the user home

@@ -4,12 +4,13 @@ class LoginTypeAny implements LoginType
 {
 
     /**
-     * Checks login details. Returns user
+     * Checks login username and password
      * @param $username
      * @param $password
-     * @return User|bool
+     * @param array $config
+     * @return User|null
      */
-    public static function checkLogin($username, $password) {
+    public static function checkLogin($username, $password, $config) {
         $user = new User();
         $user->setUsername($username);
         $user->setGivenName("Joe");

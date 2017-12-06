@@ -1,10 +1,26 @@
+mcqInit();
+
+$("#questionType").change(function() {
+    var questionType = $(this).val();
+    switch(questionType) {
+        case "mcq":
+            mcqInit();
+            break;
+        case "text":
+            textInit();
+            break;
+        case "textlong":
+            textInit(true);
+            break;
+    }
+});
+
 /*******************************************************************************************
  * Multiple Choice Questions
  *******************************************************************************************/
 
 function mcqInit(arr) {
     if (typeof arr === 'undefined') {
-
         $("#editQuestion").html(mcqEditTemplate);
         for (i = 0; i < 4; i++) {
             var id = "mcq-choice-"+i;

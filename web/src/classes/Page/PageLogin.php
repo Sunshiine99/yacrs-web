@@ -9,9 +9,9 @@ class PageLogin
         $config = Flight::get("config");
 
         // Setup Page breadcrumbs
-        $breadcrumbs = new Breadcrumb();
-        $breadcrumbs->addItem($config["title"]);
-        $breadcrumbs->addItem("Login");
+        //$breadcrumbs = new Breadcrumb();
+        //$breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        //$breadcrumbs->addItem("Login");
 
         $data["breadcrumbs"] = $breadcrumbs;
         echo $templates->render("login/login", $data);
@@ -43,7 +43,7 @@ class PageLogin
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
-        $breadcrumbs->addItem($config["title"]);
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Login", $config["baseUrl"] . "login/");
         $breadcrumbs->addItem("Anonymous");
 

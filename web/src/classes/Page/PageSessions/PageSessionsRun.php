@@ -25,8 +25,8 @@ class PageSessionsRun
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."sessions/$sessionID/");
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
         $breadcrumbs->addItem("Run");
 
         // Load questions from the database
@@ -36,7 +36,7 @@ class PageSessionsRun
         $data["questions"] = $questions;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("sessions/run/run", $data);
+        echo $templates->render("session/run/run", $data);
     }
 
     public static function runSubmit($sessionID) {

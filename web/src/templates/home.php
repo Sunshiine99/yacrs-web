@@ -10,41 +10,38 @@ $this->layout("template",
 );
 ?>
 
-<div id="box">
-    <h2 class="page-section">
-        Join a session
-    </h2>
-    <form method="POST" action="<?= $config["baseUrl"] ?>sessions/join/" class="form-inline">
-        <div class="input-group">
-            <input name="sessionID" id="sessionID" class="form-control" type="text" placeholder="Session ID">
-            <span class="input-group-btn">
-                <input name="submit" value="Join Session" class="btn btn-success" type="submit">
-            </span>
-        </div>
-    </form>
-    <br>
-    <div id="box">
-        <a class="btn btn-primary" href="<?= $config["baseUrl"] ?>sessions/new/">
-            <i class="fa fa-plus-circle"></i> New Session
-        </a>
+<?php $this->push("end"); ?>
+    <script src="<?=$config["baseUrl"]?>js/session/list.js" crossorigin="anonymous"></script>
+<?php $this->stop(); ?>
+
+<?php $this->push("preContent"); ?>
+<div class="jumbotron text-center">
+    <div class="container">
+        <h1 class="display-3">YACRS</h1>
+        <p class="lead">
+            Yet Another Class Response System
+        </p>
+        <form method="POST" action="<?= $config["baseUrl"] ?>session/join/" class="form-inline">
+            <div class="input-group element-center">
+                <input name="sessionID" id="sessionID" class="form-control" placeholder="Session Number"
+                       type="text">
+                <span class="input-group-btn">
+                    <input name="submit" value="Join Session" class="btn btn-primary btn-lg" type="submit">
+                </span>
+            </div>
+        </form>
     </div>
 </div>
+<?php $this->stop(); ?>
 
-
-<h2 class="page-section">My sessions</h2>
-<?= $this->fetch("sessions/list", ["sessions" => $sessions, "config" => $config]) ?>
-
-<?php // If user can create sessions, show create new session button ?>
-<?php if ($user->isSessionCreator()): ?>
-
-<?php endif; ?>
-
-<h2 class="page-section">My settings</h2>
-
-<?php // If user is an admin, show a link to admin page ?>
-<?php if ($user->isAdmin()): ?>
-    <a href="<?= $config["baseUrl"] ?>admin/" class="btn btn-danger">
-        <i class="fa fa-wrench"></i> YACRS administration
-    </a>
-<?php endif; ?>
-
+<div style="display:block;">
+    <div class="float-left">
+        <h1>My Sessions</h1>
+    </div>
+    <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
+        <div class="float-right">
+            <a href="<?=$config["baseUrl"]?>session/new/" class="btn btn-primary">New Session</a>
+        </div>
+    <?php endif; ?>
+</div>
+<?= $this->fetch("session/list", ["sessions" => $sessions, "config" => $config]) ?>

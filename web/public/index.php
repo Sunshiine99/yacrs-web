@@ -56,29 +56,29 @@ Flight::route("/logout/", array("PageLogout", "logout"));
  * Sessions
  **************************************************************/
 
-Flight::route("/sessions/", array("PageSessions", "sessions"));
+Flight::route("/session/", array("PageSessions", "sessions"));
 
-Flight::route("POST /sessions/@id:[0-9]*/", array("PageSessions", "viewSubmit"));
-Flight::route("/sessions/@id:[0-9]*/", array("PageSessions", "view"));
+Flight::route("POST /session/@id:[0-9]*/", array("PageSessions", "viewSubmit"));
+Flight::route("/session/@id:[0-9]*/", array("PageSessions", "view"));
 
-Flight::route("POST /sessions/@id:[0-9]*/run/", array("PageSessionsRun", "runSubmit"));
-Flight::route("/sessions/@id:[0-9]*/run/", array("PageSessionsRun", "run"));
+Flight::route("POST /session/@id:[0-9]*/run/", array("PageSessionsRun", "runSubmit"));
+Flight::route("/session/@id:[0-9]*/run/", array("PageSessionsRun", "run"));
 
-Flight::route("POST /sessions/@sessionID:[0-9]*/run/questions/@questionID:[0-9]*/", array("PageSessionsRunQuestions", "editSubmit"));
-Flight::route("/sessions/@sessionID:[0-9]*/run/questions/@questionID:[0-9]*/", array("PageSessionsRunQuestions", "edit"));
+Flight::route("POST /session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionsRunQuestions", "editSubmit"));
+Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionsRunQuestions", "edit"));
 
-Flight::route("POST /sessions/@id:[0-9]*/run/questions/new/", array("PageSessionsRunQuestions", "addSubmit"));
-Flight::route("/sessions/@id:[0-9]*/run/questions/new/", array("PageSessionsRunQuestions", "add"));
+Flight::route("POST /session/@id:[0-9]*/run/question/new/", array("PageSessionsRunQuestions", "addSubmit"));
+Flight::route("/session/@id:[0-9]*/run/question/new/", array("PageSessionsRunQuestions", "add"));
 
-Flight::route("POST /sessions/join/", array("PageSessionsJoin", "submit"));
-Flight::route("/sessions/join/", array("PageSessionsJoin", "join"));
+Flight::route("POST /session/join/", array("PageSessionsJoin", "submit"));
+Flight::route("/session/join/", array("PageSessionsJoin", "join"));
 
-Flight::route("POST /sessions/@id:[0-9]*/edit/", array("PageSessionsEdit", "submit"));
-Flight::route("/sessions/@id:[0-9]*/edit/", array("PageSessionsEdit", "edit"));
+Flight::route("POST /session/@id:[0-9]*/edit/", array("PageSessionsEdit", "submit"));
+Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionsEdit", "edit"));
 
 // Add session submit
-Flight::route("POST /sessions/new/", array("PageSessionsNew", "submit"));
-Flight::route("/sessions/new/", array("PageSessionsNew", "add"));
+Flight::route("POST /session/new/", array("PageSessionsNew", "submit"));
+Flight::route("/session/new/", array("PageSessionsNew", "add"));
 
 /**************************************************************
  * API

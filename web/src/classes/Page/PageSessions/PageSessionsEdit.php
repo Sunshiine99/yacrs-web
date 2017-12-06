@@ -26,8 +26,8 @@ class PageSessionsEdit
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."sessions/$sessionID/");
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
         $breadcrumbs->addItem("Edit");
 
         //$data = array_merge($data, $session->toArray());
@@ -37,7 +37,7 @@ class PageSessionsEdit
         $data["user"] = $user;
         $data["breadcrumbs"] = $breadcrumbs;
 
-        echo $templates->render("sessions/edit", $data);
+        echo $templates->render("session/edit", $data);
     }
 
     public static function submit() {

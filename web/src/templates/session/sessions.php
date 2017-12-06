@@ -10,5 +10,5 @@ $this->layout("template",
 );
 ?>
 
-<h2 class="page-section">My sessions</h2>
-<?=$this->fetch("sessions/list", ["sessions"=>$sessions, "config"=>$config])?>
+<h1 class="page-section">My sessions</h1>
+<?=$this->fetch("session/list", ["sessions"=>$sessions, "config"=>$config])?>

@@ -24,7 +24,7 @@ class PageSessions
 
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("sessions/sessions", $data);
+        echo $templates->render("session/sessions", $data);
     }
 
     public static function view($sessionID) {
@@ -64,14 +64,14 @@ class PageSessions
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem($sessionID);
 
         $data["response"] = $response;
         $data["question"] = $question;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("sessions/view", $data);
+        echo $templates->render("session/view", $data);
     }
 
     public static function viewSubmit($sessionID) {

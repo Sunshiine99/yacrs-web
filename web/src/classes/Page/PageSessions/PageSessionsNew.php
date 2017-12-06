@@ -18,13 +18,13 @@ class PageSessionsNew
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem("New");
 
         $data["session"] = new Session();
         $data["user"] = $user;
         $data["breadcrumbs"] = $breadcrumbs;
-        echo $templates->render("sessions/edit", $data);
+        echo $templates->render("session/edit", $data);
     }
 
     public static function submit() {
@@ -47,7 +47,7 @@ class PageSessionsNew
 
         $sessionID = DatabaseSession::insert($session, $mysqli);
 
-        header("Location: "  .$config["baseUrl"] . "sessions/$sessionID/edit/");
+        header("Location: "  .$config["baseUrl"] . "session/$sessionID/edit/");
         die();
     }
 }

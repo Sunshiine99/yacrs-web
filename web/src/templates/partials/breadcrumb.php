@@ -1,34 +1,21 @@
 <?php if($breadcrumbs): ?>
-
-<div id="breadcrumb">
-    <ul class="breadcrumb">
-
-        <?php
-        // Foreach breadcrumb
-        for($i = 0; $i < $breadcrumbs->count(); $i++) {
-
-            // Get the breadcrumb item
-            $item = $breadcrumbs->getItems()[$i];
-
-            // If item has a link
-            if($item->hasLink()): ?>
-
-                <li>
-                    <a href="<?=$item->getLink()?>"><?=$item->getTitle()?></a>
-                </li>
-
-            <?php
-            // Otherwise no link
-            else: ?>
-
-                <li>
-                    <?=$item->getTitle()?>
-                </li>
-
-            <?php endif;
-        }
-        ?>
-    </ul>
+<div class="container">
+    <nav id="breadcrumb" aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <?php foreach($breadcrumbs->getItems() as $breadcrumb): ?>
+                <?php if($breadcrumb->hasLink()): ?>
+                    <li class="breadcrumb-item">
+                        <a href="<?=$breadcrumb->getLink()?>">
+                            <?=$breadcrumb->getTitle()?>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <?=$breadcrumb->getTitle()?>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ol>
+    </nav>
 </div>
-
 <?php endif; ?>

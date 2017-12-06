@@ -42,7 +42,7 @@ class PageSessionsJoin
         }
 
         // Forward the user to the session page
-        header("Location: " . $config["baseUrl"] . "sessions/$sessionID/");
+        header("Location: " . $config["baseUrl"] . "session/$sessionID/");
         die();
     }
 }

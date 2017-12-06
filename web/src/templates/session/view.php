@@ -11,7 +11,7 @@ $this->layout("template",
 );
 ?>
 
-<?php $this->push("postContent"); ?>
+<?php $this->push("end"); ?>
     <script src="<?=$config["baseUrl"]?>js/sessions/view.js"></script>
 <?php $this->end(); ?>
 
@@ -27,8 +27,8 @@ if($question === null):
 <?php else:
     $type = $question->getType();
 
-    if($this->exists("sessions/view/$type")) {
-        $this->insert("sessions/view/$type", ["question" => $question, "response" => $response]);
+    if($this->exists("session/view/$type")) {
+        $this->insert("session/view/$type", ["question" => $question, "response" => $response]);
     }
     else {
         echo "Invalid Question Type";
@@ -36,5 +36,5 @@ if($question === null):
 endif; ?>
 
 <?php if($response): ?>
-    <a id="answer-update" class="btn btn-success">Update Answer</a>
+    <button id="answer-update" type="button" class="btn btn-success">Update Answer</button>
 <?php endif; ?>

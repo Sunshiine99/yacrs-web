@@ -1,5 +1,5 @@
 <?php
-$this->layout("sessions/view/question",
+$this->layout("session/view/question",
     [
         "question" => $question,
         "response" => $response,

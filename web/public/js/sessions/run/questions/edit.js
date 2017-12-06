@@ -1,21 +1,3 @@
-mcqInit();
-
-$("#questionType").change(function() {
-
-    var questionType = $(this).val();
-    switch(questionType) {
-        case "mcq":
-            mcqInit();
-            break;
-        case "text":
-            textInit();
-            break;
-        case "textlong":
-            textInit(true);
-            break;
-    }
-});
-
 /*******************************************************************************************
  * Multiple Choice Questions
  *******************************************************************************************/

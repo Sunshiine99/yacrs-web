@@ -34,7 +34,7 @@ var textEditTemplate = '\
         </div>\
         <div class="form-group">\
             <div class="col-sm-10 col-sm-offset-2">\
-                <input class="submit btn btn-primary" name="submit" id="createButton" value="Create" type="submit" tabindex="1">\
+                <input class="submit btn btn-primary" id="createButton" name="submit" value="Create" type="submit" tabindex="1">\
             </div>\
         </div>\
     </form>';

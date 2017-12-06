@@ -18,15 +18,42 @@ $this->layout("template",
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit-template.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit.js"></script>
 <script>
-    var selected = $('#questionType').find(":selected").text();
-    if(selected == "Multiple Choice Question"){
-        mcqEditTemplate = mcqEditTemplate.replace("id=\"mcQuestion\" value=\"\"", "id=\"mcQuestion\" value=\"<?=$question?>\"");
-        mcqInit(<?=json_encode($choices)?>);
-    }
-    else{
-        textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
-    }
-    $("#createButton").val("Edit");
+    $( document ).ready(function() {
+        var selected = $('#questionType').find(":selected").text();
+        if(selected == "Multiple Choice Question"){
+            mcqEditTemplate = mcqEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
+            mcqEditTemplate = mcqEditTemplate.replace("id=\"mcQuestion\" value=\"\"", "id=\"mcQuestion\" value=\"<?=$question?>\"");
+            mcqInit(<?=json_encode($choices)?>);
+        }
+        else if(selected == "Text Input"){
+            textInit();
+            textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
+            textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+        }
+        else{
+            textInit(true);
+            textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
+            textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+        }
+    });
+    $(document).on("change", "#questionType", function () {
+        var selected = $('#questionType').find(":selected").text();
+        if(selected == "Multiple Choice Question"){
+            mcqEditTemplate = mcqEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
+            mcqEditTemplate = mcqEditTemplate.replace("id=\"mcQuestion\" value=\"\"", "id=\"mcQuestion\" value=\"<?=$question?>\"");
+            mcqInit(<?=json_encode($choices)?>);
+        }
+        else if(selected == "Text Input"){
+            textInit();
+            textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
+            textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+        }
+        else{
+            textInit(true);
+            textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
+            textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+        }
+    });
 </script>
 <?php $this->end(); ?>
 

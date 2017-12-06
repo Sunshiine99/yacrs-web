@@ -189,7 +189,7 @@ class PageSessionsRunQuestions
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."sessions/");
         $breadcrumbs->addItem($sessionID, $config["baseUrl"]."sessions/$sessionID/");
         $breadcrumbs->addItem("Run", $config["baseUrl"]."sessions/$sessionID/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."sessions/$sessionID/run/questions/");
+        //$breadcrumbs->addItem("Questions", $config["baseUrl"]."sessions/$sessionID/run/questions/");
 
         header("Location: " . $config["baseUrl"] . "sessions/$sessionID/run/");
         die();

@@ -32,7 +32,7 @@ class Question
     }
 
     private function fromArray($array = []) {
-        $this->setQuestionID(       isset($array["sessionID"])         ? $array["sessionID"]         : $this->getQuestionID());
+        $this->setQuestionID(       isset($array["questionID"])        ? $array["questionID"]        : $this->getQuestionID());
         $this->setSessionQuestionID(isset($array["sessionQuestionID"]) ? $array["sessionQuestionID"] : $this->getSessionQuestionID());
         $this->setType(             isset($array["type"])              ? $array["type"]              : $this->getType());
         $this->setQuestion(         isset($array["question"])          ? $array["question"]          : $this->getQuestion());

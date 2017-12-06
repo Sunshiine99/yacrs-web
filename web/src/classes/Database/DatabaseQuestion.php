@@ -24,6 +24,10 @@ class DatabaseQuestion
                   AND q.`type` = qt.`ID`";
         $result = $mysqli->query($sql);
 
+        if($result->num_rows==0) {
+            return null;
+        }
+
         // Get the row from the database
         $row = $result->fetch_assoc();
 

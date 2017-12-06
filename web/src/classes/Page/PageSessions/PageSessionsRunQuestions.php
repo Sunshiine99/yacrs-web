@@ -95,12 +95,14 @@ class PageSessionsRunQuestions
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
         // If user cannot edit this session, go gin
-        if($session==null || !$session->checkIfUserCanEdit($user)) {
+        if($session===null || !$session->checkIfUserCanEdit($user)) {
             header("Location: " . $config["baseUrl"]);
             die();
         }
+
         // Get the question
         $question = DatabaseQuestion::load($questionID, $mysqli);
+
         // If it is null go to home
         if($question == null){
             header("Location: " . $config["baseUrl"]);

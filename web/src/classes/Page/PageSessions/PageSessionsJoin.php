@@ -34,9 +34,16 @@ class PageSessionsJoin
             }
         }
 
-
         // If invalid session ID, forward home
         if(!preg_match("/^[0-9]*$/", $sessionID)) {
+
+            $alert = new Alert();
+            $alert->setType("danger");
+            $alert->setDismissable(true);
+            $alert->setTitle("Error");
+            $alert->setMessage("Invalid Session ID");
+            Alert::displayAlertSession($alert);
+
             header("Location: " . $config["baseUrl"]);
             die();
         }

@@ -6,6 +6,7 @@ $this->layout("base",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
         "user" => $user,
+        "alert" => $alert,
         "logo" => "img/logo.png"
     ]
 );

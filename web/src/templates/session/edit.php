@@ -1,4 +1,6 @@
 <?php
+$title = $session->getSessionID() ? "Edit Session" : "New Session";
+
 $this->layout("template",
     [
         "config" => $config,

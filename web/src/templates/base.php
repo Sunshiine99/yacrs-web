@@ -34,6 +34,7 @@
             <?php $this->insert("partials/breadcrumb", ["breadcrumbs" => $breadcrumbs]) ?>
             <?=$this->section("preContent")?>
             <div class="container">
+                <?php $this->insert("partials/alert", ["alert" => $alert]) ?>
                 <?=$this->section("content")?>
             </div>
             <?=$this->section("postContent")?>

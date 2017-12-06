@@ -2,7 +2,7 @@
 $this->layout("template",
     [
         "config" => $config,
-        "title" => $title,
+        "title" => $session->getTitle() . " (#" . $session->getSessionId() . ")",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
         "user" => $user,

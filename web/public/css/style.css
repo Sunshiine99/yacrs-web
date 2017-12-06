@@ -12,6 +12,10 @@ h1, h2 {
     font-weight: bold;
 }
 
+.alert .close {
+    color: #808080;
+}
+
 .page-header {
     border-bottom: 1px solid #eee;
     padding-bottom: 9px;

@@ -41,7 +41,16 @@ class PageSessions
 
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
+        // If invalid session, forward home with error
         if(!$session) {
+
+            $alert = new Alert();
+            $alert->setType("danger");
+            $alert->setDismissable(true);
+            $alert->setTitle("Error");
+            $alert->setMessage("Invalid Session ID");
+            Alert::displayAlertSession($alert);
+
             header("Location: " . $config["baseUrl"]);
             die();
         }
@@ -65,8 +74,9 @@ class PageSessions
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionID);
+        $breadcrumbs->addItem($session->getTitle() . " (#$sessionID)");
 
+        $data["session"] = $session;
         $data["response"] = $response;
         $data["question"] = $question;
         $data["breadcrumbs"] = $breadcrumbs;
@@ -88,7 +98,6 @@ class PageSessions
 
         // Load database session question
         $question = DatabaseSessionQuestion::loadQuestion($_POST["sessionQuestionID"], $mysqli);
-
 
         // If question is not active
         if(!$question->isActive()) {

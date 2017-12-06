@@ -5,17 +5,20 @@ class Alert
     private $title = null;
     private $message = null;
     private $type = null;
+    private $dismissable = false;
 
     public function __construct($array = []) {
-        $this->title    = isset($array["title"])    ? $array["title"]   : $this->title;
-        $this->message  = isset($array["message"])  ? $array["message"] : $this->message;
-        $this->type     = isset($array["type"])     ? $array["type"]    : $this->type;
+        $this->title        = isset($array["title"])        ? $array["title"]       : $this->title;
+        $this->message      = isset($array["message"])      ? $array["message"]     : $this->message;
+        $this->type         = isset($array["type"])         ? $array["type"]        : $this->type;
+        $this->dismissable  = boolval(isset($array["dismissable"])  ? $array["dismissable"] : $this->dismissable);
     }
 
     public function toArray() {
-        $output["title"]    = $this->title;
-        $output["message"]  = $this->message;
-        $output["type"]     = $this->type;
+        $output["title"]        = $this->title;
+        $output["message"]      = $this->message;
+        $output["type"]         = $this->type;
+        $output["dismissable"]  = $this->dismissable;
         return $output;
     }
 
@@ -73,5 +76,19 @@ class Alert
      */
     public function setType($type) {
         $this->type = $type;
+    }
+
+    /**
+     * @return bool|mixed
+     */
+    public function getDismissable() {
+        return $this->dismissable;
+    }
+
+    /**
+     * @param bool|mixed $dismissable
+     */
+    public function setDismissable($dismissable) {
+        $this->dismissable = boolval($dismissable);
     }
 }

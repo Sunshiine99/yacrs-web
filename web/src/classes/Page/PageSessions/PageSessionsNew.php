@@ -47,7 +47,7 @@ class PageSessionsNew
 
         $sessionID = DatabaseSession::insert($session, $mysqli);
 
-        header("Location: "  .$config["baseUrl"] . "session/$sessionID/edit/");
+        header("Location: "  .$config["baseUrl"] . "session/$sessionID/run/");
         die();
     }
 }

@@ -2,7 +2,7 @@
 $this->layout("template",
     [
         "config" => $config,
-        "title" => $title,
+        "title" => "Sessions",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
         "user" => $user

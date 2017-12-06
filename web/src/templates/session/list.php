@@ -17,7 +17,7 @@
                         <i class="fa fa-hashtag"></i><?=$s->getSessionID()?>
                     </span>
                     <span class="session-date text-muted">
-                        Createdxx <?=$created?>
+                        Created <?=$created?>
                     </span>
                 </div>
                 <div class="actions-confirm-delete">

@@ -69,45 +69,56 @@ class LoginTypeLdap implements LoginType
         }
     }
 
-    private function uinfoFromLDAP($record) {
-        global $CFG;
-        $uinfo = array();
-        $uinfo['uname'] = $record['uid'][0];
-        $uinfo['gn'] = $record['givenname'][0];
-        $uinfo['sn'] = $record['sn'][0];
+    private function userFromLDAP($record) {
+
+        // LDAP server IP
+        $CFG['ldaphost'] = '130.209.13.173';
+        // LDAP context or list of contexts
+        $CFG['ldapcontext'] = 'o=Gla';
+        // LDAP Bind details
+        #$CFG['ldapbinduser'] = '';
+        #$CFG['ldapbindpass'] = '';
+        // LDAP fields and values that result in sessionCreator (teacher) status
+        $CFG['ldap_sessionCreator_rules'] = array();
+        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'dn', 'contains'=>'ou=staff');
+        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'homezipcode', 'match'=>'PGR');
+        $CFG['ldap_sessionCreator_rules'][] = array('field'=>'uid', 'regex'=>'/^[a-z]{2,3}[0-9]+[a-z]$/');
+        //$CFG['ldap_sessionCreator_rules'][] = array('field'=>'mail', 'regex'=>'/[a-zA-Z]+\.[a-zA-Z]+.*?@glasgow\.ac\.uk/');
+
+        $user = new User();
+        $user->setUsername($record['uid'][0]);
+        $user->setGivenName($record['givenname'][0]);
+        $user->setSurname($record['sn'][0]);
+
         if(isset($record['mail'][0]))
-            $uinfo['email'] = $record['mail'][0];
+            $user->setEmail($record['mail'][0]);
         elseif(isset($record['emailaddress'][0]))
-            $uinfo['email'] = $record['emailaddress'][0];
-        else
-            $uinfo['email'] = '';
-        $uinfo['isAdmin'] = false;
-        $uinfo['sessionCreator'] = false;
-        if(is_array($CFG['ldap_sessionCreator_rules']))
-        {
-            foreach($CFG['ldap_sessionCreator_rules'] as $rule)
-            {
-                if(isset($record[$rule['field']]))
-                {
+            $user->setEmail($record['emailaddress'][0]);
+
+        if(is_array($CFG['ldap_sessionCreator_rules'])) {
+
+            foreach($CFG['ldap_sessionCreator_rules'] as $rule) {
+
+                if(isset($record[$rule['field']])) {
+
                     is_array($record[$rule['field']]) ? $values = $record[$rule['field']] : $values = array($record[$rule['field']]);
-                    foreach($values as $value)
-                    {
-                        if((isset($rule['match']))&&($rule['match']==$value))
-                        {
-                            $uinfo['sessionCreator'] = true;
+                    foreach($values as $value) {
+
+                        if((isset($rule['match']))&&($rule['match']==$value)) {
+                            $user->setIsSessionCreator(true);
                         }
-                        if((isset($rule['regex']))&&(preg_match($rule['regex'],$value)))
-                        {
-                            $uinfo['sessionCreator'] = true;
+
+                        if((isset($rule['regex']))&&(preg_match($rule['regex'],$value))) {
+                            $user->setIsSessionCreator(true);
                         }
-                        if((isset($rule['contains']))&&(strpos($value, $rule['contains'])!==false))
-                        {
-                            $uinfo['sessionCreator'] = true;
+
+                        if((isset($rule['contains']))&&(strpos($value, $rule['contains'])!==false)) {
+                            $user->setIsSessionCreator(true);
                         }
                     }
                 }
             }
         }
-        return $uinfo;
+        return $user;
     }
 }

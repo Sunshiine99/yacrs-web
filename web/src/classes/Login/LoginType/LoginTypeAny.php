@@ -4,7 +4,7 @@ class LoginTypeAny implements LoginType
 {
 
     /**
-     * Checks login details. Returns userinfo array if success.
+     * Checks login details. Returns user
      * @param $username
      * @param $password
      * @return User|bool

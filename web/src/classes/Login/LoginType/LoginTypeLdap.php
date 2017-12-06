@@ -123,6 +123,9 @@ class LoginTypeLdap implements LoginType
                 }
             }
         }
+
+        // TODO: REMOVE
+        $user->setIsSessionCreator(true);
         return $user;
     }
 }

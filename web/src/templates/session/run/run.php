@@ -28,6 +28,9 @@ $this->layout("template",
 
 <div>
     <ul class="list-group question-list" style="width:100%;">
+        <li class="no-questions">
+            No Questions Found
+        </li>
         <?php
         $i = 1;
         foreach($questions["questions"] as $question):

@@ -99,10 +99,6 @@ html, body {
                 margin: 0;
             }
 
-        body main #no-sessions {
-            display: none;
-        }
-
         body main .session-list {
             width: 100%;
         }

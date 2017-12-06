@@ -115,6 +115,11 @@ html, body {
                 display: inline!important;
             }
 
+            body main .session-list :nth-child(2) {
+                margin-top: 0;
+                border-top-right-radius: .25rem;
+                border-top-left-radius: .25rem;
+            }
 
             body main .session-list .actions,
             body main .session-list .confirm-delete {

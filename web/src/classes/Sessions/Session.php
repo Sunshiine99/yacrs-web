@@ -60,7 +60,7 @@ class Session
     /**
      * @param array $array
      */
-    private function fromArray($array = []) {
+    public function fromArray($array = []) {
         $this->sessionID                = intval(isset($array["sessionID"])                 ? $array["sessionID"]               : $this->sessionID);
         $this->owner                    = strval(isset($array["owner"])                     ? $array["owner"]                   : $this->owner);
         $this->title                    = strval(isset($array["title"])                     ? $array["title"]                   : $this->title);

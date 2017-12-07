@@ -68,6 +68,44 @@ class ApiSession
         Api::output($output);
     }
 
+    public static function edit($sessionID = null) {
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $data = $_REQUEST;
+        $data["sessionID"] = $sessionID;
+
+        $output = [];
+
+        // If this is an existing session
+        if($sessionID) {
+            $session = DatabaseSession::loadSession($sessionID, $mysqli);
+            $session->fromArray($data);
+            DatabaseSession::update($session, $mysqli);
+        }
+
+        // Otherwise this is a new session
+        else {
+            $session = new Session($data);
+            $session->setOwner($user->getId());
+            $sessionID = DatabaseSession::insert($session, $mysqli);
+        }
+
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $output = $session->toArray();
+        Api::output($output);
+    }
+
     /**
      * Delete a session
      * @param $sessionID

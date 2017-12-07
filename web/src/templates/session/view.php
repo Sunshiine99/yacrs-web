@@ -34,7 +34,3 @@ if($question === null):
         echo "Invalid Question Type";
     }
 endif; ?>
-
-<?php if($response): ?>
-    <button id="answer-update" type="button" class="btn btn-success">Update Answer</button>
-<?php endif; ?>

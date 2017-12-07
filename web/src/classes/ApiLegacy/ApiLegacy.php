@@ -34,6 +34,8 @@ class ApiLegacy
             die();
         }
 
+        error_log($_REQUEST["action"]);
+
         // Switch on action
         switch ($_REQUEST["action"]) {
 

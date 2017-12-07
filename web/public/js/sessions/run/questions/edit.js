@@ -22,7 +22,7 @@ $("#questionType").change(function() {
 function mcqInit(arr) {
     if (typeof arr === 'undefined') {
         $("#editQuestion").html(mcqEditTemplate);
-        for (i = 0; i < 4; i++) {
+        for (var i = 0; i < 4; i++) {
             var id = "mcq-choice-"+i;
 
             // Add the input group
@@ -37,8 +37,6 @@ function mcqInit(arr) {
 
             // Add the input group
             $("#mcq-choices").append(mcqInputGroup(id));
-
-            console.log($("#" + id + " input"));
             $("#" + id + " input").val(arr[i]);
         }
     }

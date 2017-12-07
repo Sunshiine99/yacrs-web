@@ -15,10 +15,11 @@ $this->layout("template",
 <?php $this->end(); ?>
 
 <?php $this->push("postContent"); ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit-template.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit.js"></script>
 <script>
-    $( document ).ready(function() {
+    $(document).ready(function() {
         var selected = $('#questionType').find(":selected").text();
         if(selected == "Multiple Choice Question"){
             mcqEditTemplate = mcqEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
@@ -47,11 +48,13 @@ $this->layout("template",
             textInit();
             textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
             textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+            $("#editQuestion").html(textEditTemplate);
         }
         else{
             textInit(true);
             textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
             textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+            $("#editQuestion").html(textEditTemplate);
         }
     });
 </script>
@@ -76,5 +79,4 @@ $this->layout("template",
 
 
 </form>
-
 <div id="editQuestion"></div>

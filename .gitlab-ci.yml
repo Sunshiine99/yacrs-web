@@ -1,3 +1,4 @@
 test:app:
   script:
-  - sudo ./test.sh
+  - ./test.sh
+  - whoami

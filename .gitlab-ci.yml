@@ -1,4 +1,4 @@
 test:app:
   script:
-  - ./test.sh
   - whoami
+  - ./test.sh

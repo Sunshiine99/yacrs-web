@@ -32,7 +32,7 @@ class DatabaseResponse
      * @param mysqli $mysqli
      * @return Response|null ID of existing response
      */
-    public static function load($sessionQuestionID, $userID, $mysqli) {
+    public static function loadUserResponse($sessionQuestionID, $userID, $mysqli) {
         $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
         $userID             = Database::safe($userID, $mysqli);
 

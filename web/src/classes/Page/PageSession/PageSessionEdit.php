@@ -1,6 +1,6 @@
 <?php
 
-class PageSessionsEdit
+class PageSessionEdit
 {
     public static function edit($sessionID) {
         $templates = Flight::get("templates");

@@ -1,6 +1,6 @@
 <?php
 
-class PageSessions
+class PageSession
 {
 
     public static function sessions() {
@@ -62,11 +62,11 @@ class PageSessions
 
             // If MCQ
             if($question->getType() == "mcq") {
-                $response = DatabaseResponseMcq::load($question->getSessionQuestionID(), $user->getId(), $mysqli);
+                $response = DatabaseResponseMcq::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
             }
 
             else {
-                $response = DatabaseResponse::load($question->getSessionQuestionID(), $user->getId(), $mysqli);
+                $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
             }
         }
 
@@ -129,7 +129,7 @@ class PageSessions
             $choice = $question->getChoices()[$choice];
 
             // Load existing response, if it exists
-            $response = DatabaseResponseMcq::load($_POST["sessionQuestionID"], $user->getId(), $mysqli);
+            $response = DatabaseResponseMcq::loadUserResponse($_POST["sessionQuestionID"], $user->getId(), $mysqli);
 
             // If an existing response was found
             if($response) {
@@ -145,7 +145,7 @@ class PageSessions
         else {
 
             // Load existing response, if it exists
-            $response = DatabaseResponse::load($_POST["sessionQuestionID"], $user->getId(), $mysqli);
+            $response = DatabaseResponse::loadUserResponse($_POST["sessionQuestionID"], $user->getId(), $mysqli);
 
             // If an existing response was found
             if($response) {

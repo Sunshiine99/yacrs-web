@@ -55,21 +55,22 @@ $this->layout("template",
                                 <i class='fa fa-stop'></i> Close
                             </button>
 
-                        <?php // If the question is not active and no questions are active, display the make active button ?>
-                        <?php elseif(!$questions["active"]): ?>
+                        <?php // If this is teacher led control mode, only display activate button if no other questions
+                              // active. If in student paced mode, display activate button for every question ?>
+                        <?php elseif(($session->getQuestionControlMode()==0 && !$questions["active"]) || ($session->getQuestionControlMode()==1)): ?>
                             <button onclick="$.redirectPost('.', {field: 'control', value: 'activate', sqid: '<?=$question->getSessionQuestionID()?>'});" type="button" class="btn btn-light btn-light-border">
                                 <i class='fa fa-play'></i> Make Active
                             </button>
                         <?php endif; ?>
 
-                        <button type="button" class="btn btn-light btn-light-border">
+                        <a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionId()?>/run/question/<?=$question->getSessionQuestionID()?>/response/" class="btn btn-light btn-light-border">
                             <i class="fa fa-eye"></i> View Responses
-                        </button>
+                        </a>
                         <a style="text-decoration:none; color: #000000;" href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/question/<?=$question->getQuestionID()?>/">
+                        </a>
                         <button type="button" class="btn btn-light btn-light-border">
                             <i class="fa fa-pencil"></i> Edit
                         </button>
-                        </a>
                         <button type="button" class="btn btn-light btn-light-border delete">
                             <i class="fa fa-trash-o"></i> Delete
                         </button>

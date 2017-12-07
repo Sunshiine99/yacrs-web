@@ -1,6 +1,6 @@
 <?php
 
-class PageSessionsNew
+class PageSessionNew
 {
 
     // aka new session

@@ -8,6 +8,9 @@ class Question
     /** @var int */
     private $sessionQuestionID;
 
+    /** @var int */
+    private $sessionID;
+
     /** @var string */
     protected $type;
 
@@ -77,6 +80,20 @@ class Question
      */
     public function setSessionQuestionID($sessionQuestionID) {
         $this->sessionQuestionID = intval($sessionQuestionID);
+    }
+
+    /**
+     * @return int
+     */
+    public function getSessionID() {
+        return $this->sessionID;
+    }
+
+    /**
+     * @param int $sessionID
+     */
+    public function setSessionID($sessionID) {
+        $this->sessionID = $sessionID;
     }
 
     /**

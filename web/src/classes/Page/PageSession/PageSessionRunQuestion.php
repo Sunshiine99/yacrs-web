@@ -1,6 +1,6 @@
 <?php
 
-class PageSessionsRunQuestions
+class PageSessionRunQuestion
 {
 
     public static function add($sessionID) {

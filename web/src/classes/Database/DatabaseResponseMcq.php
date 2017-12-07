@@ -27,12 +27,55 @@ class DatabaseResponseMcq
     }
 
     /**
+     * @param $sessionQuestionID
+     * @param mysqli $mysqli
+     * @return null
+     */
+    public static function loadChoicesTotal($sessionQuestionID, $mysqli) {
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+
+        $sql = "SELECT
+                    sq.`ID` as sessionQuestionID,
+                    sq.`questionID` as questionID,
+                    qmcqc.`ID` as choiceID,
+                    qmcqc.`choice` as choice,
+                    mcqResponseCount.`count`
+                FROM
+                    `yacrs_sessionQuestions` as sq,
+                    `yacrs_questionsMcqChoices` as qmcqc
+                LEFT JOIN (
+                    SELECT choiceID, count(choiceID) as count, qmcqc.`choice`
+                    FROM `yacrs_responseMcq` as rmcq,
+                         `yacrs_questionsMcqChoices` as qmcqc
+                    WHERE rmcq.`sessionQuestionID` = $sessionQuestionID
+                      AND rmcq.`choiceID` = qmcqc.`ID`
+                    GROUP BY choiceID
+                ) as mcqResponseCount ON qmcqc.`ID` = mcqResponseCount.`choiceID`
+                WHERE
+                    sq.`questionID` = qmcqc.`questionID`
+                    AND sq.`ID` = $sessionQuestionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        $output = [];
+        while($row = $result->fetch_assoc()) {
+            $output[] = [
+                "choice" => $row["choice"],
+                "count" => $row["count"],
+            ];
+        }
+
+        return $output;
+    }
+
+    /**
      * @param int $sessionQuestionID
      * @param int $userID
      * @param mysqli $mysqli
      * @return Response|null ID of existing response
      */
-    public static function load($sessionQuestionID, $userID, $mysqli) {
+    public static function loadUserResponse($sessionQuestionID, $userID, $mysqli) {
         $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
         $userID             = Database::safe($userID, $mysqli);
 

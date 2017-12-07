@@ -1,6 +1,6 @@
 <?php
 
-class PageSessionsRun
+class PageSessionRun
 {
     public static function run($sessionID) {
         $templates = Flight::get("templates");

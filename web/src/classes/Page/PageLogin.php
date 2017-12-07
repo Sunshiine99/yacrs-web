@@ -13,7 +13,7 @@ class PageLogin
         //$breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         //$breadcrumbs->addItem("Login");
 
-        $data["breadcrumbs"] = $breadcrumbs;
+        //$data["breadcrumbs"] = $breadcrumbs;
         echo $templates->render("login/login", $data);
     }
 

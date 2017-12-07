@@ -17,11 +17,16 @@ ADD docker/php/php.ini /usr/local/etc/php/php.ini
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install zip unzip
+    apt-get install zip unzip wget -y
 
 # Install composer globally
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/bin/composer
+
+# Install PhpUnit globally
+RUN wget https://phar.phpunit.de/phpunit-5.7.9.phar -O phpunit.phar && \
+    chmod +x phpunit.phar && \
+    mv phpunit.phar /usr/local/bin/phpunit
 
 # Setup /var/www as work directory and add all code to it
 WORKDIR /var/www

@@ -15,7 +15,7 @@ final class AlertTest extends TestCase
         $array["type"]         = "danger";
         $array["dismissable"]  = true;
 
-        $alert = new Alert($array);
+        $alert = new Alert([]);
 
         $this->assertInstanceOf(
             Alert::class,

@@ -24,6 +24,8 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/bin/composer
 
 # Install PhpUnit globally
+#curl --location --output /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-5.7.9.phar
+#chmod +x /usr/local/bin/phpunit
 RUN wget https://phar.phpunit.de/phpunit-5.7.9.phar -O phpunit.phar && \
     chmod +x phpunit.phar && \
     mv phpunit.phar /usr/local/bin/phpunit

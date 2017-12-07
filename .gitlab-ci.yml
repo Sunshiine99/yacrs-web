@@ -5,5 +5,5 @@ before_script:
 - bash ci/docker_install.sh > /dev/null
 
 test:app:
-   script:
-   - ./vendor/bin/phpunit --configuration phpunit_myapp.xml
+  script:
+  - phpunit --configuration www/phpunit.xml

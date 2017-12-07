@@ -35,8 +35,6 @@ Flight::set("databaseConnect",
 
         // If error connecting to database, display error 500
         if (!$mysqli) {
-            $templates = Flight::get("templates");
-            $data = Flight::get("data");
             PageError::error500();
             die();
         }
@@ -86,5 +84,6 @@ Flight::route("/session/new/", array("PageSessionsNew", "add"));
 
 Flight::route("/services.php", array("ApiLegacy", "api"));
 
+Flight::map("notFound", array("PageError", "error404"));
 
 Flight::start();

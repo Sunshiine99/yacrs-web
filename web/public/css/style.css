@@ -139,6 +139,11 @@ html, body {
                         display: block;
                     }
 
+        body main .error-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
 body footer {
     position: relative;
     margin-top: -90px;

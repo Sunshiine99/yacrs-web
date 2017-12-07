@@ -13,9 +13,7 @@ Flight::set("databaseConnect",
 
         // If error connecting to database, display error 500
         if (!$mysqli) {
-            $templates = Flight::get("templates");
-            $data = Flight::get("data");
-            PageError::error500();
+            ApiError::unknown();
             die();
         }
         return $mysqli;

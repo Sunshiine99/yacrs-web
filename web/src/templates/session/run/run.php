@@ -67,10 +67,10 @@ $this->layout("template",
                             <i class="fa fa-eye"></i> View Responses
                         </a>
                         <a style="text-decoration:none; color: #000000;" href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/question/<?=$question->getQuestionID()?>/">
-                        </a>
                         <button type="button" class="btn btn-light btn-light-border">
                             <i class="fa fa-pencil"></i> Edit
                         </button>
+                        </a>
                         <button type="button" class="btn btn-light btn-light-border delete">
                             <i class="fa fa-trash-o"></i> Delete
                         </button>

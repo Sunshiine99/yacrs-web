@@ -169,7 +169,6 @@ class PageSessionRunQuestion
                 WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
         $result = $mysqli->query($sql);
 
-        //TODO implement for text question
         if($_POST["questionType"] == "mcq") {
 
             foreach($_POST as $key => $value) {

@@ -10,12 +10,20 @@ class ApiLegacy
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        if($_REQUEST["action"] == "login") {
-            $username = $_REQUEST["uname"];
-            $password = $_REQUEST["pwd"];
-            ApiLegacyLogin::login($username, $password, $config, $mysqli);
-            die();
+        switch ($_REQUEST["action"]) {
+            case "login":
+                $username = $_REQUEST["uname"];
+                $password = $_REQUEST["pwd"];
+                ApiLegacyLogin::login($username, $password, $config, $mysqli);
+                die();
+                break;
+
+            case "display":
+                ApiLegacyDisplay::display($config, $mysqli);
+                die();
+                break;
         }
+
 
         // Get details of logged in user
         $user = Login::checkUserLoggedIn();
@@ -35,6 +43,7 @@ class ApiLegacy
         }
 
         error_log($_REQUEST["action"]);
+        error_log(json_encode($_REQUEST));
 
         // Switch on action
         switch ($_REQUEST["action"]) {
@@ -47,6 +56,22 @@ class ApiLegacy
             // The Session Details
             case "sessiondetail":
                 ApiLegacySession::sessionDetail($user, $config, $mysqli);
+                break;
+
+            case "quinfo":
+                ApiLegacySessionQuestion::quinfo($user, $config, $mysqli);
+                break;
+
+            case "quinfoshort":
+                ApiLegacySessionQuestion::quinfo($user, $config, $mysqli);
+                break;
+
+            case "getqids":
+                ApiLegacySessionQuestion::getqids($user, $config, $mysqli);
+                break;
+
+            case "display":
+                ApiLegacyDisplay::display($user, $config, $mysqli);
                 break;
 
             default:

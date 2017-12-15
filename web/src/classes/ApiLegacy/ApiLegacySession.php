@@ -32,8 +32,7 @@ class ApiLegacySession
      * @param array $config
      * @param mysqli $mysqli
      */
-    public static function sessionDetail($user, $config, $mysqli)
-    {
+    public static function sessionDetail($user, $config, $mysqli) {
         $errors = [];
         $data = [];
 

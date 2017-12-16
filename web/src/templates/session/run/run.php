@@ -76,9 +76,11 @@ $this->layout("template",
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
+                        <a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionId()?>/run/question/<?=$question->getQuestionID()?>/delete/">
                         <button type="button" class="btn btn-danger btn-danger-border confirm">
                             <i class="fa fa-check"></i> Confirm
                         </button>
+                        </a>
                         <button type="button" class="btn btn-light btn-light-border cancel">
                             <i class="fa fa-times"></i> Cancel
                         </button>

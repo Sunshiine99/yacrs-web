@@ -193,4 +193,56 @@ class PageSessionRunQuestion
         header("Location: " . $config["baseUrl"] . "session/$sessionID/run/");
         die();
     }
+
+    public static function delete($sessionID, $questionID) {
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $config = Flight::get("config");
+
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        // If user cannot edit this session, go gin
+        if($session===null || !$session->checkIfUserCanEdit($user)) {
+            header("Location: " . $config["baseUrl"]);
+            die();
+        }
+        // Get the question
+        $question = DatabaseQuestion::load($questionID, $mysqli);
+
+        // If it is null go to home
+        if($question == null){
+            header("Location: " . $config["baseUrl"]);
+            die();
+        }
+        $sql = "DELETE FROM `yacrs_sessionQuestions` 
+                WHERE `yacrs_sessionQuestions`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        $sql = "DELETE FROM `yacrs_questionsMcqChoices` 
+                WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        $sql = "DELETE FROM `yacrs_questions` 
+                WHERE `yacrs_questions`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionID/run/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionID/run/question/");
+
+        header("Location: " . $config["baseUrl"] . "session/$sessionID/run/");
+        die();
+    }
 }

@@ -67,6 +67,8 @@ Flight::route("/session/@sessionID:[0-9]*/run/question/@sessionQuestionID:[0-9]*
 Flight::route("POST /session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionRunQuestion", "editSubmit"));
 Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionRunQuestion", "edit"));
 
+Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/delete/", array("PageSessionRunQuestion", "delete"));
+
 Flight::route("POST /session/@id:[0-9]*/run/question/new/", array("PageSessionRunQuestion", "addSubmit"));
 Flight::route("/session/@id:[0-9]*/run/question/new/", array("PageSessionRunQuestion", "add"));
 

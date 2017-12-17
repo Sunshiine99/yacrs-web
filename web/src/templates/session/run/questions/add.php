@@ -18,32 +18,7 @@ $this->layout("template",
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit-template.js"></script>
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit.js"></script>
-<script>
-    $(document).ready(function() {
-        var selected = $('#questionType').find(":selected").text();
-        if(selected == "Multiple Choice Question"){
-            mcqInit();
-        }
-        else if(selected == "Text Input"){
-            textInit();
-        }
-        else{
-            textInit(true);
-        }
-    });
-    $(document).on("change", "#questionType", function () {
-        var selected = $('#questionType').find(":selected").text();
-        if(selected == "Multiple Choice Question"){
-            mcqInit();
-        }
-        else if(selected == "Text Input"){
-            textInit();
-        }
-        else{
-            textInit(true);
-        }
-    });
-</script>
+
 <?php $this->end(); ?>
 <h2 class="page-section">
     Add Question

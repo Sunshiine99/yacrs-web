@@ -108,8 +108,10 @@ class PageSessionRunQuestion
             header("Location: " . $config["baseUrl"]);
             die();
         }
-        //Get the choices and the question text
-        $sql = "SELECT
+        //if the question is mcq, get the question text and choices
+        if($question->getType() == "mcq"){
+            //Get the choices and the question text
+            $sql = "SELECT
                     q.`question` as question,
                     qc.`choice` as choice
                 FROM
@@ -117,13 +119,26 @@ class PageSessionRunQuestion
                     `yacrs_questionsMcqChoices` as qc
                 WHERE q.`questionID` = '$questionID'
                   AND q.`questionID` = qc.`questionID`";
-        $result = $mysqli->query($sql);
+            $result = $mysqli->query($sql);
 
-        //create an array of choices
-        $data['choices'] = array();
-        // for every row from the database get the choice
-        while($row = $result->fetch_assoc()) {
-            array_push($data['choices'], $row["choice"]);
+            //create an array of choices
+            $data['choices'] = array();
+            // for every row from the database get the choice
+            while($row = $result->fetch_assoc()) {
+                array_push($data['choices'], $row["choice"]);
+                $data['question'] = $row["question"];
+            }
+        }
+        //if the question is not mcq, get just the question text and render the page
+        else {
+            //Get the choices and the question text
+            $sql = "SELECT
+                        q.`question` as question
+                    FROM
+                        `yacrs_questions` as q
+                    WHERE q.`questionID` = '$questionID'";
+            $result = $mysqli->query($sql);
+            $row = $result->fetch_assoc();
             $data['question'] = $row["question"];
         }
 

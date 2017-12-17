@@ -20,21 +20,17 @@ $this->layout("template",
 <script src="<?=$config["baseUrl"]?>js/sessions/run/questions/edit.js"></script>
 <script>
     $(document).ready(function() {
-        var selected = $('#questionType').find(":selected").text();
-        if(selected == "Multiple Choice Question"){
+        if(<?=json_encode($choices)?>){
             mcqEditTemplate = mcqEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
             mcqEditTemplate = mcqEditTemplate.replace("id=\"mcQuestion\" value=\"\"", "id=\"mcQuestion\" value=\"<?=$question?>\"");
             mcqInit(<?=json_encode($choices)?>);
         }
-        else if(selected == "Text Input"){
-            textInit();
-            textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
-            textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
-        }
         else{
-            textInit(true);
+            //need to check if it is text or long text
+            $('#questionType').val('text');
             textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
             textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
+            textInit();
         }
     });
     $(document).on("change", "#questionType", function () {
@@ -45,16 +41,14 @@ $this->layout("template",
             mcqInit(<?=json_encode($choices)?>);
         }
         else if(selected == "Text Input"){
-            textInit();
             textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
             textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
-            $("#editQuestion").html(textEditTemplate);
+            textInit();
         }
         else{
-            textInit(true);
             textEditTemplate = textEditTemplate.replace("id=\"createButton\" name=\"submit\" value=\"Create\"", "id=\"createButton\" name=\"submit\" value=\"Edit\"");
             textEditTemplate = textEditTemplate.replace("id=\"textQuestion\" value=\"\"", "id=\"textQuestion\" value=\"<?=$question?>\"");
-            $("#editQuestion").html(textEditTemplate);
+            textInit(true);
         }
     });
 </script>

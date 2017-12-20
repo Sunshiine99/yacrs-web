@@ -31,13 +31,16 @@ Flight::set("databaseConnect",
     function() use ($config) {
 
         // Attempt to connect to the database
-        $mysqli = @mysqli_connect($config["database"]["host"], $config["database"]["username"], $config["database"]["password"], $config["database"]["name"]);
-
-        // If error connecting to database, display error 500
-        if (!$mysqli) {
-            PageError::error500();
-            die();
+        try {
+            $mysqli = new mysqli($config["database"]["host"], $config["database"]["username"], $config["database"]["password"], $config["database"]["name"]);
         }
+
+        catch (Exception $e) {
+            error_log($e->getMessage());
+            PageError::error500();
+            exit;
+        }
+
         return $mysqli;
     }
 );

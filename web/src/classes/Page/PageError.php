@@ -7,6 +7,8 @@ class PageError
         $templates = Flight::get("templates");
         $data = Flight::get("data");
         $data["user"] = Login::checkUserLoggedIn();
+
+        Flight::halt(404);
         echo $templates->render("error/error404", $data);
     }
 
@@ -14,6 +16,8 @@ class PageError
         $templates = Flight::get("templates");
         $data = Flight::get("data");
         $data["user"] = Login::checkUserLoggedIn();
+
+        Flight::halt(500);
         echo $templates->render("error/error500", $data);
     }
 }

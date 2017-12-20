@@ -20,10 +20,8 @@
 
 
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-              crossorigin="anonymous">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-              crossorigin="anonymous">
+        <link rel="stylesheet" href="<?=$config["baseUrl"]?>css/bootstrap-4.0.0-beta.2.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="<?=$config["baseUrl"]?>css/style.css" rel="stylesheet">
         <link href="<?=$config["baseUrl"]?>css/bootstrap-extra.css" rel="stylesheet">
         <?=$this->section("head")?>
@@ -46,11 +44,9 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-                crossorigin="anonymous"></script>
+        <script src="<?=$config["baseUrl"]?>js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+        <script src="<?=$config["baseUrl"]?>js/popper.min.js"></script>
+        <script src="<?=$config["baseUrl"]?>js/bootstrap-4.0.0-beta.2.min.js"></script>
 
         <script>
             $(function () {

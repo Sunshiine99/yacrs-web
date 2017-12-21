@@ -1,2 +1,2 @@
 #!/bin/bash
-phpunit --bootstrap src/autoload.php tests/*
+phpunit --bootstrap src/autoload.php tests

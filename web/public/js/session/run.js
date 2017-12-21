@@ -1,4 +1,18 @@
 $(".question-list .confirm-delete .confirm").click(function () {
     var listGroupItem = $(this).closest(".list-group-item");
-    listGroupItem.remove();
+
+    // Make an api request
+    var url = baseUrl + "api/session/" + $(this).attr("data-session-id") + "/question/" + $(this).attr("data-session-question-id") + "/delete/";
+
+    $.getJSON(url, function(data) {
+
+        // If delete was successful, delete html element
+        if(data["success"] === true) {
+            listGroupItem.remove();
+        }
+
+        else {
+            alert("Unknown Error");
+        }
+    });
 });

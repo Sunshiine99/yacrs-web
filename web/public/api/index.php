@@ -30,6 +30,7 @@ Flight::route("/session/@sessionID/edit/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/delete/", array("ApiSession", "delete"));
 Flight::route("/session/@sessionID/question/", array("ApiQuestion", "listSessionQuestion"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/", array("ApiQuestion", "viewSessionQuestion"));
+Flight::route("/session/@sessionID/question/@sessionQuestionID/delete/", array("ApiQuestion", "deleteSessionQuestion"));
 
 
 Flight::map('error', array("ApiError", "handler"));

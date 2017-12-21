@@ -1,27 +1,23 @@
 <?php
 
-class PageSessionRunQuestion
+class PageSessionRunQuestion extends PageSessionRun
 {
 
+    /**
+     * Page to add a new question to a session
+     * @param int $sessionID
+     */
     public static function add($sessionID) {
-        $templates = Flight::get("templates");
-        $data = Flight::get("data");
-        $config = Flight::get("config");
-
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
-
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-
-        // If user cannot edit this session, go gin
-        if($session==null || !$session->checkIfUserCanEdit($user)) {
-            header("Location: " . $config["baseUrl"]);
-            die();
-        }
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionID));
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -35,34 +31,43 @@ class PageSessionRunQuestion
         $data["session"] = $session;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("session/run/questions/add", $data);
+        echo $templates->render("session/run/questions/edit", $data);
     }
 
+    /**
+     * Submits a new session
+     * @param int $sessionID
+     */
     public static function addSubmit($sessionID) {
-        $config = Flight::get("config");
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionID));
 
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
+        // Attempt to create a new question for this question type
+        try {
+            $question = QuestionFactory::create($_POST["questionType"], $_POST);
+        }
 
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-
-        // If user cannot edit this session, go gin
-        if($session==null || !$session->checkIfUserCanEdit($user)) {
-            header("Location: " . $config["baseUrl"]);
+        // If error creating question, log the error and display an error page
+        catch(Exception $e) {
+            Error::exception($e, __LINE__, __FILE__);
             die();
         }
 
-        $question = QuestionFactory::create($_POST["questionType"], $_POST);
-
+        // If MCQ question
         if($question->getType() == "mcq") {
 
+            // Loop for every posted value
             foreach($_POST as $key => $value) {
 
-                // If this is one of the MCQ choices
+                // If this is one of the MCQ choices, add it as a choice
                 if(substr($key, 0, 11) == "mcq-choice-") {
                     $question->addChoice($value);
                 }
@@ -79,53 +84,21 @@ class PageSessionRunQuestion
         die();
     }
 
-    public static function edit($sessionID, $questionID) {
+    public static function edit($sessionID, $sessionQuestionID) {
 
-        $templates = Flight::get("templates");
-        $data = Flight::get("data");
-        $config = Flight::get("config");
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionID));
 
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
-
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-
-        // If user cannot edit this session, go gin
-        if($session===null || !$session->checkIfUserCanEdit($user)) {
-            header("Location: " . $config["baseUrl"]);
-            die();
-        }
-
-        // Get the question
-        $question = DatabaseQuestion::load($questionID, $mysqli);
-
-        // If it is null go to home
-        if($question == null){
-            header("Location: " . $config["baseUrl"]);
-            die();
-        }
-        //Get the choices and the question text
-        $sql = "SELECT
-                    q.`question` as question,
-                    qc.`choice` as choice
-                FROM
-                    `yacrs_questions` as q,
-                    `yacrs_questionsMcqChoices` as qc
-                WHERE q.`questionID` = '$questionID'
-                  AND q.`questionID` = qc.`questionID`";
-        $result = $mysqli->query($sql);
-
-        //create an array of choices
-        $data['choices'] = array();
-        // for every row from the database get the choice
-        while($row = $result->fetch_assoc()) {
-            array_push($data['choices'], $row["choice"]);
-            $data['question'] = $row["question"];
-        }
+        // Get question whilst ensuring permissions are kept
+        $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -133,64 +106,76 @@ class PageSessionRunQuestion
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
         $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionID/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionID/run/question/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionID/run/questions/");
         $breadcrumbs->addItem("Edit");
 
+        $data["question"] = $question;
         $data["session"] = $session;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         echo $templates->render("session/run/questions/edit", $data);
     }
 
-    public static function editSubmit($sessionID, $questionID) {
+    public static function editSubmit($sessionID, $sessionQuestionID) {
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionID));
 
-        $templates = Flight::get("templates");
-        $data = Flight::get("data");
-        $config = Flight::get("config");
+        // Get question whilst ensuring permissions are kept
+        $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);
 
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
+        // If MCQ question
+        if(get_class($question) == "QuestionMcq") {
 
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
+            // Remove existing choices
+            $question->setChoices([]);
 
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-
-        $question = $_POST["question"];
-        $sql = "UPDATE `yacrs_questions`
-                SET `question` = '$question'
-                WHERE `questionID` = '$questionID'";
-        $result = $mysqli->query($sql);
-
-        //TODO should not delete
-
-        $sql = "DELETE FROM `yacrs_questionsMcqChoices`
-                WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
-        $result = $mysqli->query($sql);
-
-        if($_POST["questionType"] == "mcq") {
-
-            foreach($_POST as $key => $value) {
-
-                // If this is one of the MCQ choices
-                if(substr($key, 0, 11) == "mcq-choice-") {
-                    $sql = "INSERT INTO `yacrs_questionsMcqChoices` (`questionID`, `choice`)
-                        VALUES ('$questionID', '$value'); ";
-                    $result = $mysqli->query($sql);
+            // Load new choices
+            foreach ($_POST as $key => $value) {
+                if (substr($key, 0, 11) == "mcq-choice-") {
+                    $question->addChoice($value);
                 }
             }
         }
 
-        // Setup Page breadcrumbs
-        $breadcrumbs = new Breadcrumb();
-        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
-        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionID/run/");
-        //$breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionID/run/questions/");
+        // Update question text
+        $question->setQuestion($_POST["question"]);
 
-        header("Location: " . $config["baseUrl"] . "session/$sessionID/run/");
+        DatabaseQuestion::update($question, $mysqli);
+
+        header("Location: ..");
         die();
+    }
+
+    /**
+     * Setup questions whilst ensuring permissions are kept
+     * @param int $sessionID
+     * @param int $sessionQuestionID
+     * @param mysqli $mysqli
+     * @return Question|QuestionMcq
+     */
+    private static function setupQuestion($sessionID, $sessionQuestionID, $mysqli) {
+
+        // If no session question ID, go up a page
+        if(!$sessionQuestionID)
+            header("Location: ..");
+
+        // Load the question
+        $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
+
+        // Display a 404 if the question wasn't loaded or this question doesn't belong to this session
+        if(!$question || $sessionID != $question->getSessionID()) {
+            PageError::error404();
+            die();
+        }
+
+        return $question;
     }
 }

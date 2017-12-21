@@ -1,26 +1,19 @@
 <?php
 
-class PageSessionRun
+class PageSessionRun extends PageSession
 {
+
     public static function run($sessionID) {
-        $templates = Flight::get("templates");
-        $data = Flight::get("data");
-        $config = Flight::get("config");
-
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
-
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-
-        // If user cannot edit this session, go gin
-        if($session==null || !$session->checkIfUserCanEdit($user)) {
-            header("Location: " . $config["baseUrl"]);
-            die();
-        }
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionID));
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -40,22 +33,16 @@ class PageSessionRun
     }
 
     public static function runSubmit($sessionID) {
-        $config = Flight::get("config");
-
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
-
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-
-        // If user cannot edit this session, go gin
-        if($session==null || !$session->checkIfUserCanEdit($user)) {
-            header("Location: " . $config["baseUrl"]);
-            die();
-        }
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionID));
 
         // Control column of questions table
         if($_POST["field"] == "control") {
@@ -72,5 +59,41 @@ class PageSessionRun
         // Forward here
         header("Location: .");
         die();
+    }
+
+    /**
+     * Loads basic variables ensuring correct permissions. (I.e. User is logged in and that they can edit this session)
+     * @param $sessionID
+     * @return array
+     */
+    protected static function setup($sessionID) {
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $config = Flight::get("config");
+
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Loads the session
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        // If this session does not exist or the user cannot edit this session, go home
+        if($session==null || !$session->checkIfUserCanEdit($user)) {
+            header("Location: " . $config["baseUrl"]);
+            die();
+        }
+
+        return [
+            "templates" => $templates,
+            "data" => $data,
+            "config" => $config,
+            "user" => $user,
+            "mysqli" => $mysqli,
+            "session" => $session,
+        ];
     }
 }

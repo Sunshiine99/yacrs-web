@@ -1,3 +1,7 @@
+form.new .question:not(#question-mcq) {
+    display: none;
+}
+
 #add-more-choices {
     width: 100%;
 }

@@ -66,17 +66,15 @@ $this->layout("template",
                         <a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionId()?>/run/question/<?=$question->getSessionQuestionID()?>/response/" class="btn btn-light btn-light-border">
                             <i class="fa fa-eye"></i> View Responses
                         </a>
-                        <a style="text-decoration:none; color: #000000;" href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/question/<?=$question->getQuestionID()?>/">
-                        <button type="button" class="btn btn-light btn-light-border">
+                        <a class="btn btn-light btn-light-border" href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/question/<?=$question->getSessionQuestionID()?>/">
                             <i class="fa fa-pencil"></i> Edit
-                        </button>
                         </a>
                         <button type="button" class="btn btn-light btn-light-border delete">
                             <i class="fa fa-trash-o"></i> Delete
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$session->getSessionID()?>" data-session-question-id="<?=$question->getSessionQuestionID()?>">
                             <i class="fa fa-check"></i> Confirm
                         </button>
                         <button type="button" class="btn btn-light btn-light-border cancel">

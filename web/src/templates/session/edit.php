@@ -29,7 +29,7 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         </div>
         <?php if($session->getSessionID()): ?>
             <div class="float-right">
-                <a href="<?=$config["baseUrl"]?>sessions/<?=$session->getSessionID()?>" class="btn btn-primary pull-right">Run Session</a>
+                <a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/" class="btn btn-primary pull-right">Run Session</a>
             </div>
         <?php endif; ?>
     </div>

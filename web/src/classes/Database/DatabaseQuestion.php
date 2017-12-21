@@ -13,6 +13,7 @@ class DatabaseQuestion
 
         // Run SQL query to get question
         $sql = "SELECT
+                    q.`questionID` as questionID,
                     q.`question` as question,
                     q.`created` as created,
                     q.`lastUpdate` as lastUpdate,
@@ -23,6 +24,9 @@ class DatabaseQuestion
                 WHERE q.`questionID` = '$questionID'
                   AND q.`type` = qt.`ID`";
         $result = $mysqli->query($sql);
+
+        // Check if successful, display and log error if not
+        Database::checkError($mysqli, __LINE__, __FILE__);
 
         if($result->num_rows==0) {
             return null;
@@ -61,6 +65,9 @@ class DatabaseQuestion
                 WHERE qmcqc.`questionID` = $questionID";
         $result = $mysqli->query($sql);
 
+        // Check if successful, display and log error if not
+        Database::checkError($mysqli, __LINE__, __FILE__);
+
         // Loop for every MCQ choice
         while($row = $result->fetch_assoc()) {
             $question->addChoice($row["choice"], $row["correct"], $row["ID"]);
@@ -96,11 +103,14 @@ class DatabaseQuestion
                     ".time().")";
         $result = $mysqli->query($sql);
 
+        // Check if successful, display and log error if not
+        Database::checkError($mysqli, __LINE__, __FILE__);
+
         // Get the question ID
         $questionID = Database::safe($mysqli->insert_id, $mysqli);
 
-        switch($question->getType()) {
-            case "mcq":
+        switch(get_class($question)) {
+            case "QuestionMcq":
                 self::insertMcq($question, $questionID, $mysqli);
         }
 
@@ -111,6 +121,7 @@ class DatabaseQuestion
      * @param QuestionMcq $question
      * @param $questionID
      * @param mysqli $mysqli
+     * @return bool
      */
     private static function insertMcq($question, $questionID, $mysqli) {
 
@@ -136,8 +147,55 @@ class DatabaseQuestion
                     '$text',
                     '$correct')";
             $result = $mysqli->query($sql);
-            //echo $sql . "</br></br></br>";
         }
+
+        return true;
+    }
+
+    /**
+     * @param Question $question
+     * @param mysqli $mysqli
+     * @return bool
+     */
+    public static function update($question, $mysqli) {
+        $questionText = Database::safe($question->getQuestion(), $mysqli);
+        $questionID = Database::safe($question->getQuestionID(), $mysqli);
+
+        $sql = "UPDATE `yacrs_questions`
+                SET
+                  `question` = '$questionText',
+                  `lastUpdate` = '".time()."'
+                WHERE `yacrs_questions`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result) {
+            die("Error " . $mysqli->error);
+        }
+
+        // Check if successful, display and log error if not
+        Database::checkError($mysqli, __LINE__, __FILE__);
+
+        switch(get_class($question)) {
+            case "QuestionMcq":
+                self::updateMcq($question, $mysqli);
+        }
+
+        return $result?true:false;
+    }
+
+    private static function updateMcq($question, $mysqli) {
+        $questionID = Database::safe($question->getQuestionID(), $mysqli);
+
+        // Delete All MCQ Choices for question
+        // TODO: Actually update rather than delete
+        $sql = "DELETE FROM `yacrs_questionsMcqChoices`
+                WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        // Check if successful, display and log error if not
+        Database::checkError($mysqli, __LINE__, __FILE__);
+
+        return self::insertMcq($question, $question->getQuestionID(), $mysqli);
     }
 
     private static function questionTypeToId($type) {

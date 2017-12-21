@@ -29,6 +29,23 @@ class DatabaseSessionQuestion
     }
 
     /**
+     * @param int $sessionQuestionID
+     * @param mysqli $mysqli
+     * @return int
+     */
+    public static function delete($sessionQuestionID, $mysqli) {
+
+        // Make items database safe
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+
+        $sql = "DELETE FROM `yacrs_sessionQuestions`
+                WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
+        $result = $mysqli->query($sql);
+
+        return $result ? true : false;
+    }
+
+    /**
      * @param int $sessionID
      * @param mysqli $mysqli
      * @return Question[]

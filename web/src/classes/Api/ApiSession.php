@@ -145,7 +145,7 @@ class ApiSession
             ApiError::unknown();
         }
 
-        $output["success"] = "true";
+        $output["success"] = true;
         Api::output($output);
     }
 }

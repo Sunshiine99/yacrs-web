@@ -1,6 +1,6 @@
 <?php
 
-class PageSession
+class PageSession extends Page
 {
 
     public static function sessions() {
@@ -81,6 +81,7 @@ class PageSession
         $data["question"] = $question;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
+
         echo $templates->render("session/view", $data);
     }
 

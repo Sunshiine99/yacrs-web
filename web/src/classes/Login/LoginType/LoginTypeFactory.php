@@ -14,6 +14,9 @@ class LoginTypeFactory
             case "ldap":
                 return new LoginTypeLdap();
                 break;
+            case "ldapcsq":
+                return new LoginTypeLdapCsq();
+                break;
             case "any":
                 return new LoginTypeAny();
                 break;

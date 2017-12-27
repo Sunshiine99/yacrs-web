@@ -1,4 +1,13 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $sessions Session[]
+ */
 $this->layout("template",
     [
         "config" => $config,
@@ -10,5 +19,5 @@ $this->layout("template",
 );
 ?>
 
-<h1 class="page-section">My sessions</h1>
-<?=$this->fetch("session/list", ["sessions"=>$sessions, "config"=>$config])?>
+<h1 class="page-section">My Sessions</h1>
+<?=$this->fetch("session/list", ["sessions"=>$sessions, "user" => $user, "config"=>$config])?>

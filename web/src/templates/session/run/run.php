@@ -1,4 +1,14 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $session Session
+ * @var $questions Question[][]
+ */
 $this->layout("template",
     [
         "config" => $config,
@@ -11,36 +21,42 @@ $this->layout("template",
 ?>
 
 <?php $this->push("head"); ?>
-    <link rel="stylesheet" href="<?=$config["baseUrl"]?>css/session/run/run.css">
+    <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/session/run/run.css">
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
-    <script src="<?=$config["baseUrl"]?>js/session/run.js" crossorigin="anonymous"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/run.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
 <div class="page-header">
-    <h1><?=$session->getTitle()?></h1>
+    <h1>
+        <?=$session->getTitle() ? $this->e($session->getTitle()) : "&nbsp;"?>
+        <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionID())?>/edit/" class="btn btn-light btn-light-border pull-right">Edit Session</a>
+    </h1>
 </div>
 <h2 class="pull-left">Session Questions</h2>
-<a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/question/new/" class="btn btn-primary pull-right">
+<a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/question/new/" class="btn btn-primary pull-right">
     Add Question
 </a>
-
 <div>
-    <ul class="list-group question-list" style="width:100%;">
+    <ul class="list-group question-list" style="width:100%;" data-question-control-mode="<?=$this->e($session->getQuestionControlMode())?>">
         <li class="no-questions">
             No Questions Found
         </li>
         <?php
         $i = 1;
+        $qi = count($questions["questions"]);
         foreach($questions["questions"] as $question):
             $class = $question->isActive() ? " active-question" : "";
 
             ?>
-            <li class="list-group-item question-item<?=$class?>">
-                <div class="pull-left">
+            <li class="list-group-item question-item<?=$this->e($class)?>">
+                <div class="question-number pull-left">
+                    <?=$qi?>.
+                </div>
+                <div class="pull-left details">
                     <span class="question-title">
-                        <?=$question->getQuestion()?>
+                        <?=$this->e($question->getQuestion())?>
                     </span><br>
                     <span class="question-date text-muted">
                         Created <?=date("d/m/Y H:i", $question->getCreated())?>
@@ -48,25 +64,17 @@ $this->layout("template",
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions" aria-label="Actions">
+                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-id="<?=$this->e($session->getSessionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                            <i class='fa fa-stop'></i> Close
+                        </button>
+                        <button type="button" class="btn btn-light btn-light-border activate" data-session-id="<?=$this->e($session->getSessionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                            <i class='fa fa-play'></i> Activate
+                        </button>
 
-                        <?php // If the question is active, display the close button ?>
-                        <?php if($question->isActive()): ?>
-                            <button onclick="$.redirectPost('.', {field: 'control', value: 'deactivate', sqid: '<?=$question->getSessionQuestionID()?>'});" type="button" class="btn btn-light btn-light-border">
-                                <i class='fa fa-stop'></i> Close
-                            </button>
-
-                        <?php // If this is teacher led control mode, only display activate button if no other questions
-                              // active. If in student paced mode, display activate button for every question ?>
-                        <?php elseif(($session->getQuestionControlMode()==0 && !$questions["active"]) || ($session->getQuestionControlMode()==1)): ?>
-                            <button onclick="$.redirectPost('.', {field: 'control', value: 'activate', sqid: '<?=$question->getSessionQuestionID()?>'});" type="button" class="btn btn-light btn-light-border">
-                                <i class='fa fa-play'></i> Make Active
-                            </button>
-                        <?php endif; ?>
-
-                        <a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionId()?>/run/question/<?=$question->getSessionQuestionID()?>/response/" class="btn btn-light btn-light-border">
-                            <i class="fa fa-eye"></i> View Responses
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionId())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
+                            <i class="fa fa-eye"></i> Responses
                         </a>
-                        <a class="btn btn-light btn-light-border" href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/question/<?=$question->getSessionQuestionID()?>/">
+                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
                         <button type="button" class="btn btn-light btn-light-border delete">
@@ -74,7 +82,7 @@ $this->layout("template",
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$session->getSessionID()?>" data-session-question-id="<?=$question->getSessionQuestionID()?>">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$this->e($session->getSessionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class="fa fa-check"></i> Confirm
                         </button>
                         <button type="button" class="btn btn-light btn-light-border cancel">
@@ -85,6 +93,7 @@ $this->layout("template",
             </li>
             <?php
             $i++;
+            $qi--;
         endforeach;
         ?>
     </ul>

@@ -15,6 +15,9 @@ class PageSessionRun extends PageSession
          */
         extract(self::setup($sessionID));
 
+        // Add to session history
+        DatabaseSessionHistory::insert($user, $session, $mysqli);
+
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
@@ -30,35 +33,6 @@ class PageSessionRun extends PageSession
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         echo $templates->render("session/run/run", $data);
-    }
-
-    public static function runSubmit($sessionID) {
-        /**
-         * Setup basic session variables (Type hinting below to avoid IDE error messages)
-         * @var $templates League\Plates\Engine
-         * @var $data array
-         * @var $config array
-         * @var $user User
-         * @var $mysqli mysqli
-         * @var $session Session
-         */
-        extract(self::setup($sessionID));
-
-        // Control column of questions table
-        if($_POST["field"] == "control") {
-            switch($_POST["value"]) {
-                case "activate":
-                    DatabaseSessionQuestion::questionActivate($_POST["sqid"], true, $mysqli);
-                    break;
-                case "deactivate":
-                    DatabaseSessionQuestion::questionActivate($_POST["sqid"], false, $mysqli);
-                    break;
-            }
-        }
-
-        // Forward here
-        header("Location: .");
-        die();
     }
 
     /**

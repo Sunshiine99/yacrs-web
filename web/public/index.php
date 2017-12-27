@@ -8,7 +8,6 @@ Flight::set('flight.log_errors', true);
 Flight::set("config", $config);
 Flight::set("templates", new League\Plates\Engine(dirname(__FILE__)."/../src/templates/"));
 
-
 // If an alert is in the session
 if(isset($_SESSION["yacrs_alert"])) {
 
@@ -27,6 +26,9 @@ if(isset($_SESSION["yacrs_alert"])) {
 $data["config"] = $config;
 Flight::set("data", $data);
 
+/**
+ * Define a function that can connect to the database. This can be assessed by calling Flight::get("databaseConnect")
+ */
 Flight::set("databaseConnect",
     function() use ($config) {
 
@@ -62,7 +64,6 @@ Flight::route("/session/", array("PageSession", "sessions"));
 Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
 Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
 
-Flight::route("POST /session/@id:[0-9]*/run/", array("PageSessionRun", "runSubmit"));
 Flight::route("/session/@id:[0-9]*/run/", array("PageSessionRun", "run"));
 
 Flight::route("/session/@sessionID:[0-9]*/run/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionRunQuestionResponse", "response"));

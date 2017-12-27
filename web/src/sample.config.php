@@ -6,6 +6,14 @@ $config["title"]                         = "YACRS";
 $config["baseUrl"]                       = isset($_SERVER['HTTPS']) ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . "/";
 $config["login"]["type"]                 = "any";
 
+// "%A %e %B %Y at %H:%M"
+
+$config["datetime"]["date"]["short"]     = "d/m/y";
+$config["datetime"]["date"]["long"]      = "d F Y \\a\\t";
+$config["datetime"]["time"]["short"]     = "H:i";
+$config["datetime"]["time"]["long"]      = "H:i";
+$config["datetime"]["datetime"]["short"] = $config["datetime"]["date"]["short"] . " " . $config["datetime"]["time"]["short"];
+$config["datetime"]["datetime"]["long"]  = $config["datetime"]["date"]["long"] . " " . $config["datetime"]["time"]["long"];
 
 // Get database details from docker
 $config["database"]["host"]              = getenv("MYSQL_HOST");

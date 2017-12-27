@@ -27,7 +27,8 @@ class PageSessionRunQuestionResponse
         $responsesText = null;
 
         if(in_array($question->getType(), array("text", "textlong"))) {
-            $responsesText = "";
+            $responsesWordCloud = DatabaseResponse::loadWordcloud($sessionQuestionID, $mysqli);
+            $responsesText = DatabaseResponse::loadResponses($sessionQuestionID, $mysqli);
         }
 
         elseif($question->getType() == "mcq") {
@@ -47,6 +48,7 @@ class PageSessionRunQuestionResponse
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         $data["responsesMcq"] = $responsesMcq;
+        $data["responsesWordCloud"] = $responsesWordCloud;
         $data["responsesText"] = $responsesText;
         echo $templates->render("session/run/questions/response", $data);
     }

@@ -1,4 +1,13 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $sessions Session[]
+ */
 $this->layout("template",
     [
         "config" => $config,
@@ -12,7 +21,7 @@ $this->layout("template",
 ?>
 
 <?php $this->push("end"); ?>
-    <script src="<?=$config["baseUrl"]?>js/session/list.js" crossorigin="anonymous"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/list.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
 <?php $this->push("preContent"); ?>
@@ -22,7 +31,7 @@ $this->layout("template",
         <p class="lead">
             Yet Another Class Response System
         </p>
-        <form method="POST" action="<?= $config["baseUrl"] ?>session/join/" class="form-inline">
+        <form method="POST" action="<?=$this->e($config["baseUrl"])?>session/join/" class="form-inline">
             <div class="input-group element-center">
                 <input name="sessionID" id="sessionID" class="form-control" placeholder="Session Number"
                        type="text">
@@ -42,9 +51,9 @@ $this->layout("template",
         </div>
         <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
             <div class="float-right">
-                <a href="<?=$config["baseUrl"]?>session/new/" class="btn btn-primary">New Session</a>
+                <a href="<?=$this->e($config["baseUrl"])?>session/new/" class="btn btn-primary">New Session</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
-<?= $this->fetch("session/list", ["sessions" => $sessions, "config" => $config]) ?>
+<?=$this->fetch("session/list", ["sessions" => $sessions, "user" => $user, "config" => $config])?>

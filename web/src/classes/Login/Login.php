@@ -50,14 +50,6 @@ class Login
 
     public static function anonymousUserCreate($nickname, $mysqli) {
 
-        // Random anonymous username
-        $username = "anonymous-" . bin2hex(openssl_random_pseudo_bytes(32));
-
-        // While username already exist, generate a new random username
-        while(DatabaseUser::checkUserExists($username, $mysqli)) {
-            $username = "anonymous-" . bin2hex(openssl_random_pseudo_bytes(32));
-        }
-
         // If no nickname, just use name Guest
         if(!$nickname) {
             $givenName = "";
@@ -72,9 +64,10 @@ class Login
 
         // Create a new user
         $user = new User();
-        $user->setUsername($username);
+        $user->setUsername(null);
         $user->setGivenName($givenName);
         $user->setSurname("$surname");
+        $user->setIsGuest(true);
 
         // Load additional details from the database
         $user = DatabaseUser::loadDetails($user, $mysqli);

@@ -1,4 +1,15 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $responsesMcq array
+ * @var $responsesWordCloud array
+ * @var $responsesText Response[]
+ */
 $this->layout("template",
     [
         "config" => $config,
@@ -31,11 +42,23 @@ function getColour($colours, $i) {
 
 ?>
 
+<?php $this->push("head"); ?>
+    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/run/question/response.css" />
+<?php $this->end(); ?>
+
 <?php $this->push("end"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js" crossorigin="anonymous"></script>
-    <script src="<?=$config["baseUrl"]?>js/session/question/response.js" crossorigin="anonymous"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/run/question/response.js" crossorigin="anonymous"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.js" charset="utf-8"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.layout.cloud.js"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.wordcloud.js"></script>
+
     <script>
-        initBarChartSection();
+        <?php if(isset($responsesMcq)): ?>
+            initBarChartSection();
+        <?php elseif(isset($responsesWordCloud)): ?>
+            initWordCloudSection('<?=str_replace("'","\'",json_encode($this->e($responsesWordCloud)))?>');
+        <?php endif; ?>
     </script>
 <?php $this->stop(); ?>
 
@@ -49,9 +72,12 @@ function getColour($colours, $i) {
             <a class="nav-link" href="#">Pie Chart</a>
         </li>
     <?php endif; ?>
-    <?php if(isset($responsesText)): ?>
+    <?php if(isset($responsesWordCloud)): ?>
         <li class="nav-item" id="nav-word-cloud">
             <a class="nav-link" href="#">Word Cloud</a>
+        </li>
+        <li class="nav-item" id="nav-responses">
+            <a class="nav-link" href="#">Responses</a>
         </li>
     <?php endif; ?>
 </ul>
@@ -62,6 +88,33 @@ function getColour($colours, $i) {
     </div>
     <div id="section-pie-chart" class="section">
         <canvas id="pie-chart" width="400" height="200"></canvas>
+    </div>
+<?php endif; ?>
+<?php if(isset($responsesWordCloud)): ?>
+    <div id="section-word-cloud" class="section">
+        <div id="wordcloud"></div>
+    </div>
+<?php endif; ?>
+<?php if(isset($responsesText)): ?>
+    <div id="section-responses" class="section">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Response</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($responsesText as $response): ?>
+                    <tr>
+                        <td><?=$this->e($response->getUsername())?></td>
+                        <td><?=date($config["datetime"]["datetime"]["short"], $response->getTime())?></td>
+                        <td><?=$this->e($response->getResponse())?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 <?php endif; ?>
 
@@ -75,13 +128,13 @@ function getColour($colours, $i) {
     <?php if(isset($responsesMcq)): ?>
         var labels = [
             <?php foreach($responsesMcq as $response): ?>
-                "<?=$response["choice"]?>",
+                "<?=$this->e($response["choice"])?>",
             <?php endforeach; ?>
         ];
 
         var data = [
             <?php foreach($responsesMcq as $response): ?>
-                <?=$response["count"]?$response["count"]:0?>,
+                <?=$response["count"]?$this->e($response["count"]):0?>,
             <?php endforeach; ?>
         ];
 

@@ -1,8 +1,16 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ */
 $this->layout("template",
     [
         "config" => $config,
-        "title" => $title,
+        "title" => "Anonymous Guest Login",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
     ]
@@ -10,10 +18,10 @@ $this->layout("template",
 ?>
 
 <?php $this->push("head"); ?>
-    <link href="<?=$config["baseUrl"]?>/css/login.css" rel="stylesheet">
+    <link href="<?=$this->e($config["baseUrl"])?>/css/login.css" rel="stylesheet">
 <?php $this->stop(); ?>
 
-<form id="login" action="<?=$config["baseUrl"]?>login/anonymous/" method="post">
+<form id="login" action="<?=$this->e($config["baseUrl"])?>login/anonymous/" method="post">
     <h1>Anonymous Guest Login</h1>
     <input name="nickname" id="nickname" class="form-control" placeholder="Nickname (Optional)" type="text">
 

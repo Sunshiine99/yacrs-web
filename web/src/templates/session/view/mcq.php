@@ -1,10 +1,10 @@
 <?php
-$this->layout("session/view/question",
-    [
-        "question" => $question,
-        "response" => $response,
-    ]
-);
+/**
+ * @var $question QuestionMcq
+ * @var $response Response
+ * @var $responses Response[]
+ * @var $session Session
+ */
 
 // If a response has already been made, disable the radio buttons
 $disabled = $response ? " disabled" : "";
@@ -18,7 +18,7 @@ foreach($question->getChoices() as $choice): ?>
     }
     ?>
     <input class="answer" id="answer-<?=$i?>" type="radio" value="<?=$i?>" name="answer"<?=$checked?><?=$disabled?>>
-    <label for="answer-<?=$i?>"><?=$choice->getChoice()?></label><br>
+    <label for="answer-<?=$i?>"><?=$this->e($choice->getChoice())?></label><br>
     <?php
     $i++;
 endforeach;

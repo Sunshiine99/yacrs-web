@@ -46,6 +46,43 @@ class DatabaseSessionQuestion
     }
 
     /**
+     * Update a question
+     * @param Question $question
+     * @param Session $session
+     * @param mysqli $mysqli
+     * @return bool success?
+     */
+    public static function update($question, $session, $mysqli) {
+        $active = Database::safe(bool2dbString($question->isActive()), $mysqli);
+        $sessionID = Database::safe($session->getSessionID(), $mysqli);
+        $sessionQuestionID = Database::safe($question->getSessionQuestionID(), $mysqli);
+
+        // If activating question and this is a teacher led questiom
+        if($question->isActive() && $session->getQuestionControlMode() === 0) {
+
+            // Disable all questions
+            $sql = "UPDATE `yacrs_sessionQuestions`
+                    SET `active` = '0'
+                    WHERE `yacrs_sessionQuestions`.`sessionID` = $sessionID";
+            $result = $mysqli->query($sql);
+
+            if(!$result)
+                return false;
+        }
+
+        // Activate question
+        $sql = "UPDATE `yacrs_sessionQuestions`
+                SET `active` = '$active'
+                WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result)
+            return false;
+
+        return DatabaseQuestion::update($question, $mysqli);
+    }
+
+    /**
      * @param int $sessionID
      * @param mysqli $mysqli
      * @return Question[]
@@ -112,35 +149,88 @@ class DatabaseSessionQuestion
     }
 
     /**
+     * Loads a single active question
      * @param int $sessionID
-     * @param int $startingAtID The SessionQuestion ID to look
+     * @param int $questionNumber The question number (starting at 0)
      * @param mysqli $mysqli
      * @return Question|null
      */
-    public static function loadActiveQuestion($sessionID, $startingAtID = 0, $mysqli) {
+    public static function loadActiveQuestion($sessionID, $questionNumber = 0, $mysqli) {
         $sessionID      = Database::safe($sessionID, $mysqli);
-        $startingAtID   = Database::safe($startingAtID, $mysqli);
+        $questionNumber = Database::safe($questionNumber, $mysqli);
 
         // Run SQL query to get active question
         $sql = "SELECT `ID`, `questionID`
                 FROM `yacrs_sessionQuestions` as sq
                 WHERE sq.`sessionID` = $sessionID
                 AND sq.`active` = 1
-                AND sq.`ID` >= $startingAtID
-                LIMIT 1";
+                LIMIT $questionNumber,1";
         $result = $mysqli->query($sql);
-
-        // Fetch the row returned from the table
-        $row = $result->fetch_assoc();
 
         if($result->num_rows <= 0) {
             return null;
         }
 
+        // Fetch the row returned from the table
+        $row = $result->fetch_assoc();
+
         $question = DatabaseQuestion::load($row["questionID"], $mysqli);
         $question->setSessionQuestionID($row["ID"]);
 
         return $question;
+    }
+
+    /**
+     * Loads all active questions for a session
+     * @param int $sessionID
+     * @param mysqli $mysqli
+     * @return Question[]|null
+     */
+    public static function loadAllActiveQuestions($sessionID, $mysqli) {
+        $sessionID      = Database::safe($sessionID, $mysqli);
+
+        // Run SQL query to get all active questions
+        $sql = "SELECT `ID`, `questionID`
+                FROM `yacrs_sessionQuestions` as sq
+                WHERE sq.`sessionID` = $sessionID
+                  AND sq.`active` = 1";
+        $result = $mysqli->query($sql);
+
+        // If error, return NULL
+        if(!$result) return null;
+
+        $output = [];
+
+        // Loop for every active question
+        while($row = $result->fetch_assoc()) {
+
+            // Load the question, if successful add to the output
+            if($question = DatabaseSessionQuestion::loadQuestion($row["ID"], $mysqli)) {
+                $output[] = $question;
+            }
+        }
+
+        return $output;
+    }
+
+    public static function countActiveQuestions($sessionID, $mysqli) {
+        $sessionID = Database::safe($sessionID, $mysqli);
+
+        // Run SQL query to get number of questions
+        $sql = "SELECT count(`ID`) as count
+                FROM `yacrs_sessionQuestions` as sq
+                WHERE sq.`sessionID` = $sessionID
+                  AND sq.`active` = 1";
+        $result = $mysqli->query($sql);
+
+        if($result->num_rows <= 0) {
+            return null;
+        }
+
+        // Fetch the row returned from the table
+        $row = $result->fetch_assoc();
+
+        return $row["count"];
     }
 
     /**
@@ -159,5 +249,9 @@ class DatabaseSessionQuestion
         $result = $mysqli->query($sql);
 
         return isset($result);
+    }
+
+    public static function loadCurrentQuestionNumber() {
+
     }
 }

@@ -3,7 +3,7 @@
 class Breadcrumb
 {
 
-    /** @var array */
+    /** @var BreadcrumbItem[] */
     private $items;
 
     /**
@@ -32,14 +32,14 @@ class Breadcrumb
     }
 
     /**
-     * @return array
+     * @return BreadcrumbItem[]
      */
     public function getItems() {
         return $this->items;
     }
 
     /**
-     * @param array $items
+     * @param BreadcrumbItem[] $items
      */
     public function setItems($items) {
         $this->items = $items;

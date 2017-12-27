@@ -24,6 +24,9 @@ class User
     /** @var bool */
     private $isAdmin = false;
 
+    /** @var bool */
+    private $isGuest = false;
+
     /**
      * User constructor.
      * @param array|null $array
@@ -48,6 +51,7 @@ class User
         $this->email            = isset($array["email"])            ? $array["email"]               : $this->email;
         $this->isSessionCreator = isset($array["isSessionCreator"]) ? $array["isSessionCreator"]    : $this->isSessionCreator;
         $this->isAdmin          = isset($array["isAdmin"])          ? $array["isAdmin"]             : $this->isAdmin;
+        $this->isGuest          = isset($array["isGuest"])          ? $array["isGuest"]             : $this->isGuest;
     }
 
     /**
@@ -62,6 +66,7 @@ class User
         $array["email"]             = $this->email;
         $array["isSessionCreator"]  = $this->isSessionCreator;
         $array["isAdmin"]           = $this->isAdmin;
+        $array["isGuest"]           = $this->isGuest;
         return $array;
     }
 
@@ -162,5 +167,19 @@ class User
      */
     public function setIsAdmin($isAdmin) {
         $this->isAdmin = $isAdmin;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGuest() {
+        return $this->isGuest;
+    }
+
+    /**
+     * @param bool $isGuest
+     */
+    public function setIsGuest($isGuest) {
+        $this->isGuest = $isGuest;
     }
 }

@@ -136,7 +136,8 @@ class ApiSession
         }
 
         // If user cannot edit this session, display correct error
-        if(!$session->checkIfUserCanEdit($user)) {
+        //if(!$session->checkIfUserCanEdit($user)) {
+        if($session->getOwner() !== $user->getUsername()) {
             ApiError::permissionDenied();
         }
 

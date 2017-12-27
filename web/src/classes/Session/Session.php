@@ -27,7 +27,7 @@ class Session
     private $defaultTimeLimit = 0;
 
     /** @var bool */
-    private $allowModifyAnswer = false;
+    private $allowModifyAnswer = true;
 
     /** @var bool */
     private $allowQuestionReview = false;
@@ -103,7 +103,16 @@ class Session
      * @return bool
      */
     public function checkIfUserCanEdit($user) {
-        return $this->owner==$user->getUsername() || $this->hasAdditionalUser($user);
+        return $this->owner==$user->getUsername() || $this->hasAdditionalUser($user->getUsername());
+    }
+
+    /**
+     * Check if a user is allowed to view this session
+     * @param User $user
+     * @return bool
+     */
+    public function checkIfUserCanView($user) {
+        return ($this->allowGuests) || (!$this->allowGuests && !$user->isGuest());
     }
 
     /**

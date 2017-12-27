@@ -15,8 +15,8 @@ class DatabaseResponseMcq
         $userID             = Database::safe($userID, $mysqli);
         $choiceID           = Database::safe($choiceID, $mysqli);
 
-        $sql = "INSERT INTO `yacrs_responseMcq` (`sessionQuestionID`, `userID`, `choiceID`) 
-                VALUES ('$sessionQuestionID', '$userID', '$choiceID')";
+        $sql = "INSERT INTO `yacrs_responseMcq` (`time`, `sessionQuestionID`, `userID`, `choiceID`) 
+                VALUES ('".time()."', '$sessionQuestionID', '$userID', '$choiceID')";
         $result = $mysqli->query($sql);
 
         if(!$result) {
@@ -105,7 +105,9 @@ class DatabaseResponseMcq
         $choiceID   = Database::safe($choiceID, $mysqli);
 
         $sql = "UPDATE `yacrs_responseMcq`
-                SET `choiceID` = '$choiceID'
+                SET
+                    `choiceID` = '$choiceID',
+                    `time` = '".time()."'
                 WHERE `yacrs_responseMcq`.`ID` = $responseID";
         $result = $mysqli->query($sql);
 

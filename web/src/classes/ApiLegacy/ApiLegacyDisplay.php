@@ -35,7 +35,5 @@ class ApiLegacyDisplay
         else {
             echo "Cannot Display Question Type";
         }
-
-        echo "<script>alert('xyz')</script>";
     }
 }

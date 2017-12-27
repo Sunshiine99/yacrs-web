@@ -6,6 +6,10 @@ form.new .question:not(#question-mcq) {
     width: 100%;
 }
 
+#allow-multiple-responses {
+    margin-top: 10px;
+}
+
 #add-more-button-container {
     padding: 0;
 }

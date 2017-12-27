@@ -6,12 +6,6 @@ class PageLogin
     public static function login() {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
-        $config = Flight::get("config");
-
-        // Setup Page breadcrumbs
-        //$breadcrumbs = new Breadcrumb();
-        //$breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        //$breadcrumbs->addItem("Login");
 
         //$data["breadcrumbs"] = $breadcrumbs;
         echo $templates->render("login/login", $data);

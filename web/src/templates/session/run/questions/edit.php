@@ -1,5 +1,12 @@
 <?php
 /**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $session Session
  * @var $question Question|QuestionMcq|QuestionText|QuestionTextLong
  */
 $this->layout("template",
@@ -31,7 +38,7 @@ else {
     $choices = [];
 
     // If MCQ add choices to array
-    if(get_class($question) === "QuestionMcq")
+    if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"]))
         foreach ($question->getChoices() as $choice)
             array_push($choices, $choice->getChoice());
 
@@ -44,15 +51,15 @@ else {
 ?>
 
 <?php $this->push("head"); ?>
-    <link rel="stylesheet" type="text/css" href="<?=$config["baseUrl"]?>css/session/run/question/edit.css" />
+    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/run/question/edit.css" />
 <?php $this->end(); ?>
 
 <?php $this->push("end"); ?>
-    <script src="<?=$config["baseUrl"]?>js/session/run/question/edit.js"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/run/question/edit.js"></script>
 <?php $this->end(); ?>
 
 <h2 class="page-section">
-    <?=$newEditText?> Question
+    <?=$this->e($newEditText)?> Question
 </h2>
 
 <form id="" action="." method="POST" class="form-horizontal<?=$new?" new":""?>">
@@ -64,6 +71,7 @@ else {
             <div class="col-sm-10">
                 <select id="questionType" name="questionType" class="form-control" tabindex="1">
                     <option selected="1" value="mcq">Multiple Choice Question</option>
+                    <option value="mrq">Multiple Response Question</option>
                     <option value="text">Text Input</option>
                     <option value="textlong">Long Text Input</option>
                 </select>
@@ -72,18 +80,18 @@ else {
 
     <?php // If this is editing an existing question, add type and session question id as hidden input field ?>
     <?php else: ?>
-        <input type="hidden" name="questionType" value="<?=$question->getType()?>">
-        <input type="hidden" name="sqid" value="<?=$question->getSessionQuestionID()?>">
+        <input type="hidden" name="questionType" value="<?=$this->e($question->getType())?>">
+        <input type="hidden" name="sqid" value="<?=$this->e($question->getSessionQuestionID())?>">
     <?php endif; ?>
 
     <div class="form-group row" id="questions-row">
         <label class="col-sm-2 control-label" for="question">Question</label>
         <div class="col-sm-10">
-            <input class="form-control" name="question" id="mcQuestion" value="<?=isset($question)?$question->getQuestion():""?>" size="80" type="text" tabindex="1">
+            <input class="form-control" name="question" id="mcQuestion" value="<?=isset($question)?$this->e($question->getQuestion()):""?>" size="80" type="text" tabindex="1">
         </div>
     </div>
 
-    <?php if($new || get_class($question) == "QuestionMcq"): ?>
+    <?php if($new || in_array(get_class($question), ["QuestionMcq", "QuestionMrq"])): ?>
         <div id="question-mcq" class="form-group row question">
             <label for="definition" class="control-label col-sm-2">
                 <span>Choices</span>
@@ -93,7 +101,7 @@ else {
                     <?php $i = 0; ?>
                     <?php foreach ($choices as $choice): ?>
                         <div class="input-group input-add-more-item">
-                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input" type="text" value="<?=$choice?>" tabindex="1">
+                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input" type="text" value="<?=$this->e($choice)?>" tabindex="1">
                             <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>
@@ -103,6 +111,7 @@ else {
                 </div>
                 <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
                     <input class="submit btn btn-primary" name="submit" value="<?=$saveText?>" type="submit" tabindex="1">
+                    <a onclick="history.back()" class="btn btn-light btn-light-border">Cancel</a>
                     <button class="btn btn-light btn-light-border input-add-more-input float-right" type="button">
                         Add Another Choice
                     </button>
@@ -114,10 +123,11 @@ else {
         <div id="question-text" class="form-group row question">
             <div class="col-sm-10 offset-sm-2">
                 <input class="submit btn btn-primary" name="submit" value="<?=$saveText?>" type="submit" tabindex="1">
+                <a onclick="history.back()" class="btn btn-light btn-light-border">Cancel</a>
             </div>
         </div>
     <?php endif; ?>
-    <?php if($new || !in_array(get_class($question), ["QuestionMcq", "QuestionText", "QuestionTextLong"])): ?>
+    <?php if($new || !in_array(get_class($question), ["QuestionMcq", "QuestionMrq", "QuestionText", "QuestionTextLong"])): ?>
         <div id="question-other" class="form-group row question">
             Question type may not be supported.
         </div>

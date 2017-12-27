@@ -4,6 +4,7 @@ $("#questionType").change(function() {
     // Switch on question type
     switch($(this).val()) {
         case "mcq":
+        case "mrq":
             question.css("display", "none");
             $("#question-mcq").css("display", "flex");
             break;

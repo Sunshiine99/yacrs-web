@@ -10,13 +10,32 @@ body main .question-list li.no-questions:only-child {
     display: inline!important;
 }
 
-body main .question-list li.question-item .actions,
-body main .question-list li.question-item .confirm-delete {
-    margin-top: 5px;
-}
+    body main .question-list li.question-item .question-number {
+        line-height: 50px;
+        margin-right: 10px;
+    }
 
-body main .question-list :nth-child(2) {
-    margin-top: 0;
-    border-top-right-radius: .25rem;
-    border-top-left-radius: .25rem;
-}
+    body main .question-list li.question-item .actions,
+    body main .question-list li.question-item .confirm-delete {
+        margin-top: 5px;
+    }
+
+    body main .question-list li.question-item.active-question .activate {
+        display: none;
+    }
+
+    body main .question-list li.question-item:not(.active-question) .deactivate {
+        display: none;
+    }
+
+    body main .question-list :nth-child(2) {
+        margin-top: 0;
+        border-top-right-radius: .25rem;
+        border-top-left-radius: .25rem;
+    }
+
+    /* Ensures "Make Active" button always has rounded left */
+    body main .question-list .activate {
+        border-top-left-radius: .25rem!important;
+        border-bottom-left-radius: .25rem!important;
+    }

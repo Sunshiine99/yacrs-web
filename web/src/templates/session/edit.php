@@ -1,4 +1,14 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $session Session
+ */
+
 $title = $session->getSessionID() ? "Edit Session" : "New Session";
 
 $this->layout("template",
@@ -22,43 +32,50 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
 $title = $session->getSessionID() ? "Edit Session" : "New Session";
 
 ?>
+
+<?php $this->push("end"); ?>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/edit.js" crossorigin="anonymous"></script>
+<?php $this->stop(); ?>
+
 <div class="row page-header">
     <div class="col-sm-12">
         <div class="float-left">
-            <h1><?=$title?></h1>
+            <h1><?=$this->e($title)?></h1>
         </div>
         <?php if($session->getSessionID()): ?>
             <div class="float-right">
-                <a href="<?=$config["baseUrl"]?>session/<?=$session->getSessionID()?>/run/" class="btn btn-primary pull-right">Run Session</a>
+                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/" class="btn btn-primary pull-right">Run Session</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
 <form action="." method="POST" class="form-horizontal" style="display:block; width: 100%;">
-    <input name="sessionID" value="<?=$session->getSessionID()?>" type="hidden">
+    <input name="sessionID" value="<?=$this->e($session->getSessionID())?>" type="hidden">
     <div class="form-group row">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
-            <input class="form-control" name="title" id="title" value="<?=$session->getTitle()?>" size="80" type="text" placeholder="Title">
+            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Title">
         </div>
     </div>
-    <div class="form-group row">
+    <div class="form-group row advanced">
         <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier</label>
         <div class="col-sm-9">
-            <input class="form-control" name="courseID" id="courseID" value="<?=$session->getCourseID()?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)">
+            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)">
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-3 offset-sm-3">
             <div class="checkbox">
                 <label>
+                    <input type="hidden" value="0" name="allowGuests">
                     <input name="allowGuests" id="allowGuests" value="1" type="checkbox"<?=$allowGuests?>>
                     Allow Anonymous Guest Users</label>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 advanced">
             <div class="checkbox">
                 <label>
+                    <input type="hidden" value="0" name="onSessionList">
                     <input name="onSessionList" id="onSessionList" value="1" type="checkbox"<?=$onSessionList?>>
                     Display On User's Session List
                 </label>
@@ -67,6 +84,7 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         <div class="col-sm-3">
             <div class="checkbox">
                 <label>
+                    <input type="hidden" value="0" name="classDiscussionEnabled">
                     <input name="classDiscussionEnabled" id="classDiscussionEnabled" value="1" type="checkbox"<?=$classDiscussionEnabled?>>
                     Enable Class Discussion
                 </label>
@@ -74,7 +92,7 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         </div>
     </div>
     <fieldset>
-        <legend>Question settings</legend>
+        <legend class="advanced">Question settings</legend>
         <div class="form-group row">
             <label class="col-sm-3 control-label" for="questionControlMode">
                 Question Control Mode
@@ -100,23 +118,24 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
                 </select>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="defaultQuActiveSecs" class="col-sm-3 col-form-label">Default Time Limit</label>
+        <div class="form-group row advanced">
+            <label for="defaultTimeLimit" class="col-sm-3 col-form-label">Default Time Limit</label>
             <div class="col-sm-2">
                 <label class="form-check-label">
-                    <input id="defaultQuActiveSecsEnable" class="form-check-input" value="" type="checkbox">
+                    <input id="defaultTimeLimitEnable" class="form-check-input" value="" type="checkbox"<?=$session->getDefaultTimeLimit()!=0?" checked":""?>>
                     Enable
                 </label>
             </div>
             <div class="col-sm-7">
-                <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$session->getDefaultTimeLimit()?>" size="8"
-                       type="text" placeholder="Default Time Limit">
+                <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
+                       type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
         </div>
         <div class="form-group row">
             <div class="col-sm-4 offset-sm-3">
                 <div class="checkbox">
                     <label>
+                        <input type="hidden" value="0" name="allowModifyAnswer">
                         <input name="allowModifyAnswer" id="allowModifyAnswer" value="1" type="checkbox"<?=$allowModifyAnswer?>>
                         Allow students to change their answer</label>
                 </div>
@@ -124,19 +143,20 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
             <div class="col-sm-5">
                 <div class="checkbox">
                     <label>
+                        <input type="hidden" value="0" name="allowQuestionReview">
                         <input name="allowQuestionReview" id="allowQuestionReview" value="1" type="checkbox"<?=$allowQuestionReview?>>
                         Allow Students to view their answers after class</label>
                 </div>
             </div>
         </div>
     </fieldset>
-    <fieldset>
+    <fieldset class="advanced">
         <legend>Additional Users</legend>
         <div class="form-group row">
             <label class="col-sm-3 control-label" for="teachers">Additional users who can run session (comma delimited
                 list of user IDs)</label>
             <div class="col-sm-9">
-                <input class="form-control" name="additionalUsersCsv" id="additionalUsersCsv" value="<?=$session->getAdditionalUsersCsv()?>" size="80" type="text">
+                <input class="form-control" name="additionalUsersCsv" id="additionalUsersCsv" value="<?=$this->e($session->getAdditionalUsersCsv())?>" size="80" type="text">
             </div>
         </div>
     </fieldset>
@@ -144,6 +164,12 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         <div class="col-sm-9 offset-sm-3">
             <input class="submit btn btn-primary" name="submit" value="<?=$submitText?>" type="submit">
             <a onclick="window.history.back();" class="submit btn btn-light btn-light-border">Cancel</a>
+
+            <div class="pull-right">
+                <a id="advanced-settings" class="submit btn btn-light btn-light-border">
+                    View Advanced Settings
+                </a>
+            </div>
         </div>
     </div>
 </form>
@@ -162,6 +188,7 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         font-weight: bolder;
     }
 
+
     .form-check-label {
         margin-top: 3px;
     }
@@ -172,5 +199,9 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
 
     .delete.btn {
         border: 1px solid #ced4da;
+    }
+
+    .advanced {
+        display: none;
     }
 </style>

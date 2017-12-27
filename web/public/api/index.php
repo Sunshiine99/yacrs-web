@@ -29,9 +29,10 @@ Flight::route("/session/@sessionID/", array("ApiSession", "details"));
 Flight::route("/session/@sessionID/edit/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/delete/", array("ApiSession", "delete"));
 Flight::route("/session/@sessionID/question/", array("ApiQuestion", "listSessionQuestion"));
+Flight::route("/session/@sessionID/question/active/", array("ApiQuestion", "activeSessionQuestion"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/", array("ApiQuestion", "viewSessionQuestion"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/delete/", array("ApiQuestion", "deleteSessionQuestion"));
-
+Flight::route("/session/@sessionID/question/@sessionQuestionID/edit/", array("ApiQuestion", "edit"));
 
 Flight::map('error', array("ApiError", "handler"));
 Flight::map('notFound', array("ApiError", "notFound"));

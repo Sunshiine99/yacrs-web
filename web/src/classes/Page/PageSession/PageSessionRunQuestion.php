@@ -61,8 +61,8 @@ class PageSessionRunQuestion extends PageSessionRun
             die();
         }
 
-        // If MCQ question
-        if($question->getType() == "mcq") {
+        // If MCQ or MRQ question
+        if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"])) {
 
             // Loop for every posted value
             foreach($_POST as $key => $value) {
@@ -85,7 +85,6 @@ class PageSessionRunQuestion extends PageSessionRun
     }
 
     public static function edit($sessionID, $sessionQuestionID) {
-
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $templates League\Plates\Engine
@@ -132,7 +131,7 @@ class PageSessionRunQuestion extends PageSessionRun
         $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);
 
         // If MCQ question
-        if(get_class($question) == "QuestionMcq") {
+        if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"])) {
 
             // Remove existing choices
             $question->setChoices([]);

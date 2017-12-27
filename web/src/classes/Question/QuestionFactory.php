@@ -15,6 +15,9 @@ class QuestionFactory
             case "mcq":
                 return new QuestionMcq($array);
                 break;
+            case "mrq":
+                return new QuestionMrq($array);
+                break;
             case "text":
                 return new QuestionText($array);
                 break;

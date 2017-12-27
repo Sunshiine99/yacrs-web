@@ -15,7 +15,9 @@ class PageHome
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        $data["sessions"] = DatabaseSession::loadUserSessions($user->getId(), $mysqli);
+        $sessions = DatabaseSession::loadUserHistoryAndEditableSessions($user->getId(), $mysqli);
+
+        $data["sessions"] = $sessions;
 
         $data["user"] = $user;
         echo $templates->render("home", $data);

@@ -1,3 +1,15 @@
+<?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $logo string
+ * @var $footer string
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,31 +20,56 @@
 
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="theme-color" content="#003865">
-        <link rel="apple-touch-icon" sizes="128x128" href="<?=$config["baseUrl"]?>img/uofg/icon_hi.png">
-        <link rel="apple-touch-icon" sizes="64x64" href="<?=$config["baseUrl"]?>img/uofg/icon_small.png">
+        <link rel="apple-touch-icon" sizes="128x128" href="<?=$this->e($config["baseUrl"])?>img/uofg/icon_hi.png">
+        <link rel="apple-touch-icon" sizes="64x64" href="<?=$this->e($config["baseUrl"])?>img/uofg/icon_small.png">
 
         <title>YACRS</title>
 
-
-
-
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
 
-
-
-        <link rel="stylesheet" href="<?=$config["baseUrl"]?>css/bootstrap-4.0.0-beta.2.min.css">
+        <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/bootstrap-4.0.0-beta.2.min.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="<?=$config["baseUrl"]?>css/style.css" rel="stylesheet">
-        <link href="<?=$config["baseUrl"]?>css/bootstrap-extra.css" rel="stylesheet">
+        <link href="<?=$this->e($config["baseUrl"])?>css/style.css" rel="stylesheet">
+        <link href="<?=$this->e($config["baseUrl"])?>css/bootstrap-extra.css" rel="stylesheet">
         <?=$this->section("head")?>
     </head>
     <body>
+        <!--[if lt IE 9]>
+        <div id="incompatible-browser">
+            <h1>Incompatible Browser</h1>
+            <p>
+                You are using a web browser which is not compatible with YACRS.
+            </p>
+            <p>
+                Please consider using/installing one of the following modern web browsers:
+            </p>
+            <p>
+                <a href="https://www.mozilla.org/firefox/" target="_blank">
+                    Mozilla Firefox
+                </a>
+                <br>
+                <a href="https://www.google.com/chrome/" target="_blank">
+                    Google Chrome
+                </a>
+                <br>
+                <a href="https://www.microsoft.com/windows/microsoft-edge" target="_blank">
+                    Microsoft Edge
+                </a>
+                <br>
+                <a href="https://www.microsoft.com/en-gb/download/internet-explorer.aspx" target="_blank">
+                    Internet Explorer 11
+                </a>
+            </p>
+        </div>
+        <![endif]-->
         <?php $this->insert("partials/navigation", ["config" => $config, "logo" => $logo, "user" => $user]) ?>
         <main role="main">
             <?php $this->insert("partials/breadcrumb", ["breadcrumbs" => $breadcrumbs]) ?>
             <?=$this->section("preContent")?>
             <div class="container">
-                <?php $this->insert("partials/alert", ["alert" => $alert]) ?>
+                <div id="alert">
+                    <?php $this->insert("partials/alert", ["alert" => $alert]) ?>
+                </div>
                 <?=$this->section("content")?>
             </div>
             <?=$this->section("postContent")?>
@@ -44,18 +81,43 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="<?=$config["baseUrl"]?>js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-        <script src="<?=$config["baseUrl"]?>js/popper.min.js"></script>
-        <script src="<?=$config["baseUrl"]?>js/bootstrap-4.0.0-beta.2.min.js"></script>
+        <script src="<?=$this->e($config["baseUrl"])?>js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+        <script src="<?=$this->e($config["baseUrl"])?>js/popper.min.js"></script>
+        <script src="<?=$this->e($config["baseUrl"])?>js/bootstrap-4.0.0-beta.2.min.js"></script>
 
         <script>
+            var baseUrl = "<?=$this->e($config["baseUrl"])?>";
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
-            })
-            var baseUrl = "<?=$config["baseUrl"]?>";
+            });
+
+            /**
+             * Displays an alert in HTML to the user
+             * @param alert in format "
+             *      var alert = {
+             *          title: 'TITLE HERE',
+             *          message: 'MESSAGE HERE',
+             *          type: 'danger',
+             *          dismissable: true,
+             *      };
+             * "
+             */
+            function alerter(alert) {
+                var aClass = alert.dismissable ? " alert-dismissable" : "";
+                var title = alert.title ? "<strong>" + alert.title + "</strong> " : "";
+
+                // Construct HTML for alert
+                var html =  "<div class='alert alert-" + alert.type + aClass + "' role='alert'>";
+                if(alert.dismissable)
+                    html +=     "<a href='#' class='close' data-dismiss='alert' aria-label='close' title='close'>×</a>";
+                html +=     title + alert.message;
+                html +=     "</div>";
+
+                $("#alert").append(html);
+            }
         </script>
 
-        <script src="<?=$config["baseUrl"]?>js/bootstrap-extra.js" crossorigin="anonymous"></script>
+        <script src="<?=$this->e($config["baseUrl"])?>js/bootstrap-extra.js" crossorigin="anonymous"></script>
 
         <?=$this->section("end")?>
     </body>

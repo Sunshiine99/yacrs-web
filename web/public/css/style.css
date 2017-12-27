@@ -31,11 +31,25 @@ h1, h2 {
         margin-top: 10px;
     }
 
+
+
 html, body {
     height: 100%;
     background-color: #F7F7F7;
     font-family: sans-serif;
 }
+
+    body #incompatible-browser {
+        background-color: yellow;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 10000;
+        text-align: center;
+        padding-top: 50px;
+    }
 
     body .navbar {
         background-color: #563D7C!important;
@@ -63,6 +77,10 @@ html, body {
 
         body .navbar a.nav-link.disabled {
             color: #868e96!important;
+        }
+
+        body .navbar .navbar-brand {
+            outline:none;
         }
 
             body .navbar .navbar-brand img {
@@ -120,11 +138,10 @@ html, body {
             body main .session-list .actions,
             body main .session-list .confirm-delete {
                 margin-top: 5px;
-                width: 275px;
             }
 
                     body main .session-list .actions button {
-                        width: 33.33%;
+
                     }
 
                     body main .session-list .confirm-delete button {
@@ -142,6 +159,10 @@ html, body {
         body main .error-container {
             text-align: center;
             margin-top: 40px;
+        }
+
+        body main ul.pagination li.page-item a {
+            outline: none;
         }
 
 body footer {
@@ -167,11 +188,11 @@ body footer {
 }
 
 .btn-light-border {
-    border-color: #ccc;
+    border-color: #ccc!important;
 }
 
 .btn-danger-border {
-    border-color: #aa2935;
+    border-color: #aa2935!important;
 }
 
 .display-none {

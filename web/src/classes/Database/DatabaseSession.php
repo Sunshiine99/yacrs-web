@@ -272,4 +272,73 @@ class DatabaseSession
 
         return $result ? true : false;
     }
+
+    /**
+     * Load sessions that the user can edit and they have joined
+     * @param int $userID
+     * @param mysqli $mysqli
+     * @return Session[]|null
+     */
+    public static function loadUserHistoryAndEditableSessions($userID, $mysqli) {
+        $userID = Database::safe($userID, $mysqli);
+
+        // Run query to get session IDs
+        $sql = "SELECT `sessionID`, MAX(`time`) as time
+                    FROM (
+                    (
+                        SELECT
+                            `sessionID`,
+                            `lastUpdate` as time
+                        FROM `yacrs_sessions`
+                        WHERE `yacrs_sessions`.`ownerID` = $userID
+                    )
+                    UNION
+                    (
+                        SELECT
+                            s.`sessionID`,
+                            s.`lastUpdate` as time
+                        FROM
+                            `yacrs_sessionsAdditionalUsers` as sau,
+                            `yacrs_sessions` as s
+                        WHERE sau.`sessionID` = s.`sessionID`
+                          AND sau.`userID` = $userID
+                    )
+                    UNION
+                    (
+                        SELECT
+                            sh.`sessionID`,
+                            MAX(sh.`time`) as time
+                        FROM
+                          `yacrs_sessionHistory` as sh,
+                          `yacrs_sessions` as s
+                        WHERE sh.`userID` = $userID
+                          AND sh.`sessionID` = s.`sessionID`
+                          /* Only get sessions that should be shown in the session list */
+                          AND s.`onSessionList` = 1
+                        GROUP BY `sessionID`
+                    )
+                ) as sessions
+                GROUP BY `sessionID`
+                ORDER BY `time` DESC";
+        $result = $mysqli->query($sql);
+
+        // If error, return null
+        if(!$result) return null;
+
+        $output = [];
+
+        // Loop for every row in the database result
+        while($row = $result->fetch_assoc()) {
+
+            // Load session object from session ID
+            $session = DatabaseSession::loadSession($row["sessionID"], $mysqli);
+
+            // If success, Add to output array
+            if($session) {
+                $output[] = $session;
+            }
+        }
+
+        return $output;
+    }
 }

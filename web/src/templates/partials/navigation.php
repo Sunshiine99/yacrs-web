@@ -1,7 +1,14 @@
+<?php
+/**
+ * @var $config array
+ * @var $logo string
+ * @var $user User
+ */
+?>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top">
     <a class="navbar-brand" href="<?=$config["baseUrl"]?>">
         <?php if($logo): ?>
-            <img src="<?=$config["baseUrl"]?><?=$logo?>">
+            <img src="<?=$this->e($config["baseUrl"])?><?=$this->e($logo)?>">
         <?php else: ?>
         <div class="navbar-brand-text">
             YACRS
@@ -23,10 +30,10 @@
                         <a class="nav-link dropdown-toggle" href=#" id="dropdown-sessions"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sessions</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-sessions">
-                            <a class="dropdown-item" href="<?=$config["baseUrl"]?>session/">
+                            <a class="dropdown-item" href="<?=$this->e($config["baseUrl"])?>session/">
                                 Manage Sessions
                             </a>
-                            <a class="dropdown-item" href="<?=$config["baseUrl"]?>session/new/">
+                            <a class="dropdown-item" href="<?=$this->e($config["baseUrl"])?>session/new/">
                                 New Session
                             </a>
                         </div>
@@ -41,11 +48,11 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <span class="navbar-text d-none d-md-block d-lg-block d-xl-block">
-                        <?=$user->getGivenName()?> <?=$user->getSurname()?>
+                        <?=$this->e($user->getGivenName())?> <?=$this->e($user->getSurname())?>
                     </span>
                 </li>
                 <li class="nav-item">
-                    <a href="<?=$config["baseUrl"]?>logout/" class="btn btn-light">
+                    <a href="<?=$this->e($config["baseUrl"])?>logout/" class="btn btn-light">
                         <i class="fa fa-lock"></i>
                         Logout
                     </a>

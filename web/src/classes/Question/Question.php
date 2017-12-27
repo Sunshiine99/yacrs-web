@@ -34,7 +34,7 @@ class Question
         $this->fromArray($array);
     }
 
-    private function fromArray($array = []) {
+    public function fromArray($array = []) {
         $this->setQuestionID(       isset($array["questionID"])        ? $array["questionID"]        : $this->getQuestionID());
         $this->setSessionQuestionID(isset($array["sessionQuestionID"]) ? $array["sessionQuestionID"] : $this->getSessionQuestionID());
         $this->setType(             isset($array["type"])              ? $array["type"]              : $this->getType());
@@ -163,6 +163,6 @@ class Question
      * @param bool $active
      */
     public function setActive($active) {
-        $this->active = boolval($active);
+        $this->active = text2bool($active);
     }
 }

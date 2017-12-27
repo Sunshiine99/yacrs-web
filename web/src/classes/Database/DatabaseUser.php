@@ -9,6 +9,24 @@ class DatabaseUser
      */
     public static function loadDetails($user, $mysqli) {
 
+        // If this is a guest, insert a new row
+        if($user->isGuest()) {
+
+            // Run query to INSERT new row
+            $sql = "INSERT INTO `yacrs_user` (`username`, `isGuest`)
+                    VALUES (NULL, 1)";
+            $result = $mysqli->query($sql);
+
+            // If error, return null
+            if(!$result) return null;
+
+            // Get database id
+            $user->setId($mysqli->insert_id);
+
+            // Return the user
+            return $user;
+        }
+
         // Get the username and make it database safe
         $username = Database::safe($user->getUsername(), $mysqli);
 
@@ -40,9 +58,14 @@ class DatabaseUser
 
         // Otherwise, setup table with default values
         else {
+
+            // Run query to insert username into database
             $sql = "INSERT INTO `yacrs_user` (`username`)
                     VALUES ('$username')";
-            $mysqli->query($sql);
+            $result = $mysqli->query($sql);
+
+            // If error, return null
+            if(!$result) return null;
 
             // Get database id
             $user->setId($mysqli->insert_id);

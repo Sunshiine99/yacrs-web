@@ -42,8 +42,9 @@ class DatabaseQuestion
         catch(Exception $e) { return null; }
 
         // Load question type specific details
-        switch($row["type"]) {
-            case "mcq":
+        switch(get_class($question)) {
+            case "QuestionMcq":
+            case "QuestionMrq":
                 $question = self::loadMcq($question, $questionID, $mysqli);
         }
 
@@ -111,6 +112,7 @@ class DatabaseQuestion
 
         switch(get_class($question)) {
             case "QuestionMcq":
+            case "QuestionMrq":
                 self::insertMcq($question, $questionID, $mysqli);
         }
 
@@ -177,6 +179,7 @@ class DatabaseQuestion
 
         switch(get_class($question)) {
             case "QuestionMcq":
+            case "QuestionMrq":
                 self::updateMcq($question, $mysqli);
         }
 
@@ -208,6 +211,9 @@ class DatabaseQuestion
                 break;
             case "textlong":
                 return 3;
+                break;
+            case "mrq":
+                return 4;
                 break;
         }
     }

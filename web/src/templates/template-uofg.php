@@ -1,4 +1,12 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ */
 $this->layout("base",
     [
         "config" => $config,
@@ -13,8 +21,8 @@ $this->layout("base",
 );
 ?>
 <?php $this->push("head"); ?>
-    <link href="<?=$config["baseUrl"]?>css/style-uofg.css" rel="stylesheet">
-    <link rel="icon" href="<?=$config["baseUrl"]?>img/uofg/favicon.ico">
+    <link href="<?=$this->e($config["baseUrl"])?>css/style-uofg.css" rel="stylesheet">
+    <link rel="icon" href="<?=$this->e($config["baseUrl"])?>img/uofg/favicon.ico">
 <?php $this->stop(); ?>
 
 <?=$this->section("content")?>

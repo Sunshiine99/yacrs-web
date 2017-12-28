@@ -13,7 +13,8 @@ $this->layout("template",
         "title" => "Login",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
-        "user" => $user
+        "user" => $user,
+        "alert" => $alert
     ]
 );
 ?>

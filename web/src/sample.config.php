@@ -4,7 +4,7 @@ $config = [];
 $config["version"]                       = "2.0.0indev";
 $config["title"]                         = "YACRS";
 $config["baseUrl"]                       = isset($_SERVER['HTTPS']) ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . "/";
-$config["login"]["type"]                 = "any";
+$config["login"]["type"]                 = "some";
 
 // "%A %e %B %Y at %H:%M"
 

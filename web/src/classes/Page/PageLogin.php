@@ -25,6 +25,21 @@ class PageLogin
             $config,
             $mysqli);
 
+        // If invalid login
+        if(!$user) {
+
+            $alert = new Alert();
+            $alert->setType("danger");
+            $alert->setDismissable(true);
+            $alert->setTitle("Error");
+            $alert->setMessage("Invalid username or password");
+            Alert::displayAlertSession($alert);
+
+            // Forward to login
+            header("Location: " . $config["baseUrl"] . "login/");
+            die();
+        }
+
         // Forward the user home
         header("Location: " . $config["baseUrl"]);
         die();

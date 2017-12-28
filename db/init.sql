@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Dec 05, 2017 at 08:16 PM
--- Server version: 5.7.19
--- PHP Version: 7.0.21
+-- Generation Time: Dec 28, 2017 at 12:59 AM
+-- Server version: 5.7.20
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -51,21 +51,6 @@ CREATE TABLE `yacrs_questions` (
   `lastUpdate` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `yacrs_questions`
---
-
-INSERT INTO `yacrs_questions` (`questionID`, `question`, `type`, `created`, `lastUpdate`) VALUES
-  (1, 'MCQ A-D', 1, 1512504771, 1512504771),
-  (2, 'MCQ A-E', 1, 1512504792, 1512504792),
-  (3, 'MCQ A-F', 1, 1512504808, 1512504808),
-  (4, 'MCQ A-G', 1, 1512504825, 1512504825),
-  (5, 'MCQ A-H', 1, 1512504851, 1512504851),
-  (6, 'Text Input', 2, 1512504867, 1512504867),
-  (7, 'Long Text Input', 3, 1512504875, 1512504875),
-  (8, 'True/False', 1, 1512504891, 1512504891),
-  (9, 'True/False/Don\'t Know', 1, 1512504914, 1512504914);
-
 -- --------------------------------------------------------
 
 --
@@ -78,47 +63,6 @@ CREATE TABLE `yacrs_questionsMcqChoices` (
   `choice` varchar(80) NOT NULL,
   `correct` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `yacrs_questionsMcqChoices`
---
-
-INSERT INTO `yacrs_questionsMcqChoices` (`ID`, `questionID`, `choice`, `correct`) VALUES
-  (1, 1, 'A', 0),
-  (2, 1, 'B', 0),
-  (3, 1, 'C', 0),
-  (4, 1, 'D', 0),
-  (5, 2, 'A', 0),
-  (6, 2, 'B', 0),
-  (7, 2, 'C', 0),
-  (8, 2, 'D', 0),
-  (9, 2, 'E', 0),
-  (10, 3, 'A', 0),
-  (11, 3, 'B', 0),
-  (12, 3, 'C', 0),
-  (13, 3, 'D', 0),
-  (14, 3, 'E', 0),
-  (15, 3, 'F', 0),
-  (16, 4, 'A', 0),
-  (17, 4, 'B', 0),
-  (18, 4, 'C', 0),
-  (19, 4, 'D', 0),
-  (20, 4, 'E', 0),
-  (21, 4, 'F', 0),
-  (22, 4, 'G', 0),
-  (23, 5, 'A', 0),
-  (24, 5, 'B', 0),
-  (25, 5, 'C', 0),
-  (26, 5, 'D', 0),
-  (27, 5, 'E', 0),
-  (28, 5, 'F', 0),
-  (29, 5, 'G', 0),
-  (30, 5, 'H', 0),
-  (31, 8, 'True', 0),
-  (32, 8, 'False', 0),
-  (33, 9, 'True', 0),
-  (34, 9, 'False', 0),
-  (35, 9, 'Don\'t Know', 0);
 
 -- --------------------------------------------------------
 
@@ -138,7 +82,8 @@ CREATE TABLE `yacrs_questionTypes` (
 INSERT INTO `yacrs_questionTypes` (`ID`, `name`) VALUES
   (1, 'mcq'),
   (2, 'text'),
-  (3, 'textlong');
+  (3, 'textlong'),
+  (4, 'mrq');
 
 -- --------------------------------------------------------
 
@@ -148,6 +93,7 @@ INSERT INTO `yacrs_questionTypes` (`ID`, `name`) VALUES
 
 CREATE TABLE `yacrs_response` (
   `ID` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL,
   `sessionQuestionID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `response` text NOT NULL
@@ -161,6 +107,7 @@ CREATE TABLE `yacrs_response` (
 
 CREATE TABLE `yacrs_responseMcq` (
   `ID` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL,
   `sessionQuestionID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `choiceID` int(11) NOT NULL
@@ -176,6 +123,19 @@ CREATE TABLE `yacrs_sessionAlias` (
   `ID` int(11) NOT NULL,
   `alias` varchar(30) NOT NULL,
   `sessionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionHistory`
+--
+
+CREATE TABLE `yacrs_sessionHistory` (
+  `ID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -233,9 +193,10 @@ CREATE TABLE `yacrs_sessionsAdditionalUsers` (
 
 CREATE TABLE `yacrs_user` (
   `userID` int(11) NOT NULL,
-  `username` varchar(80) NOT NULL,
+  `username` varchar(80) DEFAULT NULL,
   `isSessionCreatorOverride` tinyint(1) DEFAULT NULL,
-  `isAdminOverride` tinyint(1) DEFAULT NULL
+  `isAdminOverride` tinyint(1) DEFAULT NULL,
+  `isGuest` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -290,6 +251,12 @@ ALTER TABLE `yacrs_sessionAlias`
   ADD KEY `yacrs_sessionAlias_sessionID` (`sessionID`);
 
 --
+-- Indexes for table `yacrs_sessionHistory`
+--
+ALTER TABLE `yacrs_sessionHistory`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessionQuestions`
@@ -327,56 +294,73 @@ ALTER TABLE `yacrs_user`
 --
 ALTER TABLE `yacrs_apiKey`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_questions`
 --
 ALTER TABLE `yacrs_questions`
-  MODIFY `questionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `questionID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_questionsMcqChoices`
 --
 ALTER TABLE `yacrs_questionsMcqChoices`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_questionTypes`
 --
 ALTER TABLE `yacrs_questionTypes`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `yacrs_response`
 --
 ALTER TABLE `yacrs_response`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_responseMcq`
 --
 ALTER TABLE `yacrs_responseMcq`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_sessionAlias`
 --
 ALTER TABLE `yacrs_sessionAlias`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessionHistory`
+--
+ALTER TABLE `yacrs_sessionHistory`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessionQuestions`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_sessions`
 --
 ALTER TABLE `yacrs_sessions`
   MODIFY `sessionID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_sessionsAdditionalUsers`
 --
 ALTER TABLE `yacrs_sessionsAdditionalUsers`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `yacrs_user`
 --
 ALTER TABLE `yacrs_user`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Constraints for dumped tables
 --

@@ -21,6 +21,8 @@ class LoginTypeLdapCsq extends LoginTypeLdap
         // Perform LDAP login
         $user = parent::checkLogin($username2, $password, $config);
 
+        $user->setUsername($username2);
+
         // If login was valid
         if($user) {
 

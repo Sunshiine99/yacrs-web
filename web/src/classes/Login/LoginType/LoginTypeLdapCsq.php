@@ -13,9 +13,12 @@ class LoginTypeLdapCsq extends LoginTypeLdap
     public static function checkLogin($username, $password, $config = []) {
 
         // A login starting with _ will be logged in as a student
+        $username2 = $username;
         if(substr($username, 0, 1) == "_") {
-            $username2 = substr($username, 1);
+            $username2 = substr($username, 1, 999);
         }
+
+        die($username2);
 
         // Perform LDAP login
         $user = parent::checkLogin($username2, $password, $config);

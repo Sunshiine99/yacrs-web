@@ -17,7 +17,7 @@ class LoginTypeLdapCsq extends LoginTypeLdap
         if(substr($username, 0, 1) == "_") {
             $username2 = substr($username, 1, 999);
         }
-        
+
         // Perform LDAP login
         $user = parent::checkLogin($username2, $password, $config);
 

@@ -89,6 +89,13 @@ body footer ul li {
     }
 }
 
+@media only screen and (max-width : 992px) and (min-width : 768px) {
+    body footer {
+        height: 275px!important;
+        margin-top: -275px!important;
+    }
+}
+
 /******************************************************************************
  * Bootstrap Button Override
  ******************************************************************************/

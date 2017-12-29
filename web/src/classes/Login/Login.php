@@ -32,6 +32,9 @@ class Login
         // Load given login type class
         $login = LoginTypeFactory::create($type);
 
+        if(!$username)
+            return false;
+
         // Check login details with given login type
         $user = $login::checkLogin($username, $password, $config);
 

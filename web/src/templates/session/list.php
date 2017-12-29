@@ -32,26 +32,26 @@
                 if($s->checkIfUserCanEdit($user)):
                 ?>
 
-                    <div class="actions-confirm-delete">
-                        <div class="btn-group pull-right actions" aria-label="Actions">
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/run/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
+                    <div class="actions-confirm-delete width-xs-full">
+                        <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/run/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-play"></i> Run
                             </button>
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/edit/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
+                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>
                             <?php if($s->getOwner() === $user->getUsername()): ?>
-                                <button type="button" class="btn btn-light btn-light-border delete">
+                                <button type="button" class="btn btn-light btn-light-border delete width-xs-full">
                                     <i class="fa fa-trash-o"></i> Delete
                                 </button>
                             <?php endif; ?>
                         </div>
                         <?php if($s->getOwner() === $user->getUsername()): ?>
-                            <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                                <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$this->e($s->getSessionID())?>">
+                            <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
+                                <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-id="<?=$this->e($s->getSessionID())?>">
                                     <i class="fa fa-check"></i> Confirm
                                 </button>
-                                <button type="button" class="btn btn-light btn-light-border cancel">
+                                <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">
                                     <i class="fa fa-times"></i> Cancel
                                 </button>
                             </div>

@@ -29,15 +29,25 @@ $this->layout("template",
 <?php $this->stop(); ?>
 
 <div class="page-header">
-    <h1>
-        <?=$session->getTitle() ? $this->e($session->getTitle()) : "&nbsp;"?>
-        <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionID())?>/edit/" class="btn btn-light btn-light-border pull-right">Edit Session</a>
+    <h1 class="row">
+        <div class="col-sm-9">
+            <?=$session->getTitle() ? $this->e($session->getTitle()) : "&nbsp;"?>
+        </div>
+        <div class="col-sm-3">
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionID())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
+        </div>
     </h1>
 </div>
-<h2 class="pull-left">Session Questions</h2>
-<a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/question/new/" class="btn btn-primary pull-right">
-    Add Question
-</a>
+<div class="row">
+    <div class="col-sm-9">
+        <h2 class="pull-left">Session Questions</h2>
+    </div>
+    <div class="col-sm-3">
+        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/question/new/" class="btn btn-primary pull-right width-xs-full margin-xs-bottom-10">
+            Add Question
+        </a>
+    </div>
+</div>
 <div>
     <ul class="list-group question-list" style="width:100%;" data-question-control-mode="<?=$this->e($session->getQuestionControlMode())?>">
         <li class="no-questions">

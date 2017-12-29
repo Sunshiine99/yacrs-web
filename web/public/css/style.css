@@ -198,3 +198,13 @@ body footer {
 .display-none {
     display: none;
 }
+
+@media (max-width: 576px) {
+    .width-xs-full {
+        width: 100%!important;
+    }
+
+    .margin-xs-bottom-10 {
+        margin-bottom: 10px;
+    }
+}

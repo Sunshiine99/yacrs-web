@@ -49,9 +49,7 @@
                         <?php if($s->getOwner() === $user->getUsername()): ?>
                             <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
                                 <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$this->e($s->getSessionID())?>">
-                                    <a style="text-decoration: none;color: inherit;" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionId())?>/delete/">
-                                        <i class="fa fa-check"></i> Confirm
-                                    </a>
+                                    <i class="fa fa-check"></i> Confirm
                                 </button>
                                 <button type="button" class="btn btn-light btn-light-border cancel">
                                     <i class="fa fa-times"></i> Cancel

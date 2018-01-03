@@ -82,8 +82,6 @@ Flight::route("/session/join/", array("PageSessionJoin", "join"));
 Flight::route("POST /session/@id:[0-9]*/edit/", array("PageSessionEdit", "submit"));
 Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
 
-Flight::route("/session/@id:[0-9]*/delete/", array("PageSessionDelete", "delete"));
-
 // Add session submit
 Flight::route("POST /session/new/", array("PageSessionNew", "submit"));
 Flight::route("/session/new/", array("PageSessionNew", "add"));

@@ -20,7 +20,7 @@ class ApiLogin
         $mysqli = $databaseConnect();
 
         // Check whether login is valid
-        $user = Login::checkLogin($username, $password, $config, $mysqli);
+        $user = Login::checkLogin($username, $password, $config, $mysqli, false);
 
         // If invalid login, output an error
         if(!$user) {
@@ -56,12 +56,29 @@ class ApiLogin
             unset($_SESSION["yacrs_user"]);
         }
 
+        // If not logged in with the session and no api key, display error
+        elseif (!isset($_REQUEST["key"])) {
+            ApiError::invalidApiKey();
+            die();
+        }
+
         if(isset($_REQUEST["key"])) {
-            $key = Api::checkParameter("key");
+
+            $key = $_REQUEST["key"];
 
             // Connect to database
             $databaseConnect = Flight::get("databaseConnect");
             $mysqli = $databaseConnect();
+
+            // Get user from API
+            $user = Api::checkApiKey($key, $mysqli);
+
+            // Display error if invalid API key
+            if(!$user) {
+
+                ApiError::invalidApiKey();
+                die();
+            }
 
             // Logout user by making API key expire
             DatabaseApiKey::apiKeyExpire($key, $mysqli);

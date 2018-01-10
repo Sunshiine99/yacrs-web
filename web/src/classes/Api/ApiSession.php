@@ -32,9 +32,9 @@ class ApiSession
 
     /**
      * View Session Details
-     * @param $sessionID
+     * @param $sessionIdentifier
      */
-    public static function details($sessionID) {
+    public static function details($sessionIdentifier) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
@@ -49,7 +49,7 @@ class ApiSession
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {
@@ -68,7 +68,7 @@ class ApiSession
         Api::output($output);
     }
 
-    public static function edit($sessionID = null) {
+    public static function edit($sessionIdentifier = null) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
@@ -83,13 +83,13 @@ class ApiSession
         }
 
         $data = $_REQUEST;
-        $data["sessionID"] = $sessionID;
+        $data["sessionID"] = $sessionIdentifier;
 
         $output = [];
 
         // If this is an existing session
-        if($sessionID) {
-            $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        if($sessionIdentifier) {
+            $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
             $session->fromArray($data);
             DatabaseSession::update($session, $mysqli);
         }
@@ -98,19 +98,19 @@ class ApiSession
         else {
             $session = new Session($data);
             $session->setOwner($user->getId());
-            $sessionID = DatabaseSession::insert($session, $mysqli);
+            $sessionIdentifier = DatabaseSession::insert($session, $mysqli);
         }
 
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
         $output = $session->toArray();
         Api::output($output);
     }
 
     /**
      * Delete a session
-     * @param $sessionID
+     * @param $sessionIdentifier
      */
-    public static function delete($sessionID) {
+    public static function delete($sessionIdentifier) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
@@ -123,6 +123,8 @@ class ApiSession
         if(!$user) {
             ApiError::invalidApiKey();
         }
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Load session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
@@ -142,7 +144,7 @@ class ApiSession
         }
 
         // Delete session, if error
-        if(!DatabaseSession::delete($sessionID, $mysqli)) {
+        if(!DatabaseSession::delete($sessionIdentifier, $mysqli)) {
             ApiError::unknown();
         }
 

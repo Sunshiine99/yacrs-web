@@ -14,6 +14,7 @@ class Database
     }
 
     /**
+     * TODO: REMOVE
      * @param mysqli $mysqli
      * @param int|null $line
      * @param string|null $file

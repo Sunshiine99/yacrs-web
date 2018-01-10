@@ -11,6 +11,9 @@ class Question
     /** @var int */
     private $sessionID;
 
+    /** @var int */
+    private $sessionIdentifier;
+
     /** @var string */
     protected $type;
 
@@ -42,6 +45,8 @@ class Question
         $this->setCreated(          isset($array["created"])           ? $array["created"]           : $this->getCreated());
         $this->setLastUpdate(       isset($array["lastUpdate"])        ? $array["lastUpdate"]        : $this->getLastUpdate());
         $this->setActive(           isset($array["active"])            ? $array["active"]            : $this->isActive());
+        $this->setSessionID(        isset($array["sessionID"])         ? $array["sessionID"]         : $this->getSessionID());
+        $this->setSessionIdentifier(isset($array["sessionIdentifier"])         ? $array["sessionIdentifier"]         : $this->getSessionIdentifier());
     }
 
     public function toArray() {
@@ -94,6 +99,20 @@ class Question
      */
     public function setSessionID($sessionID) {
         $this->sessionID = $sessionID;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSessionIdentifier() {
+        return $this->sessionIdentifier;
+    }
+
+    /**
+     * @param int $sessionIdentifier
+     */
+    public function setSessionIdentifier($sessionIdentifier) {
+        $this->sessionIdentifier = $sessionIdentifier;
     }
 
     /**

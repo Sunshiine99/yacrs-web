@@ -6,7 +6,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
     var listGroupItem = $(this).closest(".list-group-item");
 
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + $(this).attr("data-session-id") + "/question/" + $(this).attr("data-session-question-id") + "/delete/";
+    var url = baseUrl + "api/session/" + $(this).attr("data-session-identifier") + "/question/" + $(this).attr("data-session-question-id") + "/delete/";
 
     // Store this for access when this is no longer "this"
     var that = this;
@@ -59,7 +59,7 @@ function activateDeactivateQuestion(that, activate) {
     var questionControlMode = parseInt(questionList.attr("data-question-control-mode"));
 
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + $(that).attr("data-session-id") + "/question/" + $(that).attr("data-session-question-id") + "/edit/?active=";
+    var url = baseUrl + "api/session/" + $(that).attr("data-session-identifier") + "/question/" + $(that).attr("data-session-question-id") + "/edit/?active=";
 
     $(that).attr("disabled", "disabled");
 

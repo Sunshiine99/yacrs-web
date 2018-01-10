@@ -28,6 +28,7 @@ $this->layout("template",
 <?php $this->push("head"); ?>
     <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/session/view.css">
     <meta name="sessionID" content="<?=$this->e(isset($session) ? $session->getSessionID() : "")?>" />
+    <meta name="sessionID" content="<?=$this->e(isset($session) ? $session->getSessionIdentifier() : "")?>" />
     <meta name="sessionQuestionID" content="<?=$this->e(isset($question) ? $question->getSessionQuestionID() : "")?>" />
     <meta name="questionControlMode" content="<?=$this->e(isset($session) ? $session->getQuestionControlMode() : "")?>" />
 <?php $this->end(); ?>

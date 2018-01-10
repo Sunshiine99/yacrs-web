@@ -104,8 +104,7 @@ class DatabaseQuestion
                     ".time().")";
         $result = $mysqli->query($sql);
 
-        // Check if successful, display and log error if not
-        Database::checkError($mysqli, __LINE__, __FILE__);
+        if(!$result) return null;
 
         // Get the question ID
         $questionID = Database::safe($mysqli->insert_id, $mysqli);

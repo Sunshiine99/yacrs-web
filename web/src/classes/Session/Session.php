@@ -2,7 +2,16 @@
 
 class Session
 {
-    /** @var int */
+    /**
+     * The identifier used by the
+     * @var int
+     */
+    private $sessionIdentifier = null;
+
+    /**
+     * The database primary key of the sessions table
+     * @var int
+     */
     private $sessionID = null;
 
     /** @var string */
@@ -61,13 +70,14 @@ class Session
      * @param array $array
      */
     public function fromArray($array = []) {
+        $this->sessionIdentifier        = intval(isset($array["sessionIdentifier"])         ? $array["sessionIdentifier"]       : $this->sessionIdentifier);
         $this->sessionID                = intval(isset($array["sessionID"])                 ? $array["sessionID"]               : $this->sessionID);
         $this->owner                    = strval(isset($array["owner"])                     ? $array["owner"]                   : $this->owner);
         $this->title                    = strval(isset($array["title"])                     ? $array["title"]                   : $this->title);
         $this->courseID                 = strval(isset($array["courseID"])                  ? $array["courseID"]                : $this->courseID);
         $this->allowGuests              = boolval(isset($array["allowGuests"])              ? $array["allowGuests"]             : $this->allowGuests);
         $this->onSessionList            = boolval(isset($array["onSessionList"])            ? $array["onSessionList"]           : $this->onSessionList);
-        $this->questionControlMode      = intval(isset($array["questionControlMode"])      ? $array["questionControlMode"]     : $this->questionControlMode);
+        $this->questionControlMode      = intval(isset($array["questionControlMode"])       ? $array["questionControlMode"]     : $this->questionControlMode);
         $this->defaultTimeLimit         = intval(isset($array["defaultTimeLimit"])          ? $array["defaultTimeLimit"]        : $this->defaultTimeLimit);
         $this->allowModifyAnswer        = boolval(isset($array["allowModifyAnswer"])        ? $array["allowModifyAnswer"]       : $this->allowModifyAnswer);
         $this->allowQuestionReview      = boolval(isset($array["allowQuestionReview"])      ? $array["allowQuestionReview"]     : $this->allowQuestionReview);
@@ -82,7 +92,7 @@ class Session
     }
 
     public function toArray() {
-        $array["sessionID"]                 = $this->sessionID;
+        $array["sessionIdentifier"]         = $this->sessionIdentifier;
         $array["owner"]                     = $this->owner;
         $array["title"]                     = $this->title;
         $array["courseID"]                  = $this->courseID;
@@ -113,6 +123,20 @@ class Session
      */
     public function checkIfUserCanView($user) {
         return ($this->allowGuests) || (!$this->allowGuests && !$user->isGuest());
+    }
+
+    /**
+     * @return int
+     */
+    public function getSessionIdentifier() {
+        return $this->sessionIdentifier;
+    }
+
+    /**
+     * @param int $sessionIdentifier
+     */
+    public function setSessionIdentifier($sessionIdentifier) {
+        $this->sessionIdentifier = $sessionIdentifier;
     }
 
     /**

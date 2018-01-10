@@ -3,11 +3,13 @@
 class ApiQuestion
 {
 
-    public static function listSessionQuestion($sessionID) {
+    public static function listSessionQuestion($sessionIdentifier) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Get user from API
         $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
@@ -31,13 +33,15 @@ class ApiQuestion
     /**
      * Load session question IDs for all active questions in a session. Any logged in user can access this API as this
      * is used in the website javascript frontend.
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      */
-    public static function activeSessionQuestion($sessionID) {
+    public static function activeSessionQuestion($sessionIdentifier) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Get user from API
         $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
@@ -59,7 +63,7 @@ class ApiQuestion
         Api::output($output);
     }
 
-    public static function viewSessionQuestion($sessionID, $sessionQuestionID) {
+    public static function viewSessionQuestion($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session question variables (Type hinting below to avoid IDE error messages)
          * @var $mysqli mysqli
@@ -67,17 +71,17 @@ class ApiQuestion
          * @var $session Session
          * @var $question Question
          */
-        extract(self::setup($sessionID, $sessionQuestionID));
+        extract(self::setup($sessionIdentifier, $sessionQuestionID));
 
         Api::output($question->toArray());
     }
 
     /**
      * Edit a session question
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      * @param int $sessionQuestionID
      */
-    public static function edit($sessionID, $sessionQuestionID) {
+    public static function edit($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session question variables (Type hinting below to avoid IDE error messages)
          * @var $mysqli mysqli
@@ -85,7 +89,7 @@ class ApiQuestion
          * @var $session Session
          * @var $question Question
          */
-        extract(self::setup($sessionID, $sessionQuestionID));
+        extract(self::setup($sessionIdentifier, $sessionQuestionID));
 
         $question->fromArray($_REQUEST);
 
@@ -103,10 +107,10 @@ class ApiQuestion
 
     /**
      * Delete question from session
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      * @param int $sessionQuestionID
      */
-    public static function deleteSessionQuestion($sessionID, $sessionQuestionID) {
+    public static function deleteSessionQuestion($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session question variables (Type hinting below to avoid IDE error messages)
          * @var $mysqli mysqli
@@ -114,7 +118,7 @@ class ApiQuestion
          * @var $session Session
          * @var $question Question
          */
-        extract(self::setup($sessionID, $sessionQuestionID));
+        extract(self::setup($sessionIdentifier, $sessionQuestionID));
 
         // Delete session question
         $result = DatabaseSessionQuestion::delete($sessionQuestionID, $mysqli);
@@ -130,11 +134,11 @@ class ApiQuestion
 
     /**
      * Setup session question whilst ensuring permissions are kept
-     * @param $sessionID
+     * @param $sessionIdentifier
      * @param $sessionQuestionID
      * @return array
      */
-    private static function setup($sessionID, $sessionQuestionID) {
+    private static function setup($sessionIdentifier, $sessionQuestionID) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
@@ -148,6 +152,9 @@ class ApiQuestion
             ApiError::invalidApiKey();
             die();
         }
+
+        // Get the session ID for this
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Load the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);

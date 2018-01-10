@@ -2,7 +2,7 @@
 
 class PageSessionEdit
 {
-    public static function edit($sessionID) {
+    public static function edit($sessionIdentifier) {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
         $config = Flight::get("config");
@@ -13,6 +13,9 @@ class PageSessionEdit
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
+
+        // Get the session ID
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Load session details
         $session = DatabaseSession::loadSession($sessionID, $mysqli);

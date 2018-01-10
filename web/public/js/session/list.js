@@ -6,7 +6,7 @@ $(".confirm-delete .confirm").click(function () {
     var listGroupItem = $(this).closest(".list-group-item");
 
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + $(this).attr("data-session-id") + "/delete/";
+    var url = baseUrl + "api/session/" + $(this).attr("data-session-identifier") + "/delete/";
 
     // Store this for access when this is no longer "this"
     var that = this;

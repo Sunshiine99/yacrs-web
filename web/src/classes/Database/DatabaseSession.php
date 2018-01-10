@@ -60,6 +60,9 @@ class DatabaseSession
                     ".time().")";
         $result = $mysqli->query($sql);
 
+        if(!$result)
+            return null;
+
         // Get the session ID
         $sessionID = Database::safe($mysqli->insert_id, $mysqli);
 
@@ -79,6 +82,14 @@ class DatabaseSession
             }
         }
 
+        // Run database query to insert session ID into session identifiers
+        $sql = "INSERT INTO `yacrs_sessionIdentifier` (`sessionID`)
+                VALUES ('$sessionID') ";
+        $result = $mysqli->query($sql);
+
+        if(!$result)
+            return null;
+
         return $sessionID;
     }
 
@@ -89,9 +100,9 @@ class DatabaseSession
      * @return bool Success?
      */
     public static function update($session, $mysqli) {
+
         // Make variables safe for database use
         $sessionID              = Database::safe($session->getSessionID(), $mysqli);
-        $ownerID                = Database::safe($session->getOwner(), $mysqli);
         $title                  = Database::safe($session->getTitle(), $mysqli);
         $courseID               = Database::safe($session->getCourseID(), $mysqli);
         $allowGuests            = Database::safe($session->getAllowGuests(), $mysqli);
@@ -125,11 +136,17 @@ class DatabaseSession
                 WHERE `sessionID` = '$sessionID'";
         $result = $mysqli->query($sql);
 
+        // If error with result
+        if(!$result) return null;
+
         // Delete all existing Additional Users
         // TODO: DON'T DO THIS. CHECK EXISTING AND UPDATE IF NEEDED.
         $sql = "DELETE FROM `yacrs_sessionsAdditionalUsers`
                 WHERE `yacrs_sessionsAdditionalUsers`.`sessionID` = $sessionID;";
         $result = $mysqli->query($sql);
+
+        // If error with result
+        if(!$result) return null;
 
         // Foreach additional user
         foreach($session->getAdditionalUsers() as $additionalUser) {
@@ -151,7 +168,7 @@ class DatabaseSession
     }
 
     /**
-     * @param $sessionID
+     * @param int $sessionID
      * @param mysqli $mysqli
      * @return Session
      */
@@ -160,15 +177,15 @@ class DatabaseSession
         // Make variables safe for database use
         $sessionID = Database::safe($sessionID, $mysqli);
 
-        $sql = "SELECT *
-                FROM `yacrs_sessions`
-                WHERE `yacrs_sessions`.`sessionID` = '$sessionID'";
+        $sql = "SELECT
+                    s.*
+                FROM
+                    `yacrs_sessions` as s
+                WHERE s.`sessionID` = '$sessionID'";
         $result = $mysqli->query($sql);
 
         // If error with result
-        if($result->num_rows != 1) {
-            return null;
-        }
+        if(!$result) return null;
 
         // Load row from database
         $row = $result->fetch_assoc();
@@ -188,9 +205,8 @@ class DatabaseSession
                   AND sau.`userID` = u.`userID`";
         $result = $mysqli->query($sql);
 
-        if(!$result) {
-            return null;
-        }
+        // If error with result
+        if(!$result) return null;
 
         // Loop for every row and add additional user
         while($row = $result->fetch_assoc()) {
@@ -210,29 +226,39 @@ class DatabaseSession
         // Make variables safe for database use
         $userId = Database::safe($userId, $mysqli);
 
+        // SQL query to load all sessions that the user can edit
         $sql = "SELECT *
                 FROM (
                     (
                         SELECT
+                            si.`sessionIdentifier`,
                             s.*,
                             1 as canEdit
-                        FROM `yacrs_sessions` as s
+                        FROM
+                            `yacrs_sessions` as s,
+                            `yacrs_sessionIdentifier` as si
                         WHERE s.`ownerID` = $userId
+                          AND s.`sessionID` = si.`sessionID`
                     )
                     UNION
                     (
                         SELECT
+                            si.`sessionIdentifier`,
                             s.*,
                             1 as canEdit
                         FROM
-                        `yacrs_sessions` AS s,
-                        `yacrs_sessionsAdditionalUsers` as sau
+                            `yacrs_sessions` AS s,
+                            `yacrs_sessionsAdditionalUsers` as sau,
+                            `yacrs_sessionIdentifier` as si
                         WHERE s.`sessionID` = sau.`sessionID`
-                        AND sau.`userID` = $userId
+                          AND sau.`userID` = $userId
+                          AND s.`sessionID` = si.`sessionID`
                     )
                 ) as sessions
                 ORDER BY lastUpdate DESC";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         $sessions = [];
 
@@ -241,8 +267,33 @@ class DatabaseSession
 
         // Loop for every row and add additional user
         while($row = $result->fetch_assoc()) {
+
+            // Create a new session using the database row
             $session = new Session($row);
             $session->setOwner($username);
+
+            // Make the session ID safe for SQL query
+            $sessionID = Database::safe($session->getSessionID(), $mysqli);
+
+            // SQL query to get additional users
+            $sql = "SELECT username
+                    FROM
+                      `yacrs_sessionsAdditionalUsers` as sau,
+                      `yacrs_user` as u
+                    WHERE sau.`sessionID` = $sessionID
+                      AND sau.`userID` = u.`userID`";
+            $result2 = $mysqli->query($sql);
+
+            // If query was successful
+            if($result2) {
+
+                // Loop for every row and add additional user
+                while($row2 = $result2->fetch_assoc()) {
+                    $session->addAdditionalUser($row2["username"]);
+                }
+            }
+
+            // Add session to array of sessions
             array_push($sessions, $session);
         }
 
@@ -251,23 +302,17 @@ class DatabaseSession
 
     /**
      * Delete a session
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      * @param mysqli $mysqli
      * @return bool
      */
-    public static function delete($sessionID, $mysqli) {
+    public static function delete($sessionIdentifier, $mysqli) {
 
         // Make variables safe for database use
-        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
 
-        $sql = "DELETE FROM `yacrs_sessionsAdditionalUsers`
-                WHERE `yacrs_sessionsAdditionalUsers`.`sessionID` = $sessionID;
-                DELETE FROM `yacrs_sessionQuestions`
-                WHERE `yacrs_sessionQuestions`.`sessionID` = $sessionID;
-                DELETE FROM `yacrs_sessionAlias`
-                WHERE `yacrs_sessionAlias`.`sessionID` = $sessionID;
-                DELETE FROM `yacrs_sessions`
-                WHERE `yacrs_sessions`.`sessionID` = $sessionID;";
+        $sql = "DELETE FROM `yacrs_sessionIdentifier`
+                WHERE `yacrs_sessionIdentifier`.`sessionIdentifier` = $sessionIdentifier;";
         $result = $mysqli->multi_query($sql);
 
         return $result ? true : false;
@@ -283,42 +328,52 @@ class DatabaseSession
         $userID = Database::safe($userID, $mysqli);
 
         // Run query to get session IDs
-        $sql = "SELECT `sessionID`, MAX(`time`) as time
+        $sql = "SELECT `sessionID`, `sessionIdentifier`, MAX(`time`) as time
                     FROM (
                     (
                         SELECT
-                            `sessionID`,
-                            `lastUpdate` as time
-                        FROM `yacrs_sessions`
-                        WHERE `yacrs_sessions`.`ownerID` = $userID
+                            si.`sessionIdentifier`,
+                            s.`sessionID`,
+                            s.`lastUpdate` as time
+                        FROM
+                            `yacrs_sessions` as s,
+                            `yacrs_sessionIdentifier` as si
+                        WHERE s.`ownerID` = $userID
+                          AND s.`sessionID` = si.`sessionID`
                     )
                     UNION
                     (
                         SELECT
+                            si.`sessionIdentifier`,
                             s.`sessionID`,
                             s.`lastUpdate` as time
                         FROM
                             `yacrs_sessionsAdditionalUsers` as sau,
-                            `yacrs_sessions` as s
+                            `yacrs_sessions` as s,
+                            `yacrs_sessionIdentifier` as si
                         WHERE sau.`sessionID` = s.`sessionID`
                           AND sau.`userID` = $userID
+                          AND s.`sessionID` = si.`sessionID`
                     )
                     UNION
                     (
                         SELECT
+                            si.`sessionIdentifier`,
                             sh.`sessionID`,
                             MAX(sh.`time`) as time
                         FROM
                           `yacrs_sessionHistory` as sh,
-                          `yacrs_sessions` as s
+                          `yacrs_sessions` as s,
+                          `yacrs_sessionIdentifier` as si
                         WHERE sh.`userID` = $userID
                           AND sh.`sessionID` = s.`sessionID`
                           /* Only get sessions that should be shown in the session list */
                           AND s.`onSessionList` = 1
-                        GROUP BY `sessionID`
+                          AND s.`sessionID` = si.`sessionID`
+                        GROUP BY `sessionID`, `sessionIdentifier`
                     )
                 ) as sessions
-                GROUP BY `sessionID`
+                GROUP BY `sessionID`, `sessionIdentifier`
                 ORDER BY `time` DESC";
         $result = $mysqli->query($sql);
 
@@ -332,6 +387,8 @@ class DatabaseSession
 
             // Load session object from session ID
             $session = DatabaseSession::loadSession($row["sessionID"], $mysqli);
+
+            $session->setSessionIdentifier($row["sessionIdentifier"]);
 
             // If success, Add to output array
             if($session) {

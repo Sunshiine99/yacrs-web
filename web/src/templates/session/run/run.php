@@ -34,7 +34,7 @@ $this->layout("template",
             <?=$session->getTitle() ? $this->e($session->getTitle()) : "&nbsp;"?>
         </div>
         <div class="col-sm-3">
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionID())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
         </div>
     </h1>
 </div>
@@ -43,7 +43,7 @@ $this->layout("template",
         <h2 class="pull-left">Session Questions</h2>
     </div>
     <div class="col-sm-3">
-        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/question/new/" class="btn btn-primary pull-right width-xs-full margin-xs-bottom-10">
+        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/new/" class="btn btn-primary pull-right width-xs-full margin-xs-bottom-10">
             Add Question
         </a>
     </div>
@@ -74,17 +74,17 @@ $this->layout("template",
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions" aria-label="Actions">
-                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-id="<?=$this->e($session->getSessionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-identifier="<?=$this->e($session->getSessionIdentifier())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class='fa fa-stop'></i> Close
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border activate" data-session-id="<?=$this->e($session->getSessionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-light btn-light-border activate" data-session-identifier="<?=$this->e($session->getSessionIdentifier())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class='fa fa-play'></i> Activate
                         </button>
 
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionId())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
                             <i class="fa fa-eye"></i> Responses
                         </a>
-                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/">
+                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
                         <button type="button" class="btn btn-light btn-light-border delete">
@@ -92,7 +92,7 @@ $this->layout("template",
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-id="<?=$this->e($session->getSessionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-identifier="<?=$this->e($session->getSessionIdentifier())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class="fa fa-check"></i> Confirm
                         </button>
                         <button type="button" class="btn btn-light btn-light-border cancel">

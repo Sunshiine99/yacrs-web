@@ -27,7 +27,7 @@ class PageSession extends Page
         echo $templates->render("session/sessions", $data);
     }
 
-    public static function view($sessionID)
+    public static function view($sessionIdentifier)
     {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
@@ -40,7 +40,10 @@ class PageSession extends Page
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session->setSessionIdentifier($sessionIdentifier);
 
         // If invalid session, forward home with error
         if (!$session) {

@@ -3,7 +3,7 @@
 class PageSessionRun extends PageSession
 {
 
-    public static function run($sessionID) {
+    public static function run($sessionIdentifier) {
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $templates League\Plates\Engine
@@ -13,7 +13,7 @@ class PageSessionRun extends PageSession
          * @var $mysqli mysqli
          * @var $session Session
          */
-        extract(self::setup($sessionID));
+        extract(self::setup($sessionIdentifier));
 
         // Add to session history
         DatabaseSessionHistory::insert($user, $session, $mysqli);
@@ -22,8 +22,10 @@ class PageSessionRun extends PageSession
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
+        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionIdentifier/");
         $breadcrumbs->addItem("Run");
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Load questions from the database
         $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
@@ -37,10 +39,10 @@ class PageSessionRun extends PageSession
 
     /**
      * Loads basic variables ensuring correct permissions. (I.e. User is logged in and that they can edit this session)
-     * @param $sessionID
+     * @param $sessionIdentifier
      * @return array
      */
-    protected static function setup($sessionID) {
+    protected static function setup($sessionIdentifier) {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
         $config = Flight::get("config");
@@ -52,8 +54,11 @@ class PageSessionRun extends PageSession
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
         // Loads the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session->setSessionIdentifier($sessionIdentifier);
 
         // If this session does not exist or the user cannot edit this session, go home
         if($session==null || !$session->checkIfUserCanEdit($user)) {

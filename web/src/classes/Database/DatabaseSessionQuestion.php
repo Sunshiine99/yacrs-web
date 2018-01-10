@@ -25,6 +25,8 @@ class DatabaseSessionQuestion
                 )";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         return $mysqli->insert_id;
     }
 

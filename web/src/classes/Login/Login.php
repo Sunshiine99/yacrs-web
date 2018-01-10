@@ -21,11 +21,12 @@ class Login
     /**
      * @param string $username
      * @param string $password
-     * @param array $config
+     * @param array  $config
      * @param mysqli $mysqli
+     * @param bool   $store    Whether this login should be stored in the session if it is valid
      * @return User|bool
      */
-    public static function checkLogin($username, $password, $config, $mysqli) {
+    public static function checkLogin($username, $password, $config, $mysqli, $store = true) {
 
         $type = $config["login"]["type"];
 
@@ -45,8 +46,12 @@ class Login
         // Load additional details from the database
         $user = DatabaseUser::loadDetails($user, $mysqli);
 
-        // Store user details in the session
-        $_SESSION["yacrs_user"] = $user->toArray();
+        // If this session should be stored
+        if($store) {
+
+            // Store user details in the session
+            $_SESSION["yacrs_user"] = $user->toArray();
+        }
 
         return $user;
     }

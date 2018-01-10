@@ -3,7 +3,7 @@
 class PageSessionRunQuestionResponse
 {
 
-    public static function response($sessionID, $sessionQuestionID) {
+    public static function response($sessionIdentifier, $sessionQuestionID) {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
         $config = Flight::get("config");
@@ -14,6 +14,8 @@ class PageSessionRunQuestionResponse
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Load the question from the database
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);

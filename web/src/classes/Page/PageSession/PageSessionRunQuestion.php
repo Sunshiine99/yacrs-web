@@ -5,9 +5,9 @@ class PageSessionRunQuestion extends PageSessionRun
 
     /**
      * Page to add a new question to a session
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      */
-    public static function add($sessionID) {
+    public static function add($sessionIdentifier) {
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $templates League\Plates\Engine
@@ -17,15 +17,15 @@ class PageSessionRunQuestion extends PageSessionRun
          * @var $mysqli mysqli
          * @var $session Session
          */
-        extract(self::setup($sessionID));
+        extract(self::setup($sessionIdentifier));
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
-        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionID/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionID/run/questions/");
+        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/questions/");
         $breadcrumbs->addItem("New");
 
         $data["session"] = $session;
@@ -38,7 +38,7 @@ class PageSessionRunQuestion extends PageSessionRun
      * Submits a new session
      * @param int $sessionID
      */
-    public static function addSubmit($sessionID) {
+    public static function addSubmit($sessionIdentifier) {
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $templates League\Plates\Engine
@@ -48,7 +48,7 @@ class PageSessionRunQuestion extends PageSessionRun
          * @var $mysqli mysqli
          * @var $session Session
          */
-        extract(self::setup($sessionID));
+        extract(self::setup($sessionIdentifier));
 
         // Attempt to create a new question for this question type
         try {
@@ -77,14 +77,17 @@ class PageSessionRunQuestion extends PageSessionRun
         // Insert question into the database
         $questionID = DatabaseQuestion::insert($question, $mysqli);
 
+        // Load the session ID
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
         // Insert question session combo into DatabaseSession
         DatabaseSessionQuestion::insert($sessionID, $questionID, $mysqli);
 
-        header("Location: " . $config["baseUrl"] . "session/$sessionID/run/");
+        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/run/");
         die();
     }
 
-    public static function edit($sessionID, $sessionQuestionID) {
+    public static function edit($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $templates League\Plates\Engine
@@ -94,7 +97,9 @@ class PageSessionRunQuestion extends PageSessionRun
          * @var $mysqli mysqli
          * @var $session Session
          */
-        extract(self::setup($sessionID));
+        extract(self::setup($sessionIdentifier));
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Get question whilst ensuring permissions are kept
         $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);
@@ -115,7 +120,7 @@ class PageSessionRunQuestion extends PageSessionRun
         echo $templates->render("session/run/questions/edit", $data);
     }
 
-    public static function editSubmit($sessionID, $sessionQuestionID) {
+    public static function editSubmit($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $templates League\Plates\Engine
@@ -125,7 +130,9 @@ class PageSessionRunQuestion extends PageSessionRun
          * @var $mysqli mysqli
          * @var $session Session
          */
-        extract(self::setup($sessionID));
+        extract(self::setup($sessionIdentifier));
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // Get question whilst ensuring permissions are kept
         $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);

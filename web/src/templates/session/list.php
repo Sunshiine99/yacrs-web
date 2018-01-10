@@ -16,12 +16,12 @@
             <li class="list-group-item session-item">
                 <div class="pull-left">
                     <span class="session-title">
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/">
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/">
                             <?=$this->e($s->getTitle())?>
                         </a>
                     </span>
                     <span class="session-number">
-                        <i class="fa fa-hashtag"></i><?=$this->e($s->getSessionID())?>
+                        <i class="fa fa-hashtag"></i><?=$this->e($s->getSessionIdentifier())?>
                     </span>
                     <span class="session-date text-muted">
                         Created <?=$this->e($created)?>
@@ -34,10 +34,10 @@
 
                     <div class="actions-confirm-delete width-xs-full">
                         <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/run/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
+                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/run/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-play"></i> Run
                             </button>
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
+                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>
                             <?php if($s->getOwner() === $user->getUsername()): ?>
@@ -48,7 +48,7 @@
                         </div>
                         <?php if($s->getOwner() === $user->getUsername()): ?>
                             <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
-                                <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-id="<?=$this->e($s->getSessionID())?>">
+                                <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-identifier="<?=$this->e($s->getSessionIdentifier())?>">
                                     <i class="fa fa-check"></i> Confirm
                                 </button>
                                 <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">
@@ -62,7 +62,7 @@
                 <?php else: ?>
                     <div class="actions-confirm-delete">
                         <div class="btn-group pull-right actions" aria-label="Actions">
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionID())?>/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
+                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
                                 <i class="fa fa-plus"></i> Join
                             </button>
                         </div>

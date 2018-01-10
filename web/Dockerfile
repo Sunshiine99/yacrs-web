@@ -10,6 +10,11 @@ RUN \
     docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap
 
+RUN \
+    apt-get update && \
+    apt-get install ruby-full -y && \
+    gem install sass --no-user-install
+
 # Apache and PHP configuration
 RUN a2enmod rewrite
 ADD docker/apache/vhost.conf /etc/apache2/sites-enabled/000-default.conf

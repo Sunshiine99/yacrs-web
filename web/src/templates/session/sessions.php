@@ -19,5 +19,9 @@ $this->layout("template",
 );
 ?>
 
+<?php $this->push("end"); ?>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/list.js" crossorigin="anonymous"></script>
+<?php $this->stop(); ?>
+
 <h1 class="page-section">My Sessions</h1>
 <?=$this->fetch("session/list", ["sessions"=>$sessions, "user" => $user, "config"=>$config])?>

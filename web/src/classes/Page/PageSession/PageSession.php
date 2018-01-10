@@ -42,11 +42,8 @@ class PageSession extends Page
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-        $session->setSessionIdentifier($sessionIdentifier);
-
         // If invalid session, forward home with error
-        if (!$session) {
+        if (!$sessionID) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -58,6 +55,9 @@ class PageSession extends Page
             header("Location: " . $config["baseUrl"]);
             die();
         }
+
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session->setSessionIdentifier($sessionIdentifier);
 
         // If user cannot view this session, display an error
         if(!$session->checkIfUserCanView($user)) {

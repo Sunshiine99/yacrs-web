@@ -27,11 +27,11 @@ if(parseInt($("meta[name=questionControlMode]").attr("content")) === 0) {
         setTimeout(function () {
 
             // Get the session ID and current session question ID from a HTML meta tag
-            var sessionID = $("meta[name=sessionID]").attr("content").toString();
+            var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
             var sessionQuestionID = $("meta[name=sessionQuestionID]").attr("content").toString();
 
             // Construct URL for API request
-            var url = baseUrl + "api/session/" + sessionID + "/question/active/";
+            var url = baseUrl + "api/session/" + sessionIdentifier + "/question/active/";
 
             // Communicate with the API and process the response
             $.getJSON(url, function(data) {

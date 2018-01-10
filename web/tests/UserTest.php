@@ -12,8 +12,9 @@ final class UserTest extends TestCase{
         $array["givenName"] = "given";
         $array["surname"] = "surname";
         $array["email"] = "test@test.com";
-        $array["isSessionCreator"] = "true";
-        $array["isAdmin"] = "true";
+        $array["isSessionCreator"] = true;
+        $array["isAdmin"] = true;
+        $array["isGuest"] = false;
         $user = new User($array);
         $expected = $user->toArray();
 

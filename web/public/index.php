@@ -95,3 +95,7 @@ Flight::route("/services.php", array("ApiLegacy", "api"));
 Flight::map("notFound", array("PageError", "error404"));
 
 Flight::start();
+
+if(isDesktopApp()) {
+    echo "DESKTOP";
+}

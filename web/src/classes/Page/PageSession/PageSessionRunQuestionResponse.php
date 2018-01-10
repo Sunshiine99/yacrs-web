@@ -41,10 +41,10 @@ class PageSessionRunQuestionResponse
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
-        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionID/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionID/run/question/");
-        $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionID/run/question/$sessionQuestionID/");
+        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
+        $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/run/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
 
         $data["breadcrumbs"] = $breadcrumbs;

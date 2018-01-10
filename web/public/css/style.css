@@ -119,6 +119,7 @@ html, body {
 
         body main .session-list {
             width: 100%;
+            margin-bottom: 20px;
         }
 
             body main .session-list li.no-sessions {
@@ -197,6 +198,10 @@ body footer {
 
 .display-none {
     display: none;
+}
+
+ul.list-group li.list-group-item {
+    border-color: #bbb;
 }
 
 @media (max-width: 576px) {

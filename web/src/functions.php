@@ -37,3 +37,11 @@ function text2bool($text) {
 function bool2dbString($bool) {
     return $bool ? "1" : "0";
 }
+
+/**
+ * Whether this is running as a desktop app
+ * @return bool
+ */
+function isDesktopApp() {
+    return strpos($_SERVER['HTTP_USER_AGENT'], "YACRSControl") > 0;
+}

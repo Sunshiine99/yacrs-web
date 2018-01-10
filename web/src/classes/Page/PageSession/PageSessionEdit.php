@@ -30,7 +30,7 @@ class PageSessionEdit
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionID, $config["baseUrl"]."session/$sessionID/");
+        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionID/");
         $breadcrumbs->addItem("Edit");
 
         //$data = array_merge($data, $session->toArray());

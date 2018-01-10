@@ -17,7 +17,7 @@
                 <div class="pull-left">
                     <span class="session-title">
                         <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/">
-                            <?=$this->e($s->getTitle())?>
+                            <?=$s->getTitle()?$this->e($s->getTitle()):"Session"?>
                         </a>
                     </span>
                     <span class="session-number">

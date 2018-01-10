@@ -57,7 +57,7 @@ function getColour($colours, $i) {
         <?php if(isset($responsesMcq)): ?>
             initBarChartSection();
         <?php elseif(isset($responsesWordCloud)): ?>
-            initWordCloudSection('<?=str_replace("'","\'",json_encode($this->e($responsesWordCloud)))?>');
+            initWordCloudSection('<?=str_replace("'","\'",json_encode($responsesWordCloud))?>');
         <?php endif; ?>
     </script>
 <?php $this->stop(); ?>

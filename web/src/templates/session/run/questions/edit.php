@@ -28,7 +28,8 @@ $saveText = $new ? "Create" : "Save";
 
 // If this is a new question, add default number of MCQ choices
 if($new) {
-    $choices = array_pad([], 4, "");
+    //$choices = array_pad([], 4, "");
+    $choices = ["A", "B", "C", "D"];
 }
 
 // Otherwise not a new question
@@ -55,6 +56,9 @@ else {
 <?php $this->end(); ?>
 
 <?php $this->push("end"); ?>
+    <script>
+        var questionNew = <?=$new ? "true": "false"?>;
+    </script>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/run/question/edit.js"></script>
 <?php $this->end(); ?>
 

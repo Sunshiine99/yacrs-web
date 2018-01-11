@@ -9,5 +9,6 @@ class QuestionMrq extends QuestionMcq
     public function __construct($array = []) {
         parent::__construct($array);
         $this->type = "mrq";
+        $this->typeDisplay = "Multiple Response";
     }
 }

@@ -16,3 +16,9 @@ services:
   db:
     ports:
         - "4002:3306"
+  composer:
+    restart: "no"
+    image: "composer/composer:php5"
+    command: install
+    volumes:
+      - ./web:/app

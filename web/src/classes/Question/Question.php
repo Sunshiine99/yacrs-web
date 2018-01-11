@@ -18,6 +18,9 @@ class Question
     protected $type;
 
     /** @var string */
+    protected $typeDisplay;
+
+    /** @var string */
     protected $question;
 
     /** @var int */
@@ -127,6 +130,20 @@ class Question
      */
     public function setType($type) {
         $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeDisplay() {
+        return $this->typeDisplay;
+    }
+
+    /**
+     * @param string $typeDisplay
+     */
+    public function setTypeDisplay($typeDisplay) {
+        $this->typeDisplay = $typeDisplay;
     }
 
     /**

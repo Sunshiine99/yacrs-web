@@ -13,6 +13,7 @@ class QuestionMcq extends Question
         parent::__construct($array);
         $this->setChoices(isset($array["choices"]) ? $array["choices"] : $this->getChoices());
         $this->type = "mcq";
+        $this->typeDisplay = "Multiple Choice";
     }
 
     /**

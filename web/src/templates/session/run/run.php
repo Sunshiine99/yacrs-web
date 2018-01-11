@@ -66,7 +66,7 @@ $this->layout("template",
                 </div>
                 <div class="pull-left details">
                     <span class="question-title">
-                        <?=$this->e($question->getQuestion())?>
+                        <?=$question->getQuestion() ? $this->e($question->getQuestion()) : $question->getTypeDisplay() . " Question"?>
                     </span><br>
                     <span class="question-date text-muted">
                         Created <?=date("d/m/Y H:i", $question->getCreated())?>

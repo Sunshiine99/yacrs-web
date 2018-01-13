@@ -176,6 +176,17 @@ CREATE TABLE `yacrs_sessions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `yacrs_sessionIdentifier`
+--
+
+CREATE TABLE `yacrs_sessionIdentifier` (
+  `sessionIdentifier` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `yacrs_sessionsAdditionalUsers`
 --
 
@@ -272,6 +283,13 @@ ALTER TABLE `yacrs_sessions`
   ADD KEY `yacrs_sessions_ownerID` (`ownerID`);
 
 --
+-- Indexes for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  ADD PRIMARY KEY (`sessionIdentifier`),
+  ADD KEY `yacrs_sessionIdentifier_sessionID` (`sessionID`);
+
+--
 -- Indexes for table `yacrs_sessionsAdditionalUsers`
 --
 ALTER TABLE `yacrs_sessionsAdditionalUsers`
@@ -350,6 +368,12 @@ ALTER TABLE `yacrs_sessions`
   MODIFY `sessionID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  MODIFY `sessionIdentifier` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `yacrs_sessionsAdditionalUsers`
 --
 ALTER TABLE `yacrs_sessionsAdditionalUsers`
@@ -395,6 +419,12 @@ ALTER TABLE `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessions`
   ADD CONSTRAINT `yacrs_sessions_ownerID` FOREIGN KEY (`ownerID`) REFERENCES `yacrs_user` (`userID`);
+
+--
+-- Constraints for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  ADD CONSTRAINT `yacrs_sessionIdentifier_sessionID` FOREIGN KEY (`sessionID`) REFERENCES `yacrs_sessions` (`sessionID`);
 
 --
 -- Constraints for table `yacrs_sessionsAdditionalUsers`

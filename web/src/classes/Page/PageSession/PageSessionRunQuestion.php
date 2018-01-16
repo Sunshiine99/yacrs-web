@@ -80,6 +80,12 @@ class PageSessionRunQuestion extends PageSessionRun
         // Load the session ID
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
         // Insert question session combo into DatabaseSession
         DatabaseSessionQuestion::insert($sessionID, $questionID, $mysqli);
 
@@ -100,6 +106,12 @@ class PageSessionRunQuestion extends PageSessionRun
         extract(self::setup($sessionIdentifier));
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
 
         // Get question whilst ensuring permissions are kept
         $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);
@@ -133,6 +145,12 @@ class PageSessionRunQuestion extends PageSessionRun
         extract(self::setup($sessionIdentifier));
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
 
         // Get question whilst ensuring permissions are kept
         $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);

@@ -56,6 +56,12 @@ class PageSessionRun extends PageSession
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
         // Loads the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
         $session->setSessionIdentifier($sessionIdentifier);

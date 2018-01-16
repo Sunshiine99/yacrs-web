@@ -15,6 +15,14 @@ class ApiError
         die();
     }
 
+    public static function notFoundCustom($s) {
+        $output = [];
+        $output["error"]["code"]    = "notFound";
+        $output["error"]["message"] = $s;
+        Api::output($output);
+        die();
+    }
+
     public static function invalidApiKey() {
         $output = [];
         $output["error"]["code"]    = "invalidApiKey";

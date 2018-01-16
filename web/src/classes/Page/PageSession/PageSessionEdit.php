@@ -17,6 +17,18 @@ class PageSessionEdit
         // Get the session ID
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
         // Load session details
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 

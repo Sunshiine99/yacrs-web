@@ -11,6 +11,12 @@ class ApiQuestion
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
+        // If invalid session identifier, display error
+        if(!$sessionID) {
+            ApiError::notFoundCustom("Session Not Found");
+            die();
+        }
+
         // Get user from API
         $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
 
@@ -42,6 +48,12 @@ class ApiQuestion
         $mysqli = $databaseConnect();
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display error
+        if(!$sessionID) {
+            ApiError::notFoundCustom("Session Not Found");
+            die();
+        }
 
         // Get user from API
         $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
@@ -155,6 +167,12 @@ class ApiQuestion
 
         // Get the session ID for this
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display error
+        if(!$sessionID) {
+            ApiError::notFoundCustom("Session Not Found");
+            die();
+        }
 
         // Load the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);

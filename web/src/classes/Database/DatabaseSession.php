@@ -90,7 +90,10 @@ class DatabaseSession
         if(!$result)
             return null;
 
-        return $sessionID;
+        // Get the session identifier
+        $sessionIdentifier = Database::safe($mysqli->insert_id, $mysqli);
+
+        return $sessionIdentifier;
     }
 
     /**

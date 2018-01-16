@@ -47,6 +47,11 @@ class PageSessionNew
 
         $sessionID = DatabaseSession::insert($session, $mysqli);
 
+        if(!$sessionID) {
+            PageError::error500("Could not create session");
+            die();
+        }
+
         header("Location: "  .$config["baseUrl"] . "session/$sessionID/run/");
         die();
     }

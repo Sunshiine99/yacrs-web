@@ -1,5 +1,5 @@
 <?php
-include_once("config.php");
-include("classes/autoload.php");
-include("vendor/autoload.php");
-include("functions.php");
+require_once("config.php");
+require_once("classes/autoload.php");
+require_once("vendor/autoload.php");
+require_once("functions.php");

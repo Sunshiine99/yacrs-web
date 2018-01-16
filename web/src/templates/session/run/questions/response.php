@@ -6,6 +6,7 @@
  * @var $breadcrumbs Breadcrumb
  * @var $user User
  * @var $alert Alert
+ * @var $responsesMrq array
  * @var $responsesMcq array
  * @var $responsesWordCloud array
  * @var $responsesText Response[]
@@ -54,7 +55,7 @@ function getColour($colours, $i) {
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.wordcloud.js"></script>
 
     <script>
-        <?php if(isset($responsesMcq)): ?>
+        <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
             initBarChartSection();
         <?php elseif(isset($responsesWordCloud)): ?>
             initWordCloudSection('<?=str_replace("'","\'",json_encode($responsesWordCloud))?>');
@@ -64,7 +65,7 @@ function getColour($colours, $i) {
 
 <h1>Responses</h1>
 <ul class="nav nav-tabs">
-    <?php if(isset($responsesMcq)): ?>
+    <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
         <li class="nav-item" id="nav-bar-chart">
             <a class="nav-link active" href="#">Bar Chart</a>
         </li>
@@ -82,7 +83,7 @@ function getColour($colours, $i) {
     <?php endif; ?>
 </ul>
 
-<?php if(isset($responsesMcq)): ?>
+<?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
     <div id="section-bar-chart" class="section">
         <canvas id="bar-chart" width="400" height="200"></canvas>
     </div>
@@ -148,5 +149,29 @@ function getColour($colours, $i) {
                 '<?=getColour($borderColours, $i)?>',
             <?php endfor; ?>
         ];
+    <?php endif; ?>
+    <?php if(isset($responsesMrq)): ?>
+    var labels = [
+        <?php foreach($responsesMrq as $response): ?>
+        "<?=$this->e($response["choice"])?>",
+        <?php endforeach; ?>
+    ];
+
+    var data = [
+        <?php foreach($responsesMrq as $response): ?>
+        <?=$response["count"]?$this->e($response["count"]):0?>,
+        <?php endforeach; ?>
+    ];
+
+    var backgroundColor = [
+        <?php for($i = 0; $i < count($responsesMrq); $i++): ?>
+        '<?=getColour($backgroundColours, $i)?>',
+        <?php endfor; ?>
+    ];
+    var borderColor = [
+        <?php for($i = 0; $i < count($responsesMrq); $i++): ?>
+        '<?=getColour($borderColours, $i)?>',
+        <?php endfor; ?>
+    ];
     <?php endif; ?>
 </script>

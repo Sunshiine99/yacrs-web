@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Dec 28, 2017 at 12:59 AM
+-- Generation Time: Jan 16, 2018 at 02:54 PM
 -- Server version: 5.7.20
 -- PHP Version: 7.1.9
 
@@ -141,6 +141,17 @@ CREATE TABLE `yacrs_sessionHistory` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `yacrs_sessionIdentifier`
+--
+
+CREATE TABLE `yacrs_sessionIdentifier` (
+  `sessionIdentifier` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `yacrs_sessionQuestions`
 --
 
@@ -171,17 +182,6 @@ CREATE TABLE `yacrs_sessions` (
   `classDiscussionEnabled` tinyint(1) NOT NULL,
   `created` bigint(20) NOT NULL DEFAULT '0',
   `lastUpdate` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `yacrs_sessionIdentifier`
---
-
-CREATE TABLE `yacrs_sessionIdentifier` (
-  `sessionIdentifier` int(11) NOT NULL,
-  `sessionID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -268,6 +268,12 @@ ALTER TABLE `yacrs_sessionHistory`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  ADD PRIMARY KEY (`sessionIdentifier`);
+
+--
 -- Indexes for table `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessionQuestions`
@@ -281,13 +287,6 @@ ALTER TABLE `yacrs_sessionQuestions`
 ALTER TABLE `yacrs_sessions`
   ADD PRIMARY KEY (`sessionID`),
   ADD KEY `yacrs_sessions_ownerID` (`ownerID`);
-
---
--- Indexes for table `yacrs_sessionIdentifier`
---
-ALTER TABLE `yacrs_sessionIdentifier`
-  ADD PRIMARY KEY (`sessionIdentifier`),
-  ADD KEY `yacrs_sessionIdentifier_sessionID` (`sessionID`);
 
 --
 -- Indexes for table `yacrs_sessionsAdditionalUsers`
@@ -356,6 +355,12 @@ ALTER TABLE `yacrs_sessionHistory`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  MODIFY `sessionIdentifier` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessionQuestions`
@@ -366,12 +371,6 @@ ALTER TABLE `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessions`
   MODIFY `sessionID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `yacrs_sessionIdentifier`
---
-ALTER TABLE `yacrs_sessionIdentifier`
-  MODIFY `sessionIdentifier` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `yacrs_sessionsAdditionalUsers`
@@ -419,12 +418,6 @@ ALTER TABLE `yacrs_sessionQuestions`
 --
 ALTER TABLE `yacrs_sessions`
   ADD CONSTRAINT `yacrs_sessions_ownerID` FOREIGN KEY (`ownerID`) REFERENCES `yacrs_user` (`userID`);
-
---
--- Constraints for table `yacrs_sessionIdentifier`
---
-ALTER TABLE `yacrs_sessionIdentifier`
-  ADD CONSTRAINT `yacrs_sessionIdentifier_sessionID` FOREIGN KEY (`sessionID`) REFERENCES `yacrs_sessions` (`sessionID`);
 
 --
 -- Constraints for table `yacrs_sessionsAdditionalUsers`

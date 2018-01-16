@@ -109,8 +109,12 @@ function getColour($colours, $i) {
             <tbody>
                 <?php foreach($responsesText as $response): ?>
                     <tr>
+                        <?php if($response->getUsername() == NULL): ?>
+                        <td>Guest</td>
+                        <?php else: ?>
                         <td><?=$this->e($response->getUsername())?></td>
-                        <td><?=date($config["datetime"]["datetime"]["short"], $response->getTime())?></td>
+                        <?php endif;?>
+                        <td><?=date('Y-m-d H:i:s', $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
                     </tr>
                 <?php endforeach; ?>

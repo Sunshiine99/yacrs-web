@@ -42,6 +42,7 @@ class PageSessionRunQuestionResponse
 
         elseif($question->getType() == "mcq") {
             $responsesMcq = DatabaseResponseMcq::loadChoicesTotal($sessionQuestionID, $mysqli);
+            $userMcqResponses = DatabaseResponse::loadMcqResponses($sessionQuestionID, $mysqli);
         }
 
         elseif($question->getType() == "mrq") {
@@ -58,6 +59,7 @@ class PageSessionRunQuestionResponse
         $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/run/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
 
+        $data["userMcqResponses"] = $userMcqResponses;
         $data["responsesMrq"] = $responsesMrq;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;

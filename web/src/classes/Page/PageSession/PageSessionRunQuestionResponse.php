@@ -42,7 +42,7 @@ class PageSessionRunQuestionResponse
 
         elseif($question->getType() == "mcq") {
             $responsesMcq = DatabaseResponseMcq::loadChoicesTotal($sessionQuestionID, $mysqli);
-            $userMcqResponses = DatabaseResponse::loadMcqResponses($sessionQuestionID, $mysqli);
+            $userMcqResponses = DatabaseResponseMcq::loadResponses($sessionQuestionID, $mysqli);
         }
 
         elseif($question->getType() == "mrq") {

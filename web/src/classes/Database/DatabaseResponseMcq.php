@@ -118,4 +118,40 @@ class DatabaseResponseMcq
             return null;
         }
     }
+
+    /**
+     * Load an array of responses for a question
+     * @param $sessionQuestionID
+     * @param $mysqli
+     * @return array|null
+     */
+    public static function loadResponses($sessionQuestionID, $mysqli) {
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
+
+        $sql = "SELECT username, time, choice
+                FROM
+                    `yacrs_responseMcq` as r,
+                    `yacrs_user` as u,
+                    `yacrs_questionsMcqChoices` as m
+                WHERE r.`sessionQuestionID` = $sessionQuestionID
+                  AND r.`userID` = u.`userID`
+                  AND m.`ID` = r.`choiceID`";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        $responses = [];
+
+        // Foreach row returned
+        while($row = $result->fetch_assoc()) {
+
+            $response = new Response();
+            $response->setResponse($row["choice"]);
+            $response->setTime($row["time"]);
+            $response->setUsername($row["username"]);
+            $responses[] = $response;
+        }
+
+        return $responses;
+    }
 }

@@ -87,7 +87,7 @@ class DatabaseSessionQuestion
     /**
      * @param int $sessionID
      * @param mysqli $mysqli
-     * @return Question[]
+     * @return array
      */
     public static function loadSessionQuestions($sessionID, $mysqli) {
         $sessionID  = Database::safe($sessionID, $mysqli);

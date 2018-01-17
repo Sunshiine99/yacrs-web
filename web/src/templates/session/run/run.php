@@ -108,3 +108,14 @@ $this->layout("template",
         ?>
     </ul>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <br>
+        <h2>Export</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <a href="<?=$config["baseUrl"]?>session/1/run/export/" class="btn btn-primary">Export as CSV</a>
+    </div>
+</div>

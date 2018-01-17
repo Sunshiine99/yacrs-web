@@ -65,6 +65,8 @@ Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
 Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
 
 Flight::route("/session/@id:[0-9]*/run/", array("PageSessionRun", "run"));
+Flight::route("/session/@id:[0-9]*/run/export/", array("PageSessionExport", "export"));
+
 
 Flight::route("/session/@sessionID:[0-9]*/run/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionRunQuestionResponse", "response"));
 

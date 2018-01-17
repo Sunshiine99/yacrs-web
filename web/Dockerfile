@@ -2,6 +2,7 @@ FROM php:5.6-apache
 
 # Enable PHP extensions
 RUN docker-php-ext-install mysqli
+
  # Install needed php extensions: ldap
 RUN \
     apt-get update && \
@@ -10,10 +11,16 @@ RUN \
     docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap
 
+ # Install needed php extensions: zip
 RUN \
     apt-get update && \
-    apt-get install ruby-full -y && \
-    gem install sass --no-user-install
+    apt-get install zlib1g-dev libpng-dev -y && \
+    docker-php-ext-install zip gd
+
+#RUN \
+#    apt-get update && \
+#    apt-get install ruby-full -y && \
+#    gem install sass --no-user-install
 
 # Apache and PHP configuration
 RUN a2enmod rewrite

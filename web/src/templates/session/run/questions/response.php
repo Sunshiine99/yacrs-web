@@ -9,6 +9,7 @@
  * @var $responsesMrq array
  * @var $responsesMcq array
  * @var $userMcqResponses array
+ * @var $userMrqResponses array
  * @var $responsesWordCloud array
  * @var $responsesText Response[]
  */
@@ -66,15 +67,7 @@ function getColour($colours, $i) {
 
 <h1>Responses</h1>
 <ul class="nav nav-tabs">
-    <?php if(isset($responsesMrq)): ?>
-        <li class="nav-item" id="nav-bar-chart">
-            <a class="nav-link active" href="#">Bar Chart</a>
-        </li>
-        <li class="nav-item" id="nav-pie-chart">
-            <a class="nav-link" href="#">Pie Chart</a>
-        </li>
-    <?php endif; ?>
-    <?php if(isset($responsesMcq)): ?>
+    <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
         <li class="nav-item" id="nav-bar-chart">
             <a class="nav-link active" href="#">Bar Chart</a>
         </li>
@@ -108,7 +101,7 @@ function getColour($colours, $i) {
         <div id="wordcloud"></div>
     </div>
 <?php endif; ?>
-<?php if(isset($responsesText) || isset($userMcqResponses)): ?>
+<?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>
     <div id="section-responses" class="section">
         <table class="table table-bordered">
             <thead>
@@ -131,8 +124,20 @@ function getColour($colours, $i) {
                         <td><?=$this->e($response->getResponse())?></td>
                     </tr>
                 <?php endforeach; ?>
-            <?php else: ?>
+            <?php elseif(isset($userMcqResponses)): ?>
                 <?php foreach($userMcqResponses as $response): ?>
+                    <tr>
+                        <?php if($response->getUsername() == NULL): ?>
+                            <td>Guest</td>
+                        <?php else: ?>
+                            <td><?=$this->e($response->getUsername())?></td>
+                        <?php endif;?>
+                        <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
+                        <td><?=$this->e($response->getResponse())?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?php foreach($userMrqResponses as $response): ?>
                     <tr>
                         <?php if($response->getUsername() == NULL): ?>
                             <td>Guest</td>

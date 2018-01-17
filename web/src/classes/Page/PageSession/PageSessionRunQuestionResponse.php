@@ -47,6 +47,7 @@ class PageSessionRunQuestionResponse
 
         elseif($question->getType() == "mrq") {
             $responsesMrq = DatabaseResponseMcq::loadChoicesTotal($sessionQuestionID, $mysqli);
+            $userMrqResponses = DatabaseResponse::loadMrqResponses($sessionQuestionID, $mysqli);
         }
 
         // Setup Page breadcrumbs
@@ -59,11 +60,13 @@ class PageSessionRunQuestionResponse
         $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/run/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
 
-        $data["userMcqResponses"] = $userMcqResponses;
+
         $data["responsesMrq"] = $responsesMrq;
+        $data["userMrqResponses"] = $userMrqResponses;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         $data["responsesMcq"] = $responsesMcq;
+        $data["userMcqResponses"] = $userMcqResponses;
         $data["responsesWordCloud"] = $responsesWordCloud;
         $data["responsesText"] = $responsesText;
         echo $templates->render("session/run/questions/response", $data);

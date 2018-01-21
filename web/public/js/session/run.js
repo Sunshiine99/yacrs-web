@@ -38,6 +38,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
         var actionsConfirmDelete = $(that).closest(".actions-confirm-delete");
         actionsConfirmDelete.find(".actions").css("display", "inline-flex");
     });
+    location.reload();
 });
 
 $(".question-list .activate").click(function () {

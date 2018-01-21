@@ -120,7 +120,7 @@ class DatabaseResponse
     public static function loadMrqResponses($sessionQuestionID, $mysqli) {
         $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
-        $sql = "SELECT userID, username, time, choice
+        $sql = "SELECT r.userID, username, time, choice
                 FROM
                     `yacrs_responseMcq` as r,
                     `yacrs_user` as u,
@@ -133,15 +133,27 @@ class DatabaseResponse
         if(!$result) return null;
 
         $responses = [];
-        //TODO add choices from the same user to an array
-        // Foreach row returned
-        while($row = $result->fetch_assoc()) {
 
-            $response = new Response();
-            $response->setResponse($row["choice"]);
-            $response->setTime($row["time"]);
-            $response->setUsername($row["username"]);
-            $responses[] = $response;
+        // Foreach row returned
+        while($row = $result->fetch_assoc()){
+            //if flag == 0 the response has not been found
+            $flag = 0;
+            foreach($responses as $response){
+                //if the user has more than one response add the choice to the responses
+                if($response->getResponseID() == $row["userID"]){
+                    $response->setResponse($response->getResponse() . ", " . $row["choice"]);
+                    $flag = 1;
+                    break;
+                }
+            }
+            if($flag == 0) {
+                $response = new Response();
+                $response->setResponse($row["choice"]);
+                $response->setTime($row["time"]);
+                $response->setUsername($row["username"]);
+                $response->setResponseID($row["userID"]);
+                $responses[] = $response;
+            }
         }
 
         return $responses;

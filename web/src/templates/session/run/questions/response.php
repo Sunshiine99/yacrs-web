@@ -136,7 +136,7 @@ function getColour($colours, $i) {
                         <td><?=$this->e($response->getResponse())?></td>
                     </tr>
                 <?php endforeach; ?>
-            <?php else: ?>
+            <?php elseif(isset($userMrqResponses)): ?>
                 <?php foreach($userMrqResponses as $response): ?>
                     <tr>
                         <?php if($response->getUsername() == NULL): ?>

@@ -44,6 +44,10 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
+        $sql = "DELETE FROM `yacrs_questionsMcqChoices`
+                WHERE `yacrs_questionsMcqChoices`.`questionID` = $sessionQuestionID";
+        $result = $mysqli->query($sql);
+
         return $result ? true : false;
     }
 
@@ -59,7 +63,7 @@ class DatabaseSessionQuestion
         $sessionID = Database::safe($session->getSessionID(), $mysqli);
         $sessionQuestionID = Database::safe($question->getSessionQuestionID(), $mysqli);
 
-        // If activating question and this is a teacher led questiom
+        // If activating question and this is a teacher led question
         if($question->isActive() && $session->getQuestionControlMode() === 0) {
 
             // Disable all questions

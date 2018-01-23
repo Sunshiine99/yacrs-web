@@ -20,7 +20,7 @@ $this->layout("template",
 ?>
 
 <?php $this->push("head"); ?>
-    <link href="<?=$this->e($config["baseUrl"])?>/css/login.css" rel="stylesheet">
+    <link href="<?=$this->e($config["baseUrl"])?>css/login.css" rel="stylesheet">
 <?php $this->stop(); ?>
 
 <form id="login" action="<?=$this->e($config["baseUrl"])?>login/" method="post">

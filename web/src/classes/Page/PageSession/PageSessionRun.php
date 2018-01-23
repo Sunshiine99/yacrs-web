@@ -37,6 +37,22 @@ class PageSessionRun extends PageSession
         echo $templates->render("session/run/run", $data);
     }
 
+    public static function classMode($sessionIdentifier) {
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionIdentifier));
+
+        $data["session"] = $session;
+        echo $templates->render("session/run/class", $data);
+    }
+
     /**
      * Loads basic variables ensuring correct permissions. (I.e. User is logged in and that they can edit this session)
      * @param $sessionIdentifier

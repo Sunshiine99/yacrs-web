@@ -31,15 +31,17 @@ $this->layout("template",
         <p class="lead">
             Yet Another Class Response System
         </p>
-        <form method="POST" action="<?=$this->e($config["baseUrl"])?>session/join/" class="form-inline">
-            <div class="input-group element-center">
-                <input name="sessionID" id="sessionID" class="form-control" placeholder="Session Identifier"
-                       type="text">
-                <span class="input-group-btn">
-                    <input name="submit" value="Join Session" class="btn btn-primary btn-lg" type="submit">
-                </span>
-            </div>
-        </form>
+        <?php if(!isDesktopApp()): ?>
+            <form method="POST" action="<?=$this->e($config["baseUrl"])?>session/join/" class="form-inline">
+                <div class="input-group element-center">
+                    <input name="sessionID" id="sessionID" class="form-control" placeholder="Session Identifier"
+                           type="text">
+                    <span class="input-group-btn">
+                        <input name="submit" value="Join Session" class="btn btn-primary btn-lg" type="submit">
+                    </span>
+                </div>
+            </form>
+        <?php endif; ?>
     </div>
 </div>
 <?php $this->stop(); ?>

@@ -74,9 +74,11 @@
             </div>
             <?=$this->section("postContent")?>
         </main>
-        <footer class="footer">
-            <?php $this->insert(isset($footer) ? $footer : "partials/footer", ["config" => $config]) ?>
-        </footer>
+        <?php if(!isDesktopApp()): ?>
+            <footer class="footer">
+                <?php $this->insert(isset($footer) ? $footer : "partials/footer", ["config" => $config]) ?>
+            </footer>
+        <?php endif; ?>
 
         <!-- Bootstrap core JavaScript
         ================================================== -->

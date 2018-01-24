@@ -43,5 +43,6 @@ function bool2dbString($bool) {
  * @return bool
  */
 function isDesktopApp() {
+    return true;
     return strpos($_SERVER['HTTP_USER_AGENT'], "YACRSControl") > 0;
 }

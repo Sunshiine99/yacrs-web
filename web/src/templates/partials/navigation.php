@@ -23,7 +23,7 @@
         <?php if($user): ?>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
                     <li class="nav-item dropdown">

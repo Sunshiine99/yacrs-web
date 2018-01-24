@@ -5,6 +5,9 @@ $(".question-list .confirm-delete .confirm").click(function () {
 
     var listGroupItem = $(this).closest(".list-group-item");
 
+    // Find the list group
+    var listGroup = listGroupItem.closest("ul.list-group");
+
     // Construct URL for API request
     var url = baseUrl + "api/session/" + $(this).attr("data-session-identifier") + "/question/" + $(this).attr("data-session-question-id") + "/delete/";
 
@@ -37,8 +40,21 @@ $(".question-list .confirm-delete .confirm").click(function () {
         $(that).closest(".confirm-delete").css("display", "none");
         var actionsConfirmDelete = $(that).closest(".actions-confirm-delete");
         actionsConfirmDelete.find(".actions").css("display", "inline-flex");
+
+        // For each question
+        var i = 1;
+        $(listGroup.find("li.list-group-item").get().reverse()).each(function(index) {
+
+            // Update the question number
+            $(this).find("div.question-number").text(i + ".");
+            i++;
+        });
+
+        //$($("li").get().reverse()).each(function() { /* ... */ });
+        //$(listGroup.find("li.list-group-item").get().reverse()).each(function() { /* ... */ });
+
     });
-    location.reload();
+    //location.reload();
 });
 
 $(".question-list .activate").click(function () {

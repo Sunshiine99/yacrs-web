@@ -39,11 +39,6 @@ $this->layout("template",
     </h1>
 </div>
 <div class="row">
-    <div class="col-sm-12">
-        <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/run/class/" class="btn btn-danger">Enter Class Mode</a>
-    </div>
-</div>
-<div class="row">
     <div class="col-sm-9">
         <h2 class="pull-left">Session Questions</h2>
     </div>
@@ -121,6 +116,6 @@ $this->layout("template",
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <a href="<?=$config["baseUrl"]?>session/1/run/export/" class="btn btn-primary">Export as CSV</a>
+        <a href="<?=$config["baseUrl"]?>session/1/run/export/" class="btn btn-primary">Export as Spreadsheet</a>
     </div>
 </div>

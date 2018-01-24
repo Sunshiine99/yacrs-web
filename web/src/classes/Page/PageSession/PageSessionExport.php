@@ -84,7 +84,7 @@ class PageSessionExport
      * @param mysqli $mysqli
      */
     private static function text($sessionQuestionID, &$sheet, $config, $mysqli) {
-        
+
         $responses = DatabaseResponse::loadResponses($sessionQuestionID, $mysqli);
 
         $i = 7;
@@ -98,6 +98,26 @@ class PageSessionExport
         }
     }
 
+    /**
+     * @param Session $session
+     * @param PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet
+     * @param array $config
+     * @param mysqli $mysqli
+     */
+    private static function overviewSheet($session, &$sheet, $config, $mysqli) {
+
+        // Add session details headings
+        self::setHeader(1, 1, "Session Title", $sheet);
+        self::setHeader(1, 2, "Created", $sheet);
+
+        // Add session details values
+        self::setDataCell(2, 1, $session->getTitle(), $sheet);
+        self::setDataCell(2, 2, date($config["datetime"]["datetime"]["long"], $session->getCreated()), $sheet);
+
+        // Auto resize all columns
+        for($i = 1; $i <= 2; $i++)
+            $sheet->getColumnDimensionByColumn($i)->setAutoSize(true);
+    }
 
     /**
      * @param Question $question
@@ -105,7 +125,7 @@ class PageSessionExport
      * @param array $config
      * @param mysqli $mysqli
      */
-    private static function sheet($question, &$sheet, $config, $mysqli) {
+    private static function questionDetailsSheet($question, &$sheet, $config, $mysqli) {
 
         $sessionQuestionID = $question->getSessionQuestionID();
 
@@ -135,44 +155,46 @@ class PageSessionExport
         self::text($sessionQuestionID, $sheet, $config, $mysqli);
     }
 
-    public static function export() {
+
+    public static function export($sessionIdentifier) {
         $config = Flight::get("config");
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
+        // Load the session ID
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // Create a new spreadsheet
         $spreadsheet = new Spreadsheet();
 
-        $questions = DatabaseSessionQuestion::loadSessionQuestions(1, $mysqli);
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
-        $first = true;
+        // Load session questions
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
+
+        // Get the default sheet as the overview sheet
+        $overviewSheet = $spreadsheet->getActiveSheet();
+
+        $i = count($questions["questions"]);
 
         // For each question
         foreach ($questions["questions"] as $question) {
             /** @var $question Question */
 
-            // If this is the first sheet
-            if($first) {
-                $first = false;
-                $sheet = $spreadsheet->getActiveSheet();
-            }
-
-            else {
-                $sheet = $spreadsheet->createSheet();
-            }
+            $sheet = $spreadsheet->createSheet();
 
             // Create a new sheet
-            $sheet->setTitle("Q" . strval($question->getQuestionID()));
+            $sheet->setTitle("Q" . $i);
 
-            self::sheet($question, $sheet, $config, $mysqli);
+            self::questionDetailsSheet($question, $sheet, $config, $mysqli);
+
+            $i--;
         }
 
-        //$sessionQuestionID = 3;
-
-        // Load the question
-        //$question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
-
+        $overviewSheet->setTitle("Overview");
+        self::overviewSheet($session, $overviewSheet, $config, $mysqli);
 
         // Create a new temp file
         $tempFile = tempnam("/tmp", "");
@@ -181,8 +203,14 @@ class PageSessionExport
         $writer = new Xls($spreadsheet);
         $writer->save($tempFile);
 
+        // Generate the report filename
+        // E.g. YACRS_1_Session_Title.xls
+        $filename = str_replace(" ", "_", "YACRS " . $sessionIdentifier . " " . $session->getTitle());
+        $filename = preg_replace('/[^A-Za-z0-9_"\']/', '', $filename);
+        $filename .= ".xls";
+
         // Output the spreadsheet file for download
-        header("Content-Disposition: attachment; filename=\"report.xls\"");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
         header("Content-Type: application/force-download");
         header("Content-Length: " . filesize($tempFile));
         header("Connection: close");

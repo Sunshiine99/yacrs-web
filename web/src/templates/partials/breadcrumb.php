@@ -6,6 +6,9 @@
 <?php if($breadcrumbs): ?>
 <div class="container">
     <nav id="breadcrumb" aria-label="breadcrumb" role="navigation">
+        <div class="breadcrumb-right pull-right">
+            <a href="#" onclick="window.history.back();">Back</a>
+        </div>
         <ol class="breadcrumb">
             <?php foreach($breadcrumbs->getItems() as $breadcrumb): ?>
                 <?php if($breadcrumb->hasLink()): ?>

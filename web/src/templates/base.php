@@ -32,6 +32,11 @@
         <link href="<?=$this->e($config["baseUrl"])?>css/style.css" rel="stylesheet">
         <link href="<?=$this->e($config["baseUrl"])?>css/bootstrap-extra.css" rel="stylesheet">
         <?=$this->section("head")?>
+
+        <?php // If this is the desktop app, apply desktop app specific CSS ?>
+        <?php if(isDesktopApp()): ?>
+            <link href="<?=$this->e($config["baseUrl"])?>css/style-desktop.css" rel="stylesheet">
+        <?php endif; ?>
     </head>
     <body>
         <!--[if lt IE 9]>

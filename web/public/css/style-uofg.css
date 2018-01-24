@@ -84,15 +84,15 @@ body footer ul li {
 
 @media only screen and (max-width : 768px) and (min-width : 575px) {
     body footer {
-        height: 300px!important;
-        margin-top: -300px!important;
+        height: 300px;
+        margin-top: -300px;
     }
 }
 
 @media only screen and (max-width : 992px) and (min-width : 768px) {
     body footer {
-        height: 275px!important;
-        margin-top: -275px!important;
+        height: 275px;
+        margin-top: -275px;
     }
 }
 

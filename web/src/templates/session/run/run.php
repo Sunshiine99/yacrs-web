@@ -31,7 +31,8 @@ $this->layout("template",
 <div class="page-header">
     <h1 class="row">
         <div class="col-sm-9">
-            <?=$session->getTitle() ? $this->e($session->getTitle()) : "&nbsp;"?>
+            <h1><?=$this->e($session->getTitle())?></h1>
+            <h3>Session Identifier: <?=$this->e($session->getSessionIdentifier())?></h3>
         </div>
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>

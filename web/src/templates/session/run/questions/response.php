@@ -96,6 +96,8 @@ function getColour($colours, $i) {
         <canvas id="pie-chart" width="400" height="200"></canvas>
     </div>
 <?php endif; ?>
+
+<?php // The word cloud bit ?>
 <?php if(isset($responsesWordCloud)): ?>
     <div id="section-word-cloud" class="section">
         <div id="wordcloud"></div>

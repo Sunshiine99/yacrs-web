@@ -185,19 +185,83 @@ class DatabaseQuestion
         return $result?true:false;
     }
 
+    /**
+     * @param QuestionMcq $question
+     * @param mysqli $mysqli
+     * @return bool
+     */
     private static function updateMcq($question, $mysqli) {
         $questionID = Database::safe($question->getQuestionID(), $mysqli);
 
-        // Delete All MCQ Choices for question
-        // TODO: Actually update rather than delete
-        $sql = "DELETE FROM `yacrs_questionsMcqChoices`
-                WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID";
+        // Get the new choices
+        $choices = $question->getChoices();
+
+        // Run query to get the old choices
+        $sql = "SELECT *
+                FROM `yacrs_questionsMcqChoices`
+                WHERE `yacrs_questionsMcqChoices`.questionID = $questionID";
         $result = $mysqli->query($sql);
 
-        // Check if successful, display and log error if not
-        Database::checkError($mysqli, __LINE__, __FILE__);
+        if(!$result) return null;
 
-        return self::insertMcq($question, $question->getQuestionID(), $mysqli);
+        // Index used for looping through new choices
+        $i = 0;
+
+        // Loop for every old choice
+        while($row = $result->fetch_assoc()) {
+
+            // If this old choice is not the same as the new choice in this position
+            if($row["ID"] != $choices[$i]->getChoiceID()) {
+
+                // Make the old choice ID database safe
+                $choiceID = Database::safe($row["ID"], $mysqli);
+
+                // Delete this old choice
+                $sql = "DELETE FROM `yacrs_questionsMcqChoices`
+                        WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID
+                          AND `yacrs_questionsMcqChoices`.`ID` = $choiceID";
+                $result2 = $mysqli->query($sql);
+
+                if(!$result2) return null;
+            }
+
+            else {
+
+
+                // Make the choice text and choice ID database safe
+                $choice = Database::safe($choices[$i]->getChoice(), $mysqli);
+                $choiceID = Database::safe($choices[$i]->getChoiceID(), $mysqli);
+
+                // Update the old choice
+                $sql = "UPDATE `yacrs_questionsMcqChoices`
+                        SET `choice` = '$choice'
+                        WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID
+                          AND `yacrs_questionsMcqChoices`.`ID` = $choiceID";
+                $result2 = $mysqli->query($sql);
+
+                if(!$result2) return null;
+
+                $i++;
+            }
+        }
+
+        // Loop through the remaining new choices
+        while($i < count($choices)) {
+
+            // Make this choice text database safe
+            $choice = Database::safe($choices[$i]->getChoice(), $mysqli);
+
+            // Add this new choice
+            $sql = "INSERT INTO `yacrs_questionsMcqChoices` (`questionID`, `choice`)
+                    VALUES ($questionID, '$choice')";
+            $result = $mysqli->query($sql);
+
+            if(!$result) return null;
+
+            $i++;
+        }
+
+        return true;
     }
 
     private static function questionTypeToId($type) {

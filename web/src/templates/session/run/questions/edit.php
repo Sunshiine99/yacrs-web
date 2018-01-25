@@ -28,8 +28,17 @@ $saveText = $new ? "Create" : "Save";
 
 // If this is a new question, add default number of MCQ choices
 if($new) {
-    //$choices = array_pad([], 4, "");
-    $choices = ["A", "B", "C", "D"];
+
+    // Array of possible choices
+    $choices = [];
+
+    // Choice A - D
+    for($i = 65; $i <= 68; $i++) {
+
+        // Add a bew choice
+        $choice = new QuestionMcqChoice(chr($i));
+        array_push($choices, $choice);
+    }
 }
 
 // Otherwise not a new question
@@ -40,12 +49,12 @@ else {
 
     // If MCQ add choices to array
     if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"]))
-        foreach ($question->getChoices() as $choice)
-            array_push($choices, $choice->getChoice());
+        $choices = $question->getChoices();
 
     // If no choices have been added, add one
     if(count($choices) == 0) {
-        array_push($choices, "");
+        $choice = new QuestionMcqChoice("");
+        array_push($choices, $choice);
     }
 }
 
@@ -105,7 +114,8 @@ else {
                     <?php $i = 0; ?>
                     <?php foreach ($choices as $choice): ?>
                         <div class="input-group input-add-more-item">
-                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input" type="text" value="<?=$this->e($choice)?>" tabindex="1">
+                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1">
+                            <input id="mcq-choice-id-<?=$i?>" name="mcq-choice-id-<?=$i?>" type="hidden" value="<?=$this->e($choice->getChoiceID())?>">
                             <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>

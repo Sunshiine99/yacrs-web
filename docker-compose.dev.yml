@@ -13,6 +13,8 @@ services:
         - "4001:80"
     links:
         - db
+    networks:
+        - internal
   db:
     ports:
         - "4003:3306"

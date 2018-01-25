@@ -67,8 +67,13 @@ class PageSessionRunQuestion extends PageSessionRun
             // Loop for every posted value
             foreach($_POST as $key => $value) {
 
-                // If this is one of the MCQ choices, add it as a choice
-                if(substr($key, 0, 11) == "mcq-choice-") {
+                // Use regex to check if this is a "mcq-choice-1" field
+                preg_match("/(mcq-choice-)(\w*[0-9]\w*)/", $key, $matches);
+
+                // If there are matches then this is a "mcq-choice-1" field
+                if($matches) {
+
+                    // Add choice
                     $question->addChoice($value);
                 }
             }
@@ -163,8 +168,26 @@ class PageSessionRunQuestion extends PageSessionRun
 
             // Load new choices
             foreach ($_POST as $key => $value) {
-                if (substr($key, 0, 11) == "mcq-choice-") {
-                    $question->addChoice($value);
+
+                // Use regex to check if this is a "mcq-choice-1" field
+                preg_match("/(mcq-choice-)(\w*[0-9]\w*)/", $key, $matches);
+
+                // If there are matches then this is a "mcq-choice-1" field
+                if($matches) {
+
+                    // Get the choice index from the regex matches
+                    $choiceIndex = $matches[2];
+
+                    // If no choice ID, use null
+                    $choiceID = null;
+
+                    // If there is a choice ID associated with this choice, store it
+                    if(isset($_POST["mcq-choice-id-" . $choiceIndex])) {
+                        $choiceID = intval($_POST["mcq-choice-id-" . $choiceIndex]);
+                    }
+
+                    // Add a new choice
+                    $question->addChoice($value, false, $choiceID);
                 }
             }
         }

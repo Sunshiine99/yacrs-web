@@ -1,3 +1,15 @@
 .section {
     margin-top: 10px;
 }
+
+#display-personal, #hide-personal {
+    margin-bottom: 10px;
+}
+
+.username, #hide-personal {
+    display: none;
+}
+
+ul.nav-tabs li.nav-item a.nav-link {
+    outline: 0;
+}

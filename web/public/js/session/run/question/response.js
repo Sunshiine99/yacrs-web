@@ -1,6 +1,24 @@
 var wordCloudData;
 
 /**
+ * When the button to display usernames is clicked
+ */
+$("#display-personal").click(function() {
+    $(".username").css("display", "table-cell");
+    $(this).css("display", "none");
+    $("#hide-personal").css("display", "inline")
+});
+
+/**
+ * When the button to hide usernames is clicked
+ */
+$("#hide-personal").click(function() {
+    $(".username").css("display", "none");
+    $(this).css("display", "none");
+    $("#display-personal").css("display", "inline")
+});
+
+/**
  * Runs when a nav item is clicked.
  * @param event
  */

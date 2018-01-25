@@ -105,10 +105,12 @@ function getColour($colours, $i) {
 <?php endif; ?>
 <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>
     <div id="section-responses" class="section">
+        <button id="display-personal" class="btn btn-primary">Display Personal Information</button>
+        <button id="hide-personal" class="btn btn-primary">Hide Personal Information</button>
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th scope="col">Username</th>
+                <th class="username" scope="col">Username</th>
                 <th scope="col">Time</th>
                 <th scope="col">Response</th>
             </tr>
@@ -118,9 +120,9 @@ function getColour($colours, $i) {
                 <?php foreach($responsesText as $response): ?>
                     <tr>
                         <?php if($response->getUsername() == NULL): ?>
-                            <td>Guest</td>
+                            <td class="username">Guest</td>
                         <?php else: ?>
-                            <td><?=$this->e($response->getUsername())?></td>
+                            <td class="username"><?=$this->e($response->getUsername())?></td>
                         <?php endif;?>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
@@ -130,9 +132,9 @@ function getColour($colours, $i) {
                 <?php foreach($userMcqResponses as $response): ?>
                     <tr>
                         <?php if($response->getUsername() == NULL): ?>
-                            <td>Guest</td>
+                            <td class="username">Guest</td>
                         <?php else: ?>
-                            <td><?=$this->e($response->getUsername())?></td>
+                            <td class="username"><?=$this->e($response->getUsername())?></td>
                         <?php endif;?>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
@@ -142,9 +144,9 @@ function getColour($colours, $i) {
                 <?php foreach($userMrqResponses as $response): ?>
                     <tr>
                         <?php if($response->getUsername() == NULL): ?>
-                            <td>Guest</td>
+                            <td class="username">Guest</td>
                         <?php else: ?>
-                            <td><?=$this->e($response->getUsername())?></td>
+                            <td class="username"><?=$this->e($response->getUsername())?></td>
                         <?php endif;?>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
@@ -155,12 +157,6 @@ function getColour($colours, $i) {
         </table>
     </div>
 <?php endif; ?>
-
-<style>
-    ul.nav-tabs li.nav-item a.nav-link {
-        outline: 0;
-    }
-</style>
 
 <script>
     <?php if(isset($responsesMcq)): ?>

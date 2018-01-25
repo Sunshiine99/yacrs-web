@@ -1,144 +1,100 @@
 <?php
-/*****************************************************************************
-YACRS Copyright 2013-2015, The University of Glasgow.
-Written by Niall S F Barr (niall.barr@glasgow.ac.uk, niall@nbsoftware.com)
+include("autoload.php");
+session_start();
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+// Enable error logging
+Flight::set('flight.log_errors', true);
 
-       http://www.apache.org/licenses/LICENSE-2.0
+Flight::set("config", $config);
+Flight::set("templates", new League\Plates\Engine(dirname(__FILE__)."/../src/templates/"));
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*****************************************************************************/
+// If an alert is in the session
+if(isset($_SESSION["yacrs_alert"])) {
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-require_once('config.php');
-require_once('lib/database.php');
-require_once('lib/forms.php');
-require_once('lib/shared_funcs.php');
-include_once('corelib/mobile.php');
-include_once('lib/lti_funcs.php');
-
-// Create new instance of plates templating system
-$templates = new League\Plates\Engine($CFG['templates']);
-
-// Data for template
-$data = [
-    "CFG" => $CFG,
-    "title" => $CFG['sitetitle'],
-    "description" => $CFG['sitetitle'],
-    "breadcrumbs" => new Breadcrumb(),
-];
-
-$loginError = '';
-
-// Check if user is logged in and if they are, load their details
-$uinfo = checkLoggedInUser(true, $loginError);
-
-// Set page breadcrumbs
-$data["breadcrumbs"]->addItem("YACRS");
-
-// If user is not logged in, render the login page
-if($uinfo==false)
-    die($templates->render("login", $data));
-
-// Otherwise, user is logged in
-else
-{
-    // If a session is specified, forward the user to the relevant page
-    $thisSession = requestSet('sessionID') ? session::retrieve_session(requestInt('sessionID')):false;
-    if($thisSession)
-    {
-        if(checkPermission($uinfo, $thisSession))
-        {
-            header("Location: runsession.php?sessionID={$thisSession->id}");
-            die();
-        }
-        elseif(($thisSession->currentQuestion==0)&&($thisSession->ublogRoom>0))
-        {
-            header("Location: chat.php?sessionID={$thisSession->id}");
-            die();
-        }
-        else
-        {
-            header("Location: vote.php?sessionID={$thisSession->id}");
-            die();
-        }
+    // If the session has expired, remove the alert from the session
+    if((isset($_SESSION["yacrs_alert"]["expire"]) ? $_SESSION["yacrs_alert"]["expire"] : 0) < time()) {
+        unset($_SESSION["yacrs_alert"]);
     }
-    elseif($ltiSessionID = getLTISessionID())
-    {
-        if(isLTIStaff())
-	    {
-            $s = session::retrieve_session($ltiSessionID);
-            $data["s"] = $s;
-            die($templates->render("home_lti", $data));
-	    }
 
-	    // Otherwise, forward the user to the vote page for the session
-        else
-        {
-            header("Location: vote.php?sessionID={$thisSession->id}");
-            die();
-        }
-    }
-    else
-    {
-
-        // Array of sessions that the user has access to modify as a staff member
-        $staffSessions = array();
-
-        // If the user can create sessions, load a list of the sessions the user has access to
-        if($uinfo['sessionCreator'])
-        {
-
-            // Load staff sessions
-            $staffSessions = session::retrieve_session_matching('ownerID', $uinfo['uname']);
-
-            // If no sessions loaded, use an empty array
-            if($staffSessions === false)
-                $staffSessions = array();
-
-            // Merge my sessions with those which I have access to
-            $staffSessions = array_merge($staffSessions, session::teacherExtraSessions($uinfo['uname']));
-        }
-
-        // Load user sessions
-        $slist = sessionMember::retrieve_sessionMember_matching('userID', $uinfo['uname']);
-
-        // Array of
-        $sessions = array();
-
-        // If slist array is set
-        if($slist)
-        {
-
-            // Loop for every session in slist
-            foreach($slist as $s)
-            {
-
-                // Get session from slist item
-                $sess = session::retrieve_session($s->session_id);
-
-                // If session exists and it is visisble, add it to the array of sessions to show
-                if(($sess)&&($sess->visible))
-                    $sessions[] = $sess;
-            }
-        }
-
-        $user = userInfo::retrieve_by_username($uinfo['uname']);
-
-        $data["staffSessions"] = $staffSessions;
-        $data["sessions"] = $sessions;
-        $data["uinfo"] = $uinfo;
-        $data["user"] = $user;
-
-        die($templates->render("home", $data));
+    // Otherwise, add the alert to the page data
+    else {
+        $data["alert"] = new Alert($_SESSION["yacrs_alert"]["alert"]);
+        unset($_SESSION["yacrs_alert"]);
     }
 }
+
+$data["config"] = $config;
+Flight::set("data", $data);
+
+/**
+ * Define a function that can connect to the database. This can be assessed by calling Flight::get("databaseConnect")
+ */
+Flight::set("databaseConnect",
+    function() use ($config) {
+
+        // Attempt to connect to the database
+        try {
+            $mysqli = new mysqli($config["database"]["host"], $config["database"]["username"], $config["database"]["password"], $config["database"]["name"]);
+        }
+
+        catch (Exception $e) {
+            error_log($e->getMessage());
+            PageError::error500();
+            exit;
+        }
+
+        return $mysqli;
+    }
+);
+
+Flight::route("/", array("PageHome", "home"));
+
+Flight::route("POST /login/", array("PageLogin", "loginSubmit"));
+Flight::route("/login/", array("PageLogin", "login"));
+Flight::route("POST /login/anonymous/", array("PageLogin", "anonymousSubmit"));
+Flight::route("/login/anonymous/", array("PageLogin", "anonymous"));
+Flight::route("/logout/", array("PageLogout", "logout"));
+
+/**************************************************************
+ * Sessions
+ **************************************************************/
+
+Flight::route("/session/", array("PageSession", "sessions"));
+
+Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
+Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
+
+Flight::route("/session/@id:[0-9]*/run/", array("PageSessionRun", "run"));
+Flight::route("/session/@id:[0-9]*/run/class/", array("PageSessionRun", "classMode"));
+Flight::route("/session/@id:[0-9]*/run/export/", array("PageSessionExport", "export"));
+
+
+Flight::route("/session/@sessionID:[0-9]*/run/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionRunQuestionResponse", "response"));
+
+Flight::route("POST /session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionRunQuestion", "editSubmit"));
+Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionRunQuestion", "edit"));
+
+Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/delete/", array("PageSessionRunQuestion", "delete"));
+
+Flight::route("POST /session/@id:[0-9]*/run/question/new/", array("PageSessionRunQuestion", "addSubmit"));
+Flight::route("/session/@id:[0-9]*/run/question/new/", array("PageSessionRunQuestion", "add"));
+
+Flight::route("POST /session/join/", array("PageSessionJoin", "submit"));
+Flight::route("/session/join/", array("PageSessionJoin", "join"));
+
+Flight::route("POST /session/@id:[0-9]*/edit/", array("PageSessionEdit", "submit"));
+Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
+
+// Add session submit
+Flight::route("POST /session/new/", array("PageSessionNew", "submit"));
+Flight::route("/session/new/", array("PageSessionNew", "add"));
+
+/**************************************************************
+ * API
+ **************************************************************/
+
+Flight::route("/services.php", array("ApiLegacy", "api"));
+
+Flight::map("notFound", array("PageError", "error404"));
+
+Flight::start();

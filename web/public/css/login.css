@@ -1,0 +1,34 @@
+#login {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#login input {
+    box-shadow: none;
+}
+
+#login #username {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#login #password {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+#login button {
+    margin-top: 10px;
+}
+
+#login #anonymous {
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+#alert {
+    margin-top: 10px;
+}

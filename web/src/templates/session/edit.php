@@ -1,123 +1,207 @@
 <?php
+/**
+ * @var $config array
+ * @var $title string
+ * @var $description string
+ * @var $breadcrumbs Breadcrumb
+ * @var $user User
+ * @var $alert Alert
+ * @var $session Session
+ */
+
+$title = $session->getSessionID() ? "Edit Session" : "New Session";
+
 $this->layout("template",
     [
-        "CFG" => $CFG,
+        "config" => $config,
         "title" => $title,
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
-        "uinfo" => $uinfo,
+        "user" => $user
     ]
 );
+
+// Convert boolean values to html
+$allowGuests            = $session->getAllowGuests()            ? " checked" : "";
+$onSessionList          = $session->getOnSessionList()          ? " checked" : "";
+$allowModifyAnswer      = $session->getAllowModifyAnswer()      ? " checked" : "";
+$allowQuestionReview    = $session->getAllowQuestionReview()    ? " checked" : "";
+$classDiscussionEnabled = $session->getClassDiscussionEnabled() ? " checked" : "";
+
+$submitText = $session->getSessionID() ? "Save" : "Create";
+$title = $session->getSessionID() ? "Edit Session" : "New Session";
+
 ?>
 
-<form action="<?=$CFG["baseUrl"]?>/editsession.php" method="POST" class="form-horizontal">
-    <input name="editSession_form_code" value="73e4b27a947d6e4f3a1c38c04af1a20f" type="hidden">
-    <input name="sessionID" value="" type="hidden">
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="title">Title</label>
-        <div class="col-sm-8">
-            <input class="form-control" name="title" id="title" value="" size="80" type="text">
+<?php $this->push("end"); ?>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/edit.js" crossorigin="anonymous"></script>
+<?php $this->stop(); ?>
+
+<div class="row page-header">
+    <div class="col-sm-12">
+        <div class="float-left">
+            <h1><?=$this->e($title)?></h1>
+        </div>
+        <?php if($session->getSessionID()): ?>
+            <div class="float-right">
+                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/" class="btn btn-primary pull-right">Run Session</a>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<form action="." method="POST" class="form-horizontal" style="display:block; width: 100%;">
+    <input name="sessionID" value="<?=$this->e($session->getSessionID())?>" type="hidden">
+    <div class="form-group row">
+        <label class="col-sm-3 control-label" for="title">Title</label>
+        <div class="col-sm-9">
+            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Title">
         </div>
     </div>
-    <input name="courseIdentifier" value="" type="hidden">
-    <div class="form-group">
-        <div class="col-sm-8 col-sm-offset-4">
+    <div class="form-group row advanced">
+        <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier</label>
+        <div class="col-sm-9">
+            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 offset-sm-3">
             <div class="checkbox">
                 <label>
-                    <input name="allowGuests" id="allowGuests" value="1" type="checkbox">Allow guest users (without login)</label>
+                    <input type="hidden" value="0" name="allowGuests">
+                    <input name="allowGuests" id="allowGuests" value="1" type="checkbox"<?=$allowGuests?>>
+                    Allow Anonymous Guest Users</label>
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-8 col-sm-offset-4">
+        <div class="col-sm-3 advanced">
             <div class="checkbox">
                 <label>
-                    <input name="visible" id="visible" value="1" checked="1" type="checkbox">Display on user's available sessions list</label>
+                    <input type="hidden" value="0" name="onSessionList">
+                    <input name="onSessionList" id="onSessionList" value="1" type="checkbox"<?=$onSessionList?>>
+                    Display On User's Session List
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="checkbox">
+                <label>
+                    <input type="hidden" value="0" name="classDiscussionEnabled">
+                    <input name="classDiscussionEnabled" id="classDiscussionEnabled" value="1" type="checkbox"<?=$classDiscussionEnabled?>>
+                    Enable Class Discussion
+                </label>
             </div>
         </div>
     </div>
     <fieldset>
-        <legend>Question settings</legend>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="questionMode">Question control mode</label>
-            <div class="col-sm-8">
-                <select class="form-control" name="questionMode" id="questionMode">
-                    <option value="0">Teacher led (one question at a time)</option>
-                    <option value="1">Student paced</option>
+        <legend class="advanced">Question settings</legend>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label" for="questionControlMode">
+                Question Control Mode
+                <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
+                      <h1>Teacher Led</h1>
+                      Only one question can be shown to students at any one time and this question is controlled by
+                      the teacher throughout the class.
+
+                      <h1>Student Paced</h1>
+                      Multiple questions can be shown to students at once and they can work through them at their
+                      own pace.">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </a>
+            </label>
+            <div class="col-sm-9">
+                <select class="form-control" name="questionControlMode" id="questionControlMode">
+                    <option value="0"<?=$session->getQuestionControlMode()==0 ? " selected" : ""?>>
+                        Teacher Led
+                    </option>
+                    <option value="1"<?=$session->getQuestionControlMode()==1 ? " selected" : ""?>>
+                        Student Paced
+                    </option>
                 </select>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="defaultQuActiveSecs">Default time limit for active questions (seconds, 0 for no limit).</label>
-            <div class="col-sm-8">
-                <input class="form-control" name="defaultQuActiveSecs" id="defaultQuActiveSecs" value="" size="8" type="text">
+        <div class="form-group row advanced">
+            <label for="defaultTimeLimit" class="col-sm-3 col-form-label">Default Time Limit</label>
+            <div class="col-sm-2">
+                <label class="form-check-label">
+                    <input id="defaultTimeLimitEnable" class="form-check-input" value="" type="checkbox"<?=$session->getDefaultTimeLimit()!=0?" checked":""?>>
+                    Enable
+                </label>
+            </div>
+            <div class="col-sm-7">
+                <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
+                       type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-sm-8 col-sm-offset-4">
+        <div class="form-group row">
+            <div class="col-sm-4 offset-sm-3">
                 <div class="checkbox">
                     <label>
-                        <input name="allowQuReview" id="allowQuReview" value="1" type="checkbox">Allow review/change of answers while response open</label>
+                        <input type="hidden" value="0" name="allowModifyAnswer">
+                        <input name="allowModifyAnswer" id="allowModifyAnswer" value="1" type="checkbox"<?=$allowModifyAnswer?>>
+                        Allow students to change their answer</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-8 col-sm-offset-4">
+            <div class="col-sm-5">
                 <div class="checkbox">
                     <label>
-                        <input name="allowFullReview" id="allowFullReview" value="1" type="checkbox">Allow students to view their answers after class.</label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="customScoring">Custom scoring</label>
-            <div class="col-sm-8">
-                <select class="form-control" name="customScoring" id="customScoring">
-                    <option selected="1" value="">None</option>
-                    <option value="Quintins_scoring.php">Quintins_scoring</option>
-                </select>
-            </div>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>Text/micro blogging settings</legend>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="ublogRoom">Micro blogging mode</label>
-            <div class="col-sm-8">
-                <select class="form-control" name="ublogRoom" id="ublogRoom">
-                    <option value="0">None</option>
-                    <option value="1">Full class</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="maxMessagelength">Maximum message length (characters)</label>
-            <div class="col-sm-8">
-                <input class="form-control" name="maxMessagelength" id="maxMessagelength" value="140" size="8" disabled="1" type="text">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-8 col-sm-offset-4">
-                <div class="checkbox">
-                    <label>
-                        <input name="allowTeacherQu" id="allowTeacherQu" value="1" disabled="disabled" type="checkbox">Allow questions for the teacher?</label>
+                        <input type="hidden" value="0" name="allowQuestionReview">
+                        <input name="allowQuestionReview" id="allowQuestionReview" value="1" type="checkbox"<?=$allowQuestionReview?>>
+                        Allow Students to view their answers after class</label>
                 </div>
             </div>
         </div>
     </fieldset>
-    <fieldset>
-        <legend>Additional teachers</legend>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="teachers">Additional users who can run session (comma delimited list of user IDs)</label>
-            <div class="col-sm-8">
-                <input class="form-control" name="teachers" id="teachers" value="" size="80" type="text">
+    <fieldset class="advanced">
+        <legend>Additional Users</legend>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label" for="teachers">Additional users who can run session (comma delimited
+                list of user IDs)</label>
+            <div class="col-sm-9">
+                <input class="form-control" name="additionalUsersCsv" id="additionalUsersCsv" value="<?=$this->e($session->getAdditionalUsersCsv())?>" size="80" type="text">
             </div>
         </div>
     </fieldset>
-    <div class="form-group">
-        <div class="col-sm-8 col-sm-offset-4">
-            <input class="submit btn btn-success" name="submit" value="Create" type="submit">
-            <input class="submit btn btn-link" name="submit" value="Cancel" type="submit">
+    <div class="form-group row">
+        <div class="col-sm-9 offset-sm-3">
+            <input class="submit btn btn-primary" name="submit" value="<?=$submitText?>" type="submit">
+            <a onclick="window.history.back();" class="submit btn btn-light btn-light-border">Cancel</a>
+
+            <div class="pull-right">
+                <a id="advanced-settings" class="submit btn btn-light btn-light-border">
+                    View Advanced Settings
+                </a>
+            </div>
         </div>
     </div>
 </form>
+
+<style>
+
+    .tooltip {
+        margin-left: 8px;
+    }
+
+    .tooltip h1 {
+        font-size: 18px;
+        margin: 0;
+        margin-top: 10px;
+        padding: 0;
+        font-weight: bolder;
+    }
+
+
+    .form-check-label {
+        margin-top: 3px;
+    }
+
+    .btn.cancel {
+        margin-left: 10px;
+    }
+
+    .delete.btn {
+        border: 1px solid #ced4da;
+    }
+
+    .advanced {
+        display: none;
+    }
+</style>

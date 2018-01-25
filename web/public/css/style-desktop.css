@@ -1,0 +1,14 @@
+body footer {
+    height: 0!important;
+    margin-top: 0!important;
+}
+
+body main {
+    /* Footer Height (0px) + Padding (25px) */
+    padding-bottom:25px!important;
+}
+
+body main .jumbotron {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

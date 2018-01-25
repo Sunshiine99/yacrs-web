@@ -1,14 +1,432 @@
-CREATE TABLE yacrs_lticonsumer(id INTEGER PRIMARY KEY AUTO_INCREMENT, keyHash VARCHAR(40), consumer_key VARCHAR(255), name VARCHAR(80), secret VARCHAR(255));
-CREATE TABLE yacrs_session(id INTEGER PRIMARY KEY AUTO_INCREMENT, ownerID VARCHAR(35), title VARCHAR(80), created DATETIME, questions TEXT, currentQuestion INTEGER, questionMode INTEGER, endtime DATETIME, sessionstarttime DATETIME, sessionOpen INTEGER, activeSubsession_id INTEGER, sessionendtime DATETIME, visible INTEGER, allowGuests INTEGER, multiSession INTEGER, ublogRoom INTEGER, maxMessagelength INTEGER, allowQuReview INTEGER, allowTeacherQu INTEGER, courseIdentifier VARCHAR(20), defaultQuActiveSecs INTEGER, extras TEXT);
-CREATE TABLE yacrs_extraTeachers(id INTEGER PRIMARY KEY AUTO_INCREMENT, session_id INTEGER, teacherID VARCHAR(35));
-CREATE TABLE yacrs_subsession(id INTEGER PRIMARY KEY AUTO_INCREMENT, session_id INTEGER, title VARCHAR(80), starttime DATETIME, endtime DATETIME);
-CREATE TABLE yacrs_ltisessionlink(id INTEGER PRIMARY KEY AUTO_INCREMENT, client_id INTEGER, resource_link_id VARCHAR(255), session_id INTEGER);
-CREATE TABLE yacrs_userInfo(id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(80), name VARCHAR(45), email VARCHAR(85), nickname VARCHAR(45), phone VARCHAR(20), sessionCreator INTEGER, isAdmin INTEGER, teacherPrefs TEXT);
-CREATE TABLE yacrs_question(id INTEGER PRIMARY KEY AUTO_INCREMENT, ownerID VARCHAR(35), session_id INTEGER, title VARCHAR(80), definition TEXT, responsetype VARCHAR(20), multiuse INTEGER);
-CREATE TABLE yacrs_systemQuestionLookup(id INTEGER PRIMARY KEY AUTO_INCREMENT, qu_id INTEGER, name VARCHAR(10));
-CREATE TABLE yacrs_questionInstance(id INTEGER PRIMARY KEY AUTO_INCREMENT, title VARCHAR(80), theQuestion_id INTEGER, inSession_id INTEGER, subsession_id INTEGER, starttime DATETIME, endtime DATETIME, screenshot VARCHAR(60), extras TEXT);
-CREATE TABLE yacrs_sessionMember(id INTEGER PRIMARY KEY AUTO_INCREMENT, session_id INTEGER, userID VARCHAR(35), name VARCHAR(45), nickname VARCHAR(45), email VARCHAR(85), user_id INTEGER, joined DATETIME, lastresponse DATETIME, mobile VARCHAR(20));
-CREATE TABLE yacrs_response(id INTEGER PRIMARY KEY AUTO_INCREMENT, user_id INTEGER, question_id INTEGER, value TEXT, isPartial INTEGER, time DATETIME);
-CREATE TABLE yacrs_message(id INTEGER PRIMARY KEY AUTO_INCREMENT, user_id INTEGER, session_id INTEGER, subsession_id INTEGER, isTeacherQu INTEGER, private INTEGER, posted DATETIME, message TEXT, replyTo_id INTEGER);
-CREATE TABLE yacrs_message_tag_link(message_id INTEGER, tag_id INTEGER);
-CREATE TABLE yacrs_tag(id INTEGER PRIMARY KEY AUTO_INCREMENT, text VARCHAR(20), session_id INTEGER);
+-- phpMyAdmin SQL Dump
+-- version 4.7.6
+-- https://www.phpmyadmin.net/
+--
+-- Host: db
+-- Generation Time: Jan 16, 2018 at 02:54 PM
+-- Server version: 5.7.20
+-- PHP Version: 7.1.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `yacrs`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_apiKey`
+--
+
+CREATE TABLE `yacrs_apiKey` (
+  `id` int(11) NOT NULL,
+  `username` varchar(80) NOT NULL,
+  `isSessionCreator` tinyint(1) NOT NULL DEFAULT '0',
+  `isAdmin` tinyint(1) NOT NULL DEFAULT '0',
+  `key` varchar(64) NOT NULL,
+  `created` bigint(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_questions`
+--
+
+CREATE TABLE `yacrs_questions` (
+  `questionID` int(11) NOT NULL,
+  `question` varchar(80) DEFAULT NULL,
+  `type` int(11) NOT NULL,
+  `created` bigint(20) NOT NULL,
+  `lastUpdate` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_questionsMcqChoices`
+--
+
+CREATE TABLE `yacrs_questionsMcqChoices` (
+  `ID` int(11) NOT NULL,
+  `questionID` int(11) NOT NULL,
+  `choice` varchar(80) NOT NULL,
+  `correct` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_questionTypes`
+--
+
+CREATE TABLE `yacrs_questionTypes` (
+  `ID` int(11) NOT NULL,
+  `name` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `yacrs_questionTypes`
+--
+
+INSERT INTO `yacrs_questionTypes` (`ID`, `name`) VALUES
+  (1, 'mcq'),
+  (2, 'text'),
+  (3, 'textlong'),
+  (4, 'mrq');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_response`
+--
+
+CREATE TABLE `yacrs_response` (
+  `ID` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL,
+  `sessionQuestionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `response` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_responseMcq`
+--
+
+CREATE TABLE `yacrs_responseMcq` (
+  `ID` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL,
+  `sessionQuestionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `choiceID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionAlias`
+--
+
+CREATE TABLE `yacrs_sessionAlias` (
+  `ID` int(11) NOT NULL,
+  `alias` varchar(30) NOT NULL,
+  `sessionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionHistory`
+--
+
+CREATE TABLE `yacrs_sessionHistory` (
+  `ID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionIdentifier`
+--
+
+CREATE TABLE `yacrs_sessionIdentifier` (
+  `sessionIdentifier` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionQuestions`
+--
+
+CREATE TABLE `yacrs_sessionQuestions` (
+  `ID` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL,
+  `questionID` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessions`
+--
+
+CREATE TABLE `yacrs_sessions` (
+  `sessionID` int(11) NOT NULL,
+  `ownerID` int(11) NOT NULL,
+  `title` varchar(80) NOT NULL,
+  `courseID` varchar(20) NOT NULL,
+  `allowGuests` tinyint(1) NOT NULL,
+  `onSessionList` tinyint(1) NOT NULL,
+  `questionControlMode` int(11) NOT NULL,
+  `defaultTimeLimit` int(11) NOT NULL,
+  `allowModifyAnswer` tinyint(1) NOT NULL,
+  `allowQuestionReview` tinyint(1) NOT NULL,
+  `classDiscussionEnabled` tinyint(1) NOT NULL,
+  `created` bigint(20) NOT NULL DEFAULT '0',
+  `lastUpdate` bigint(20) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_sessionsAdditionalUsers`
+--
+
+CREATE TABLE `yacrs_sessionsAdditionalUsers` (
+  `ID` int(11) NOT NULL,
+  `sessionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yacrs_user`
+--
+
+CREATE TABLE `yacrs_user` (
+  `userID` int(11) NOT NULL,
+  `username` varchar(80) DEFAULT NULL,
+  `isSessionCreatorOverride` tinyint(1) DEFAULT NULL,
+  `isAdminOverride` tinyint(1) DEFAULT NULL,
+  `isGuest` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `yacrs_apiKey`
+--
+ALTER TABLE `yacrs_apiKey`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `key` (`key`);
+
+--
+-- Indexes for table `yacrs_questions`
+--
+ALTER TABLE `yacrs_questions`
+  ADD PRIMARY KEY (`questionID`),
+  ADD KEY `yacrs_questions_type` (`type`);
+
+--
+-- Indexes for table `yacrs_questionsMcqChoices`
+--
+ALTER TABLE `yacrs_questionsMcqChoices`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `Structure yacrs_questionsMcqChoice_questionID` (`questionID`);
+
+--
+-- Indexes for table `yacrs_questionTypes`
+--
+ALTER TABLE `yacrs_questionTypes`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `yacrs_response`
+--
+ALTER TABLE `yacrs_response`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `yacrs_responseMcq`
+--
+ALTER TABLE `yacrs_responseMcq`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `yacrs_sessionAlias`
+--
+ALTER TABLE `yacrs_sessionAlias`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `alias` (`alias`),
+  ADD KEY `yacrs_sessionAlias_sessionID` (`sessionID`);
+
+--
+-- Indexes for table `yacrs_sessionHistory`
+--
+ALTER TABLE `yacrs_sessionHistory`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  ADD PRIMARY KEY (`sessionIdentifier`);
+
+--
+-- Indexes for table `yacrs_sessionQuestions`
+--
+ALTER TABLE `yacrs_sessionQuestions`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `yacrs_sessionQuestions_sessionID` (`sessionID`),
+  ADD KEY `yacrs_sessionQuestions_questionID` (`questionID`);
+
+--
+-- Indexes for table `yacrs_sessions`
+--
+ALTER TABLE `yacrs_sessions`
+  ADD PRIMARY KEY (`sessionID`),
+  ADD KEY `yacrs_sessions_ownerID` (`ownerID`);
+
+--
+-- Indexes for table `yacrs_sessionsAdditionalUsers`
+--
+ALTER TABLE `yacrs_sessionsAdditionalUsers`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `yacrs_sessionsAdditionalUsers_sessionID` (`sessionID`),
+  ADD KEY `yacrs_sessionsAdditionalUsers_userID` (`userID`);
+
+--
+-- Indexes for table `yacrs_user`
+--
+ALTER TABLE `yacrs_user`
+  ADD PRIMARY KEY (`userID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `yacrs_apiKey`
+--
+ALTER TABLE `yacrs_apiKey`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_questions`
+--
+ALTER TABLE `yacrs_questions`
+  MODIFY `questionID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_questionsMcqChoices`
+--
+ALTER TABLE `yacrs_questionsMcqChoices`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_questionTypes`
+--
+ALTER TABLE `yacrs_questionTypes`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `yacrs_response`
+--
+ALTER TABLE `yacrs_response`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_responseMcq`
+--
+ALTER TABLE `yacrs_responseMcq`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessionAlias`
+--
+ALTER TABLE `yacrs_sessionAlias`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessionHistory`
+--
+ALTER TABLE `yacrs_sessionHistory`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessionIdentifier`
+--
+ALTER TABLE `yacrs_sessionIdentifier`
+  MODIFY `sessionIdentifier` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessionQuestions`
+--
+ALTER TABLE `yacrs_sessionQuestions`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessions`
+--
+ALTER TABLE `yacrs_sessions`
+  MODIFY `sessionID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_sessionsAdditionalUsers`
+--
+ALTER TABLE `yacrs_sessionsAdditionalUsers`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_user`
+--
+ALTER TABLE `yacrs_user`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `yacrs_questions`
+--
+ALTER TABLE `yacrs_questions`
+  ADD CONSTRAINT `yacrs_questions_type` FOREIGN KEY (`type`) REFERENCES `yacrs_questionTypes` (`ID`);
+
+--
+-- Constraints for table `yacrs_questionsMcqChoices`
+--
+ALTER TABLE `yacrs_questionsMcqChoices`
+  ADD CONSTRAINT `Structure yacrs_questionsMcqChoice_questionID` FOREIGN KEY (`questionID`) REFERENCES `yacrs_questions` (`questionID`);
+
+--
+-- Constraints for table `yacrs_sessionAlias`
+--
+ALTER TABLE `yacrs_sessionAlias`
+  ADD CONSTRAINT `yacrs_sessionAlias_sessionID` FOREIGN KEY (`sessionID`) REFERENCES `yacrs_sessions` (`sessionID`);
+
+--
+-- Constraints for table `yacrs_sessionQuestions`
+--
+ALTER TABLE `yacrs_sessionQuestions`
+  ADD CONSTRAINT `yacrs_sessionQuestions_questionID` FOREIGN KEY (`questionID`) REFERENCES `yacrs_questions` (`questionID`),
+  ADD CONSTRAINT `yacrs_sessionQuestions_sessionID` FOREIGN KEY (`sessionID`) REFERENCES `yacrs_sessions` (`sessionID`);
+
+--
+-- Constraints for table `yacrs_sessions`
+--
+ALTER TABLE `yacrs_sessions`
+  ADD CONSTRAINT `yacrs_sessions_ownerID` FOREIGN KEY (`ownerID`) REFERENCES `yacrs_user` (`userID`);
+
+--
+-- Constraints for table `yacrs_sessionsAdditionalUsers`
+--
+ALTER TABLE `yacrs_sessionsAdditionalUsers`
+  ADD CONSTRAINT `yacrs_sessionsAdditionalUsers_sessionID` FOREIGN KEY (`sessionID`) REFERENCES `yacrs_sessions` (`sessionID`),
+  ADD CONSTRAINT `yacrs_sessionsAdditionalUsers_userID` FOREIGN KEY (`userID`) REFERENCES `yacrs_user` (`userID`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

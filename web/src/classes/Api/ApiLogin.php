@@ -7,18 +7,24 @@ class ApiLogin
      * Login API page
      */
     public static function login() {
+        $config = Flight::get("config");
+
         $output = [];
 
         // Check required parameters
         $username = Api::checkParameter("username");
         $password = Api::checkParameter("password");
 
-        // Attempt to login, get user details if success false if not
-        $uinfo = Login::checkLogin($username, $password);
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Check whether login is valid
+        $user = Login::checkLogin($username, $password, $config, $mysqli, false);
 
         // If invalid login, output an error
-        if(!$uinfo) {
-            $output["error"]["code"] = "login_invalid";
+        if(!$user) {
+            $output["error"]["code"] = "loginInvalid";
             $output["error"]["message"] = "Invalid login details";
         }
 
@@ -26,15 +32,15 @@ class ApiLogin
         else {
 
             // Get new api key
-            $apiKey = DatabaseApiKey::newApiKey();
+            $apiKey = DatabaseApiKey::newApiKey($user, $mysqli);
 
             $output["key"] = $apiKey;
-            $output["details"]["username"] = $uinfo["uname"];
-            $output["details"]["givenname"] = $uinfo["gn"];
-            $output["details"]["surname"] = $uinfo["sn"];
-            $output["details"]["email"] = $uinfo["email"];
-            $output["details"]["isAdmin"] = $uinfo["isAdmin"];
-            $output["details"]["sessionCreator"] = $uinfo["sessionCreator"];
+            $output["details"]["username"] = $user->getUsername();
+            $output["details"]["givenname"] = $user->getGivenName();
+            $output["details"]["surname"] = $user->getSurname();
+            $output["details"]["email"] = $user->getEmail();
+            $output["details"]["isAdmin"] = $user->isAdmin();
+            $output["details"]["isSessionCreator"] = $user->isSessionCreator();
         }
 
 
@@ -46,11 +52,37 @@ class ApiLogin
      */
     public static function logout() {
 
-        // Check required parameters
-        $key = Api::checkParameter("key");
+        if(isset($_SESSION["yacrs_user"])) {
+            unset($_SESSION["yacrs_user"]);
+        }
 
-        // Logout user by making API key expire
-        DatabaseApiKey::apiKeyExpire($key);
+        // If not logged in with the session and no api key, display error
+        elseif (!isset($_REQUEST["key"])) {
+            ApiError::invalidApiKey();
+            die();
+        }
+
+        if(isset($_REQUEST["key"])) {
+
+            $key = $_REQUEST["key"];
+
+            // Connect to database
+            $databaseConnect = Flight::get("databaseConnect");
+            $mysqli = $databaseConnect();
+
+            // Get user from API
+            $user = Api::checkApiKey($key, $mysqli);
+
+            // Display error if invalid API key
+            if(!$user) {
+
+                ApiError::invalidApiKey();
+                die();
+            }
+
+            // Logout user by making API key expire
+            DatabaseApiKey::apiKeyExpire($key, $mysqli);
+        }
 
         $output["success"] = true;
         Api::output($output);

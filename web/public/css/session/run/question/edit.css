@@ -1,0 +1,15 @@
+form.new .question:not(#question-mcq) {
+    display: none;
+}
+
+#add-more-choices {
+    width: 100%;
+}
+
+#allow-multiple-responses {
+    margin-top: 10px;
+}
+
+#add-more-button-container {
+    padding: 0;
+}

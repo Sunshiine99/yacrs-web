@@ -1,13 +1,20 @@
 <?php
+error_reporting(0);
+
 require_once(dirname(__FILE__) . "/src/autoload.php");
 $CFG['templates'] = dirname(__FILE__) . "/src/templates/";
 $CFG['baseUrl'] = getenv("BASE_URL");
+
+$CFG["login"]["type"] = "any";
+
+$CFG['ldaphost'] = '130.209.13.173';
+$CFG['ldapcontext'] = 'o=Gla';
 
 
 date_default_timezone_set('UTC');
 //if((!isset($noSSLok))||($noSSLok==false)) include_once('corelib/force_ssl.php');  // To allow non-SSL use, comment out this line
 require_once(dirname(__FILE__) . '/public/corelib/templateMerge.php');
-include(dirname(__FILE__) . "/public/lib/login.php");
+include_once(dirname(__FILE__) . "/public/lib/login.php");
 //include_once('lib/libfuncs.php');
 
 $TEMPLATE = 'html/template.html';
@@ -58,9 +65,9 @@ $DBCFG['db_name']  = getenv("MYSQL_DATABASE");
 
 //There probably needs to be someone who can set up LTI, make users into sessionCreaters etc.
 //Set one username to be this - probably the LDAP username of the person setting this up.
-$CFG['adminname'] = '2198207s';
+$CFG['adminname'] = 'admin';
 //Ideally don't set this field - rely on LDAP. If you're not using LDAP you'll need to set
 //a password here. It can be plain text, or (prefereably) the value returned by md5($CFG['cookiehash'].'your_password');
-//$CFG['adminpwd'] = '';
+$CFG['adminpwd'] = 'orangemonkey';
 
 ?>

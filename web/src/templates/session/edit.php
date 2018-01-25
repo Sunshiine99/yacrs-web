@@ -33,6 +33,10 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
 
 ?>
 
+<?php $this->push("head"); ?>
+    <link href="<?=$this->e($config["baseUrl"])?>css/session/edit.css" rel="stylesheet">
+<?php $this->stop(); ?>
+
 <?php $this->push("end"); ?>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
@@ -166,8 +170,11 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
             <a onclick="window.history.back();" class="submit btn btn-light btn-light-border">Cancel</a>
 
             <div class="pull-right">
-                <a id="advanced-settings" class="submit btn btn-light btn-light-border">
+                <a id="view-advanced-settings" class="btn btn-light btn-light-border">
                     View Advanced Settings
+                </a>
+                <a id="hide-advanced-settings" class="btn btn-light btn-light-border">
+                    Hide Advanced Settings
                 </a>
             </div>
         </div>

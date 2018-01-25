@@ -23,6 +23,13 @@ class PageSessionRunQuestionResponse
             die();
         }
 
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        if(!$session) {
+            PageError::error500();
+            die();
+        }
+
         // Load the question from the database
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
 
@@ -54,7 +61,7 @@ class PageSessionRunQuestionResponse
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
         $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
         $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/run/question/$sessionQuestionID/");

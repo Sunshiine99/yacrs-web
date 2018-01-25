@@ -23,9 +23,9 @@ class PageSessionRunQuestion extends PageSessionRun
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
         $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/questions/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
         $breadcrumbs->addItem("New");
 
         $data["session"] = $session;
@@ -125,9 +125,9 @@ class PageSessionRunQuestion extends PageSessionRun
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
         $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/questions/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
         $breadcrumbs->addItem("Edit");
 
         $data["question"] = $question;

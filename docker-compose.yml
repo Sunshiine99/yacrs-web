@@ -31,3 +31,5 @@ services:
 networks:
   internal:
     external: false
+volumes:
+  database:

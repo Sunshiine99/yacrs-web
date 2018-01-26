@@ -1,3 +1,26 @@
+body main #add-question-row #add-question-select-row {
+    padding-right: 5px;
+}
+
+body main #add-question-row #add-question-submit-row {
+    padding-left: 5px;
+}
+
+    body main #add-question-row #add-question-submit-row button {
+        width: 100%;
+    }
+
+@media (max-width: 576px) {
+    body main #add-question-row #add-question-select-row {
+        padding-right: 15px;
+    }
+
+    body main #add-question-row #add-question-submit-row {
+        padding-top: 10px;
+        padding-left: 15px;
+    }
+}
+
 body main .question-list li.active-question {
     background-color: #caffc6!important;
 }

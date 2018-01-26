@@ -40,6 +40,13 @@ Flight::set("databaseConnect",
         catch (Exception $e) {
             error_log($e->getMessage());
             PageError::error500();
+
+            PageError::generic(
+                "Database Connection Error",
+                null,
+                500,
+                false);
+
             exit;
         }
 

@@ -23,7 +23,9 @@ if(isset($_SESSION["yacrs_alert"])) {
     }
 }
 
-$data["config"] = $config;
+// Default page description
+$data["description"] = "YACRS (Yet Another Class Response System) is a classroom interaction system that allows students
+                        to use their own devices to respond to questions during class";
 Flight::set("data", $data);
 
 /**

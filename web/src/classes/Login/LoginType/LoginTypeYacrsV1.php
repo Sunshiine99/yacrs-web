@@ -55,7 +55,7 @@ class LoginTypeYacrsV1 implements LoginType
         curl_close($ch);
 
         // Terrible HTML regex. As this will NEVER be put into production this will do...........
-        $re = "/(<div id=\"logoutLink\"><div class=\"loginBox\">)([A-Za-z ]*)( <a href='\/index\.php\?logout=1'><i class='fa fa-lock'><\/i> Log out<\/a><\/div><\/div>)/";
+        $re = "/(<div id=\"logoutLink\"><div class=\"loginBox\">)([^<]+)( <a href='\/index\.php\?logout=1'><i class='fa fa-lock'><\/i> Log out<\/a><\/div><\/div>)/";
 
         preg_match($re, $body, $matches);
 

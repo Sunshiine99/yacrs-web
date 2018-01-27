@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . "/../TestHelper.php");
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers AlertTest
+ * @covers DatabaseApiKeyTest
  */
 final class DatabaseApiKeyTest extends TestCase
 {

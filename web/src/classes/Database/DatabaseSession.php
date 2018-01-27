@@ -171,14 +171,14 @@ class DatabaseSession
     }
 
     /**
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      * @param mysqli $mysqli
      * @return Session
      */
-    public static function loadSession($sessionID, $mysqli) {
+    public static function loadSession($sessionIdentifier, $mysqli) {
 
         // Make variables safe for database use
-        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionID = Database::safe($sessionIdentifier, $mysqli);
 
         $sql = "SELECT
                     s.*
@@ -314,9 +314,44 @@ class DatabaseSession
         // Make variables safe for database use
         $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
 
+        //Get the sessionID
+        $sql = "SELECT `sessionID`
+                FROM `yacrs_sessionIdentifier`
+                WHERE `sessionIdentifier` = $sessionIdentifier";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_assoc();
+        $sessionID = $row["sessionID"];
+
+        //Delete from sessionQuestions
+        $sql = "SELECT `questionID`
+                FROM `yacrs_sessionQuestions`
+                WHERE `sessionID` = $sessionID";
+        $result2 = $mysqli->query($sql);
+
+        // If query was successful
+        if($result2) {
+            // Loop for every row
+            while($row2 = $result2->fetch_assoc()) {
+                $questionID = $row2["questionID"];
+                DatabaseSessionQuestion::delete($questionID, $mysqli);
+                //Delete from questions
+                $sql = "DELETE FROM `yacrs_questions`
+                        WHERE `questionID` = $questionID";
+                $result = $mysqli->query($sql);
+            }
+        }
+
+
+        //Delete from sessionIdentifier
         $sql = "DELETE FROM `yacrs_sessionIdentifier`
-                WHERE `yacrs_sessionIdentifier`.`sessionIdentifier` = $sessionIdentifier;";
-        $result = $mysqli->multi_query($sql);
+                WHERE `yacrs_sessionIdentifier`.`sessionIdentifier` = $sessionIdentifier";
+        $result = $mysqli->query($sql);
+
+        //Delete from sessions
+        $sql = "DELETE FROM `yacrs_sessions`
+                WHERE `sessionID` = $sessionID";
+        $result = $mysqli->query($sql);
+
 
         return $result ? true : false;
     }

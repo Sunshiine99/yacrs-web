@@ -22,6 +22,7 @@ while(!$mysqli && time() < $time + 60*5) {
 
         // If an error hasn't been posted in the last 20 seconds
         if(time() > $lastError + 20) {
+            echo $e->getMessage() . "\r\n";
             echo "Could not connect to database. Trying again.\r\n";
             $lastError = time();
         }

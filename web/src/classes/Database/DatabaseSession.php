@@ -171,14 +171,14 @@ class DatabaseSession
     }
 
     /**
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      * @param mysqli $mysqli
      * @return Session
      */
-    public static function loadSession($sessionID, $mysqli) {
+    public static function loadSession($sessionIdentifier, $mysqli) {
 
         // Make variables safe for database use
-        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionID = Database::safe($sessionIdentifier, $mysqli);
 
         $sql = "SELECT
                     s.*

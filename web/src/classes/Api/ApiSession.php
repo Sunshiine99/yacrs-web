@@ -148,7 +148,7 @@ class ApiSession
         if($session->getOwner() !== $user->getUsername()) {
             ApiError::permissionDenied();
         }
-
+        
         // Delete session, if error
         if(!DatabaseSession::delete($sessionIdentifier, $mysqli)) {
             ApiError::unknown();

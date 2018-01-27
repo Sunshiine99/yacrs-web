@@ -91,10 +91,6 @@ class DatabaseApiKey
      */
     public static function apiKeyExpire($key, $mysqli) {
 
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
         // Escape database key
         $key = Database::safe($key, $mysqli);
 

@@ -9,8 +9,13 @@ if [ ! -e "web/src/config.php" ] ; then
     configExists=false
 fi
 
-# Force container rebuild
+# Remove the container
 docker-compose rm -f
+
+# Remove volumes
+docker volume prune
+
+# Rebuild containers
 docker-compose build
 
 # Run docker compose in test config

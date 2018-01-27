@@ -13,7 +13,7 @@ fi
 docker-compose rm -f
 
 # Remove volumes
-docker volume prune
+docker volume prune --force
 
 # Rebuild containers
 docker-compose build

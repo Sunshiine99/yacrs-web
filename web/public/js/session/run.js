@@ -49,12 +49,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
             $(this).find("div.question-number").text(i + ".");
             i++;
         });
-
-        //$($("li").get().reverse()).each(function() { /* ... */ });
-        //$(listGroup.find("li.list-group-item").get().reverse()).each(function() { /* ... */ });
-
     });
-    //location.reload();
 });
 
 $(".question-list .activate").click(function () {
@@ -63,6 +58,18 @@ $(".question-list .activate").click(function () {
 
 $(".question-list .deactivate").click(function () {
     activateDeactivateQuestion(this, false);
+});
+
+$("#add-question-submit").click(function() {
+
+    var addQuestionSelect = $("#add-question-select");
+
+    // If a custom question is selected
+    if(addQuestionSelect.val() === "custom") {
+
+        // Forward the user to the custom question page
+        window.location = addQuestionSelect.attr("data-custom-href");
+    }
 });
 
 /**

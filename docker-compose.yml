@@ -16,6 +16,7 @@ services:
         - ./web/docker/log:/var/www/docker/log
     networks:
         - internal
+    restart: always
   db:
     image: "mysql:5"
     environment:
@@ -28,6 +29,7 @@ services:
         - database:/var/lib/mysql
     networks:
         - internal
+    restart: always
 networks:
   internal:
     external: false

@@ -107,6 +107,8 @@ class DatabaseSessionQuestion
                 ORDER BY sq.`ID` DESC";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         $output["questions"] = [];
         $output["active"] = false;
 
@@ -142,6 +144,8 @@ class DatabaseSessionQuestion
                 LIMIT 1";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         // Fetch the row returned from the table
         $row = $result->fetch_assoc();
 
@@ -175,9 +179,7 @@ class DatabaseSessionQuestion
                 LIMIT $questionNumber,1";
         $result = $mysqli->query($sql);
 
-        if($result->num_rows <= 0) {
-            return null;
-        }
+        if(!$result) return null;
 
         // Fetch the row returned from the table
         $row = $result->fetch_assoc();

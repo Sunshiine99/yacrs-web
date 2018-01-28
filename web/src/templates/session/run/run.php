@@ -22,6 +22,8 @@ $this->layout("template",
 
 <?php $this->push("head"); ?>
     <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/session/run/run.css">
+    <meta name="sessionID" content="<?=$this->e($session->getSessionID())?>" />
+    <meta name="sessionIdentifier" content="<?=$this->e($session->getSessionIdentifier())?>" />
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
@@ -53,11 +55,11 @@ $this->layout("template",
             <option value="mcq_f">Generic Multiple Choice Question A-F</option>
             <option value="mcq_g">Generic Multiple Choice Question A-G</option>
             <option value="mcq_h">Generic Multiple Choice Question A-H</option>
-            <option value="mcq_d">Generic Multiple Response Question A-D</option>
-            <option value="mcq_e">Generic Multiple Response Question A-E</option>
-            <option value="mcq_f">Generic Multiple Response Question A-F</option>
-            <option value="mcq_g">Generic Multiple Response Question A-G</option>
-            <option value="mcq_h">Generic Multiple Response Question A-H</option>
+            <option value="mrq_d">Generic Multiple Response Question A-D</option>
+            <option value="mrq_e">Generic Multiple Response Question A-E</option>
+            <option value="mrq_f">Generic Multiple Response Question A-F</option>
+            <option value="mrq_g">Generic Multiple Response Question A-G</option>
+            <option value="mrq_h">Generic Multiple Response Question A-H</option>
             <option value="text">Text Input</option>
             <option value="textlong">Long Text Input</option>
             <option value="truefalse">True/False</option>
@@ -72,11 +74,6 @@ $this->layout("template",
 <div class="row">
     <div class="col-sm-9">
         <h2 class="pull-left">Session Questions</h2>
-    </div>
-    <div class="col-sm-3">
-        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/new/" class="btn btn-primary pull-right width-xs-full margin-xs-bottom-10">
-            Add Question
-        </a>
     </div>
 </div>
 <div>
@@ -105,10 +102,10 @@ $this->layout("template",
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions" aria-label="Actions">
-                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-identifier="<?=$this->e($session->getSessionIdentifier())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class='fa fa-stop'></i> Close
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border activate" data-session-identifier="<?=$this->e($session->getSessionIdentifier())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-light btn-light-border activate" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class='fa fa-play'></i> Activate
                         </button>
 
@@ -123,7 +120,7 @@ $this->layout("template",
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-identifier="<?=$this->e($session->getSessionIdentifier())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class="fa fa-check"></i> Confirm
                         </button>
                         <button type="button" class="btn btn-light btn-light-border cancel">
@@ -138,10 +135,25 @@ $this->layout("template",
         endforeach;
         ?>
     </ul>
+    <?php // If student paced question, allow user to activate/deactivate all questions ?>
+    <?php if($session->getQuestionControlMode() == 1):?>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="activate-deactivate-all" class="btn-group pull-right width-xs-full">
+                <button id="activate-all" class="btn btn-light btn-light-border width-xs-full">
+                    <i class='fa fa-play'></i> Activate All
+                </button>
+                <button id="deactivate-all" class="btn btn-light btn-light-border width-xs-full">
+                    <i class='fa fa-stop'></i> Close All
+                </button>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
+<hr>
 <div class="row">
     <div class="col-sm-12">
-        <br>
         <h2>Export</h2>
     </div>
 </div>

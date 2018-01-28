@@ -28,11 +28,17 @@ Flight::route("/session/new/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/", array("ApiSession", "details"));
 Flight::route("/session/@sessionID/edit/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/delete/", array("ApiSession", "delete"));
-Flight::route("/session/@sessionID/question/", array("ApiQuestion", "listSessionQuestion"));
-Flight::route("/session/@sessionID/question/active/", array("ApiQuestion", "activeSessionQuestion"));
-Flight::route("/session/@sessionID/question/@sessionQuestionID/", array("ApiQuestion", "viewSessionQuestion"));
-Flight::route("/session/@sessionID/question/@sessionQuestionID/delete/", array("ApiQuestion", "deleteSessionQuestion"));
-Flight::route("/session/@sessionID/question/@sessionQuestionID/edit/", array("ApiQuestion", "edit"));
+Flight::route("/session/@sessionID/question/", array("ApiSessionQuestion", "listSessionQuestion"));
+Flight::route("/session/@sessionID/question/active/", array("ApiSessionQuestion", "activeSessionQuestion"));
+
+Flight::route("/session/@sessionID/question/new/mcq/", array("ApiSessionQuestionNew", "mcq"));
+Flight::route("/session/@sessionID/question/new/mrq/", array("ApiSessionQuestionNew", "mrq"));
+Flight::route("/session/@sessionID/question/new/text/", array("ApiSessionQuestionNew", "text"));
+Flight::route("/session/@sessionID/question/new/textlong/", array("ApiSessionQuestionNew", "textLong"));
+
+Flight::route("/session/@sessionID/question/@sessionQuestionID/", array("ApiSessionQuestion", "viewSessionQuestion"));
+Flight::route("/session/@sessionID/question/@sessionQuestionID/delete/", array("ApiSessionQuestion", "deleteSessionQuestion"));
+Flight::route("/session/@sessionID/question/@sessionQuestionID/edit/", array("ApiSessionQuestion", "edit"));
 
 Flight::map('error', array("ApiError", "handler"));
 Flight::map('notFound', array("ApiError", "notFound"));

@@ -1,6 +1,6 @@
 <?php
 
-class ApiQuestion
+class ApiSessionQuestion
 {
 
     public static function listSessionQuestion($sessionIdentifier) {

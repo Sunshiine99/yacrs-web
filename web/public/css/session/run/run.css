@@ -62,3 +62,15 @@ body main .question-list li.no-questions:only-child {
         border-top-left-radius: .25rem!important;
         border-bottom-left-radius: .25rem!important;
     }
+
+body main #activate-deactivate-all {
+    /*
+    padding-left: 21px;
+    padding-right: 21px;
+    */
+}
+
+    body main #activate-deactivate-all #activate-all,
+    body main #activate-deactivate-all #deactivate-all {
+        margin-top: 10px;
+    }

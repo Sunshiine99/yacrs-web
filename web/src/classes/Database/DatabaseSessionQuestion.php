@@ -115,10 +115,9 @@ class DatabaseSessionQuestion
         // Loop for each row in result
         while($row = $result->fetch_assoc()) {
 
-
             $question = QuestionFactory::create($row["type"], $row);
             //$question = new Question($row);
-
+            
             if($row["active"]) {
                 $output["active"] = true;
             }

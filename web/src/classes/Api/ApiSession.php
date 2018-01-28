@@ -156,4 +156,55 @@ class ApiSession
         $output["success"] = true;
         Api::output($output);
     }
+
+    public static function startSession($sessionIdentifier){
+
+        //TODO check if a session is already running for the owner
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
+        // Load session
+        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+
+        // If a session was not loaded, output error
+        if(!$session) {
+            $output["error"]["code"]    = "invalidSessionId";
+            $output["error"]["message"] = "Invalid Session ID";
+            Api::output($output);
+            die();
+        }
+
+        // If user cannot edit this session, display correct error
+        //if(!$session->checkIfUserCanEdit($user)) {
+        if($session->getOwner() !== $user->getUsername()) {
+            ApiError::permissionDenied();
+        }
+        //TODO implement
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
+        $questions = $questions["questions"];
+
+        //Activate first question
+        $sessionQuestionID = $questions[count($questions)-1]->getSessionQuestionID();
+        Api::output($sessionQuestionID);
+        $result = DatabaseSessionQuestion::questionActivate($sessionQuestionID, $mysqli);
+
+        Api::output($result);
+    }
 }

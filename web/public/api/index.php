@@ -28,8 +28,10 @@ Flight::route("/session/new/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/", array("ApiSession", "details"));
 Flight::route("/session/@sessionID/edit/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/delete/", array("ApiSession", "delete"));
+Flight::route("/session/@sessionID/start/", array("ApiSession", "startSession"));
 Flight::route("/session/@sessionID/question/", array("ApiSessionQuestion", "listSessionQuestion"));
 Flight::route("/session/@sessionID/question/active/", array("ApiSessionQuestion", "activeSessionQuestion"));
+
 
 Flight::route("/session/@sessionID/question/new/mcq/", array("ApiSessionQuestionNew", "mcq"));
 Flight::route("/session/@sessionID/question/new/mrq/", array("ApiSessionQuestionNew", "mrq"));

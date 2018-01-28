@@ -182,12 +182,7 @@ class DatabaseSession
         $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
 
         //Get the sessionID
-        $sql = "SELECT `sessionID`
-                FROM `yacrs_sessionIdentifier`
-                WHERE `sessionIdentifier` = $sessionIdentifier";
-        $result = $mysqli->query($sql);
-        $row = $result->fetch_assoc();
-        $sessionID = $row["sessionID"];
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         if(!$sessionID) return null;
 

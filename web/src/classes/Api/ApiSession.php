@@ -100,7 +100,6 @@ class ApiSession
             $session->setOwner($user->getId());
             $sessionIdentifier = DatabaseSession::insert($session, $mysqli);
         }
-
         $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
         $output = $session->toArray();
         Api::output($output);

@@ -93,6 +93,7 @@ class DatabaseSession
         // Get the session identifier
         $sessionIdentifier = Database::safe($mysqli->insert_id, $mysqli);
 
+
         return $sessionIdentifier;
     }
 
@@ -178,7 +179,17 @@ class DatabaseSession
     public static function loadSession($sessionIdentifier, $mysqli) {
 
         // Make variables safe for database use
-        $sessionID = Database::safe($sessionIdentifier, $mysqli);
+        $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
+
+        //Get the sessionID
+        $sql = "SELECT `sessionID`
+                FROM `yacrs_sessionIdentifier`
+                WHERE `sessionIdentifier` = $sessionIdentifier";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_assoc();
+        $sessionID = $row["sessionID"];
+
+        if(!$sessionID) return null;
 
         $sql = "SELECT
                     s.*
@@ -198,6 +209,7 @@ class DatabaseSession
 
         // Create a new session with the loaded attributes
         $session = new Session($row);
+        $session->setSessionIdentifier($sessionIdentifier);
 
         // SQL query to get additional users
         $sql = "SELECT username

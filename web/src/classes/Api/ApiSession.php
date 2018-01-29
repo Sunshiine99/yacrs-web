@@ -190,20 +190,73 @@ class ApiSession
             die();
         }
 
-        // If user cannot edit this session, display correct error
-        //if(!$session->checkIfUserCanEdit($user)) {
+        // If user cannot start this session
         if($session->getOwner() !== $user->getUsername()) {
             ApiError::permissionDenied();
         }
-        //TODO implement
-        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
-        $questions = $questions["questions"];
+
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli)["questions"];
 
         //Activate first question
-        $sessionQuestionID = $questions[count($questions)-1]->getSessionQuestionID();
-        Api::output($sessionQuestionID);
-        $result = DatabaseSessionQuestion::questionActivate($sessionQuestionID, $mysqli);
+        $sessionQuestionID = $questions[count($questions)-1]->toArray()["sessionQuestionID"];
+        $result = DatabaseSessionQuestion::questionActivate($sessionQuestionID, true, $mysqli);
 
-        Api::output($result);
+        if($result == true){
+            Api::output(true);
+        }
+        else{
+            ApiError::unknown();
+        }
+    }
+
+    public static function stopSession($sessionIdentifier){
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
+        // Load session
+        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+
+        // If a session was not loaded, output error
+        if(!$session) {
+            $output["error"]["code"]    = "invalidSessionId";
+            $output["error"]["message"] = "Invalid Session ID";
+            Api::output($output);
+            die();
+        }
+
+        // If user cannot stop this session
+        if($session->getOwner() !== $user->getUsername()) {
+            ApiError::permissionDenied();
+        }
+
+        $activeQuestion = DatabaseSessionQuestion::loadAllActiveQuestions($sessionID, $mysqli);
+        //If there is no active question return false
+        if(count($activeQuestion) == 0){
+            Api::output(false);
+        }
+        else{
+            //Get the active question's id and stop it
+            $activeID = $activeQuestion[0]->toArray()["sessionQuestionID"];
+            $result = DatabaseSessionQuestion::questionActivate($activeID, 0, $mysqli);
+            Api::output(true);
+        }
     }
 }

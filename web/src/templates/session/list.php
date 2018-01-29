@@ -40,13 +40,13 @@
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>
-                            <?php if($s->getOwner() === $user->getUsername()): ?>
+                            <?php if($s->checkIfUserCanDelete($user)): ?>
                                 <button type="button" class="btn btn-light btn-light-border delete width-xs-full">
                                     <i class="fa fa-trash-o"></i> Delete
                                 </button>
                             <?php endif; ?>
                         </div>
-                        <?php if($s->getOwner() === $user->getUsername()): ?>
+                        <?php if($s->checkIfUserCanDelete($user)): ?>
                             <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
                                 <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-identifier="<?=$this->e($s->getSessionIdentifier())?>">
                                     <i class="fa fa-check"></i> Confirm

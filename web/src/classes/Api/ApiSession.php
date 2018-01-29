@@ -142,14 +142,13 @@ class ApiSession
             die();
         }
 
-        // If user cannot edit this session, display correct error
-        //if(!$session->checkIfUserCanEdit($user)) {
-        if($session->getOwner() !== $user->getUsername()) {
+        // If user cannot delete this session, display correct error
+        if(!$session->checkIfUserCanDelete($user)) {
             ApiError::permissionDenied();
         }
         
         // Delete session, if error
-        if(!DatabaseSession::delete($sessionIdentifier, $mysqli)) {
+        if(!DatabaseSessionIdentifier::delete($sessionIdentifier, $mysqli)) {
             ApiError::unknown();
         }
 

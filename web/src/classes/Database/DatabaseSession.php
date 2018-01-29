@@ -311,6 +311,13 @@ class DatabaseSession
     }
 
     /**
+     * @param mysqli $mysqli
+     */
+    public static function loadAllSessions($mysqli) {
+
+    }
+
+    /**
      * Delete a session
      * @param int $sessionIdentifier
      * @param mysqli $mysqli

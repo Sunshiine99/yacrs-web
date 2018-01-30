@@ -40,10 +40,10 @@ class PageSession extends Page
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If invalid session, forward home with error
-        if (!$sessionID) {
+        if (!$session) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -55,9 +55,6 @@ class PageSession extends Page
             header("Location: " . $config["baseUrl"]);
             die();
         }
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-        $session->setSessionIdentifier($sessionIdentifier);
 
         // If user cannot view this session, display an error
         if(!$session->checkIfUserCanView($user)) {

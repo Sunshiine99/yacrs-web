@@ -259,4 +259,23 @@ class ApiSession
             Api::output(true);
         }
     }
+
+    public static function getActiveSessions(){
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $userID = $user->getId();
+
+        $sessions = DatabaseSession::loadUserActiveSessions($userID, $mysqli);
+        Api::output($sessions);
+    }
 }

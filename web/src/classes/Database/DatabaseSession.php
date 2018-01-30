@@ -450,4 +450,33 @@ class DatabaseSession
 
         return $output;
     }
+
+    public static function loadUserActiveSessions($userID, $mysqli){
+
+        $userID = Database::safe($userID, $mysqli);
+
+        $sql = "SELECT si.`sessionIdentifier`
+                FROM `yacrs_sessions` as s,
+                    `yacrs_sessionIdentifier` as si,
+                    `yacrs_user` as u,
+                    `yacrs_sessionQuestions` as q
+                WHERE s.`ownerID` = $userID
+                AND s.`sessionID` = si.`sessionID`
+                AND u.`userID` = $userID
+                AND q.`sessionID` = s.`sessionID`
+                AND q.`active` = 1";
+        $result = $mysqli->query($sql);
+
+        // If error, return null
+        if(!$result) return null;
+
+        $output = [];
+
+        // Loop for every row in the database result
+        while($row = $result->fetch_assoc()) {
+            array_push($output, $row);
+        }
+
+        return $output;
+    }
 }

@@ -25,6 +25,7 @@ Flight::route("/login", array("ApiLogin", "login"));
 Flight::route("/logout", array("ApiLogin", "logout"));
 Flight::route("/session/", array("ApiSession", "listSessions"));
 Flight::route("/session/new/", array("ApiSession", "edit"));
+Flight::route("/session/getactive/", array("ApiSession", "getActiveSessions"));
 Flight::route("/session/@sessionID/", array("ApiSession", "details"));
 Flight::route("/session/@sessionID/edit/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/delete/", array("ApiSession", "delete"));

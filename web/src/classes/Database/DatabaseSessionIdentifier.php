@@ -4,6 +4,26 @@ class DatabaseSessionIdentifier
 {
 
     /**
+     * Loads session using the Session Identifier
+     * @param int $sessionIdentifier
+     * @param mysqli $mysqli
+     * @return Session|null
+     */
+    public static function loadSession($sessionIdentifier, $mysqli) {
+
+        // Load the session PK
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // Load the session from the session PK
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        if($session)
+            $session->setSessionIdentifier($sessionIdentifier);
+
+        return $session;
+    }
+
+    /**
      * Loads the session ID from a session identifier
      * @param int $sessionIdentifier
      * @param mysqli $mysqli

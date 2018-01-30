@@ -172,19 +172,15 @@ class DatabaseSession
     }
 
     /**
-     * @param int $sessionIdentifier
+     * Load session using the Session ID (The Primary Key!)
+     * @param int $sessionID
      * @param mysqli $mysqli
      * @return Session
      */
-    public static function loadSession($sessionIdentifier, $mysqli) {
+    public static function loadSession($sessionID, $mysqli) {
 
         // Make variables safe for database use
-        $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
-
-        //Get the sessionID
-        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
-
-        if(!$sessionID) return null;
+        $sessionID = Database::safe($sessionID, $mysqli);
 
         $sql = "SELECT
                     s.*
@@ -204,7 +200,6 @@ class DatabaseSession
 
         // Create a new session with the loaded attributes
         $session = new Session($row);
-        $session->setSessionIdentifier($sessionIdentifier);
 
         // SQL query to get additional users
         $sql = "SELECT username

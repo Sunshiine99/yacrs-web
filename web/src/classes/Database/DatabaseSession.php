@@ -440,6 +440,8 @@ class DatabaseSession
             // Load session object from session ID
             $session = DatabaseSession::loadSession($row["sessionID"], $mysqli);
 
+            if(!$session) return null;
+
             $session->setSessionIdentifier($row["sessionIdentifier"]);
 
             // If success, Add to output array

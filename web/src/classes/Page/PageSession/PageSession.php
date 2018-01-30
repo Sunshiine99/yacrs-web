@@ -83,7 +83,7 @@ class PageSession extends Page
         if ($session->getQuestionControlMode() == 1) {
 
             // Get total number of questions
-            $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($sessionID, $mysqli);
+            $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($session->getSessionID(), $mysqli);
 
             // Get current question number
             $questionNumber = isset($_GET["q"]) ? intval($_GET["q"]) - 1 : 0;
@@ -108,7 +108,7 @@ class PageSession extends Page
         }
 
         // Load active question
-        $question = DatabaseSessionQuestion::loadActiveQuestion($sessionID, $questionNumber, $mysqli);
+        $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
         $responses = null;
 

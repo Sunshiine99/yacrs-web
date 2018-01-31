@@ -13,8 +13,17 @@ class ApiSessionQuestionNew
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
         // Get the session ID
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        $session = DatabaseSession::loadSession($sessionID);
+
+        if(!$session->checkIfUserCanEdit($user)) {
+            ApiError::permissionDenied();
+        }
 
         if(!$sessionID)
             ApiError::unknown();

@@ -1,6 +1,26 @@
 var choiceDefaultChanged = false;
 var choiceDefaultCurrent = 4;
 
+function mcqChoiceCorrectClick(that) {
+    var inputGroup = $(that).closest(".input-group");
+    inputGroup.addClass("correct");
+    inputGroup.find("input.mcq-choice-correct").val("true");
+}
+
+function mcqChoiceIncorrectClick(that) {
+    var inputGroup = $(that).closest(".input-group");
+    inputGroup.removeClass("correct");
+    inputGroup.find("input.mcq-choice-correct").val("false");
+}
+
+$("button.correct").click(function() {
+    mcqChoiceCorrectClick(this);
+});
+
+$("button.incorrect").click(function() {
+    mcqChoiceIncorrectClick(this);
+});
+
 $("#questionType").change(function() {
     var question = $(".question");
 
@@ -53,8 +73,22 @@ $(".input-add-more-button .input-add-more-input").click(function () {
     // If the default input values have not been changed yet and this is a new question
     if(!choiceDefaultChanged && questionNew) {
 
+        var input = $("#add-more-choices > :last-child > input.mcq-choice");
+
+        // Get the choice index
+        var index = input.attr("name").substr(11);
+
+        var inputMcqChoiceId = $("#add-more-choices > :last-child > input.mcq-choice-id");
+        var inputMcqChoiceCorrect = $("#add-more-choices > :last-child > input.mcq-choice-correct");
+
+        // Update names and IDs of new inputs
+        inputMcqChoiceId.attr("name", "mcq-choice-id-"+index);
+        inputMcqChoiceId.attr("id", "mcq-choice-id-"+index);
+        inputMcqChoiceCorrect.attr("name", "mcq-choice-correct-"+index);
+        inputMcqChoiceCorrect.attr("id", "mcq-choice-correct-"+index);
+
         // Set new input to next letter in the alphabet
-        $("#add-more-choices > :last-child > input").val(String.fromCharCode(65 + choiceDefaultCurrent));
+        input.val(String.fromCharCode(65 + choiceDefaultCurrent));
 
         // Increment the current default choice
         choiceDefaultCurrent++;
@@ -73,6 +107,14 @@ $(".input-add-more-button .input-add-more-input").click(function () {
             mcqChoiceClick(this);
         })
     }
+
+    $("#add-more-choices > :last-child > button.correct").click(function() {
+        mcqChoiceCorrectClick(this);
+    });
+
+    $("#add-more-choices > :last-child > button.incorrect").click(function() {
+        mcqChoiceIncorrectClick(this);
+    });
 });
 
 $(".input-add-more-item input.input-add-more-input").change(function() {

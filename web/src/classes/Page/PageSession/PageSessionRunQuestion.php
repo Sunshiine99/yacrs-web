@@ -73,8 +73,14 @@ class PageSessionRunQuestion extends PageSessionRun
                 // If there are matches then this is a "mcq-choice-1" field
                 if($matches) {
 
+                    // Get the index
+                    $index = $matches[2];
+
+                    // Boolean for if this is correct
+                    $correct = text2bool(array_key_exists("mcq-choice-correct-$index", $_POST) ? $_POST["mcq-choice-correct-$index"] : "false");
+
                     // Add choice
-                    $question->addChoice($value);
+                    $question->addChoice($value, $correct);
                 }
             }
         }
@@ -186,8 +192,14 @@ class PageSessionRunQuestion extends PageSessionRun
                         $choiceID = intval($_POST["mcq-choice-id-" . $choiceIndex]);
                     }
 
+                    // Get the index
+                    $index = $matches[2];
+
+                    // Boolean for if this is correct
+                    $correct = text2bool(array_key_exists("mcq-choice-correct-$index", $_POST) ? $_POST["mcq-choice-correct-$index"] : "false");
+
                     // Add a new choice
-                    $question->addChoice($value, false, $choiceID);
+                    $question->addChoice($value, $correct, $choiceID);
                 }
             }
         }
@@ -197,7 +209,7 @@ class PageSessionRunQuestion extends PageSessionRun
 
         DatabaseQuestion::update($question, $mysqli);
 
-        header("Location: ..");
+        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/run/");
         die();
     }
 

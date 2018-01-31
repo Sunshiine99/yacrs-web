@@ -230,11 +230,12 @@ class DatabaseQuestion
 
                 // Make the choice text and choice ID database safe
                 $choice = Database::safe($choices[$i]->getChoice(), $mysqli);
+                $correct = Database::safe(bool2dbString($choices[$i]->isCorrect()), $mysqli);
                 $choiceID = Database::safe($choices[$i]->getChoiceID(), $mysqli);
 
                 // Update the old choice
                 $sql = "UPDATE `yacrs_questionsMcqChoices`
-                        SET `choice` = '$choice'
+                        SET `choice` = '$choice', `correct` = '$correct'
                         WHERE `yacrs_questionsMcqChoices`.`questionID` = $questionID
                           AND `yacrs_questionsMcqChoices`.`ID` = $choiceID";
                 $result2 = $mysqli->query($sql);

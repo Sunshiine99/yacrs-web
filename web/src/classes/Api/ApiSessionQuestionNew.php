@@ -16,10 +16,12 @@ class ApiSessionQuestionNew
         // Get user from API
         $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
 
-        // Get the session ID
-        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
-        $session = DatabaseSession::loadSession($sessionID);
+        if(!$session)
+            ApiError::unknown();
+
+        $sessionID = $session->getSessionID();
 
         if(!$session->checkIfUserCanEdit($user)) {
             ApiError::permissionDenied();

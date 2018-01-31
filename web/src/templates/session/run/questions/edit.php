@@ -113,9 +113,16 @@ else {
                 <div id="add-more-choices" class="input-add-more-container" data-minimum-count="1">
                     <?php $i = 0; ?>
                     <?php foreach ($choices as $choice): ?>
-                        <div class="input-group input-add-more-item">
-                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1">
-                            <input id="mcq-choice-id-<?=$i?>" name="mcq-choice-id-<?=$i?>" type="hidden" value="<?=$this->e($choice->getChoiceID())?>">
+                        <div class="input-group input-add-more-item<?=$choice->isCorrect()?" correct":""?>">
+                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1">
+                            <input id="mcq-choice-id-<?=$i?>" name="mcq-choice-id-<?=$i?>" class="mcq-choice-id" type="hidden" value="<?=$this->e($choice->getChoiceID())?>">
+                            <input id="mcq-choice-correct-<?=$i?>" name="mcq-choice-correct-<?=$i?>" class="mcq-choice-correct" type="hidden" value="<?=$choice->isCorrect()?"true":"false"?>">
+                            <button class="incorrect btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                                <i class="fa fa-times" aria-hidden="true"></i> Incorrect
+                            </button>
+                            <button class="correct btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                                <i class="fa fa-check" aria-hidden="true"></i> Correct
+                            </button>
                             <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>

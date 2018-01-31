@@ -1,2 +1,2 @@
 CLASS MODE<br>
-<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/run/
+<a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/run/">Go back</a>

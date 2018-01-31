@@ -38,6 +38,7 @@ $this->layout("template",
         </div>
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/run/class/" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
         </div>
     </h1>
 </div>

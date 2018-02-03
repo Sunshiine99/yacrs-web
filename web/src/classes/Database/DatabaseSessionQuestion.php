@@ -182,7 +182,7 @@ class DatabaseSessionQuestion
 
         // Fetch the row returned from the table
         $row = $result->fetch_assoc();
-
+        if(!$row) return null;
         $question = DatabaseQuestion::load($row["questionID"], $mysqli);
         $question->setSessionQuestionID($row["ID"]);
 

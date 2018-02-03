@@ -29,7 +29,6 @@ final class DatabaseQuestionTest extends TestCase
         $this->assertNotNull($question->getQuestionID());
 
         DatabaseSessionQuestion::delete($question->getSessionQuestionID(), $mysqli);
-        //TODO need to delete from questions table
     }
 
     public function testUpdate(){

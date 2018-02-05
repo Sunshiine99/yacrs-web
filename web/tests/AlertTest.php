@@ -27,4 +27,29 @@ final class AlertTest extends TestCase
             $alert->toArray()
         );
     }
+
+    public function testAlertToArray(){
+
+        $array = [];
+        $array["title"]        = "Test";
+        $array["test"]         = false;
+        $alert = new Alert($array);
+
+        Alert::displayAlertSession($alert, -20);
+
+        $arr = [];
+        $arr["title"] = "Test";
+        $arr["message"] = null;
+        $arr["type"] = null;
+        $arr["dismissable"]  = false;
+        $this->assertEquals(
+            $_SESSION["yacrs_alert"]["alert"],
+            $arr
+        );
+
+        $this->assertNotEquals(
+            $_SESSION["yacrs_alert"]["expire"],
+            -20
+        );
+    }
 }

@@ -43,7 +43,7 @@ function bool2dbString($bool) {
  * @return bool
  */
 function isDesktopApp() {
-    return strpos($_SERVER['HTTP_USER_AGENT'], "yacrs") !== false;
+    return strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "yacrs") !== false;
 }
 
 function basicGenericError($title, $message, $code = 500, $permanent = false) {

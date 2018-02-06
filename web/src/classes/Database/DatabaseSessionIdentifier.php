@@ -14,6 +14,9 @@ class DatabaseSessionIdentifier
         // Load the session PK
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
+        // If this was an invalid session identifier, return null
+        if(!$sessionID) return null;
+
         // Load the session from the session PK
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 

@@ -123,7 +123,7 @@
         })
         .on("mouseover", function(d, i) {
           if (onwordclick !== undefined) {
-            d3.select(this).transition().style('font-size', d.size + 3 + 'px');
+              d3.select(this).transition().style('font-size', d.size + 3 + 'px');
           }
         })
         .on("mouseout", function(d, i) {
@@ -133,7 +133,10 @@
         })
         .on("click", function(d, i) {
           if (onwordclick !== undefined) {
-                onwordclick(d,i);
+              onwordclick(d,i);
+              alert("frequency is: " + d.freq);
+              //TODO need to make a pop up
+              //$('#wordcloud').append('<a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title=" + ' + d.freq + '><i class="fa fa-question-circle" aria-hidden="true"></i></a>');
             }
         });
 
@@ -149,7 +152,7 @@
       }
     }
 
-    return d3.rebind(wordcloud, layout, 'on', 'words', 'size', 'font', 'fontStyle', 'fontWeight', 'spiral', 'padding');
+    return d3.rebind(wordcloud, layout, 'on', 'words', 'freq', 'size', 'font', 'fontStyle', 'fontWeight', 'spiral', 'padding');
   }
 
   if (typeof module === "object" && module.exports) module.exports = wordcloud;

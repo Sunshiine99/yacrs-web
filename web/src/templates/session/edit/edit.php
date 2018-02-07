@@ -21,7 +21,7 @@ $this->layout("template",
 ?>
 
 <?php $this->push("head"); ?>
-    <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/session/run/run.css">
+    <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/session/edit/edit.css">
     <meta name="sessionID" content="<?=$this->e($session->getSessionID())?>" />
     <meta name="sessionIdentifier" content="<?=$this->e($session->getSessionIdentifier())?>" />
 <?php $this->stop(); ?>

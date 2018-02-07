@@ -34,11 +34,11 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
 ?>
 
 <?php $this->push("head"); ?>
-    <link href="<?=$this->e($config["baseUrl"])?>css/session/edit.css" rel="stylesheet">
+    <link href="<?=$this->e($config["baseUrl"])?>css/session/edit/properties.css" rel="stylesheet">
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
-    <script src="<?=$this->e($config["baseUrl"])?>js/session/edit.js" crossorigin="anonymous"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/properties.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
 <div class="row page-header">

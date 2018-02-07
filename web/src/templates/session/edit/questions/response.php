@@ -65,7 +65,17 @@ function getColour($colours, $i) {
     </script>
 <?php $this->stop(); ?>
 
-<h1>Responses</h1>
+<div class="page-header">
+    <h1 class="row">
+        <div class="col-sm-9">
+            <h1>Responses</h1>
+        </div>
+        <div class="col-sm-3">
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
+        </div>
+    </h1>
+</div>
+
 <ul class="nav nav-tabs">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
         <li class="nav-item" id="nav-bar-chart">

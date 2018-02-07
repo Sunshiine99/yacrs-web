@@ -15,20 +15,14 @@ class PageSessionEditQuestionResponse
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
-
-        // If invalid session identifier, display 404
-        if(!$sessionID) {
-            PageError::error404();
-            die();
-        }
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         if(!$session) {
             PageError::error500();
             die();
         }
+
+        $sessionID = $session->getSessionID();
 
         // Load the question from the database
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
@@ -76,6 +70,7 @@ class PageSessionEditQuestionResponse
         $data["userMcqResponses"] = $userMcqResponses;
         $data["responsesWordCloud"] = $responsesWordCloud;
         $data["responsesText"] = $responsesText;
+        $data["session"] = $session;
         echo $templates->render("session/edit/questions/response", $data);
     }
 }

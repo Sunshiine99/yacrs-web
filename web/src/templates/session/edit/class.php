@@ -1,6 +1,3 @@
-Live View <br>
-<a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/">Back</a>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,10 +9,19 @@ Live View <br>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <title>Live View</title>
+
+    <script>
+        function exitClassMode(sessionIdentifier) {
+            const electron = require('electron');
+            let {ipcRenderer} = electron;
+            ipcRenderer.send("exitClassMode");
+        }
+    </script>
 </head>
 
 <body>
-
+    Live View <br>
+    <a href="#" onclick="exitClassMode()">BACK</a>
 </body>
 
 </html>

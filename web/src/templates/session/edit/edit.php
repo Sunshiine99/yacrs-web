@@ -39,7 +39,15 @@ $this->layout("template",
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/class/" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
+            <a onclick="enterClassMode(<?=$this->e($session->getSessionIdentifier())?>)" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session 2</a>
         </div>
+        <script>
+            function enterClassMode(sessionIdentifier) {
+                const electron = require('electron');
+                let {ipcRenderer} = electron;
+                ipcRenderer.send('enterClassMode', sessionIdentifier);
+            }
+        </script>
     </h1>
 </div>
 <div class="row">

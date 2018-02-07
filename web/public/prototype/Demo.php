@@ -55,7 +55,7 @@ class Demo
         $templates = Flight::get("templates");
         $config = Flight::get("config");
 
-        echo $templates->render("session/run",
+        echo $templates->render("session/edit",
             [
                 "config" => $config,
                 "title" => "Run Session"

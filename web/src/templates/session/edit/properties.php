@@ -46,9 +46,9 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         <div class="float-left">
             <h1><?=$this->e($title)?></h1>
         </div>
-        <?php if($session->getSessionID()): ?>
+        <?php if($session->getSessionIdentifier()): ?>
             <div class="float-right">
-                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionID())?>/run/" class="btn btn-primary pull-right">Run Session</a>
+                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-primary pull-right">Run Session</a>
             </div>
         <?php endif; ?>
     </div>

@@ -34,9 +34,6 @@
 
                     <div class="actions-confirm-delete width-xs-full">
                         <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/run/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
-                                <i class="fa fa-play"></i> Run
-                            </button>
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>

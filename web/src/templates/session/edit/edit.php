@@ -37,8 +37,8 @@ $this->layout("template",
             <h3>Session Identifier: <?=$this->e($session->getSessionIdentifier())?></h3>
         </div>
         <div class="col-sm-3">
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/run/class/" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/class/" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
         </div>
     </h1>
 </div>
@@ -49,7 +49,7 @@ $this->layout("template",
 </div>
 <div id="add-question-row" class="row">
     <div id="add-question-select-row" class="col-sm-10">
-        <select id="add-question-select" class="form-control" data-custom-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/new/">
+        <select id="add-question-select" class="form-control" data-custom-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/new/">
             <option value="custom">Custom Question</option>
             <option value="mcq_d">Generic Multiple Choice Question A-D</option>
             <option value="mcq_e">Generic Multiple Choice Question A-E</option>
@@ -110,10 +110,10 @@ $this->layout("template",
                             <i class='fa fa-play'></i> Activate
                         </button>
 
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
                             <i class="fa fa-eye"></i> Responses
                         </a>
-                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/run/question/<?=$this->e($question->getSessionQuestionID())?>/">
+                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
                         <button type="button" class="btn btn-light btn-light-border delete">
@@ -160,6 +160,6 @@ $this->layout("template",
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <a href="<?=$config["baseUrl"]?>session/1/run/export/" class="btn btn-primary">Export as Spreadsheet</a>
+        <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/export/" class="btn btn-primary">Export as Spreadsheet</a>
     </div>
 </div>

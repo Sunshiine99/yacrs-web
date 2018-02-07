@@ -24,7 +24,7 @@ try {
 catch(Exception $e) {
     basicGenericError(
         "YACRS config file not found.",
-        "A config file is required to run YACRS. A sample config file can be found in sample.config.php. Your
+        "A config file is required to edit YACRS. A sample config file can be found in sample.config.php. Your
                   final config file should be called config.php in the same directory."
     );
     die();

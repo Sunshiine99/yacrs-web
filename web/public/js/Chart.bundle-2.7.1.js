@@ -16902,7 +16902,7 @@ module.exports = function(Chart) {
 		},
 		// Utils
 		getPixelForValue: function(value) {
-			// This must be called after fit has been run so that
+			// This must be called after fit has been edit so that
 			// this.left, this.top, this.right, and this.bottom have been defined
 			var me = this;
 			var start = me.start;

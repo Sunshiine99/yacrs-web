@@ -1,6 +1,6 @@
 <?php
 
-class PageSessionRunQuestion extends PageSessionRun
+class PageSessionEditQuestion extends PageSessionEdit
 {
 
     /**
@@ -24,14 +24,14 @@ class PageSessionRunQuestion extends PageSessionRun
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
         $breadcrumbs->addItem("New");
 
         $data["session"] = $session;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("session/run/questions/edit", $data);
+        echo $templates->render("session/edit/questions/edit", $data);
     }
 
     /**
@@ -100,7 +100,7 @@ class PageSessionRunQuestion extends PageSessionRun
         // Insert question session combo into DatabaseSession
         DatabaseSessionQuestion::insert($sessionID, $questionID, $mysqli);
 
-        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/run/");
+        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/edit/");
         die();
     }
 
@@ -132,15 +132,15 @@ class PageSessionRunQuestion extends PageSessionRun
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
         $breadcrumbs->addItem("Edit");
 
         $data["question"] = $question;
         $data["session"] = $session;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
-        echo $templates->render("session/run/questions/edit", $data);
+        echo $templates->render("session/edit/questions/edit", $data);
     }
 
     public static function editSubmit($sessionIdentifier, $sessionQuestionID) {
@@ -209,7 +209,7 @@ class PageSessionRunQuestion extends PageSessionRun
 
         DatabaseQuestion::update($question, $mysqli);
 
-        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/run/");
+        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/edit/");
         die();
     }
 

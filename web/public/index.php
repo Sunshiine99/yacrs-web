@@ -74,26 +74,27 @@ Flight::route("/session/", array("PageSession", "sessions"));
 Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
 Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
 
-Flight::route("/session/@id:[0-9]*/run/", array("PageSessionRun", "run"));
-Flight::route("/session/@id:[0-9]*/run/class/", array("PageSessionRun", "classMode"));
-Flight::route("/session/@id:[0-9]*/run/export/", array("PageSessionExport", "export"));
+Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
+Flight::route("/session/@id:[0-9]*/edit/class/", array("PageSessionEdit", "classMode"));
+Flight::route("/session/@id:[0-9]*/edit/export/", array("PageSessionExport", "export"));
 
+Flight::route("POST /session/@id:[0-9]*/edit/properties/", array("PageSessionEditProperties", "submit"));
+Flight::route("/session/@id:[0-9]*/edit/properties/", array("PageSessionEditProperties", "properties"));
 
-Flight::route("/session/@sessionID:[0-9]*/run/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionRunQuestionResponse", "response"));
+Flight::route("/session/@sessionID:[0-9]*/edit/question/", array("PageSessionEdit", "question"));
 
-Flight::route("POST /session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionRunQuestion", "editSubmit"));
-Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/", array("PageSessionRunQuestion", "edit"));
+Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionEditQuestionResponse", "response"));
 
-Flight::route("/session/@sessionID:[0-9]*/run/question/@questionID:[0-9]*/delete/", array("PageSessionRunQuestion", "delete"));
+Flight::route("POST /session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "editSubmit"));
+Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "edit"));
 
-Flight::route("POST /session/@id:[0-9]*/run/question/new/", array("PageSessionRunQuestion", "addSubmit"));
-Flight::route("/session/@id:[0-9]*/run/question/new/", array("PageSessionRunQuestion", "add"));
+Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/delete/", array("PageSessionEditQuestion", "delete"));
+
+Flight::route("POST /session/@id:[0-9]*/edit/question/new/", array("PageSessionEditQuestion", "addSubmit"));
+Flight::route("/session/@id:[0-9]*/edit/question/new/", array("PageSessionEditQuestion", "add"));
 
 Flight::route("POST /session/join/", array("PageSessionJoin", "submit"));
 Flight::route("/session/join/", array("PageSessionJoin", "join"));
-
-Flight::route("POST /session/@id:[0-9]*/edit/", array("PageSessionEdit", "submit"));
-Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
 
 // Add session submit
 Flight::route("POST /session/new/", array("PageSessionNew", "submit"));

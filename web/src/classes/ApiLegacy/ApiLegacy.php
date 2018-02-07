@@ -37,7 +37,7 @@ class ApiLegacy
 
         // If user is not session creator, display error
         if(!$user->isSessionCreator() && !$user->isAdmin()) {
-            $error[0] = "User ".$user->getUsername()." does not have permission to create and run sessions.";
+            $error[0] = "User ".$user->getUsername()." does not have permission to create and edit sessions.";
             self::sendResponse(null, $error, [], $config);
             die();
         }

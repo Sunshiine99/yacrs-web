@@ -1,6 +1,6 @@
 <?php
 
-class PageSessionRunQuestionResponse
+class PageSessionEditQuestionResponse
 {
 
     public static function response($sessionIdentifier, $sessionQuestionID) {
@@ -62,9 +62,9 @@ class PageSessionRunQuestionResponse
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/run/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/run/question/");
-        $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/run/question/$sessionQuestionID/");
+        $breadcrumbs->addItem("Run", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
+        $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
 
 
@@ -76,6 +76,6 @@ class PageSessionRunQuestionResponse
         $data["userMcqResponses"] = $userMcqResponses;
         $data["responsesWordCloud"] = $responsesWordCloud;
         $data["responsesText"] = $responsesText;
-        echo $templates->render("session/run/questions/response", $data);
+        echo $templates->render("session/edit/questions/response", $data);
     }
 }

@@ -27,13 +27,15 @@
                         Created <?=$this->e($created)?>
                     </span>
                 </div>
-                <?php
-                // If the user can edit this session, view edit controls
-                if($s->checkIfUserCanEdit($user)):
-                ?>
-
-                    <div class="actions-confirm-delete width-xs-full">
-                        <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                <div class="actions-confirm-delete width-xs-full">
+                    <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                        <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
+                            <i class="fa fa-plus"></i> Join
+                        </button>
+                        <?php
+                        // If the user can edit this session, view edit controls
+                        if($s->checkIfUserCanEdit($user)):
+                        ?>
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>
@@ -42,29 +44,19 @@
                                     <i class="fa fa-trash-o"></i> Delete
                                 </button>
                             <?php endif; ?>
-                        </div>
-                        <?php if($s->checkIfUserCanDelete($user)): ?>
-                            <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
-                                <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-identifier="<?=$this->e($s->getSessionIdentifier())?>">
-                                    <i class="fa fa-check"></i> Confirm
-                                </button>
-                                <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">
-                                    <i class="fa fa-times"></i> Cancel
-                                </button>
-                            </div>
                         <?php endif; ?>
                     </div>
-
-                <?php // Otherwise, view controls for normal user?>
-                <?php else: ?>
-                    <div class="actions-confirm-delete">
-                        <div class="btn-group pull-right actions" aria-label="Actions">
-                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
-                                <i class="fa fa-plus"></i> Join
+                    <?php if($s->checkIfUserCanDelete($user)): ?>
+                        <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
+                            <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-identifier="<?=$this->e($s->getSessionIdentifier())?>">
+                                <i class="fa fa-check"></i> Confirm
+                            </button>
+                            <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">
+                                <i class="fa fa-times"></i> Cancel
                             </button>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </li>
         <?php endforeach; ?>
     <?php endif; ?>

@@ -31,7 +31,9 @@
             <i class="fa fa-angle-double-right"></i>
         </div>
         <div class="col-md-1">
-            <i class="fa fa-power-off"></i>
+            <a href="#" onclick="exitClassMode()">
+                <i class="fa fa-power-off"></i>
+            </a>
         </div>
         <div class="col-md-1">
             <i class="fa fa-chart-bar"></i>
@@ -39,10 +41,7 @@
         <div class="col-md-1">
             <i class="fa fa-chart-pie"></i>
         </div>
-
     </div>
-    Live View <br>
-    <a href="#" onclick="exitClassMode()">BACK</a>
 </div>
 </body>
 

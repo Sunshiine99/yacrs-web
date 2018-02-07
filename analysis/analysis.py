@@ -60,7 +60,7 @@ for row_q in cur_q:
         userID = row_r[0]
         response = row_r[1]
 
-        print("    %s %s", userID, response)
+        print("    ", userID, response)
 
     # Close DB cursor
     cur_q.close()

@@ -46,12 +46,12 @@ function getColour($colours, $i) {
 ?>
 
 <?php $this->push("head"); ?>
-    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/run/question/response.css" />
+    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/edit/question/response.css" />
 <?php $this->end(); ?>
 
 <?php $this->push("end"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js" crossorigin="anonymous"></script>
-    <script src="<?=$this->e($config["baseUrl"])?>js/session/run/question/response.js" crossorigin="anonymous"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/question/response.js" crossorigin="anonymous"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.js" charset="utf-8"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.layout.cloud.js"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.wordcloud.js"></script>

@@ -43,7 +43,7 @@ class PageSessionEditProperties
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
         $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionID/");
-        $breadcrumbs->addItem("Edit");
+        $breadcrumbs->addItem("Properties");
 
         //$data = array_merge($data, $session->toArray());
 

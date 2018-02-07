@@ -9,7 +9,7 @@
  * @var $session Session
  */
 
-$title = $session->getSessionID() ? "Edit Session" : "New Session";
+$title = $session->getSessionID() ? "Session Properties" : "New Session";
 
 $this->layout("template",
     [
@@ -29,7 +29,6 @@ $allowQuestionReview    = $session->getAllowQuestionReview()    ? " checked" : "
 $classDiscussionEnabled = $session->getClassDiscussionEnabled() ? " checked" : "";
 
 $submitText = $session->getSessionID() ? "Save" : "Create";
-$title = $session->getSessionID() ? "Edit Session" : "New Session";
 
 ?>
 
@@ -48,7 +47,7 @@ $title = $session->getSessionID() ? "Edit Session" : "New Session";
         </div>
         <?php if($session->getSessionIdentifier()): ?>
             <div class="float-right">
-                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-primary pull-right">Run Session</a>
+                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-primary pull-right">Edit Session</a>
             </div>
         <?php endif; ?>
     </div>

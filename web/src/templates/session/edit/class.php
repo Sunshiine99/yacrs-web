@@ -13,12 +13,28 @@
     <title>Live View</title>
 
     <script>
-        function exitClassMode(sessionIdentifier) {
+        function exitLiveView(sessionIdentifier) {
             const electron = require('electron');
             let {ipcRenderer} = electron;
-            ipcRenderer.send("exitClassMode");
+            ipcRenderer.send("exitLiveView");
         }
     </script>
+    <style>
+        body {
+            background-color: #00B5D1;
+            -webkit-app-region: drag;
+
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        button, a {
+            -webkit-app-region: no-drag;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,7 +47,7 @@
             <i class="fa fa-angle-double-right"></i>
         </div>
         <div class="col-md-1">
-            <a href="#" onclick="exitClassMode()">
+            <a href="#" onclick="exitLiveView()">
                 <i class="fa fa-power-off"></i>
             </a>
         </div>

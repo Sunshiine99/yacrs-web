@@ -124,6 +124,23 @@
         .on("mouseover", function(d, i) {
           if (onwordclick !== undefined) {
               d3.select(this).transition().style('font-size', d.size + 3 + 'px');
+              var words = $( "#wordcloud" ).children().children().children();
+              for (i = 0; i < words.length; i++) {
+                  if(words[i].innerHTML == d.text){
+                      $(words[i]).attr("title" , d.freq);
+                      $(words[i]).tooltip({
+                          position: {
+                              my: "center bottom",
+                              at: "center top-10",
+                              collision: "flip",
+                              using: function( position, feedback ) {
+                                  $( this ).addClass( feedback.vertical )
+                                      .css( position );
+                              }
+                          }
+                      });
+                  }
+              }
           }
         })
         .on("mouseout", function(d, i) {
@@ -135,8 +152,7 @@
           if (onwordclick !== undefined) {
               onwordclick(d,i);
               alert("frequency is: " + d.freq);
-              //TODO need to make a pop up
-              //$('#wordcloud').append('<a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title=" + ' + d.freq + '><i class="fa fa-question-circle" aria-hidden="true"></i></a>');
+              //TODO need to make a pop up showing the term frequency
             }
         });
 

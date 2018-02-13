@@ -89,13 +89,19 @@ class PageSessionExport
 
         $i = 7;
         foreach($responses as $response) {
-            self::setDataCell(1, $i, $response->getUsername(), $sheet);
-            self::setDataCell(2, $i, date($config["datetime"]["datetime"]["long"], $response->getTime()), $sheet);
-            self::setDataCell(3, $i, $response->getResponse(), $sheet);
-            self::setDataCell(4, $i, "N/A", $sheet);
-            self::setDataCell(5, $i, 0, $sheet);
+
+            $user = $response->getUser() === null ? new User() : $response->getUser();
+
+            self::setDataCell(1, $i, $user->isGuest() ? "Guest" : $user->getUsername(), $sheet);
+            self::setDataCell(2, $i, $user->getGivenName(), $sheet);
+            self::setDataCell(3, $i, $user->getSurname(), $sheet);
+            self::setDataCell(4, $i, date($config["datetime"]["datetime"]["long"], $response->getTime()), $sheet);
+            self::setDataCell(5, $i, $response->getResponse(), $sheet);
+            self::setDataCell(6, $i, "N/A", $sheet);
+            self::setDataCell(7, $i, 0, $sheet);
             $i++;
         }
+        die();
     }
 
     /**
@@ -143,10 +149,12 @@ class PageSessionExport
 
         // Add headings
         self::setHeader(1, 6, "Username", $sheet);
-        self::setHeader(2, 6, "Date/Time", $sheet);
-        self::setHeader(3, 6, "Response", $sheet);
-        self::setHeader(4, 6, "Correct?", $sheet);
-        self::setHeader(5, 6, "Points", $sheet);
+        self::setHeader(2, 6, "Given Name", $sheet);
+        self::setHeader(3, 6, "Surname", $sheet);
+        self::setHeader(4, 6, "Date/Time", $sheet);
+        self::setHeader(5, 6, "Response", $sheet);
+        self::setHeader(6, 6, "Correct?", $sheet);
+        self::setHeader(7, 6, "Points", $sheet);
 
         // Auto resize all columns
         for($i = 1; $i <= 5; $i++)

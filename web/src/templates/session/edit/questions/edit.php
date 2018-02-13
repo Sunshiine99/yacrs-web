@@ -61,14 +61,14 @@ else {
 ?>
 
 <?php $this->push("head"); ?>
-    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/run/question/edit.css" />
+    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/edit/question/edit.css" />
 <?php $this->end(); ?>
 
 <?php $this->push("end"); ?>
     <script>
         var questionNew = <?=$new ? "true": "false"?>;
     </script>
-    <script src="<?=$this->e($config["baseUrl"])?>js/session/run/question/edit.js"></script>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/question/edit.js"></script>
 <?php $this->end(); ?>
 
 <h2 class="page-section">

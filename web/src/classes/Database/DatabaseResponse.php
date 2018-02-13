@@ -104,7 +104,9 @@ class DatabaseResponse
             $response->setResponseID($row["ID"]);
             $response->setResponse($row["response"]);
             $response->setTime($row["time"]);
-            $response->setUsername($row["username"]);
+            $response->setUsername($row["username"]);       // TODO: LEGACY REMOVE ME
+            $response->setUser(DatabaseUser::loadDetailsFromUsername($row["username"], $mysqli));
+
             $responses[] = $response;
         }
 

@@ -7,16 +7,16 @@ class User
     private $id = null;
 
     /** @var string */
-    private $username = "";
+    private $username = null;
 
     /** @var string */
-    private $givenName = "";
+    private $givenName = null;
 
     /** @var string */
-    private $surname = "";
+    private $surname = null;
 
     /** @var string */
-    private $email = "";
+    private $email = null;
 
     /** @var bool */
     private $isSessionCreator = false;
@@ -43,7 +43,7 @@ class User
      * Used to load user details from an array
      * @param $array
      */
-    private function fromArray($array) {
+    public function fromArray($array) {
         $this->id               = isset($array["id"])               ? $array["id"]                  : $this->id;
         $this->username         = isset($array["username"])         ? $array["username"]            : $this->username;
         $this->givenName        = isset($array["givenName"])        ? $array["givenName"]           : $this->givenName;

@@ -29,7 +29,7 @@
                 </div>
                 <div class="actions-confirm-delete width-xs-full">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                        <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border" onclick="onclickHref(this)">
+                        <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                             <i class="fa fa-plus"></i> Join
                         </button>
                         <?php

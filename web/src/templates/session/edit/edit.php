@@ -38,8 +38,9 @@ $this->layout("template",
         </div>
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/class/" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
-            <a onclick="enterLiveView()" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session 2</a>
+            <?php if(isDesktopApp()): ?>
+                <a onclick="enterLiveView()" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
+            <?php endif; ?>
         </div>
         <script>
             prepareLiveView(<?=$this->e($session->getSessionIdentifier())?>);

@@ -5,6 +5,7 @@ var wordCloudData;
  */
 $("#display-personal").click(function() {
     $(".username").css("display", "table-cell");
+    $(".fullname").css("display", "table-cell");
     $(this).css("display", "none");
     $("#hide-personal").css("display", "inline")
 });
@@ -14,6 +15,7 @@ $("#display-personal").click(function() {
  */
 $("#hide-personal").click(function() {
     $(".username").css("display", "none");
+    $(".fullname").css("display", "none");
     $(this).css("display", "none");
     $("#display-personal").css("display", "inline")
 });

@@ -48,7 +48,7 @@ class PageSessionEditQuestionResponse
 
         elseif($question->getType() == "mrq") {
             $responsesMrq = DatabaseResponseMcq::loadChoicesTotal($sessionQuestionID, $mysqli);
-            $userMrqResponses = DatabaseResponse::loadMrqResponses($sessionQuestionID, $mysqli);
+            $userMrqResponses = DatabaseResponseMrq::loadResponses($sessionQuestionID, $mysqli);
         }
 
         // Setup Page breadcrumbs

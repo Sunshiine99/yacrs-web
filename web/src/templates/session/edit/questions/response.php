@@ -115,12 +115,13 @@ function getColour($colours, $i) {
 <?php endif; ?>
 <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>
     <div id="section-responses" class="section">
-        <button id="display-personal" class="btn btn-primary">Display Personal Information</button>
-        <button id="hide-personal" class="btn btn-primary">Hide Personal Information</button>
+        <button id="display-personal" class="btn btn-primary width-xs-full">Display Personal Information</button>
+        <button id="hide-personal" class="btn btn-primary width-xs-full">Hide Personal Information</button>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="username" scope="col">Username</th>
+                <th class="fullname" scope="col">Full Name</th>
                 <th scope="col">Time</th>
                 <th scope="col">Response</th>
             </tr>
@@ -129,11 +130,12 @@ function getColour($colours, $i) {
             <?php if(isset($responsesText)): ?>
                 <?php foreach($responsesText as $response): ?>
                     <tr>
-                        <?php if($response->getUsername() == NULL): ?>
-                            <td class="username">Guest</td>
-                        <?php else: ?>
-                            <td class="username"><?=$this->e($response->getUsername())?></td>
-                        <?php endif;?>
+                        <td class="username">
+                            <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
+                        </td>
+                        <td class="fullname">
+                            <?=$this->e($response->getUser()->getFullName())?>
+                        </td>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
                     </tr>
@@ -141,11 +143,12 @@ function getColour($colours, $i) {
             <?php elseif(isset($userMcqResponses)): ?>
                 <?php foreach($userMcqResponses as $response): ?>
                     <tr>
-                        <?php if($response->getUsername() == NULL): ?>
-                            <td class="username">Guest</td>
-                        <?php else: ?>
-                            <td class="username"><?=$this->e($response->getUsername())?></td>
-                        <?php endif;?>
+                        <td class="username">
+                            <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
+                        </td>
+                        <td class="fullname">
+                            <?=$this->e($response->getUser()->getFullName())?>
+                        </td>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
                     </tr>
@@ -153,11 +156,12 @@ function getColour($colours, $i) {
             <?php elseif(isset($userMrqResponses)): ?>
                 <?php foreach($userMrqResponses as $response): ?>
                     <tr>
-                        <?php if($response->getUsername() == NULL): ?>
-                            <td class="username">Guest</td>
-                        <?php else: ?>
-                            <td class="username"><?=$this->e($response->getUsername())?></td>
-                        <?php endif;?>
+                        <td class="username">
+                            <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
+                        </td>
+                        <td class="fullname">
+                            <?=$this->e($response->getUser()->getFullName())?>
+                        </td>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>
                     </tr>

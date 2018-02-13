@@ -17,6 +17,9 @@ class Response
     /** @var User */
     private $user;
 
+    /** @var int */
+    private $choiceID;
+
     /**
      * @return int
      */
@@ -85,5 +88,19 @@ class Response
      */
     public function setUser($user) {
         $this->user = $user;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChoiceID() {
+        return $this->choiceID;
+    }
+
+    /**
+     * @param int $choiceID
+     */
+    public function setChoiceID($choiceID) {
+        $this->choiceID = $choiceID;
     }
 }

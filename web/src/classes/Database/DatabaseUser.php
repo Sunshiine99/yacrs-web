@@ -105,15 +105,46 @@ class DatabaseUser
     }
 
     /**
+     * @param int $username
+     * @param mysqli $mysqli
+     * @return User
+     */
+    public static function loadDetailsFromUserID($userID, $mysqli) {
+        $userID = Database::safe($userID, $mysqli);
+
+        // Run query to get user
+        $sql = "SELECT *
+                FROM `yacrs_user`
+                WHERE `yacrs_user`.`userID` = '$userID'";
+        $result = $mysqli->query($sql);
+
+        // If error, return null
+        if(!$result) return null;
+
+        // If user details existed in the database
+        if($result->num_rows == 1) {
+
+            // Load the database row
+            $row = $result->fetch_assoc();
+
+            $user = new User($row);
+            return $user;
+        }
+
+        else {
+            return null;
+        }
+    }
+
+    /**
      * @param string $username
      * @param mysqli $mysqli
      * @return User
      */
     public static function loadDetailsFromUsername($username, $mysqli) {
-        $user = new User();
-        $user->setUsername($username);
+        $username = Database::safe($username, $mysqli);
 
-        // Run query to get details
+        // Run query to get user ID
         $sql = "SELECT *
                 FROM `yacrs_user`
                 WHERE `yacrs_user`.`username` = '$username'";
@@ -128,19 +159,12 @@ class DatabaseUser
             // Load the database row
             $row = $result->fetch_assoc();
 
-            // Load user details from row
-            $user->fromArray($row);
-
-            print_r($row);
-            echo "<br>";
-            echo "<br>";
+            return self::loadDetailsFromUserID($row["userID"], $mysqli);
         }
 
         else {
             return null;
         }
-
-        return self::loadDetails($user, $mysqli);
     }
 
     /**

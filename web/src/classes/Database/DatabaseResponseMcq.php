@@ -128,7 +128,7 @@ class DatabaseResponseMcq
     public static function loadResponses($sessionQuestionID, $mysqli) {
         $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
-        $sql = "SELECT username, time, choice
+        $sql = "SELECT r.userID, username, time, choice, r.`choiceID`
                 FROM
                     `yacrs_responseMcq` as r,
                     `yacrs_user` as u,
@@ -148,7 +148,9 @@ class DatabaseResponseMcq
             $response = new Response();
             $response->setResponse($row["choice"]);
             $response->setTime($row["time"]);
-            $response->setUsername($row["username"]);
+            $response->setUsername($row["username"]); // TODO: remove me legacy
+            $response->setUser(DatabaseUser::loadDetailsFromUserID($row["userID"], $mysqli));
+            $response->setChoiceID($row["choiceID"]);
             $responses[] = $response;
         }
 

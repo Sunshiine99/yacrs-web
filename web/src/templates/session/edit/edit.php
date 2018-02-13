@@ -165,6 +165,6 @@ $this->layout("template",
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/export/" class="btn btn-primary">Export as Spreadsheet</a>
+        <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/export/" class="btn btn-primary width-xs-full">Export as Spreadsheet</a>
     </div>
 </div>

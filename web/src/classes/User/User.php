@@ -129,6 +129,28 @@ class User
     /**
      * @return string
      */
+    public function getFullName() {
+
+        $output = "";
+
+        // If a given name is available add it to the output
+        if($this->givenName !== null)
+            $output .= $this->givenName;
+
+        // If both a given name and a surname is available, add a space
+        if($this->givenName !== null && $this->surname !== null)
+            $output .= " ";
+
+        // If a surname is available add it to the output
+        if($this->surname !== null)
+            $output .= $this->surname;
+
+        return $output;
+    }
+
+    /**
+     * @return string
+     */
     public function getEmail() {
         return $this->email;
     }

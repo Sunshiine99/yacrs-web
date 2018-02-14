@@ -24,7 +24,7 @@
             background-color: #003865;
             -webkit-app-region: drag;
 
-            font-size: 25px;
+            font-size: 28px;
             color: white;
 
             position: absolute;
@@ -32,9 +32,10 @@
             top: 0;
             height: 100%;
             width: 100%;
+
         }
         img{
-            height: 40px;
+            height: 50px;
         }
 
         button, a {
@@ -53,7 +54,16 @@
             <img src="<?=$this->e($config["baseUrl"])?>img/uofg/logo-gu-icon.png"></img>
         </div>
         <div class="col-md-1">
+            <b>#/#</b>
+        </div>
+        <div class="col-md-2">
+            <b>Activate</b>
+        </div>
+        <div class="col-md-1">
             <i class="fa fa-angle-double-right"></i>
+        </div>
+        <div class="col-md-3">
+            <b>This is the question</b>
         </div>
         <div class="col-md-1">
             <a href="#" onclick="exitLiveView()">

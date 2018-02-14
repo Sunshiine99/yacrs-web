@@ -4,6 +4,7 @@
   function cloud() {
     var size = [256, 256],
         text = cloudText,
+        freq = cloudFreq,
         font = cloudFont,
         fontSize = cloudFontSize,
         fontStyle = cloudFontNormal,
@@ -25,6 +26,7 @@
           tags = [],
           data = words.map(function(d, i) {
             d.text = text.call(this, d, i);
+            d.freq = freq.call(this, d, i);
             d.font = font.call(this, d, i);
             d.style = fontStyle.call(this, d, i);
             d.weight = fontWeight.call(this, d, i);
@@ -171,6 +173,12 @@
       return cloud;
     };
 
+    cloud.freq = function (x) {
+        if (!arguments.length) return freq;
+        freq = d3.functor(x);
+        return cloud;
+    };
+
     cloud.spiral = function(x) {
       if (!arguments.length) return spiral;
       spiral = spirals[x + ""] || x;
@@ -194,6 +202,10 @@
 
   function cloudText(d) {
     return d.text;
+  }
+
+  function cloudFreq(d) {
+    return d.size;
   }
 
   function cloudFont() {

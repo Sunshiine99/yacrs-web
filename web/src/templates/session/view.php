@@ -16,7 +16,7 @@
 $this->layout("template",
     [
         "config" => $config,
-        "title" => $session->getTitle() . " (#" . $session->getSessionId() . ")",
+        "title" => ($session->getTitle() ? $session->getTitle() : "Session") . " (#".$session->getSessionIdentifier().")",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
         "user" => $user,

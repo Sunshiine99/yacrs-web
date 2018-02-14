@@ -14,6 +14,12 @@ class Response
     /** @var string */
     private $username;
 
+    /** @var User */
+    private $user;
+
+    /** @var int */
+    private $choiceID;
+
     /**
      * @return int
      */
@@ -68,5 +74,33 @@ class Response
      */
     public function setUsername($username) {
         $this->username = strval($username);
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser() {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user) {
+        $this->user = $user;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChoiceID() {
+        return $this->choiceID;
+    }
+
+    /**
+     * @param int $choiceID
+     */
+    public function setChoiceID($choiceID) {
+        $this->choiceID = $choiceID;
     }
 }

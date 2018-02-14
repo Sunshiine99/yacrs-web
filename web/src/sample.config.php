@@ -25,6 +25,9 @@ $config["database"]["name"]              = getenv("MYSQL_DATABASE");
 $config["ldap"]["host"]                  = "130.209.13.173";
 $config["ldap"]["context"]               = "o=Gla";
 
+$config["user"]["admin"][0]               = "2198207s";
+$config["user"]["admin"][1]               = "a";
+
 // Details used for LDAP bind
 //$config["ldap"]["bind"]["user"] = "";
 //$config["ldap"]["bind"]["pass"] = "";

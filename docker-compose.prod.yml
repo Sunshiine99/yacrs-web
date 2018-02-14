@@ -5,3 +5,15 @@ services:
       - "80:80"
     environment:
       - BASE_URL=http://130.209.251.22/
+  analysis:
+    build: ./analysis
+    links:
+      - db
+    environment:
+        - MYSQL_RANDOM_ROOT_PASSWORD=yes
+        - MYSQL_DATABASE=yacrs
+        - MYSQL_USER=yacrs
+        - MYSQL_PASSWORD=uGjVGpfVRfZnfLYybLkELnrdohEx3zepPYkk4vFh5kT4zKtXgNTqmSpr92EmSsGh
+        - MYSQL_HOST=db
+    networks:
+        - internal

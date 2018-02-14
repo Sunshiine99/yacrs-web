@@ -85,7 +85,7 @@ class DatabaseResponse
     public static function loadResponses($sessionQuestionID, $mysqli) {
         $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
-        $sql = "SELECT username, time, response
+        $sql = "SELECT r.`userID`, username, time, response
                 FROM
                     `yacrs_response` as r,
                     `yacrs_user` as u
@@ -104,56 +104,10 @@ class DatabaseResponse
             $response->setResponseID($row["ID"]);
             $response->setResponse($row["response"]);
             $response->setTime($row["time"]);
-            $response->setUsername($row["username"]);
+            $response->setUsername($row["username"]);       // TODO: LEGACY REMOVE ME
+            $response->setUser(DatabaseUser::loadDetailsFromUserID($row["userID"], $mysqli));
+
             $responses[] = $response;
-        }
-
-        return $responses;
-    }
-
-    /**
-     * Load an array of responses for a question
-     * @param $sessionQuestionID
-     * @param $mysqli
-     * @return array|null
-     */
-    public static function loadMrqResponses($sessionQuestionID, $mysqli) {
-        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
-
-        $sql = "SELECT r.userID, username, time, choice
-                FROM
-                    `yacrs_responseMcq` as r,
-                    `yacrs_user` as u,
-                    `yacrs_questionsMcqChoices` as m
-                WHERE r.`sessionQuestionID` = $sessionQuestionID
-                  AND r.`userID` = u.`userID`
-                  AND m.`ID` = r.`choiceID`";
-        $result = $mysqli->query($sql);
-
-        if(!$result) return null;
-
-        $responses = [];
-
-        // Foreach row returned
-        while($row = $result->fetch_assoc()){
-            //if flag == 0 the response has not been found
-            $flag = 0;
-            foreach($responses as $response){
-                //if the user has more than one response add the choice to the responses
-                if($response->getResponseID() == $row["userID"]){
-                    $response->setResponse($response->getResponse() . ", " . $row["choice"]);
-                    $flag = 1;
-                    break;
-                }
-            }
-            if($flag == 0) {
-                $response = new Response();
-                $response->setResponse($row["choice"]);
-                $response->setTime($row["time"]);
-                $response->setUsername($row["username"]);
-                $response->setResponseID($row["userID"]);
-                $responses[] = $response;
-            }
         }
 
         return $responses;
@@ -190,6 +144,7 @@ class DatabaseResponse
                 $dict[$r] = isset($dict[$r]) ? $dict[$r] + 1 : 1;
             }
         }
+        $dict = StopWords::removeStop($dict);
 
         $output = [];
 

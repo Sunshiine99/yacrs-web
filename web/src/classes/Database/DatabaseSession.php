@@ -93,6 +93,7 @@ class DatabaseSession
         // Get the session identifier
         $sessionIdentifier = Database::safe($mysqli->insert_id, $mysqli);
 
+
         return $sessionIdentifier;
     }
 
@@ -171,6 +172,7 @@ class DatabaseSession
     }
 
     /**
+     * Load session using the Session ID (The Primary Key!)
      * @param int $sessionID
      * @param mysqli $mysqli
      * @return Session
@@ -304,6 +306,13 @@ class DatabaseSession
     }
 
     /**
+     * @param mysqli $mysqli
+     */
+    public static function loadAllSessions($mysqli) {
+
+    }
+
+    /**
      * Delete a session
      * @param int $sessionIdentifier
      * @param mysqli $mysqli
@@ -314,9 +323,44 @@ class DatabaseSession
         // Make variables safe for database use
         $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
 
+        //Get the sessionID
+        $sql = "SELECT `sessionID`
+                FROM `yacrs_sessionIdentifier`
+                WHERE `sessionIdentifier` = $sessionIdentifier";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_assoc();
+        $sessionID = $row["sessionID"];
+
+        //Delete from sessionQuestions
+        $sql = "SELECT `questionID`
+                FROM `yacrs_sessionQuestions`
+                WHERE `sessionID` = $sessionID";
+        $result2 = $mysqli->query($sql);
+
+        // If query was successful
+        if($result2) {
+            // Loop for every row
+            while($row2 = $result2->fetch_assoc()) {
+                $questionID = $row2["questionID"];
+                DatabaseSessionQuestion::delete($questionID, $mysqli);
+                //Delete from questions
+                $sql = "DELETE FROM `yacrs_questions`
+                        WHERE `questionID` = $questionID";
+                $result = $mysqli->query($sql);
+            }
+        }
+
+
+        //Delete from sessionIdentifier
         $sql = "DELETE FROM `yacrs_sessionIdentifier`
-                WHERE `yacrs_sessionIdentifier`.`sessionIdentifier` = $sessionIdentifier;";
-        $result = $mysqli->multi_query($sql);
+                WHERE `yacrs_sessionIdentifier`.`sessionIdentifier` = $sessionIdentifier";
+        $result = $mysqli->query($sql);
+
+        //Delete from sessions
+        $sql = "DELETE FROM `yacrs_sessions`
+                WHERE `sessionID` = $sessionID";
+        $result = $mysqli->query($sql);
+
 
         return $result ? true : false;
     }
@@ -391,12 +435,43 @@ class DatabaseSession
             // Load session object from session ID
             $session = DatabaseSession::loadSession($row["sessionID"], $mysqli);
 
+            if(!$session) continue;
+
             $session->setSessionIdentifier($row["sessionIdentifier"]);
 
             // If success, Add to output array
             if($session) {
                 $output[] = $session;
             }
+        }
+
+        return $output;
+    }
+
+    public static function loadUserActiveSessions($userID, $mysqli){
+
+        $userID = Database::safe($userID, $mysqli);
+
+        $sql = "SELECT si.`sessionIdentifier`
+                FROM `yacrs_sessions` as s,
+                    `yacrs_sessionIdentifier` as si,
+                    `yacrs_user` as u,
+                    `yacrs_sessionQuestions` as q
+                WHERE s.`ownerID` = $userID
+                AND s.`sessionID` = si.`sessionID`
+                AND u.`userID` = $userID
+                AND q.`sessionID` = s.`sessionID`
+                AND q.`active` = 1";
+        $result = $mysqli->query($sql);
+
+        // If error, return null
+        if(!$result) return null;
+
+        $output = [];
+
+        // Loop for every row in the database result
+        while($row = $result->fetch_assoc()) {
+            array_push($output, $row);
         }
 
         return $output;

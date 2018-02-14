@@ -46,6 +46,14 @@ class Login
         // Load additional details from the database
         $user = DatabaseUser::loadDetails($user, $mysqli);
 
+        // If the config specifies this user should always be an admin
+        if(isset($config["user"]["admin"]) && in_array($user->getUsername(), $config["user"]["admin"])) {
+
+            // Set admin attributes
+            $user->setIsAdmin(true);
+            $user->setIsSessionCreator(true);
+        }
+
         // If this session should be stored
         if($store) {
 

@@ -3,6 +3,15 @@
 class PageError
 {
 
+    public static function error403() {
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $data["user"] = Login::checkUserLoggedIn();
+
+        Flight::halt(403);
+        echo $templates->render("error/error403", $data);
+    }
+
     public static function error404() {
         $templates = Flight::get("templates");
         $data = Flight::get("data");

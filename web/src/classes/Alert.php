@@ -28,7 +28,7 @@ class Alert
      * @param int $expire
      */
     public static function displayAlertSession($alert, $expire = null) {
-        if($expire == null) {
+        if($expire == null || $expire < 0) {
             $expire = time() + 30;
         }
 

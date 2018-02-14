@@ -78,22 +78,54 @@ class PageSessionExport
 
     /**
      * Display text responses in sheet
-     * @param int $sessionQuestionID
+     * @param Question|QuestionMcq|QuestionMrq|QuestionText|QuestionTextLong $question
      * @param array $config
      * @param PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet
      * @param mysqli $mysqli
      */
-    private static function text($sessionQuestionID, &$sheet, $config, $mysqli) {
+    private static function text($question, &$sheet, $config, $mysqli) {
+        $sessionQuestionID = $question->getSessionQuestionID();
 
-        $responses = DatabaseResponse::loadResponses($sessionQuestionID, $mysqli);
+        try {
+            $dbr = DatabaseResponseFactory::create($question->getType());
+        }
+        catch(Exception $e) {
+            $dbr = new DatabaseResponse();
+        }
+
+        $responses = $dbr::loadResponses($sessionQuestionID, $mysqli);
 
         $i = 7;
         foreach($responses as $response) {
-            self::setDataCell(1, $i, $response->getUsername(), $sheet);
-            self::setDataCell(2, $i, date($config["datetime"]["datetime"]["long"], $response->getTime()), $sheet);
-            self::setDataCell(3, $i, $response->getResponse(), $sheet);
-            self::setDataCell(4, $i, "N/A", $sheet);
-            self::setDataCell(5, $i, 0, $sheet);
+
+            $user = $response->getUser() === null ? new User() : $response->getUser();
+
+            self::setDataCell(1, $i, $user->isGuest() ? "Guest" : $user->getUsername(), $sheet);
+            self::setDataCell(2, $i, $user->getFullName(), $sheet);
+            self::setDataCell(3, $i, date($config["datetime"]["datetime"]["long"], $response->getTime()), $sheet);
+            self::setDataCell(4, $i, $response->getResponse(), $sheet);
+
+            // If this is a question type with choices
+            if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"])) {
+
+                $correct = false;
+
+                // Foreach question choice
+                foreach($question->getChoices() as $choice) {
+
+                    if($response->getChoiceID() == $choice->getChoiceID() && $choice->isCorrect()) {
+                        $correct = true;
+                    }
+                }
+
+                self::setDataCell(5, $i, $correct ? "Yes" : "No", $sheet);
+            }
+
+            else {
+                self::setDataCell(5, $i, "N/A", $sheet);
+            }
+
+            self::setDataCell(6, $i, "=IF(E$i=\"Yes \",1,0)", $sheet);
             $i++;
         }
     }
@@ -143,16 +175,17 @@ class PageSessionExport
 
         // Add headings
         self::setHeader(1, 6, "Username", $sheet);
-        self::setHeader(2, 6, "Date/Time", $sheet);
-        self::setHeader(3, 6, "Response", $sheet);
-        self::setHeader(4, 6, "Correct?", $sheet);
-        self::setHeader(5, 6, "Points", $sheet);
+        self::setHeader(2, 6, "Full Name", $sheet);
+        self::setHeader(3, 6, "Date/Time", $sheet);
+        self::setHeader(4, 6, "Response", $sheet);
+        self::setHeader(5, 6, "Correct?", $sheet);
+        self::setHeader(6, 6, "Points", $sheet);
 
         // Auto resize all columns
         for($i = 1; $i <= 5; $i++)
             $sheet->getColumnDimensionByColumn($i)->setAutoSize(true);
 
-        self::text($sessionQuestionID, $sheet, $config, $mysqli);
+        self::text($question, $sheet, $config, $mysqli);
     }
 
 

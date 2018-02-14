@@ -41,7 +41,7 @@
                 <?php endif; ?>
                 <?php if($user->isAdmin()): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Admin</a>
+                        <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>admin/">Admin</a>
                     </li>
                 <?php endif; ?>
             </ul>

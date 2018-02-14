@@ -24,7 +24,7 @@ class PageSessionNew
         $data["session"] = new Session();
         $data["user"] = $user;
         $data["breadcrumbs"] = $breadcrumbs;
-        echo $templates->render("session/edit", $data);
+        echo $templates->render("session/edit/properties", $data);
     }
 
     public static function submit() {
@@ -52,7 +52,7 @@ class PageSessionNew
             die();
         }
 
-        header("Location: "  .$config["baseUrl"] . "session/$sessionID/run/");
+        header("Location: "  .$config["baseUrl"] . "session/$sessionID/edit/");
         die();
     }
 }

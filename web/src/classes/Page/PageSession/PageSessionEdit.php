@@ -1,8 +1,92 @@
 <?php
 
-class PageSessionEdit
+class PageSessionEdit extends PageSession
 {
+
+    public static function question($sessionIdentifier) {
+        $config = Flight::get("config");
+        header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/edit/");
+        die();
+    }
+
     public static function edit($sessionIdentifier) {
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionIdentifier));
+
+        // Add to session history
+        DatabaseSessionHistory::insert($user, $session, $mysqli);
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem("Edit");
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // Load questions from the database
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
+
+        $data["session"] = $session;
+        $data["questions"] = $questions;
+        $data["breadcrumbs"] = $breadcrumbs;
+        $data["user"] = $user;
+        echo $templates->render("session/edit/edit", $data);
+    }
+
+    public static function ajax($sessionIdentifier) {
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionIdentifier));
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // Load questions from the database
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
+
+        $data["session"] = $session;
+        $data["questions"] = $questions;
+        echo $templates->render("session/edit/questions/list", $data);
+    }
+
+    public static function classMode($sessionIdentifier) {
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionIdentifier));
+
+        $data["session"] = $session;
+        echo $templates->render("session/edit/class", $data);
+    }
+
+    /**
+     * Loads basic variables ensuring correct permissions. (I.e. User is logged in and that they can edit this session)
+     * @param $sessionIdentifier
+     * @return array
+     */
+    protected static function setup($sessionIdentifier) {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
         $config = Flight::get("config");
@@ -14,7 +98,6 @@ class PageSessionEdit
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        // Get the session ID
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
@@ -23,58 +106,23 @@ class PageSessionEdit
             die();
         }
 
-        // If invalid session identifier, display 404
-        if(!$sessionID) {
-            PageError::error404();
-            die();
-        }
-
-        // Load session details
+        // Loads the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
+        $session->setSessionIdentifier($sessionIdentifier);
 
-        // If the session is invalid or the user cannot edit this page, forward home
-        if($session === null || !$session->checkIfUserCanEdit($user)) {
-            header("Location: "  . $config["baseUrl"]);
+        // If this session does not exist or the user cannot edit this session, go home
+        if($session==null || !$session->checkIfUserCanEdit($user)) {
+            header("Location: " . $config["baseUrl"]);
             die();
         }
 
-        // Setup Page breadcrumbs
-        $breadcrumbs = new Breadcrumb();
-        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($sessionIdentifier, $config["baseUrl"]."session/$sessionID/");
-        $breadcrumbs->addItem("Edit");
-
-        //$data = array_merge($data, $session->toArray());
-
-        $data["session"] = $session;
-        $data["additionalUsersCsv"] = $session->getAdditionalUsersCsv();
-        $data["user"] = $user;
-        $data["breadcrumbs"] = $breadcrumbs;
-
-        echo $templates->render("session/edit", $data);
-    }
-
-    public static function submit() {
-        $config = Flight::get("config");
-
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        // Ensure the user is logged in
-        $user = Page::ensureUserLoggedIn($config);
-
-        // Ensure user is allowed to create sessions
-        Page::ensureUserIsSessionCreator($user, $config);
-
-        // Setup session from submitted data
-        $session = new Session($_POST);
-        $session->setOwner($user->getId());
-
-        DatabaseSession::update($session, $mysqli);
-
-        header("Location: "  .$config["baseUrl"]);
-        die();
+        return [
+            "templates" => $templates,
+            "data" => $data,
+            "config" => $config,
+            "user" => $user,
+            "mysqli" => $mysqli,
+            "session" => $session,
+        ];
     }
 }

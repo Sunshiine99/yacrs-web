@@ -113,7 +113,16 @@ class Session
      * @return bool
      */
     public function checkIfUserCanEdit($user) {
-        return $this->owner==$user->getUsername() || $this->hasAdditionalUser($user->getUsername());
+        return $this->owner==$user->getUsername() || $this->hasAdditionalUser($user->getUsername()) || $user->isAdmin();
+    }
+
+    /**
+     * Check if a user is allowed to delete this session
+     * @param User $user
+     * @return bool
+     */
+    public function checkIfUserCanDelete($user) {
+        return $this->owner==$user->getUsername() || $user->isAdmin();
     }
 
     /**

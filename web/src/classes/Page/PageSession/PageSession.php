@@ -40,10 +40,10 @@ class PageSession extends Page
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
 
-        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If invalid session, forward home with error
-        if (!$sessionID) {
+        if (!$session) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -55,9 +55,6 @@ class PageSession extends Page
             header("Location: " . $config["baseUrl"]);
             die();
         }
-
-        $session = DatabaseSession::loadSession($sessionID, $mysqli);
-        $session->setSessionIdentifier($sessionIdentifier);
 
         // If user cannot view this session, display an error
         if(!$session->checkIfUserCanView($user)) {
@@ -86,7 +83,7 @@ class PageSession extends Page
         if ($session->getQuestionControlMode() == 1) {
 
             // Get total number of questions
-            $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($sessionID, $mysqli);
+            $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($session->getSessionID(), $mysqli);
 
             // Get current question number
             $questionNumber = isset($_GET["q"]) ? intval($_GET["q"]) - 1 : 0;
@@ -111,7 +108,7 @@ class PageSession extends Page
         }
 
         // Load active question
-        $question = DatabaseSessionQuestion::loadActiveQuestion($sessionID, $questionNumber, $mysqli);
+        $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
         $responses = null;
 
@@ -149,7 +146,7 @@ class PageSession extends Page
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem($session->getTitle() . " (#$sessionIdentifier)");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)");
 
         $data["session"] = $session;
         $data["response"] = $response;

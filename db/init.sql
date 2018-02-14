@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.6
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jan 16, 2018 at 02:54 PM
+-- Generation Time: Feb 13, 2018 at 03:05 PM
 -- Server version: 5.7.20
 -- PHP Version: 7.1.9
 
@@ -80,10 +80,10 @@ CREATE TABLE `yacrs_questionTypes` (
 --
 
 INSERT INTO `yacrs_questionTypes` (`ID`, `name`) VALUES
-  (1, 'mcq'),
-  (2, 'text'),
-  (3, 'textlong'),
-  (4, 'mrq');
+(1, 'mcq'),
+(2, 'text'),
+(3, 'textlong'),
+(4, 'mrq');
 
 -- --------------------------------------------------------
 
@@ -205,6 +205,8 @@ CREATE TABLE `yacrs_sessionsAdditionalUsers` (
 CREATE TABLE `yacrs_user` (
   `userID` int(11) NOT NULL,
   `username` varchar(80) DEFAULT NULL,
+  `givenName` varchar(64) DEFAULT NULL,
+  `surname` varchar(64) DEFAULT NULL,
   `isSessionCreatorOverride` tinyint(1) DEFAULT NULL,
   `isAdminOverride` tinyint(1) DEFAULT NULL,
   `isGuest` tinyint(4) NOT NULL DEFAULT '0'

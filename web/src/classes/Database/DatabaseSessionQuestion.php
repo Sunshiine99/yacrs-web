@@ -96,16 +96,16 @@ class DatabaseSessionQuestion
     public static function loadSessionQuestions($sessionID, $mysqli) {
         $sessionID  = Database::safe($sessionID, $mysqli);
 
-        $sql = "SELECT sq.`ID` as sessionQuestionID, sq.`questionID`, q.`question`, qt.`name` as type, sq.`active`, q.`created`, q.`lastUpdate`
+        $sql = "SELECT sq.`ID` as `sessionQuestionID`, q.`questionID`, sq.`active`
                 FROM
                     `yacrs_sessionQuestions` as sq,
-                    `yacrs_questions` as q,
-                    `yacrs_questionTypes` as qt
+                    `yacrs_questions` as q
                 WHERE sq.`questionID` = q.`questionID`
-                  AND sq.`sessionID` = $sessionID
-                  AND qt.`ID` = q.`type`
+                  AND sq.`sessionID` = '$sessionID'
                 ORDER BY sq.`ID` DESC";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         $output["questions"] = [];
         $output["active"] = false;
@@ -113,12 +113,13 @@ class DatabaseSessionQuestion
         // Loop for each row in result
         while($row = $result->fetch_assoc()) {
 
-
-            $question = QuestionFactory::create($row["type"], $row);
-            //$question = new Question($row);
+            $question = DatabaseQuestion::load($row["questionID"], $mysqli);
+            $question->setSessionQuestionID($row["sessionQuestionID"]);
+            $question->setSessionID($sessionID);
 
             if($row["active"]) {
                 $output["active"] = true;
+                $question->setActive(true);
             }
 
             array_push($output["questions"], $question);
@@ -141,6 +142,8 @@ class DatabaseSessionQuestion
                 WHERE sq.`ID` = $sessionQuestionID
                 LIMIT 1";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // Fetch the row returned from the table
         $row = $result->fetch_assoc();
@@ -175,13 +178,11 @@ class DatabaseSessionQuestion
                 LIMIT $questionNumber,1";
         $result = $mysqli->query($sql);
 
-        if($result->num_rows <= 0) {
-            return null;
-        }
+        if(!$result) return null;
 
         // Fetch the row returned from the table
         $row = $result->fetch_assoc();
-
+        if(!$row) return null;
         $question = DatabaseQuestion::load($row["questionID"], $mysqli);
         $question->setSessionQuestionID($row["ID"]);
 

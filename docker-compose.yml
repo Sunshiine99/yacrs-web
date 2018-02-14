@@ -16,6 +16,7 @@ services:
         - ./web/docker/log:/var/www/docker/log
     networks:
         - internal
+    restart: always
   db:
     image: "mysql:5"
     environment:
@@ -25,8 +26,12 @@ services:
         - MYSQL_PASSWORD=uGjVGpfVRfZnfLYybLkELnrdohEx3zepPYkk4vFh5kT4zKtXgNTqmSpr92EmSsGh
     volumes:
         - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+        - database:/var/lib/mysql
     networks:
         - internal
+    restart: always
 networks:
   internal:
     external: false
+volumes:
+  database:

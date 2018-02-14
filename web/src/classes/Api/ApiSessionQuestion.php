@@ -200,4 +200,39 @@ class ApiSessionQuestion
             "question" => $question
         ];
     }
+
+    public static function users($sessionIdentifier, $sessionQuestionID) {
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        // Load the session
+        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+
+        if(!$session) {
+            ApiError::unknown();
+        }
+
+        if(!$session->checkIfUserCanEdit($user)) {
+            ApiError::permissionDenied();
+            die();
+        }
+
+        $sessionID = $session->getSessionIdentifier();
+
+        $users = DatabaseSessionQuestion::users($sessionID, $sessionQuestionID, $mysqli);
+
+        $output = [];
+        $output["active"] = intval($users["active"]);
+        $output["total"] = intval($users["total"]);
+        Api::output($output);
+    }
 }

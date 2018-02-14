@@ -53,6 +53,7 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
     </div>
 </div>
 <form action="." method="POST" class="form-horizontal" style="display:block; width: 100%;">
+    <input name="sessionIdentifier" value="<?=$this->e($session->getSessionIdentifier())?>" type="hidden">
     <input name="sessionID" value="<?=$this->e($session->getSessionID())?>" type="hidden">
     <div class="form-group row">
         <label class="col-sm-3 control-label" for="title">Title</label>

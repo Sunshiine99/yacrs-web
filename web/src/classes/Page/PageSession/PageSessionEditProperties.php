@@ -59,7 +59,7 @@ class PageSessionEditProperties
 
         DatabaseSession::update($session, $mysqli);
 
-        header("Location: "  .$config["baseUrl"]);
+        header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/");
         die();
     }
 }

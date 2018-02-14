@@ -91,7 +91,7 @@ class DatabaseSessionQuestion
     /**
      * @param int $sessionID
      * @param mysqli $mysqli
-     * @return array
+     * @return array|null
      */
     public static function loadSessionQuestions($sessionID, $mysqli) {
         $sessionID  = Database::safe($sessionID, $mysqli);
@@ -260,7 +260,56 @@ class DatabaseSessionQuestion
         return isset($result);
     }
 
-    public static function loadCurrentQuestionNumber() {
+    /**
+     * Get the total number of users in a session and the number of users who have answered this question
+     * @param int $sessionID
+     * @param int $sessionQuestionID
+     * @param mysqli $mysqli
+     * @return int[]
+     */
+    public static function users($sessionID, $sessionQuestionID, $mysqli) {
+        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
+        $sql = "SELECT answered.answered, total.total
+                FROM
+                (
+                    SELECT count(time) as answered
+                    FROM
+                    (
+                        (
+                            SELECT r.time, r.sessionQuestionID, r.userID
+                            FROM `yacrs_response` as r
+                            WHERE r.sessionQuestionID = $sessionQuestionID
+                        )
+                        UNION
+                        (
+                            SELECT r.time, r.sessionQuestionID, r.userID
+                            FROM `yacrs_responseMcq` as r
+                            WHERE r.sessionQuestionID = $sessionQuestionID
+                        )
+                    ) as answeredCount
+                ) AS answered,
+                (
+                    SELECT count(totalCount.userID) as total
+                    FROM
+                    (
+                        SELECT userID
+                        FROM `yacrs_sessionHistory` as sh
+                        WHERE sh.`sessionID` = $sessionID
+                        GROUP BY userID
+                    ) as totalCount
+                ) as total";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        // Fetch the row returned from the table
+        $row = $result->fetch_assoc();
+
+        $output = [];
+        $output["answered"] = intval($row["answered"]);
+        $output["total"] = intval($row["total"]);
+        return $output;
     }
 }

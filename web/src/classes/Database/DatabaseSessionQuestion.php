@@ -101,6 +101,7 @@ class DatabaseSessionQuestion
                     `yacrs_sessionQuestions` as sq,
                     `yacrs_questions` as q
                 WHERE sq.`questionID` = q.`questionID`
+                  AND sq.`sessionID` = '$sessionID'
                 ORDER BY sq.`ID` DESC";
         $result = $mysqli->query($sql);
 

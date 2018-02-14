@@ -21,8 +21,11 @@
     </script>
     <style>
         body {
-            background-color: #00B5D1;
+            background-color: #003865;
             -webkit-app-region: drag;
+
+            font-size: 25px;
+            color: white;
 
             position: absolute;
             left: 0;
@@ -30,10 +33,16 @@
             height: 100%;
             width: 100%;
         }
+        img{
+            height: 40px;
+        }
 
         button, a {
+            color: white;
+            font-size: 25px;
             -webkit-app-region: no-drag;
         }
+
     </style>
 </head>
 
@@ -41,7 +50,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-1">
-            <i class="fa fa-angle-double-left"></i>
+            <img src="<?=$this->e($config["baseUrl"])?>img/uofg/logo-gu-icon.png"></img>
         </div>
         <div class="col-md-1">
             <i class="fa fa-angle-double-right"></i>
@@ -51,12 +60,12 @@
                 <i class="fa fa-power-off"></i>
             </a>
         </div>
-        <div class="col-md-1">
-            <i class="fa fa-chart-bar"></i>
-        </div>
-        <div class="col-md-1">
-            <i class="fa fa-chart-pie"></i>
-        </div>
+<!--        <div class="col-md-1">-->
+<!--            <i class="fa fa-pie-chart" aria-hidden="true"></i>-->
+<!--        </div>-->
+<!--        <div class="col-md-1">-->
+<!--            <i class="fa fa-bar-chart" aria-hidden="true"></i>-->
+<!--        </div>-->
     </div>
 </div>
 </body>

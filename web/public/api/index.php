@@ -34,6 +34,7 @@ Flight::route("/session/@sessionID/start/", array("ApiSession", "startSession"))
 Flight::route("/session/@sessionID/stop/", array("ApiSession", "stopSession"));
 Flight::route("/session/@sessionID/question/", array("ApiSessionQuestion", "listSessionQuestion"));
 Flight::route("/session/@sessionID/question/active/", array("ApiSessionQuestion", "activeSessionQuestion"));
+Flight::route("/session/@sessionID/question/all/", array("ApiSessionQuestion", "allSessionQuestion"));
 
 
 Flight::route("/session/@sessionID/question/new/mcq/", array("ApiSessionQuestionNew", "mcq"));

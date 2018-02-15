@@ -75,6 +75,14 @@ class ApiSessionQuestion
         Api::output($output);
     }
 
+    /**
+     * Load session question IDs for all questions in a session.
+     * @param int $sessionIdentifier
+     */
+    public static function allSessionQuestion($sessionIdentifier) {
+
+    }
+
     public static function viewSessionQuestion($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session question variables (Type hinting below to avoid IDE error messages)

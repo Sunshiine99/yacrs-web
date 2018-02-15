@@ -93,7 +93,10 @@
         <script src="<?=$this->e($config["baseUrl"])?>js/bootstrap-4.0.0-beta.2.min.js"></script>
 
         <script>
+            var baseUrl = "<?=$this->e($config["baseUrl"])?>";
+            var sessionIdentifier = <?=$session->getSessionIdentifier()?>;
 
+            /*
             var baseUrl = "<?=$this->e($config["baseUrl"])?>";
             var sessionIdentifier = <?=$session->getSessionIdentifier()?>;
             var sessionQuestionID = null;
@@ -119,7 +122,7 @@
 
             /**
              * When the document is ready
-             */
+             *//*
             function ready() {
 
                 var interval = setInterval(function() {
@@ -128,6 +131,7 @@
                     if(isVisible()) {
 
                         // Start communicating with the API
+                        clearInterval(interval);
                         loopUpdateDisplay();
                     }
 
@@ -170,7 +174,7 @@
 
             /**
              * Loop for API Updates
-             */
+             *//*
             function loopUpdateDisplay() {
 
                 updateDisplay();
@@ -193,7 +197,7 @@
 
             /**
              * When the next question button is clicked
-             */
+             *//*
             $("#next-question").click(function() {
 
                 // Construct the URL for the api communication
@@ -210,6 +214,7 @@
                     }
                 });
             });
+            */
         </script>
     </body>
 </html>

@@ -157,10 +157,10 @@ function getColour($colours, $i) {
                 <?php foreach($userMrqResponses as $response): ?>
                     <tr>
                         <td class="username">
-                            <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
+                            <?=$this->e($user->isGuest()) ? "Guest" : $this->e($user->getUsername())?>
                         </td>
                         <td class="fullname">
-                            <?=$this->e($response->getUser()->getFullName())?>
+                            <?=$this->e($user->getFullName())?>
                         </td>
                         <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
                         <td><?=$this->e($response->getResponse())?></td>

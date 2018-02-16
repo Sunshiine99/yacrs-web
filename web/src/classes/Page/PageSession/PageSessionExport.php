@@ -94,7 +94,7 @@ class PageSessionExport
         }
 
         $responses = $dbr::loadResponses($sessionQuestionID, $mysqli);
-
+        
         $i = 7;
         foreach($responses as $response) {
 
@@ -108,16 +108,30 @@ class PageSessionExport
             // If this is a question type with choices
             if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"])) {
 
-                $correct = false;
+                $correct = true;
 
                 // Foreach question choice
                 foreach($question->getChoices() as $choice) {
 
-                    if($response->getChoiceID() == $choice->getChoiceID() && $choice->isCorrect()) {
-                        $correct = true;
+                    if($response->getChoiceID() == $choice->getChoiceID() && $choice->isCorrect() == false) {
+                        $correct = false;
                     }
                 }
 
+                /*$corrChoices = DatabaseResponseMrq::getCorrectChoices($question->getQuestionID(), $mysqli);
+
+                $userChoices = DatabaseResponseMrq::loadUserResponses($sessionQuestionID, $user->getId(), $mysqli);
+                print_r($corrChoices);
+                print_r($user->getId());
+                die();
+                foreach($userChoices as $choice){
+                    if(!in_array($choice->getResponse(), $corrChoices)){
+                        $correct = false;
+                        break;
+                    }
+                }
+
+                self::setDataCell(5, $i, $corrChoices, $sheet);*/
                 self::setDataCell(5, $i, $correct ? "Yes" : "No", $sheet);
             }
 
@@ -170,7 +184,14 @@ class PageSessionExport
         // Add question details values
         self::setDataCell(2, 1, $question->getQuestion(), $sheet);
         self::setDataCell(2, 2, $question->getTypeDisplay(), $sheet);
-        self::setDataCell(2, 3, "", $sheet);
+        // If it is a mcq or mrq get the correct answers and display them
+        if($question->getType() == "mcq" || $question->getType() == "mrq"){
+            $correctChoices = DatabaseResponseMrq::getCorrectChoices($question->getQuestionID(), $mysqli);
+        }
+        else{
+            $correctChoices = "";
+        }
+        self::setDataCell(2, 3, $correctChoices, $sheet);
         self::setDataCell(2, 4, date($config["datetime"]["datetime"]["long"], $question->getCreated()), $sheet);
 
         // Add headings

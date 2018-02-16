@@ -127,4 +127,26 @@ class DatabaseResponseMrq
 
         return $responses;
     }
+
+    public static function getCorrectChoices($questionID, $mysqli){
+        $questionID  = Database::safe($questionID, $mysqli);
+
+        $sql = "SELECT choice
+                FROM
+                    `yacrs_questionsMcqChoices`
+                WHERE
+                    `correct` = 1
+                    AND `questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        $choices = "";
+
+        while($row = $result->fetch_assoc()){
+            $choices = $choices . $row["choice"] . " ";
+        }
+
+        return $choices;
+    }
 }

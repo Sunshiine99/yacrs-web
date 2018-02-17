@@ -122,6 +122,7 @@ class DatabaseResponseMrq
                 $response->setTime($row["time"]);
                 $response->setChoiceID($row["choiceID"]);
                 $response->setUsername($row["username"]);
+                $response->setUser(DatabaseUser::loadDetailsFromUserID($row["userID"], $mysqli));
                 $response->setResponseID($row["userID"]);
                 $responses[] = $response;
             }

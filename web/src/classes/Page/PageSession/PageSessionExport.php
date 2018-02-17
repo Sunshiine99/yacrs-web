@@ -94,7 +94,7 @@ class PageSessionExport
         }
 
         $responses = $dbr::loadResponses($sessionQuestionID, $mysqli);
-        
+
         $i = 7;
         foreach($responses as $response) {
 
@@ -106,7 +106,7 @@ class PageSessionExport
             self::setDataCell(4, $i, $response->getResponse(), $sheet);
 
             // If this is a question type with choices
-            if(in_array(get_class($question), ["QuestionMcq", "QuestionMrq"])) {
+            if($question->getType() == "mcq") {
 
                 $correct = true;
 
@@ -118,20 +118,23 @@ class PageSessionExport
                     }
                 }
 
-                /*$corrChoices = DatabaseResponseMrq::getCorrectChoices($question->getQuestionID(), $mysqli);
+                self::setDataCell(5, $i, $correct ? "Yes" : "No", $sheet);
+            }
 
-                $userChoices = DatabaseResponseMrq::loadUserResponses($sessionQuestionID, $user->getId(), $mysqli);
-                print_r($corrChoices);
-                print_r($user->getId());
-                die();
-                foreach($userChoices as $choice){
-                    if(!in_array($choice->getResponse(), $corrChoices)){
+            elseif ($question->getType() == "mrq"){
+                //get the user choice IDs and split the string
+                $userChoices = explode(", ", $response->getChoiceID());
+
+                $correct = true;
+
+                // Foreach question choice
+                foreach($question->getChoices() as $choice) {
+
+                    if(in_array($choice->getChoiceID(), $userChoices) && $choice->isCorrect() == false) {
                         $correct = false;
-                        break;
                     }
                 }
 
-                self::setDataCell(5, $i, $corrChoices, $sheet);*/
                 self::setDataCell(5, $i, $correct ? "Yes" : "No", $sheet);
             }
 

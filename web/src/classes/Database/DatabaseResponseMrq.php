@@ -89,7 +89,7 @@ class DatabaseResponseMrq
     public static function loadResponses($sessionQuestionID, $mysqli) {
         $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
-        $sql = "SELECT r.userID, username, time, choice
+        $sql = "SELECT r.userID, username, time, choice, r.choiceID
                 FROM
                     `yacrs_responseMcq` as r,
                     `yacrs_user` as u,
@@ -111,6 +111,7 @@ class DatabaseResponseMrq
                 //if the user has more than one response add the choice to the responses
                 if($response->getResponseID() == $row["userID"]){
                     $response->setResponse($response->getResponse() . ", " . $row["choice"]);
+                    $response->setChoiceID($response->getChoiceID() . ", " . $row["choiceID"]);
                     $flag = 1;
                     break;
                 }
@@ -119,6 +120,7 @@ class DatabaseResponseMrq
                 $response = new Response();
                 $response->setResponse($row["choice"]);
                 $response->setTime($row["time"]);
+                $response->setChoiceID($row["choiceID"]);
                 $response->setUsername($row["username"]);
                 $response->setResponseID($row["userID"]);
                 $responses[] = $response;

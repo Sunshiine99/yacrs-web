@@ -81,6 +81,42 @@ class ApiSessionQuestion
      */
     public static function allSessionQuestion($sessionIdentifier) {
 
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+            die();
+        }
+
+        // Load the session
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
+
+        if(!$session) {
+            ApiError::unknown();
+            die();
+        }
+
+        if(!$session->checkIfUserCanEdit($user)) {
+            ApiError::permissionDenied();
+            die();
+        }
+
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
+        $questions = array_reverse($questions["questions"]);
+
+        // Add all of the session question IDs to the output
+        $output = [];
+        foreach($questions as $question) {
+            $output[] = $question->getSessionQuestionID();
+        }
+
+        Api::output($output);
     }
 
     public static function viewSessionQuestion($sessionIdentifier, $sessionQuestionID) {

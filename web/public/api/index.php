@@ -28,6 +28,7 @@ Flight::route("/session/new/", array("ApiSession", "edit"));
 Flight::route("/session/getactive/", array("ApiSession", "getActiveSessions"));
 Flight::route("/session/@sessionID/", array("ApiSession", "details"));
 Flight::route("/session/@sessionID/live/", array("ApiSessionLive", "live"));
+Flight::route("/session/@sessionID/live/@sessionQuestionID", array("ApiSessionLive", "live"));
 Flight::route("/session/@sessionID/edit/", array("ApiSession", "edit"));
 Flight::route("/session/@sessionID/delete/", array("ApiSession", "delete"));
 Flight::route("/session/@sessionID/start/", array("ApiSession", "startSession"));

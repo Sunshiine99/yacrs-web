@@ -45,6 +45,7 @@
         img {
             height: 80px;
             float: left;
+            clear: left;
         }
 
         #prev-question {
@@ -58,7 +59,7 @@
             float: left;
             font-size: 16px;
             text-align: center;
-            width:390px;
+            width:350px;
             word-wrap:break-word;
             margin-left: 20px;
             padding-top: 10px;
@@ -75,8 +76,13 @@
         .status {
             float: left;
             font-size: 28px;
-            padding:20px 10px;
+            padding:10px;
             margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .status, a:hover{
+            text-decoration: none;
         }
 
         .responses{
@@ -89,7 +95,7 @@
         .activity{
             float: left;
             text-align: center;
-            width:50px;
+            width:70px;
             font-size: 30px;
             padding:20px 10px;
             margin-left: 20px;
@@ -100,11 +106,16 @@
             font-size: 40px;
             padding:10px;
             margin-left: 20px;
+            clear: right;
         }
 
         button, a {
             color: white;
             -webkit-app-region: no-drag;
+        }
+
+        button, a:hover{
+            color: #ffb949;
         }
 
         .display-none {

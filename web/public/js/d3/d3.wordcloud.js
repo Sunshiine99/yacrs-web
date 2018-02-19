@@ -126,6 +126,7 @@
                     my: "center bottom",
                     at: "center top-10",
                     collision: "flip",
+                    padding: "2.5em",
                     using: function( position, feedback ) {
                         $( this ).addClass( feedback.vertical )
                             .css( position );

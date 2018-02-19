@@ -46,6 +46,7 @@ function getColour($colours, $i) {
 ?>
 
 <?php $this->push("head"); ?>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/edit/question/response.css" />
 <?php $this->end(); ?>
 
@@ -55,6 +56,8 @@ function getColour($colours, $i) {
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.js" charset="utf-8"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.layout.cloud.js"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/d3/d3.wordcloud.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
     <script>
         <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>

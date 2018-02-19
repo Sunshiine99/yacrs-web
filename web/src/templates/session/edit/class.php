@@ -29,7 +29,6 @@
             background-color: #003865;
             -webkit-app-region: drag;
 
-            font-size: 28px;
             color: white;
 
             position: absolute;
@@ -39,30 +38,55 @@
             width: 100%;
         }
 
+        .view{
+            margin: 10px 10px;
+        }
+
         img {
-            height: 50px;
+            height: 80px;
             float: left;
-            margin:10px 10px;
-        }
-
-        .status {
-            float: left;
-        }
-
-        .responses{
-            float: left;
-        }
-
-        #power {
-            float: right;
         }
 
         #prev-question {
             float: left;
+            font-size: 40px;
+            padding: 10px;
+        }
+
+        #question-text{
+            float: left;
+            font-size: 16px;
+            padding: 30px;
         }
 
         #next-question {
             float: left;
+            font-size: 40px;
+            padding: 10px;
+        }
+
+        .status {
+            float: left;
+            font-size: 28px;
+            padding:20px 10px;
+        }
+
+        .responses{
+            float: left;
+            font-size: 35px;
+            padding: 10px
+        }
+
+        .activity{
+            float: left;
+            font-size: 30px;
+            padding:20px 10px;
+        }
+
+        #power {
+            float: right;
+            font-size: 40px;
+            padding:10px;
         }
 
         button, a {
@@ -81,11 +105,20 @@
     </style>
 </head>
 <body>
-<div class="container">
+
+<div class="view">
     <img src="<?= $this->e($config["baseUrl"]) ?>img/uofg/logo-gu-icon.png"></img>
 
-    <div class="responses">
-        <span id="users-answered">#</span>/<span id="users-total">#</span>
+    <div class="qnav">
+        <a id="prev-question" href="#">
+            <i class="fa fa-angle-double-left"></i></a>
+    </div>
+
+    <b><span id="question-text"></span></b>
+
+    <div class="qnav">
+        <a id="next-question" href="#">
+            <i class="fa fa-angle-double-right"></i></a>
     </div>
 
     <div class="status">
@@ -93,24 +126,18 @@
         <a id="deactivate" href="#" class="display-none"><b>Deactivate</b></a>
     </div>
 
-    <div class="qnav">
-    <a id="prev-question" href="#">
-        <i class="fa fa-angle-double-left"></i></a>
-    <a id="next-question" href="#">
-        <i class="fa fa-angle-double-right"></i></a>
+    <div class="responses">
+    <i class="fa fa-bar-chart" aria-hidden="true"></i>
     </div>
 
-    <b><span id="question-text"></span></b>
-
-    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+    <div class="activity">
+        <span id="users-answered">#</span>/<span id="users-total">#</span>
+    </div>
 
     <a id="power" href="#" onclick="exitLiveView()">
         <i class="fa fa-power-off"></i>
     </a>
 
-    <!--        <div class="col-md-1">-->
-    <!--            <i class="fa fa-bar-chart" aria-hidden="true"></i>-->
-    <!--        </div>-->
 </div>
 
 <!-- Bootstrap core JavaScript

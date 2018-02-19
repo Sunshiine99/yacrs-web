@@ -51,42 +51,55 @@
             float: left;
             font-size: 40px;
             padding: 10px;
+            margin-left: 20px;
         }
 
         #question-text{
             float: left;
             font-size: 16px;
-            padding: 30px;
+            text-align: center;
+            width:390px;
+            word-wrap:break-word;
+            margin-left: 20px;
+            padding-top: 10px;
         }
 
         #next-question {
             float: left;
             font-size: 40px;
+            margin-left: 20px;
             padding: 10px;
+
         }
 
         .status {
             float: left;
             font-size: 28px;
             padding:20px 10px;
+            margin-left: 20px;
         }
 
         .responses{
             float: left;
             font-size: 35px;
-            padding: 10px
+            padding: 10px;
+            margin-left: 20px;
         }
 
         .activity{
             float: left;
+            text-align: center;
+            width:50px;
             font-size: 30px;
             padding:20px 10px;
+            margin-left: 20px;
         }
 
         #power {
             float: right;
             font-size: 40px;
             padding:10px;
+            margin-left: 20px;
         }
 
         button, a {

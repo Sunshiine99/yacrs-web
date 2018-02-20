@@ -8,7 +8,12 @@
  * @var $alert Alert
  * @var $logo string
  * @var $footer string
+ * @var $noHeaderFooter bool
  */
+
+// Ensure $noHeaderFooter is a valid boolean
+$noHeaderFooter = isset($noHeaderFooter) ? !!$noHeaderFooter : false;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +43,7 @@
             <link href="<?=$this->e($config["baseUrl"])?>css/style-desktop.css" rel="stylesheet">
         <?php endif; ?>
     </head>
-    <body>
+    <body<?=$noHeaderFooter ? " class='noHeaderFooter'" : ""?>>
         <!--[if lt IE 9]>
         <div id="incompatible-browser">
             <h1>Incompatible Browser</h1>
@@ -67,7 +72,11 @@
             </p>
         </div>
         <![endif]-->
-        <?php $this->insert("partials/navigation", ["config" => $config, "logo" => $logo, "user" => $user]) ?>
+        <?php
+        if(!$noHeaderFooter) {
+            $this->insert("partials/navigation", ["config" => $config, "logo" => $logo, "user" => $user]);
+        }
+        ?>
         <main role="main">
             <?php $this->insert("partials/breadcrumb", ["breadcrumbs" => $breadcrumbs]) ?>
             <?=$this->section("preContent")?>
@@ -79,7 +88,7 @@
             </div>
             <?=$this->section("postContent")?>
         </main>
-        <?php if(!isDesktopApp()): ?>
+        <?php if(!isDesktopApp() && !$noHeaderFooter): ?>
             <footer class="footer">
                 <?php $this->insert(isset($footer) ? $footer : "partials/footer", ["config" => $config]) ?>
             </footer>

@@ -1,4 +1,4 @@
-body {
+body:not(.noHeaderFooter) {
     padding-top: 5rem;
 }
 
@@ -94,10 +94,17 @@ html, body {
     body main {
         overflow:auto;
         min-height: 100%;
+        background-color: #fff;
+    }
+
+    body main {
 
         /* Footer Height (90px) + Padding (25px) */
         padding-bottom:115px;
-        background-color: #fff;
+    }
+
+    body.noHeaderFooter main {
+        padding-bottom:0;
     }
 
         body main #breadcrumb {

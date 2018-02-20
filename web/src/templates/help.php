@@ -45,7 +45,7 @@ $this->layout("template",
         </ul>
     </div>
 
-    <div class="col-9" style="height:800px;overflow-y:scroll">
+    <div class="col-9">
         <div class="tab-content">
             <div id="faqlogin" class="tab-pane fade show active"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-1.jpg" width="100%" ></div>
             <div id="homepage" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-2.jpg" width="100%" ></div>

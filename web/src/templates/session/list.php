@@ -16,7 +16,7 @@
             <li class="list-group-item session-item">
                 <div class="pull-left">
                     <span class="session-title">
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/">
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/<?=$s->checkIfUserCanEdit($user)?"edit/":""?>">
                             <?=$s->getTitle()?$this->e($s->getTitle()):"Session"?>
                         </a>
                     </span>
@@ -29,9 +29,6 @@
                 </div>
                 <div class="actions-confirm-delete width-xs-full">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                        <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
-                            <i class="fa fa-plus"></i> Join
-                        </button>
                         <?php
                         // If the user can edit this session, view edit controls
                         if($s->checkIfUserCanEdit($user)):
@@ -39,11 +36,14 @@
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>
-                            <?php if($s->checkIfUserCanDelete($user)): ?>
-                                <button type="button" class="btn btn-light btn-light-border delete width-xs-full">
-                                    <i class="fa fa-trash-o"></i> Delete
-                                </button>
-                            <?php endif; ?>
+                        <?php endif; ?>
+                        <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
+                            <i class="fa fa-plus"></i> Join
+                        </button>
+                        <?php if($s->checkIfUserCanDelete($user)): ?>
+                            <button type="button" class="btn btn-light btn-light-border delete width-xs-full">
+                                <i class="fa fa-trash-o"></i> Delete
+                            </button>
                         <?php endif; ?>
                     </div>
                     <?php if($s->checkIfUserCanDelete($user)): ?>

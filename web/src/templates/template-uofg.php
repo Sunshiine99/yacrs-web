@@ -6,6 +6,7 @@
  * @var $breadcrumbs Breadcrumb
  * @var $user User
  * @var $alert Alert
+ * @var $noHeaderFooter bool
  */
 $this->layout("base",
     [
@@ -16,7 +17,8 @@ $this->layout("base",
         "user" => $user,
         "alert" => $alert,
         "logo" => "img/uofg/logo-retina.png",
-        "footer" => "partials/footer-uofg"
+        "footer" => "partials/footer-uofg",
+        "noHeaderFooter" => $noHeaderFooter
     ]
 );
 ?>

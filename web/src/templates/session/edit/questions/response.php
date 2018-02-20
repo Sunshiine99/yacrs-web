@@ -12,14 +12,20 @@
  * @var $userMrqResponses array
  * @var $responsesWordCloud array
  * @var $responsesText Response[]
+ * @var $live boolean
  */
+
+// Ensure $live is a valid boolean
+$live = isset($live) ? !!$live : false;
+
 $this->layout("template",
     [
         "config" => $config,
         "title" => $title,
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
-        "user" => $user
+        "user" => $user,
+        "noHeaderFooter" => $live
     ]
 );
 
@@ -68,16 +74,20 @@ function getColour($colours, $i) {
     </script>
 <?php $this->stop(); ?>
 
-<div class="page-header">
-    <h1 class="row">
-        <div class="col-sm-9">
-            <h1>Responses</h1>
-        </div>
-        <div class="col-sm-3">
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
-        </div>
-    </h1>
-</div>
+<?php if(!$live): ?>
+    <div class="page-header">
+        <h1 class="row">
+            <div class="col-sm-9">
+                <h1>Responses</h1>
+            </div>
+            <div class="col-sm-3">
+                <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Session</a>
+            </div>
+        </h1>
+    </div>
+<?php else: ?>
+    <br>
+<?php endif; ?>
 
 <ul class="nav nav-tabs">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
@@ -108,7 +118,7 @@ function getColour($colours, $i) {
     <div id="section-bar-chart" class="section">
         <canvas id="bar-chart" width="400" height="200"></canvas>
     </div>
-    <div id="section-pie-chart" class="section">
+    <div id="section-pie-chart" class="section" style="display: none;">
         <canvas id="pie-chart" width="400" height="200"></canvas>
     </div>
 <?php endif; ?>
@@ -118,12 +128,12 @@ function getColour($colours, $i) {
     <div id="section-word-cloud" class="section">
         <div id="wordcloud"></div>
     </div>
-    <div id="section-analysis" class="section">
+    <div id="section-analysis" class="section" style="display: none;">
         <div id="analysis"></div>
     </div>
 <?php endif; ?>
 <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>
-    <div id="section-responses" class="section">
+    <div id="section-responses" class="section" style="display: none;">
         <button id="display-personal" class="btn btn-primary width-xs-full">Display Personal Information</button>
         <button id="hide-personal" class="btn btn-primary width-xs-full">Hide Personal Information</button>
         <table class="table table-bordered">

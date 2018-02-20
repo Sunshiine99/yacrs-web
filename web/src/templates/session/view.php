@@ -59,7 +59,7 @@ if($question === null):
     ]);
 endif; ?>
 
-<a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/discussion/" type="button" class="btn btn-success">
+<!--<a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/discussion/" type="button" class="btn btn-success">
     <i class="fa fa-comments"></i>
     Discuss this class
-</a>
+</a>-->

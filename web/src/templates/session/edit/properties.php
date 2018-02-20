@@ -85,7 +85,7 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                 </label>
             </div>
         </div>
-        <div class="col-sm-3">
+        <!--<div class="col-sm-3">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="classDiscussionEnabled">
@@ -93,7 +93,7 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                     Enable Class Discussion
                 </label>
             </div>
-        </div>
+        </div>-->
     </div>
     <fieldset>
         <legend class="advanced">Question settings</legend>
@@ -122,7 +122,7 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                 </select>
             </div>
         </div>
-        <div class="form-group row advanced">
+        <!--<div class="form-group row advanced">
             <label for="defaultTimeLimit" class="col-sm-3 col-form-label">Default Time Limit</label>
             <div class="col-sm-2">
                 <label class="form-check-label">
@@ -134,7 +134,7 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                 <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
                        type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
-        </div>
+        </div>-->
         <div class="form-group row">
             <div class="col-sm-4 offset-sm-3">
                 <div class="checkbox">
@@ -144,14 +144,14 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                         Allow students to change their answer</label>
                 </div>
             </div>
-            <div class="col-sm-5">
+            <!--<div class="col-sm-5">
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowQuestionReview">
                         <input name="allowQuestionReview" id="allowQuestionReview" value="1" type="checkbox"<?=$allowQuestionReview?>>
                         Allow Students to view their answers after class</label>
                 </div>
-            </div>
+            </div>-->
         </div>
     </fieldset>
     <fieldset class="advanced">

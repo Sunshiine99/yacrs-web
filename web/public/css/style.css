@@ -205,6 +205,8 @@ body footer {
     display: none;
 }
 
+
+
 ul.list-group li.list-group-item {
     border-color: #bbb;
 }
@@ -217,4 +219,12 @@ ul.list-group li.list-group-item {
     .margin-xs-bottom-10 {
         margin-bottom: 10px;
     }
+}
+
+/******************************************************************************
+ * Bootstrap Pills Override for Help View
+ ******************************************************************************/
+
+.nav-pills > li > a.active {
+    background-color: #003865!important;
 }

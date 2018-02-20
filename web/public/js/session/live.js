@@ -42,8 +42,6 @@ try {
     // Otherwise, assuming this is a web browser.
 catch(e) {
 
-    alert(e);
-
     // When the document is ready, run the ready function
     $(document).ready(ready);
 }

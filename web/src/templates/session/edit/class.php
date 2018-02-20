@@ -47,17 +47,7 @@
                 padding: 10px;
                 margin-left: 20px;
             }
-
-            #question-text{
-                float: left;
-                font-size: 16px;
-                text-align: center;
-                width:350px;
-                word-wrap:break-word;
-                margin-left: 20px;
-                padding-top: 10px;
-            }
-
+            
             #next-question {
                 float: left;
                 font-size: 40px;
@@ -122,6 +112,28 @@
                 color: grey;
                 -webkit-app-region: drag;
             }
+
+            .question-text-container-outer {
+                width: 300px;
+                height: 80px;
+                position: relative;
+                float: left;
+            }
+
+            .question-text-container-inner {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                display: table;
+            }
+
+            .question-text-container-inner p {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -132,9 +144,11 @@
                     <i class="fa fa-angle-double-left"></i>
                 </a>
             </div>
-            <b>
-                <span id="question-text"></span>
-            </b>
+            <div class="question-text-container-outer">
+                <div class="question-text-container-inner">
+                    <p id="question-text"></p>
+                </div>
+            </div>
             <div class="qnav">
                 <a id="next-question" href="#">
                     <i class="fa fa-angle-double-right"></i>

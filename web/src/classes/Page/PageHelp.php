@@ -13,7 +13,14 @@ class PageHelp
         $templates = Flight::get("templates");
         $data = Flight::get("data");
 
+        $config = Flight::get("config");
 
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+
+
+        $data["user"] = $user;
         echo $templates->render("help", $data);
 
     }

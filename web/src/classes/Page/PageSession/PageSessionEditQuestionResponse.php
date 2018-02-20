@@ -58,7 +58,7 @@ class PageSessionEditQuestionResponse
         $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
         $breadcrumbs->addItem("Edit", $config["baseUrl"]."session/$sessionIdentifier/edit/");
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
-        $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
+        //$breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
 
 

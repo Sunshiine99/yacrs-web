@@ -98,6 +98,9 @@ function getColour($colours, $i) {
         <li class="nav-item" id="nav-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
+        <li class="nav-item" id="nav-analysis">
+            <a class="nav-link" href="#">Analysis</a>
+        </li>
     <?php endif; ?>
 </ul>
 
@@ -114,6 +117,9 @@ function getColour($colours, $i) {
 <?php if(isset($responsesWordCloud)): ?>
     <div id="section-word-cloud" class="section">
         <div id="wordcloud"></div>
+    </div>
+    <div id="section-analysis" class="section">
+        <div id="analysis"></div>
     </div>
 <?php endif; ?>
 <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>

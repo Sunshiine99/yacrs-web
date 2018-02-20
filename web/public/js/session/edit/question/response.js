@@ -34,6 +34,7 @@ $("#nav-bar-chart").click({"that": this, "callback": initBarChartSection}, navCl
 $("#nav-pie-chart").click({"that": this, "callback": initPieChartSection}, navClick);
 $("#nav-word-cloud").click({"that": this, "callback": initWordCloudSection}, navClick);
 $("#nav-responses").click({"that": this, "callback": initResponsesSection}, navClick);
+$("#nav-analysis").click({"that": this, "callback": initAnalysisSection}, navClick);
 
 function initSection(sectionId) {
     $("ul.nav-tabs li.nav-item a.nav-link.active").removeClass("active");
@@ -51,6 +52,10 @@ function initBarChartSection() {
 function initPieChartSection() {
     initSection("pie-chart");
     initPieChart("pie-chart", labels, data, backgroundColor, borderColor);
+}
+
+function initAnalysisSection() {
+    initSection("analysis");
 }
 
 function initWordCloudSection(json) {

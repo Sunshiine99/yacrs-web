@@ -74,6 +74,8 @@
                 font-size: 35px;
                 padding: 10px;
                 margin-left: 20px;
+                width: 70px;
+                text-align: center;
             }
 
             .activity{

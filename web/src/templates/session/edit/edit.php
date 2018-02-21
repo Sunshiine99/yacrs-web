@@ -38,7 +38,7 @@ $this->layout("template",
         </div>
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
-            <?php if(isDesktopApp()): ?>
+            <?php if(isDesktopApp() && $session->getQuestionControlMode() === 0): ?>
                 <a onclick="enterLiveView()" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
             <?php endif; ?>
         </div>

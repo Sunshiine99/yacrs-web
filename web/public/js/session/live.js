@@ -55,6 +55,8 @@ $("#prev-question").click(function () {
     // Only if no question active
     if (!active) {
 
+        disableButtons();
+
         // Get all the questions
         getAllQuestions(sessionIdentifier, function (sqids) {
 
@@ -103,6 +105,8 @@ $("#next-question").click(function () {
 
     // Only if no question active
     if (!active) {
+
+        disableButtons();
 
         // Get all the questions
         getAllQuestions(sessionIdentifier, function (sqids) {
@@ -177,10 +181,12 @@ function activateQuestion(deactivate = false) {
 
 
 $("#activate").click(function () {
+    disableButtons();
     activateQuestion(true);
 });
 
 $("#deactivate").click(function () {
+    disableButtons();
     activateQuestion(false);
 });
 
@@ -300,7 +306,9 @@ function displayQuestion(sqid) {
 
         // Update UI
         $("#users").text(users);
-        $("#question-text").text(questionText + " --- " + sqid);
+        $("#question-text").text(questionText);
+        activate.removeClass("not-active");
+        deactivate.removeClass("not-active");
 
         sessionQuestionID = sqid;
     });
@@ -310,6 +318,15 @@ function loopDisplayQuestion() {
     interval = setInterval(function () {
         displayQuestion(sessionQuestionID);
     }, 200);
+}
+
+function disableButtons() {
+    /*
+    $("#deactivate").addClass("not-active");
+    $("#activate").addClass("not-active");
+    $("#next-question").addClass("not-active");
+    $("#prev-question").addClass("not-active");
+    */
 }
 
 /**********************************************************************************************************

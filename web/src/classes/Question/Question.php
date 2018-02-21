@@ -55,7 +55,7 @@ class Question
     public function toArray() {
         $output["type"] = $this->type;
         $output["sessionQuestionID"] = $this->sessionQuestionID;
-        $output["question"] = $this->question;
+        $output["question"] = $this->question ? $this->question : $this->typeDisplay . " Question";
         $output["created"] = $this->created;
         $output["lastUpdate"] = $this->lastUpdate;
         $output["active"] = $this->active;

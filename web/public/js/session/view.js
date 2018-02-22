@@ -20,6 +20,30 @@ $("input.answer").focus(function() {
     questionBeingModified = true;
 });
 
+function reloadOrError() {
+
+    // If the question hasn't been modified since displayed
+    if(!questionBeingModified) {
+
+        // Refresh the page
+        location.reload();
+    }
+
+    // Otherwise, display an alert
+    else {
+
+        // Don't loop again
+        dontCheckNewActiveQuestion = true;
+
+        alerter({
+            title: "Warning",
+            message: "This question is no longer active",
+            type: "warning",
+            dismissable: true
+        });
+    }
+}
+
 // If in teacher led mode
 if(parseInt($("meta[name=questionControlMode]").attr("content")) === 0) {
 
@@ -44,27 +68,7 @@ if(parseInt($("meta[name=questionControlMode]").attr("content")) === 0) {
 
                     // If this question is different to the one currently displayed
                     if(activeSessionQuestionID !== sessionQuestionID) {
-
-                        // If the question hasn't been modified since displayed
-                        if(!questionBeingModified) {
-
-                            // Refresh the page
-                            location.reload();
-                        }
-
-                        // Otherwise, display an alert
-                        else {
-
-                            // Don't loop again
-                            dontCheckNewActiveQuestion = true;
-
-                            alerter({
-                                title: "Warning",
-                                message: "This question is no longer active",
-                                type: "warning",
-                                dismissable: true
-                            });
-                        }
+                        reloadOrError();
                     }
                 }
 
@@ -73,7 +77,7 @@ if(parseInt($("meta[name=questionControlMode]").attr("content")) === 0) {
 
                     // If a question is currently being displayed, refresh the page
                     if(sessionQuestionID !== "") {
-                        location.reload();
+                        reloadOrError();
                     }
                 }
 

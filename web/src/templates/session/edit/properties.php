@@ -5,6 +5,7 @@
  * @var $description string
  * @var $breadcrumbs Breadcrumb
  * @var $user User
+ * @var $additionalUsers array User
  * @var $alert Alert
  * @var $session Session
  */
@@ -30,8 +31,25 @@ $classDiscussionEnabled = $session->getClassDiscussionEnabled() ? " checked" : "
 
 $submitText = $session->getSessionID() ? "Save" : "Create";
 
-?>
+// Whether this is a new session
+$new = !isset($session);
 
+// If this is a new session, 0 additional users
+if($new) {
+
+    // Array of possible choices
+    $users = [];
+}
+
+// Otherwise not a new session
+else {
+
+    // add users to array
+    $users = $additionalUsers;
+}
+
+?>
+<script>var UserNew = <?=$new ? "true": "false"?>;</script>
 <?php $this->push("head"); ?>
     <link href="<?=$this->e($config["baseUrl"])?>css/session/edit/properties.css" rel="stylesheet">
 <?php $this->stop(); ?>
@@ -155,14 +173,39 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
         </div>
     </fieldset>
     <fieldset class="advanced">
-        <legend>Additional Users</legend>
-        <div class="form-group row">
-            <label class="col-sm-3 control-label" for="teachers">Additional users who can run session (comma delimited
-                list of user IDs)</label>
-            <div class="col-sm-9">
-                <input class="form-control" name="additionalUsersCsv" id="additionalUsersCsv" value="<?=$this->e($session->getAdditionalUsersCsv())?>" size="80" type="text">
+    <div id="additional" class="form-group row question">
+        <label for="definition" class="control-label col-sm-3">
+            <span>Additional users who can run session</span>
+        </label>
+        <div class="col-sm-9">
+            <div id="add-more-choices" class="input-add-more-container" data-minimum-count="1">
+                <?php if(count($users) > 0):?>
+                <?php $i = 0; ?>
+                <?php foreach($users as $user): ?>
+                    <div class="input-group input-add-more-item">
+                        <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1">
+                        <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+                <?php else:?>
+                    <div class="input-group input-add-more-item">
+                        <input id="user-0" name="user-0" class="form-control input-add-more-input mcq-choice" type="text" value="" tabindex="1">
+                        <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                <?php endif?>
+            </div>
+            <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
+                <button class="btn btn-light btn-light-border input-add-more-input float-right" type="button">
+                    Add Another User
+                </button>
             </div>
         </div>
+    </div>
     </fieldset>
     <div class="form-group row">
         <div class="col-sm-9 offset-sm-3">

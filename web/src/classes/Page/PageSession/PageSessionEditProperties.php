@@ -22,6 +22,11 @@ class PageSessionEditProperties
             header("Location: "  . $config["baseUrl"]);
             die();
         }
+        $arr = [];
+        $users = $session->getAdditionalUsers();
+        foreach ($users as $u){
+            array_push($arr, DatabaseUser::loadDetailsFromUsername($u, $mysqli));
+        }
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -35,6 +40,7 @@ class PageSessionEditProperties
         $data["session"] = $session;
         $data["additionalUsersCsv"] = $session->getAdditionalUsersCsv();
         $data["user"] = $user;
+        $data["additionalUsers"] = $arr;
         $data["breadcrumbs"] = $breadcrumbs;
 
         echo $templates->render("session/edit/properties", $data);
@@ -56,6 +62,26 @@ class PageSessionEditProperties
         // Setup session from submitted data
         $session = new Session($_POST);
         $session->setOwner($user->getId());
+
+        // Load new choices
+        foreach ($_POST as $key => $value) {
+
+            preg_match("/(user-)(\w*[0-9]\w*)/", $key, $matches);
+
+            if($matches) {
+
+                // Get the choice index from the regex matches
+                $index = $matches[2];
+
+                // If there is an index associated with this user, store it
+                if(isset($_POST["user-" . $index])) {
+                    $username = $_POST["user-" . $index];
+                    // Add a new choice
+                    $session->addAdditionalUser($username);
+                }
+
+            }
+        }
 
         DatabaseSession::update($session, $mysqli);
 

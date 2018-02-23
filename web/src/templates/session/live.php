@@ -57,11 +57,11 @@
 
             .status {
                 float: left;
-                font-size: 28px;
+                font-size: 18px;
                 padding:10px;
                 margin-left: 10px;
-                margin-top: 10px;
-                width: 140px;
+                margin-top: 20px;
+                width: 90px;
                 text-align: center;
             }
 
@@ -82,16 +82,17 @@
                 float: left;
                 text-align: center;
                 width:115px;
-                font-size: 30px;
+                font-size: 22px;
                 padding:20px 10px;
                 margin-left: 0px;
             }
 
             #power {
-                float: left;
-                font-size: 40px;
+                float: right;
+                font-size: 30px;
                 padding:10px;
                 margin-left: 20px;
+                margin-top: 5px
             }
 
             button, a {

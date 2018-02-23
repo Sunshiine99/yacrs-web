@@ -226,6 +226,10 @@ ul.list-group li.list-group-item {
     .margin-xs-bottom-10 {
         margin-bottom: 10px;
     }
+
+    .width-xs-50percent-2point5px {
+        width: calc(50% - 2.5px)!important;
+    }
 }
 
 /******************************************************************************

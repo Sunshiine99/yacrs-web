@@ -104,29 +104,28 @@ $this->layout("template",
                     </span>
                 </div>
                 <div class="actions-confirm-delete">
-                    <div class="btn-group pull-right actions" aria-label="Actions">
-                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
-                            <i class='fa fa-stop'></i> Close
+                    <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                        <button type="button" class="btn btn-light btn-light-border deactivate width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                            <i class='fa fa-stop'></i><span class="d-none d-sm-inline"> Close</span>
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border activate" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
-                            <i class='fa fa-play'></i> Activate
+                        <button type="button" class="btn btn-light btn-light-border activate width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                            <i class='fa fa-play'></i><span class="d-none d-sm-inline"> Activate</span>
                         </button>
-
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
-                            <i class="fa fa-eye"></i> Responses
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border width-xs-full">
+                            <i class="fa fa-eye"></i><span class="d-none d-sm-inline"> Responses</span>
                         </a>
-                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/">
-                            <i class="fa fa-pencil"></i> Edit
+                        <a class="btn btn-light btn-light-border width-xs-full" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/">
+                            <i class="fa fa-pencil"></i><span class="d-none d-sm-inline"> Edit</span>
                         </a>
-                        <button type="button" class="btn btn-light btn-light-border delete">
-                            <i class="fa fa-trash-o"></i> Delete
+                        <button type="button" class="btn btn-light btn-light-border delete width-xs-full">
+                            <i class="fa fa-trash-o"></i><span class="d-none d-sm-inline"> Delete</span>
                         </button>
                     </div>
-                    <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                    <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                             <i class="fa fa-check"></i> Confirm
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border cancel">
+                        <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">
                             <i class="fa fa-times"></i> Cancel
                         </button>
                     </div>

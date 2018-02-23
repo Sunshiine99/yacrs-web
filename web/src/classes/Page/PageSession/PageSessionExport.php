@@ -251,6 +251,9 @@ class PageSessionExport
         // Auto resize all columns
         for($i = 1; $i <= 2; $i++)
             $sheet->getColumnDimensionByColumn($i)->setAutoSize(true);
+
+        for($i = 3; $i <= $questionCount + 3; $i++)
+            $sheet->getColumnDimensionByColumn($i)->setWidth(6);
     }
 
     /**

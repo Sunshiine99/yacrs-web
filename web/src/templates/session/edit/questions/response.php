@@ -13,6 +13,7 @@
  * @var $responsesWordCloud array
  * @var $responsesText Response[]
  * @var $live boolean
+ * @var $question Question
  */
 
 // Ensure $live is a valid boolean
@@ -75,7 +76,7 @@ function getColour($colours, $i) {
 <?php $this->stop(); ?>
 
 <?php if(!$live): ?>
-    <div class="page-header">
+    <div class="page-header live">
         <h1 class="row">
             <div class="col-sm-9">
                 <h1>Responses</h1>
@@ -86,7 +87,11 @@ function getColour($colours, $i) {
         </h1>
     </div>
 <?php else: ?>
-    <br>
+    <div class="page-header">
+        <h1 class="row">
+            <?=$question->getQuestion()?>
+        </h1>
+    </div>
 <?php endif; ?>
 
 <ul class="nav nav-tabs">

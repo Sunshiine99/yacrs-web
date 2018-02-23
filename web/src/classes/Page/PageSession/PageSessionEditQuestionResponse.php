@@ -84,6 +84,7 @@ class PageSessionEditQuestionResponse
         $data["responsesWordCloud"] = $responsesWordCloud;
         $data["responsesText"] = $responsesText;
         $data["session"] = $session;
+        $data["question"] = $question;
 
         return $data;
     }

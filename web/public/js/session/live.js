@@ -1,10 +1,33 @@
 var electron = null;
 var remote = null;
+
 var questions = [];
+var active = false;
+var sessionIdentifier = null;
 var sessionQuestionID = null;
 var questionNumber = null;
-var active = false;
-var loadQuestionsInterval, loadUsersInterval;
+var loadQuestionsInterval = null;
+var loadUsersInterval = null;
+
+function setDefaults() {
+
+    // If the load questions interval has started, stop it
+    if(loadQuestionsInterval) {
+        clearInterval(loadQuestionsInterval);
+    }
+
+    // If the load users interval has started, stop it
+    if(loadUsersInterval) {
+        clearInterval(loadUsersInterval);
+    }
+
+    questions = [];
+    sessionIdentifier = null;
+    sessionQuestionID = null;
+    questionNumber = null;
+    loadQuestionsInterval = null;
+    loadUsersInterval = null;
+}
 
 /**********************************************************************************************************
  * Start and KeyPress
@@ -17,20 +40,22 @@ try {
     let {ipcRenderer} = electron;
 
     // When start is sent over IPC, run the ready function
-    ipcRenderer.on("start", ready);
+    ipcRenderer.on("start", function (e, args) {
+        ready(args);
+    });
 }
 
 // Otherwise, assuming this is a web browser.
-catch(e) {
-
-    // When the document is ready, run the ready function
-    $(document).ready(ready);
-}
+catch(e) {}
 
 /**
  * Function to run when the page is ready to be run
  */
-function ready() {
+function ready(si) {
+
+    setDefaults();
+
+    sessionIdentifier = si;
 
     // Start repeatedly loading all questions
     startLoadAllQuestionsInterval();
@@ -104,55 +129,59 @@ function loadUsers() {
  */
 $(document).keydown(function(e) {
 
-    switch(e.key) {
+    // Only process key presses if questions exist
+    if(questions.length > 0) {
 
-        // Left Key: Previous Question
-        case "ArrowLeft":
-            if(!active) {
-                nextQuestion([].concat(questions).reverse());
-            }
-            break;
+        switch(e.key) {
 
-        // Right Key: Next Question
-        case "ArrowRight": // right
-            if(!active) {
-                nextQuestion(questions);
-            }
-            break;
+            // Left Key: Previous Question
+            case "ArrowLeft":
+                if(!active) {
+                    nextQuestion([].concat(questions).reverse());
+                }
+                break;
 
-        // A Key: Activate/Deactivate Question
-        case "a":
-        case "A":
+            // Right Key: Next Question
+            case "ArrowRight": // right
+                if(!active) {
+                    nextQuestion(questions);
+                }
+                break;
 
-            // If question is active, deactivate
-            if(active) {
-                deactivate();
-            }
+            // A Key: Activate/Deactivate Question
+            case "a":
+            case "A":
 
-            // Otherwise, activate
-            else {
-                activate();
-            }
+                // If question is active, deactivate
+                if(active) {
+                    deactivate();
+                }
 
-            break;
+                // Otherwise, activate
+                else {
+                    activate();
+                }
 
-        // R Key: View Responses
-        case "r":
-        case "R":
-            responses();
-            break;
+                break;
 
-        // Escape Key: Exit live view
-        case "Escape":
-            exit();
-            break;
+            // R Key: View Responses
+            case "r":
+            case "R":
+                responses();
+                break;
 
-        // Exit this handler for other keys
-        default: return;
+            // Escape Key: Exit live view
+            case "Escape":
+                exit();
+                break;
+
+            // Exit this handler for other keys
+            default: return;
+        }
+
+        // prevent the default action (scroll / move caret)
+        e.preventDefault();
     }
-
-    // prevent the default action (scroll / move caret)
-    e.preventDefault();
 });
 
 /**********************************************************************************************************
@@ -171,18 +200,36 @@ function loadQuestions(callback) {
     // Make an api request
     $.getJSON(url, function (data) {
 
-        // TODO: check error
-        questions = data["questions"].reverse();
+        // If there are questions
+        if(data["questions"]) {
 
-        if(data["activeSessionQuestionID"]) {
-            sessionQuestionID = data["activeSessionQuestionID"];
+            $("#activate").removeClass("not-active");
+            $("#deactivate").removeClass("not-active");
+            $("#responses").removeClass("not-active");
+
+            // TODO: check error
+            questions = data["questions"].reverse();
+
+            if(data["activeSessionQuestionID"]) {
+                sessionQuestionID = data["activeSessionQuestionID"];
+            }
+
+            else if(data["questions"].length > 0 && sessionQuestionID === null) {
+                sessionQuestionID = data["questions"][0]["sessionQuestionID"];
+            }
+
+            displayQuestion(callback);
         }
 
-        else if(data["questions"].length > 0 && sessionQuestionID === null) {
-            sessionQuestionID = data["questions"][0]["sessionQuestionID"];
+        // Otherwise, display an error
+        else {
+            $("#question-text").text("No Questions Available");
+            $("#prev-question").addClass("not-active");
+            $("#next-question").addClass("not-active");
+            $("#activate").addClass("not-active");
+            $("#deactivate").addClass("not-active");
+            $("#responses").addClass("not-active");
         }
-
-        displayQuestion(callback);
     });
 }
 
@@ -210,6 +257,15 @@ function displayQuestion(callback) {
 
         questionNumber++;
     });
+
+    // If no question
+    if(!question) {
+
+    }
+
+    else {
+        
+    }
 
     // If this question is active, setup UI
     if(question["active"]) {

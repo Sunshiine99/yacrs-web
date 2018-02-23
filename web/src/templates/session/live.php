@@ -3,7 +3,6 @@
  * @var $config array
  * @var $user User
  * @var $mysqli mysqli
- * @var $session Session
  */
 ?>
 <!DOCTYPE html>
@@ -142,7 +141,7 @@
         <div class="view">
             <img src="<?=$this->e($config["baseUrl"])?>img/uofg/logo-gu-icon.png"></img>
             <div class="qnav">
-                <a id="prev-question" href="#">
+                <a id="prev-question" href="#" class="not-active">
                     <i class="fa fa-angle-double-left"></i>
                 </a>
             </div>
@@ -152,20 +151,20 @@
                 </div>
             </div>
             <div class="qnav">
-                <a id="next-question" href="#">
+                <a id="next-question" href="#" class="not-active">
                     <i class="fa fa-angle-double-right"></i>
                 </a>
             </div>
             <div class="status">
-                <a id="activate" href="#">
+                <a id="activate" href="#" class="not-active">
                     <b>Activate</b>
                 </a>
-                <a id="deactivate" href="#" class="display-none">
+                <a id="deactivate" href="#" class="display-none not-active">
                     <b>Deactivate</b>
                 </a>
             </div>
             <div class="responses">
-                <a id="responses" href="#">
+                <a id="responses" href="#" class="not-active">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                 </a>
             </div>
@@ -188,7 +187,6 @@
 
         <script>
             var baseUrl = "<?=$this->e($config["baseUrl"])?>";
-            var sessionIdentifier = <?=$session->getSessionIdentifier()?>;
         </script>
         <script src="<?= $this->e($config["baseUrl"]) ?>js/session/live.js"></script>
     </body>

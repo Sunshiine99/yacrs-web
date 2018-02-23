@@ -74,8 +74,9 @@ Flight::route("/session/", array("PageSession", "sessions"));
 Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
 Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
 
+Flight::route("/session/live/", array("PageSessionLive", "live"));
+
 Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
-Flight::route("/session/@id:[0-9]*/edit/class/", array("PageSessionEdit", "classMode"));
 Flight::route("/session/@id:[0-9]*/edit/export/", array("PageSessionExport", "export"));
 
 Flight::route("POST /session/@id:[0-9]*/edit/properties/", array("PageSessionEditProperties", "submit"));
@@ -85,7 +86,6 @@ Flight::route("/session/@sessionID:[0-9]*/edit/question/", array("PageSessionEdi
 
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionEditQuestionResponse", "response"));
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]*/response/live/", array("PageSessionEditQuestionResponse", "live"));
-
 
 Flight::route("POST /session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "editSubmit"));
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "edit"));

@@ -29,6 +29,11 @@
                 </div>
                 <div class="actions-confirm-delete width-xs-full">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                        <?php if(isDesktopApp()): ?>
+                            <button type="button" class="btn btn-light btn-light-border width-xs-full" onclick="enterLiveView(<?=$this->e($s->getSessionIdentifier())?>)">
+                                <i class="fa fa-play"></i> Run
+                            </button>
+                        <?php endif; ?>
                         <?php
                         // If the user can edit this session, view edit controls
                         if($s->checkIfUserCanEdit($user)):

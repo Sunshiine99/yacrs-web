@@ -36,6 +36,52 @@ class ApiSessionQuestion
         Api::output($output);
     }
 
+    public static function live($sessionIdentifier) {
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display error
+        if(!$sessionID) {
+            ApiError::notFoundCustom("Session Not Found");
+            die();
+        }
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+            die();
+        }
+
+        $result = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli);
+
+        $active = $result["active"];
+        $activeSessionQuestionID = $result["activeSessionQuestionID"];
+
+        $output = [];
+
+        foreach ($result["questions"] as $question) {
+            /** @var $question Question */
+
+            $item = [];
+            $item["sessionQuestionID"] = $question->getSessionQuestionID();
+            $item["question"] = $question->getQuestion();
+            $item["active"] = $question->isActive();
+            $output["questions"][] = $item;
+        }
+
+        $output["active"] = $active;
+        $output["activeSessionQuestionID"] = intval($activeSessionQuestionID);
+
+        Api::output($output);
+    }
+
     /**
      * Load session question IDs for all active questions in a session. Any logged in user can access this API as this
      * is used in the website javascript frontend.
@@ -270,12 +316,12 @@ class ApiSessionQuestion
             die();
         }
 
-        $sessionID = $session->getSessionIdentifier();
+        $sessionID = $session->getSessionID();
 
         $users = DatabaseSessionQuestion::users($sessionID, $sessionQuestionID, $mysqli);
 
         $output = [];
-        $output["active"] = intval($users["active"]);
+        $output["answered"] = intval($users["answered"]);
         $output["total"] = intval($users["total"]);
         Api::output($output);
     }

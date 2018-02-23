@@ -60,9 +60,10 @@
                 float: left;
                 font-size: 28px;
                 padding:10px;
-                margin-left: 20px;
+                margin-left: 10px;
                 margin-top: 10px;
                 width: 140px;
+                text-align: center;
             }
 
             .status, a:hover{
@@ -81,18 +82,17 @@
             .activity{
                 float: left;
                 text-align: center;
-                width:70px;
+                width:115px;
                 font-size: 30px;
                 padding:20px 10px;
-                margin-left: 20px;
+                margin-left: 0px;
             }
 
             #power {
-                float: right;
+                float: left;
                 font-size: 40px;
                 padding:10px;
                 margin-left: 20px;
-                clear: right;
             }
 
             button, a {
@@ -157,7 +157,7 @@
                 </a>
             </div>
             <div class="status">
-                <a id="activate" href="#" class="display-none">
+                <a id="activate" href="#">
                     <b>Activate</b>
                 </a>
                 <a id="deactivate" href="#" class="display-none">

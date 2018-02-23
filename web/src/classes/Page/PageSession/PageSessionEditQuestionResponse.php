@@ -17,6 +17,7 @@ class PageSessionEditQuestionResponse
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
         //$breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
+        $data["breadcrumbs"] = $breadcrumbs;
 
         echo $templates->render("session/edit/questions/response", $data);
     }
@@ -77,7 +78,6 @@ class PageSessionEditQuestionResponse
 
         $data["responsesMrq"] = $responsesMrq;
         $data["userMrqResponses"] = $userMrqResponses;
-        $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         $data["responsesMcq"] = $responsesMcq;
         $data["userMcqResponses"] = $userMcqResponses;

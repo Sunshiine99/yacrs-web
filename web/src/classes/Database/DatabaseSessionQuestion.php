@@ -119,6 +119,7 @@ class DatabaseSessionQuestion
 
             if($row["active"]) {
                 $output["active"] = true;
+                $output["activeSessionQuestionID"] = $row["sessionQuestionID"];
                 $question->setActive(true);
             }
 
@@ -309,7 +310,23 @@ class DatabaseSessionQuestion
 
         $output = [];
         $output["answered"] = intval($row["answered"]);
-        $output["total"] = intval($row["total"]);
+        $output["total"] = intval($row["total"]) - 1; // Remove 1 as this includes owner
+
+        // If owner has answered the question, increase total
+        if($output["answered"] > $output["total"]) {
+            $output["total"] = $output["answered"];
+        }
+
+        try {
+            $rand = rand(100, 999);
+        }
+        catch(Exception $e) {
+            $rand = 99;
+        }
+
+        $output["answered"] = (time() % 100) * 5;
+        $output["total"] = 500;
+
         return $output;
     }
 }

@@ -22,12 +22,7 @@ $noHeaderFooter = isset($noHeaderFooter) ? !!$noHeaderFooter : false;
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title><?=isset($title) ? $this->e($title)." | " : ""?>YACRS</title>
         <meta name="description" content="<?=$this->e($description)?>">
-
         <meta name="mobile-web-app-capable" content="yes">
-        <meta name="theme-color" content="#003865">
-        <link rel="apple-touch-icon" sizes="128x128" href="<?=$this->e($config["baseUrl"])?>img/uofg/icon_hi.png">
-        <link rel="apple-touch-icon" sizes="64x64" href="<?=$this->e($config["baseUrl"])?>img/uofg/icon_small.png">
-
         <title>YACRS</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">

@@ -16,6 +16,10 @@ class ApiLegacyLogin
         // Log the user in
         $user = Login::checkLogin($username, $password, $config, $mysqli);
 
+        if($user === null) {
+            die("Error 500");
+        }
+
         // If incorrect login, output error
         if(!$user) {
             $errors[] = "Incorrect login";

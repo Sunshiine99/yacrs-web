@@ -46,6 +46,9 @@ class Login
         // Load additional details from the database
         $user = DatabaseUser::loadDetails($user, $mysqli);
 
+        if($user === null)
+            return null;
+
         // If the config specifies this user should always be an admin
         if(isset($config["user"]["admin"]) && in_array($user->getUsername(), $config["user"]["admin"])) {
 

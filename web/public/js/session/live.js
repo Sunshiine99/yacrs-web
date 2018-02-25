@@ -366,6 +366,8 @@ function activateDone(callback) {
     var deactivate = $("#deactivate");
     $("#next-question").addClass("not-active");
     $("#prev-question").addClass("not-active");
+    $("#new-question-container").addClass("display-none");
+    $("#question-type-container").addClass("display-none");
 
     activate.addClass("display-none");
     deactivate.removeClass("display-none");
@@ -447,13 +449,13 @@ $("#new-question").click(newQuestion);
 $("#new-question-submit").click(newQuestionSubmit);
 
 function newQuestion() {
-    $(".view").addClass("wide");
+    $(".view").addClass("expanded");
     $(".button-container.new-question").addClass("display-none");
     $(".button-container.question-type").removeClass("display-none");
 }
 
 function newQuestionSubmit() {
-    $(".view").removeClass("wide");
+    $(".view").removeClass("expanded");
     $(".button-container.new-question").removeClass("display-none");
     $(".button-container.question-type").addClass("display-none");
 }

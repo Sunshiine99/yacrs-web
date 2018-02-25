@@ -68,13 +68,25 @@
                 min-width: 815px;
             }
 
-            .view.wide {
+            .view.compact {
+                min-width: 425px;
+            }
+
+            .view.compact.expanded {
+                min-width: 535px;
+            }
+
+            .view.wide.expanded {
                 min-width: 950px;
             }
 
                 .view .logo-container {
                     float: left;
                     margin-right: 20px;
+                }
+
+                .view.compact .logo-container {
+                    display: none;
                 }
 
                     .view .logo-container img {
@@ -86,6 +98,10 @@
                     height: 80px;
                     position: relative;
                     float: left;
+                }
+
+                .view.compact .question-container {
+                    display: none;
                 }
 
                     .view .question-container .question {
@@ -187,12 +203,12 @@
             <div class="button-container users display-none">
                 <span id="users"></span>
             </div>
-            <div class="button-container icon new-question">
+            <div id="new-question-container" class="button-container icon new-question">
                 <a id="new-question" href="#" class="not-active">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
-            <div class="button-container question-type display-none">
+            <div id="question-type-container" class="button-container question-type display-none">
                 <select>
                     <option value="mcq_d">MCQ A-D</option>
                     <option value="mcq_e">MCQ A-E</option>

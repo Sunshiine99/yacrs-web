@@ -164,7 +164,7 @@ class PageSessionExport
                         $correctTotal++;
                     }
                 }
-
+                
                 $score = $scoring::scoreMultiple($userCorrectCount, $userIncorrectCount, $correctTotal, $optionsTotal);
 
                 $correct = $score==1 ? true : false;

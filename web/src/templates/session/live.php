@@ -244,14 +244,16 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="<?= $this->e($config["baseUrl"]) ?>js/jquery-3.2.1.min.js"
-                onload="window.$ = window.jQuery = module.exports;"></script>
-        <script src = "<?=$this->e($config["baseUrl"])?>js/popper.min.js" ></script>
-        <script src="<?= $this->e($config["baseUrl"]) ?>js/bootstrap-4.0.0-beta.2.min.js"></script>
-
+        <script src="<?= $this->e($config["baseUrl"]) ?>js/jquery-3.2.1.min.js"></script>
         <script>
             var baseUrl = "<?=$this->e($config["baseUrl"])?>";
+            try {
+                onload="window.$ = window.jQuery = module.exports;"
+            }
+            catch(e) {}
         </script>
+        <script src = "<?=$this->e($config["baseUrl"])?>js/popper.min.js" ></script>
+        <script src="<?= $this->e($config["baseUrl"]) ?>js/bootstrap-4.0.0-beta.2.min.js"></script>
         <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>
         <script src="<?= $this->e($config["baseUrl"]) ?>js/session/live.js"></script>
     </body>

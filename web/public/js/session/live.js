@@ -263,8 +263,16 @@ function displayQuestion(callback) {
         questionNumber++;
     });
 
+    // If no question, just run the callback (if it exists)
+    if(!question) {
+        if(callback) {
+            callback();
+        }
+        return;
+    }
+
     // If this question is active, setup UI
-    if(question && question["active"]) {
+    if(question["active"]) {
         activateDone(callback);
     }
 

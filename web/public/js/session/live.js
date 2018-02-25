@@ -105,6 +105,8 @@ function startLoadUsersInterval() {
 function stopLoadUsersInterval() {
     clearInterval(loadUsersInterval);
     $("#users").text("");
+    $(".button-container.users").addClass("display-none");
+    $(".button-container.new-question").removeClass("display-none");
     loadUsersInterval = null;
 }
 
@@ -120,6 +122,8 @@ function loadUsers() {
     $.getJSON(url, function (data) {
         if(active) {
             $("#users").text(data["answered"] + "/" + data["total"]);
+            $(".button-container.users").removeClass("display-none");
+            $(".button-container.new-question").addClass("display-none");
         }
     });
 }
@@ -206,6 +210,7 @@ function loadQuestions(callback) {
             $("#activate").removeClass("not-active");
             $("#deactivate").removeClass("not-active");
             $("#responses").removeClass("not-active");
+            $("#new-question").removeClass("not-active");
 
             // TODO: check error
             questions = data["questions"].reverse();
@@ -435,6 +440,25 @@ function activateQuestion(sqid, deactivate = false, callback) {
 }
 
 /**********************************************************************************************************
+ * New Question
+ *********************************************************************************************************/
+
+$("#new-question").click(newQuestion);
+$("#new-question-submit").click(newQuestionSubmit);
+
+function newQuestion() {
+    $(".view").addClass("wide");
+    $(".button-container.new-question").addClass("display-none");
+    $(".button-container.question-type").removeClass("display-none");
+}
+
+function newQuestionSubmit() {
+    $(".view").removeClass("wide");
+    $(".button-container.new-question").removeClass("display-none");
+    $(".button-container.question-type").addClass("display-none");
+}
+
+/**********************************************************************************************************
  * Results / Quit
  *********************************************************************************************************/
 
@@ -475,9 +499,23 @@ function exit() {
 
     // Otherwise, forward the user to the 'edit session' page
     else {
-        window.location = baseUrl + "session/" + sessionIdentifier + "/edit/";
+        if(sessionIdentifier) {
+            window.location = baseUrl + "session/" + sessionIdentifier + "/edit/";
+        }
+        else {
+            window.location = baseUrl;
+        }
     }
 }
+
+/**********************************************************************************************************
+ * DEBUG
+ *********************************************************************************************************/
+
+$("#debug-session-join").click(function() {
+    var sessionIdentifier = $("#debug-session-identifier").val();
+    ready(sessionIdentifier);
+});
 
 /**********************************************************************************************************
  * Generic Utility Functions

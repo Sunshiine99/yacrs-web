@@ -480,7 +480,8 @@ function responses() {
 
     // Otherwise, forward the user to the responses page
     else {
-        window.location = baseUrl + "session/" + sessionIdentifier + "/edit/question/" + sessionQuestionID + "/response/";
+        var url = baseUrl + "session/" + sessionIdentifier + "/edit/question/" + sessionQuestionID + "/response/live/";
+        window.open(url, null, "height=720,width=800,status=no,toolbar=no,menubar=no,location=no");
     }
 }
 

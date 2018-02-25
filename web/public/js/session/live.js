@@ -40,7 +40,7 @@ try {
     let {ipcRenderer} = electron;
 
     // When start is sent over IPC, run the ready function
-    ipcRenderer.on("start", function (e, args) {
+    ipcRenderer.on("liveViewStart", function (e, args) {
         ready(args);
     });
 }
@@ -448,6 +448,13 @@ $("#new-question").click(newQuestion);
 $("#new-question-submit").click(newQuestionSubmit);
 
 function newQuestion() {
+
+    // If desktop app, enter app into expanded mode
+    if(isDesktopApp()) {
+        liveViewExpand(true, false);
+    }
+
+    // Enter CSS into expanded mode
     $(".view").addClass("expanded");
     $(".button-container.new-question").addClass("display-none");
     $(".button-container.question-type").removeClass("display-none");
@@ -461,7 +468,12 @@ function newQuestionSubmit() {
         sessionQuestionID = data["sessionQuestionID"];
         displayQuestion(function() {
 
-            // Exit expanded mode
+            // If desktop app, exit app from expanded mode
+            if(isDesktopApp()) {
+                liveViewExpand(false, false);
+            }
+
+            // Enter CSS into expanded mode
             $(".view").removeClass("expanded");
             $(".button-container.new-question").removeClass("display-none");
             $(".button-container.question-type").addClass("display-none");
@@ -483,10 +495,8 @@ function responses() {
 
     // If this is running as a desktop app
     if(isDesktopApp()) {
+        liveViewResponses(sessionIdentifier, sessionQuestionID);
 
-        // Send a new IPC message to create a new window for responses
-        let {ipcRenderer} = electron;
-        ipcRenderer.send("showResponses", [sessionIdentifier, sessionQuestionID]);
     }
 
     // Otherwise, forward the user to the responses page

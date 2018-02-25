@@ -44,13 +44,13 @@
                 -webkit-app-region: drag;
             }
 
-            button, a {
-                color: white;
+            button, a, select {
                 -webkit-app-region: no-drag;
             }
 
             a {
                 outline: 0;
+                color: white;
             }
 
             a:hover {
@@ -68,16 +68,16 @@
                 min-width: 815px;
             }
 
+            .view.expanded {
+                min-width: 925px;
+            }
+
             .view.compact {
                 min-width: 425px;
             }
 
             .view.compact.expanded {
                 min-width: 535px;
-            }
-
-            .view.wide.expanded {
-                min-width: 950px;
             }
 
                 .view .logo-container {
@@ -248,7 +248,7 @@
         <script>
             var baseUrl = "<?=$this->e($config["baseUrl"])?>";
             try {
-                onload="window.$ = window.jQuery = module.exports;"
+                window.$ = window.jQuery = module.exports;
             }
             catch(e) {}
         </script>

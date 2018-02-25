@@ -40,7 +40,7 @@ try {
     let {ipcRenderer} = electron;
 
     // When start is sent over IPC, run the ready function
-    ipcRenderer.on("start", function (e, args) {
+    ipcRenderer.on("liveViewStart", function (e, args) {
         ready(args);
     });
 }
@@ -263,13 +263,12 @@ function displayQuestion(callback) {
         questionNumber++;
     });
 
-    // If no question
+    // If no question, just run the callback (if it exists)
     if(!question) {
-
-    }
-
-    else {
-        
+        if(callback) {
+            callback();
+        }
+        return;
     }
 
     // If this question is active, setup UI
@@ -366,6 +365,8 @@ function activateDone(callback) {
     var deactivate = $("#deactivate");
     $("#next-question").addClass("not-active");
     $("#prev-question").addClass("not-active");
+    $("#new-question-container").addClass("display-none");
+    $("#question-type-container").addClass("display-none");
 
     activate.addClass("display-none");
     deactivate.removeClass("display-none");
@@ -447,15 +448,37 @@ $("#new-question").click(newQuestion);
 $("#new-question-submit").click(newQuestionSubmit);
 
 function newQuestion() {
-    $(".view").addClass("wide");
+
+    // If desktop app, enter app into expanded mode
+    if(isDesktopApp()) {
+        liveViewExpand(true, false);
+    }
+
+    // Enter CSS into expanded mode
+    $(".view").addClass("expanded");
     $(".button-container.new-question").addClass("display-none");
     $(".button-container.question-type").removeClass("display-none");
 }
 
 function newQuestionSubmit() {
-    $(".view").removeClass("wide");
-    $(".button-container.new-question").removeClass("display-none");
-    $(".button-container.question-type").addClass("display-none");
+
+    // Add a new active question
+    addGenericQuestionFromCode($("#question-type").val(), sessionIdentifier, function(data) {
+
+        sessionQuestionID = data["sessionQuestionID"];
+        displayQuestion(function() {
+
+            // If desktop app, exit app from expanded mode
+            if(isDesktopApp()) {
+                liveViewExpand(false, false);
+            }
+
+            // Enter CSS into expanded mode
+            $(".view").removeClass("expanded");
+            $(".button-container.new-question").removeClass("display-none");
+            $(".button-container.question-type").addClass("display-none");
+        });
+    });
 }
 
 /**********************************************************************************************************
@@ -472,10 +495,8 @@ function responses() {
 
     // If this is running as a desktop app
     if(isDesktopApp()) {
+        liveViewResponses(sessionIdentifier, sessionQuestionID);
 
-        // Send a new IPC message to create a new window for responses
-        let {ipcRenderer} = electron;
-        ipcRenderer.send("showResponses", [sessionIdentifier, sessionQuestionID]);
     }
 
     // Otherwise, forward the user to the responses page

@@ -25,6 +25,11 @@ class PageLogin
             $config,
             $mysqli);
 
+        if($user === null) {
+            PageError::error500("Error loading user");
+            die();
+        }
+
         // If invalid login
         if(!$user) {
 

@@ -44,13 +44,13 @@
                 -webkit-app-region: drag;
             }
 
-            button, a {
-                color: white;
+            button, a, select {
                 -webkit-app-region: no-drag;
             }
 
             a {
                 outline: 0;
+                color: white;
             }
 
             a:hover {
@@ -68,13 +68,25 @@
                 min-width: 815px;
             }
 
-            .view.wide {
-                min-width: 950px;
+            .view.expanded {
+                min-width: 925px;
+            }
+
+            .view.compact {
+                min-width: 425px;
+            }
+
+            .view.compact.expanded {
+                min-width: 535px;
             }
 
                 .view .logo-container {
                     float: left;
                     margin-right: 20px;
+                }
+
+                .view.compact .logo-container {
+                    display: none;
                 }
 
                     .view .logo-container img {
@@ -86,6 +98,10 @@
                     height: 80px;
                     position: relative;
                     float: left;
+                }
+
+                .view.compact .question-container {
+                    display: none;
                 }
 
                     .view .question-container .question {
@@ -187,13 +203,13 @@
             <div class="button-container users display-none">
                 <span id="users"></span>
             </div>
-            <div class="button-container icon new-question">
+            <div id="new-question-container" class="button-container icon new-question">
                 <a id="new-question" href="#" class="not-active">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
-            <div class="button-container question-type display-none">
-                <select>
+            <div id="question-type-container" class="button-container question-type display-none">
+                <select id="question-type">
                     <option value="mcq_d">MCQ A-D</option>
                     <option value="mcq_e">MCQ A-E</option>
                     <option value="mcq_f">MCQ A-F</option>
@@ -228,15 +244,17 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="<?= $this->e($config["baseUrl"]) ?>js/jquery-3.2.1.min.js"
-                onload="window.$ = window.jQuery = module.exports;"></script>
-        <script
-        src = "<?=$this->e($config["baseUrl"])?>js/popper.min.js" ></script>
-        <script src="<?= $this->e($config["baseUrl"]) ?>js/bootstrap-4.0.0-beta.2.min.js"></script>
-
+        <script src="<?= $this->e($config["baseUrl"]) ?>js/jquery-3.2.1.min.js"></script>
         <script>
             var baseUrl = "<?=$this->e($config["baseUrl"])?>";
+            try {
+                window.$ = window.jQuery = module.exports;
+            }
+            catch(e) {}
         </script>
+        <script src = "<?=$this->e($config["baseUrl"])?>js/popper.min.js" ></script>
+        <script src="<?= $this->e($config["baseUrl"]) ?>js/bootstrap-4.0.0-beta.2.min.js"></script>
+        <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>
         <script src="<?= $this->e($config["baseUrl"]) ?>js/session/live.js"></script>
     </body>
 </html>

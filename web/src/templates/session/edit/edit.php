@@ -27,6 +27,7 @@ $this->layout("template",
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/edit.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
@@ -39,7 +40,7 @@ $this->layout("template",
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
             <?php if(isDesktopApp() && $session->getQuestionControlMode() === 0): ?>
-                <a onclick="enterLiveView(<?=$this->e($session->getSessionIdentifier())?>)" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
+                <a onclick="liveViewEnter(<?=$this->e($session->getSessionIdentifier())?>)" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
             <?php endif; ?>
         </div>
     </h1>

@@ -34,11 +34,12 @@ $("#hide-advanced-settings").click(function() {
 
 var choiceDefaultChanged = false;
 var choiceDefaultCurrent = 1;
+var deletedSecond = false;
 
 function userChange(that) {
 
     // If this is a new session,
-    if(UserNew) {
+    if(SessionNew) {
         choiceDefaultChanged = true;
         $(that).attr("modified", "true");
     }
@@ -47,7 +48,7 @@ function userChange(that) {
 function userClick(that) {
 
     // If this is a new session,
-    if(UserNew) {
+    if(SessionNew) {
         that = $(that);
         if (that.attr("modified") !== "true") {
             that.select();
@@ -56,28 +57,29 @@ function userClick(that) {
 }
 
 function userDeleteClick() {
-
+    
     // If the default input values have not been changed yet, this is a new session
-    if(!choiceDefaultChanged && UserNew && choiceDefaultCurrent > 0) {
+    if(!choiceDefaultChanged && SessionNew && choiceDefaultCurrent > 0) {
         choiceDefaultCurrent--;
+    }
+    else if($('.input-add-more-item').get().length == 1 && deletedSecond){
+        $('.input-add-more-item').css('visibility', 'hidden');
+    }
+    if($('.input-add-more-item #user-1').length == 0){
+        deletedSecond = true;
     }
 }
 
 $(".input-add-more-button .input-add-more-input").click(function () {
 
+    if($('.input-add-more-item').get().length == 1){
+        $('.input-add-more-item').css('visibility', 'visible');
+    }
+
     // If the default input values have not been changed yet and this is a new session
-    if(!choiceDefaultChanged && UserNew) {
+    if(!choiceDefaultChanged && SessionNew) {
 
         var input = $("#add-more-choices > :last-child > input.user");
-
-        // Get the choice index
-        var name = input.attr("name").substr(11);
-
-        var UserChoice = $("#add-more-choices > :last-child > input.user");
-
-        // Update names and IDs of new inputs
-        UserChoice.attr("id", "user-" + name);
-        UserChoice.attr("name", "user-" + name);
 
         // Increment the current default choice
         choiceDefaultCurrent++;

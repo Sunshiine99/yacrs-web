@@ -32,7 +32,7 @@ $classDiscussionEnabled = $session->getClassDiscussionEnabled() ? " checked" : "
 $submitText = $session->getSessionID() ? "Save" : "Create";
 
 // Whether this is a new session
-$new = !isset($session);
+$new = $session->getSessionID() ? 0 : 1;
 
 // If this is a new session, 0 additional users
 if($new) {
@@ -49,12 +49,12 @@ else {
 }
 
 ?>
-<script>var UserNew = <?=$new ? "true": "false"?>;</script>
 <?php $this->push("head"); ?>
     <link href="<?=$this->e($config["baseUrl"])?>css/session/edit/properties.css" rel="stylesheet">
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
+    <script>var SessionNew = <?=$new ? "true": "false"?>;</script>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/properties.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
@@ -183,7 +183,7 @@ else {
                 <?php $i = 0; ?>
                 <?php foreach($users as $user): ?>
                     <div class="input-group input-add-more-item">
-                        <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1">
+                        <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1">
                         <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
@@ -192,7 +192,7 @@ else {
                 <?php endforeach; ?>
                 <?php else:?>
                     <div class="input-group input-add-more-item">
-                        <input id="user-0" name="user-0" class="form-control input-add-more-input mcq-choice" type="text" value="" tabindex="1">
+                        <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1">
                         <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>

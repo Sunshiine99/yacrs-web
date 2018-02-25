@@ -45,6 +45,26 @@ class PageSessionNew
 
         $session->setOwner($user->getId());
 
+        // Load new users
+        foreach ($_POST as $key => $value) {
+
+            preg_match("/(user-)(\w*[0-9]\w*)/", $key, $matches);
+
+            if($matches) {
+
+                // Get the user index from the regex matches
+                $index = $matches[2];
+
+                // If there is an index associated with this user, store it
+                if(isset($_POST["user-" . $index])) {
+                    $username = $_POST["user-" . $index];
+                    // Add a new user
+                    $session->addAdditionalUser($username);
+                }
+
+            }
+        }
+
         $sessionID = DatabaseSession::insert($session, $mysqli);
 
         if(!$sessionID) {

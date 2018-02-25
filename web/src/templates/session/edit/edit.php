@@ -27,6 +27,7 @@ $this->layout("template",
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/edit.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 

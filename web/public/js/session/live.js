@@ -263,17 +263,8 @@ function displayQuestion(callback) {
         questionNumber++;
     });
 
-    // If no question
-    if(!question) {
-
-    }
-
-    else {
-        
-    }
-
     // If this question is active, setup UI
-    if(question["active"]) {
+    if(question && question["active"]) {
         activateDone(callback);
     }
 
@@ -455,9 +446,19 @@ function newQuestion() {
 }
 
 function newQuestionSubmit() {
-    $(".view").removeClass("expanded");
-    $(".button-container.new-question").removeClass("display-none");
-    $(".button-container.question-type").addClass("display-none");
+
+    // Add a new active question
+    addGenericQuestionFromCode($("#question-type").val(), sessionIdentifier, function(data) {
+
+        sessionQuestionID = data["sessionQuestionID"];
+        displayQuestion(function() {
+
+            // Exit expanded mode
+            $(".view").removeClass("expanded");
+            $(".button-container.new-question").removeClass("display-none");
+            $(".button-container.question-type").addClass("display-none");
+        });
+    });
 }
 
 /**********************************************************************************************************

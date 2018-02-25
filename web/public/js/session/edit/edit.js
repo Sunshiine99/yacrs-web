@@ -72,110 +72,6 @@ $("#deactivate-all").click(function () {
     $(".question-list .deactivate").click();
 });
 
-function addGenericQuestion(url, type) {
-
-    // Make an api request
-    $.getJSON(url, function(data) {
-
-        // If delete was successful, delete html element
-        if(data["type"] === type) {
-            location.reload();
-        }
-
-        else {
-            alerter({
-                title: "Error",
-                message: "Could not add question for an unknown reason",
-                type: "danger",
-                dismissable: true
-            });
-        }
-    });
-}
-
-/**
- * Add a new generic choices (MCQ/MRQ) question
- * @param numChoices The number of choices
- * @param type mcq or mrq
- */
-function addGenericChoicesQuestion(numChoices, type) {
-    if(numChoices > 26 | numChoices <= 0)
-        return;
-
-    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
-
-    // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/new/" + type + "/";
-
-    // Add URL parameters
-    url += "?question=Generic " + type.toUpperCase() + " Question A-" + String.fromCharCode(65 + numChoices - 1) + "&";
-
-    // Add generic choice (I.e. A, B, C, D)
-    for (var i = 0; i < numChoices; i++) {
-
-        // Add choice to URL as parameter
-        url += "choice-" + i + "=" + String.fromCharCode(65 + i);
-
-        // If not the last choice, add "&" ready for next choice
-        if(i < numChoices-1) {
-            url += "&";
-        }
-    }
-
-    addGenericQuestion(url, type);
-}
-
-/**
- * Add a new generic true/false question
- * @param dontKnow Whether don't know is also an option
- */
-function addGenericTrueFalseQuestion(dontKnow) {
-    dontKnow = dontKnow===true;
-
-    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
-
-    // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/new/mcq/";
-
-    // Add URL parameters
-    url += "?question=Generic True/False";
-    if(dontKnow)
-        url += "/Don't Know";
-    url += " Question";
-
-    // Add true/false
-    url += "&choice-0=True";
-    url += "&choice-1=False";
-
-    if(dontKnow)
-        url += "&choice-2=Don't Know";
-
-    addGenericQuestion(url, "mcq");
-}
-
-
-/**
- * Add a new generic text question
- * @param long If a long text question
- */
-function addGenericTextQuestion(long) {
-    long = long===true;
-
-    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
-
-    // Get the question type from whether it is a long text question
-    var type = long ? "textlong" : "text";
-    var typeView = long ? "Long Text" : "Text";
-
-    // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/new/" + type + "/";
-
-    // Add URL parameters
-    url += "?question=Generic " + typeView + " Question";
-
-    addGenericQuestion(url, type);
-}
-
 $("#add-question-submit").click(function() {
 
     var addQuestionSelect = $("#add-question-select");
@@ -190,50 +86,12 @@ $("#add-question-submit").click(function() {
     // Otherwise, actually add a question
     else {
 
-        switch(addQuestionSelect.val()) {
-            case "mcq_d":
-                addGenericChoicesQuestion(4, "mcq");
-                break;
-            case "mcq_e":
-                addGenericChoicesQuestion(5, "mcq");
-                break;
-            case "mcq_f":
-                addGenericChoicesQuestion(6, "mcq");
-                break;
-            case "mcq_g":
-                addGenericChoicesQuestion(7, "mcq");
-                break;
-            case "mcq_h":
-                addGenericChoicesQuestion(8, "mcq");
-                break;
-            case "mrq_d":
-                addGenericChoicesQuestion(4, "mrq");
-                break;
-            case "mrq_e":
-                addGenericChoicesQuestion(5, "mrq");
-                break;
-            case "mrq_f":
-                addGenericChoicesQuestion(6, "mrq");
-                break;
-            case "mrq_g":
-                addGenericChoicesQuestion(7, "mrq");
-                break;
-            case "mrq_h":
-                addGenericChoicesQuestion(8, "mrq");
-                break;
-            case "text":
-                addGenericTextQuestion(false);
-                break;
-            case "textlong":
-                addGenericTextQuestion(true);
-                break;
-            case "truefalse":
-                addGenericTrueFalseQuestion(false);
-                break;
-            case "truefalsedk":
-                addGenericTrueFalseQuestion(true);
-                break;
-        }
+        var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
+
+        // Add the selected generic question, when done refresh
+        addGenericQuestionFromCode(addQuestionSelect.val(), sessionIdentifier, function() {
+            location.reload();
+        });
     }
 });
 

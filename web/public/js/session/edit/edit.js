@@ -4,6 +4,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
     $(this).attr("disabled", "disabled");
 
     var listGroupItem = $(this).closest(".list-group-item");
+    var sessionQuestionID = listGroupItem.attr("data-session-question-id");
 
     // Find the list group
     var listGroup = listGroupItem.closest("ul.list-group");
@@ -11,7 +12,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
     var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
 
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + $(this).attr("data-session-question-id") + "/delete/";
+    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/delete/";
 
     // Store this for access when this is no longer "this"
     var that = this;
@@ -54,11 +55,13 @@ $(".question-list .confirm-delete .confirm").click(function () {
     });
 });
 
-$(".question-list .activate").click(function () {
+var questionList = $(".question-list");
+
+questionList.on("click", ".activate", function(event) {
     activateDeactivateQuestion(this, true);
 });
 
-$(".question-list .deactivate").click(function () {
+questionList.on("click", ".deactivate", function(event) {
     activateDeactivateQuestion(this, false);
 });
 
@@ -107,8 +110,10 @@ function activateDeactivateQuestion(that, activate) {
 
     var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
 
+    var sessionQuestionID = listGroupItem.attr("data-session-question-id");
+
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + $(that).attr("data-session-question-id") + "/edit/?active=";
+    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/edit/?active=";
 
     $(that).attr("disabled", "disabled");
 
@@ -213,6 +218,20 @@ function sessionDrop(e) {
 
     }
     this.classList.remove('over');
+
+    var questionList = $(this).closest(".question-list");
+
+    // Produce array of questions (and whether they are active) in the correct order
+    var qs = [];
+    questionList.find("li.question-item").each(function(item) {
+        qs.push([
+            parseInt($(this).attr("data-session-question-id")),
+            $(this).hasClass("active-question")
+        ]);
+    });
+
+    alert(JSON.stringify(qs));
+
     return false;
 }
 

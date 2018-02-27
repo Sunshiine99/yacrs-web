@@ -92,7 +92,7 @@ $this->layout("template",
             $class = $question->isActive() ? " active-question" : "";
 
             ?>
-            <li class="list-group-item question-item<?=$this->e($class)?>">
+            <li class="list-group-item question-item<?=$this->e($class)?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                 <div class="question-number pull-left">
                     <?=$qi?>.
                 </div>
@@ -109,10 +109,10 @@ $this->layout("template",
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                        <button type="button" class="btn btn-light btn-light-border deactivate width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-light btn-light-border deactivate width-xs-full">
                             <i class='fa fa-stop'></i><span class="d-none d-sm-inline"> Close</span>
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border activate width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-light btn-light-border activate width-xs-full">
                             <i class='fa fa-play'></i><span class="d-none d-sm-inline"> Activate</span>
                         </button>
                         <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border width-xs-full">
@@ -126,7 +126,7 @@ $this->layout("template",
                         </button>
                     </div>
                     <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full">
                             <i class="fa fa-check"></i> Confirm
                         </button>
                         <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">

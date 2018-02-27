@@ -88,7 +88,9 @@ initAddMoreDelete($(".input-add-more-container .input-add-more-input.delete"));
  * Confirm Delete
  ********************************************************************/
 
-$(".actions-confirm-delete .actions .delete").click(function() {
+var body = $("body");
+
+body.on("click", ".actions-confirm-delete .actions .delete", function(event) {
     var actions = $(this).closest(".actions");
     var actionsConfirmDelete = $(this).closest(".actions-confirm-delete");
     var confirmDelete = actionsConfirmDelete.find(".confirm-delete");
@@ -96,12 +98,21 @@ $(".actions-confirm-delete .actions .delete").click(function() {
     confirmDelete.css("display", "inline-flex");
 });
 
-$(".confirm-delete .cancel").click(function() {
+body.on("click", ".confirm-delete .cancel", function(event) {
     var actionsConfirmDelete = $(this).closest(".actions-confirm-delete");
     var actions = actionsConfirmDelete.find(".actions");
     var confirmDelete = actionsConfirmDelete.find(".confirm-delete");
     confirmDelete.css("display", "none");
     actions.css("display", "inline-flex");
+});
+
+
+$(".actions-confirm-delete .actions .delete").click(function() {
+
+});
+
+$(".confirm-delete .cancel").click(function() {
+
 });
 
 /********************************************************************

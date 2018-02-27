@@ -58,3 +58,7 @@ a.nav-link {
 ul.nav-tabs {
     margin-bottom: 10px;
 }
+
+.table-nonfluid {
+    width: auto !important;
+}

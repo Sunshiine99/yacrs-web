@@ -1,9 +1,7 @@
-var tab = window.location.hash.substr(1);
-if(tab) {
-    var navItem = $("ul.nav-tabs li.nav-item[data-target=" + tab + "]");
-    if(navItem.length) {
-        navItem.click();
-    }
+function modifyUser(url, callback) {
+
+    // Make an api request
+
 }
 
 function userChangeAdmin(that, admin) {

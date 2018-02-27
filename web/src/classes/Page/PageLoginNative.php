@@ -202,7 +202,7 @@ class PageLoginNative
         }
 
         // If admin, forward to admin page once done. Otherwise, forward home.
-        $url = $user->isAdmin() ? $config["baseUrl"] . "admin#section-users" : $config["baseUrl"];
+        $url = $user->isAdmin() ? $config["baseUrl"] . "admin?users" : $config["baseUrl"];
 
         $alert = new Alert();
         $alert->setType("success");

@@ -31,15 +31,32 @@ $this->layout("template",
 </div>
 
 <ul class="nav nav-tabs" data-target="sections">
+    <li class="nav-item" id="nav-sessions" data-target="section-stats">
+        <a class="nav-link active" href="#">Stats</a>
+    </li>
     <li class="nav-item" id="nav-sessions" data-target="section-sessions">
-        <a class="nav-link active" href="#section-sessions">Sessions</a>
+        <a class="nav-link" href="#">Sessions</a>
     </li>
     <li class="nav-item" id="nav-users" data-target="section-users">
-        <a class="nav-link" href="#section-users">Users</a>
+        <a class="nav-link" href="#">Users</a>
     </li>
 </ul>
 <div id="sections" class="sections">
-    <div id="section-sessions" class="section">
+    <div id="section-stats" class="section">
+        <table class="table table-bordered table-nonfluid">
+            <tbody>
+                <tr>
+                    <th>Total Sessions</th>
+                    <td><?=count($sessions)?></td>
+                </tr>
+                <tr>
+                    <th>Total Users</th>
+                    <td><?=count($users)?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="section-sessions" class="section display-none">
         <?=$this->fetch("session/list", ["sessions" => $sessions, "user" => $user, "config" => $config])?>
     </div>
     <div id="section-users" class="section display-none">

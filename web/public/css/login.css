@@ -13,18 +13,18 @@
     box-shadow: none;
 }
 
-#login .loginGroup input:first-of-type {
+#login .loginGroup input:first-of-type:not(:only-of-type) {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-#login .loginGroup input:last-of-type {
+#login .loginGroup input:last-of-type:not(:only-of-type) {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
 
-#login .loginGroup input:not(:first-of-type):not(:last-of-type) {
+#login .loginGroup input:not(:first-of-type):not(:last-of-type):not(:only-of-type) {
     border-radius: 0;
     margin-bottom: -1px;
 }

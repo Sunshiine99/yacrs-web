@@ -32,10 +32,10 @@ $this->layout("template",
 
 <ul class="nav nav-tabs" data-target="sections">
     <li class="nav-item" id="nav-sessions" data-target="section-sessions">
-        <a class="nav-link active" href="#">Sessions</a>
+        <a class="nav-link active" href="#section-sessions">Sessions</a>
     </li>
     <li class="nav-item" id="nav-users" data-target="section-users">
-        <a class="nav-link" href="#">Users</a>
+        <a class="nav-link" href="#section-users">Users</a>
     </li>
 </ul>
 <div id="sections" class="sections">
@@ -47,15 +47,18 @@ $this->layout("template",
             <?php // If user has sessions, display them ?>
             <?php if(sizeof($users) > 0): ?>
                 <?php foreach($users as $u): ?>
-                    <li class="list-group-item session-item" data-user-id="<?=$u->getId()?>">
+                    <li class="list-group-item session-item" data-user-id="<?=$this->e($u->getId())?>">
                         <div class="pull-left">
-                            <?=$u->getFullName()?><br>
+                            <?=$this->e($u->getFullName())?><br>
                             <span class="text-muted">
-                                @<?=$u->getUsername()?>
+                                @<?=$this->e($u->getUsername())?>
                             </span>
                         </div>
                         <div class="actions-confirm-delete width-xs-full">
                             <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                                <a href="<?=$this->e($config["baseUrl"])?>changepassword/<?=$this->e($u->getUsername())?>/" type="button" class="btn btn-light btn-light-border width-xs-full">
+                                    Change Password
+                                </a>
                                 <?php if($u->isAdmin()): ?>
                                     <button type="button" class="btn btn-light btn-light-border width-xs-full admin-remove">
                                         Remove Admin

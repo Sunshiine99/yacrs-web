@@ -84,4 +84,26 @@ class DatabaseLogin
 
         return true;
     }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @param mysqli $mysqli
+     * @return bool
+     */
+    public static function updatePassword($username, $password, $mysqli) {
+
+        // Hash the password
+        $passwordHashed = (string)password_hash($password, PASSWORD_BCRYPT);
+
+        $username = Database::safe($username, $mysqli);
+        $passwordHashed = Database::safe($passwordHashed, $mysqli);
+
+        $sql = "UPDATE `yacrs_user` as u
+                SET `password` = '$passwordHashed'
+                WHERE u.`username` = '$username'";
+        $result = $mysqli->query($sql);
+
+        return !!$result;
+    }
 }

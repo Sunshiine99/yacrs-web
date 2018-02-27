@@ -63,9 +63,14 @@ Flight::route("POST /login/", array("PageLogin", "loginSubmit"));
 Flight::route("/login/", array("PageLogin", "login"));
 Flight::route("POST /login/anonymous/", array("PageLogin", "anonymousSubmit"));
 Flight::route("/login/anonymous/", array("PageLogin", "anonymous"));
-Flight::route("POST /register/", array("PageLogin", "registerSubmit"));
-Flight::route("/register/", array("PageLogin", "register"));
+
 Flight::route("/logout/", array("PageLogout", "logout"));
+
+Flight::route("POST /register/", array("PageLoginNative", "registerSubmit"));
+Flight::route("/register/", array("PageLoginNative", "register"));
+Flight::route("POST /changepassword/", array("PageLoginNative", "changePasswordSubmit"));
+Flight::route("/changepassword/", array("PageLoginNative", "changePassword"));
+Flight::route("/changepassword/@username/", array("PageLoginNative", "changePassword"));
 
 /**************************************************************
  * Sessions

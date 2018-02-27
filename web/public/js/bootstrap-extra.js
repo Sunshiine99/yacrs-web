@@ -126,3 +126,29 @@ $.extend({
     }
 
 });
+
+/********************************************************************
+ * Navigation Tabs
+ ********************************************************************/
+
+$("ul.nav-tabs li.nav-item").click(function() {
+    var targetID = $(this).attr("data-target");
+    var navTabs = $(this).closest("ul.nav-tabs");
+    var sectionsContainerID = navTabs.attr("data-target");
+
+    // Hide all sections
+    $("#" + sectionsContainerID).find(".section").addClass("display-none");
+
+    // Display the target section
+    $("#" + targetID).removeClass("display-none");
+
+    // Change the tab
+    navTabs.find("li.nav-item a").removeClass("active");
+    $(this).find("a").addClass("active");
+
+    // Run callback if it exists
+    var callback = window[$(this).attr("data-callback")];
+    if(typeof callback === 'function') {
+        callback();
+    }
+});

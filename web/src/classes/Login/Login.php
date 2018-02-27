@@ -30,24 +30,52 @@ class Login
 
         $type = $config["login"]["type"];
 
-        // Load given login type class
-        $login = LoginTypeFactory::create($type);
+        // If username is in list on manual username/password combos in config
+        if(isset($config["user"]["users"]) && array_key_exists($username, $config["user"]["users"]) && $config["user"]["users"][$username] == $password) {
 
-        if(!$username)
-            return false;
+            // Create a new user
+            $user = new User();
+            $user->setUsername($username);
 
-        // Check login details with given login type
-        $user = $login::checkLogin($username, $password, $config);
+            // Load additional details from the database
+            $user = DatabaseUser::loadDetails($user, $mysqli);
 
-        // If invalid user details, return false
-        if(!$user)
-            return false;
+            if($user === null)
+                return null;
+        }
 
-        // Load additional details from the database
-        $user = DatabaseUser::loadDetails($user, $mysqli);
+        else {
 
-        if($user === null)
-            return null;
+            // Load given login type class
+            try {
+                $login = LoginTypeFactory::create($type);
+            }
+
+                // Catch exception for when login type does not exist
+            catch(Exception $e) {
+                return null;
+            }
+
+            if(!$username)
+                return false;
+
+            // Check login details with given login type
+            $user = $login::checkLogin($username, $password, $config, $mysqli);
+
+            // If invalid user details, return false
+            if(!$user)
+                return false;
+
+            // If not the native login, load additional details from database
+            if($config["login"]["type"] !== "native") {
+
+                // Load additional details from the database
+                $user = DatabaseUser::loadDetails($user, $mysqli);
+
+                if($user === null)
+                    return null;
+            }
+        }
 
         // If the config specifies this user should always be an admin
         if(isset($config["user"]["admin"]) && in_array($user->getUsername(), $config["user"]["admin"])) {

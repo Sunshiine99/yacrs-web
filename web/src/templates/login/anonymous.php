@@ -23,7 +23,9 @@ $this->layout("template",
 
 <form id="login" action="<?=$this->e($config["baseUrl"])?>login/anonymous/" method="post">
     <h1>Anonymous Guest Login</h1>
-    <input name="nickname" id="nickname" class="form-control" placeholder="Nickname (Optional)" type="text">
+    <div class="loginGroup">
+        <input name="nickname" id="nickname" class="form-control" placeholder="Nickname (Optional)" type="text">
+    </div>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 </form>

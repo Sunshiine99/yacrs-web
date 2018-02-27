@@ -6,7 +6,7 @@
  * Time: 23:51
  */
 
-class LoginTypeYacrs implements LoginType
+class LoginTypeNative implements LoginType
 {
 
     /**

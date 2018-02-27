@@ -21,47 +21,61 @@ body main #add-question-row #add-question-submit-row {
     }
 }
 
-body main .question-list li.active-question {
-    background-color: #caffc6!important;
+body main .question-list {
+    list-style-type: none;
 }
 
-body main .question-list li.no-questions {
-    display: none;
-}
-
-body main .question-list li.no-questions:only-child {
-    display: inline!important;
-}
-
-    body main .question-list li.question-item .question-number {
-        line-height: 50px;
-        margin-right: 10px;
+    body main .question-list li.active-question {
+        background-color: #caffc6!important;
     }
 
-    body main .question-list li.question-item .actions,
-    body main .question-list li.question-item .confirm-delete {
-        margin-top: 5px;
-    }
-
-    body main .question-list li.question-item.active-question .activate {
+    body main .question-list li.no-questions {
         display: none;
     }
 
-    body main .question-list li.question-item:not(.active-question) .deactivate {
-        display: none;
+    body main .question-list li.no-questions:only-child {
+        display: inline!important;
     }
 
-    body main .question-list :nth-child(2) {
-        margin-top: 0;
-        border-top-right-radius: .25rem;
-        border-top-left-radius: .25rem;
+    /** Color of line when dragging question */
+    body main .question-list li.question-item.over {
+        border-top: 2px solid grey;
     }
 
-    /* Ensures "Make Active" button always has rounded left */
-    body main .question-list .activate {
-        border-top-left-radius: .25rem!important;
-        border-bottom-left-radius: .25rem!important;
+    /** Change opacity when dragging question */
+    body main .question-list li.question-item.dragElem {
+        /*opacity: 0.4;*/
     }
+
+        body main .question-list li.question-item .question-number {
+            line-height: 50px;
+            margin-right: 10px;
+        }
+
+        body main .question-list li.question-item .actions,
+        body main .question-list li.question-item .confirm-delete {
+            margin-top: 5px;
+        }
+
+        body main .question-list li.question-item.active-question .activate {
+            display: none;
+        }
+
+        body main .question-list li.question-item:not(.active-question) .deactivate {
+            display: none;
+        }
+
+        body main .question-list :nth-child(2) {
+            margin-top: 0;
+            border-top-right-radius: .25rem;
+            border-top-left-radius: .25rem;
+        }
+
+        /* Ensures "Make Active" button always has rounded left */
+        body main .question-list .activate {
+            border-top-left-radius: .25rem!important;
+            border-bottom-left-radius: .25rem!important;
+        }
 
 body main #activate-deactivate-all {
     /*

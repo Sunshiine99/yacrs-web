@@ -20,52 +20,17 @@ $("#hide-personal").click(function() {
     $("#display-personal").css("display", "inline")
 });
 
-/**
- * Runs when a nav item is clicked.
- * @param event
- */
-function navClick(event) {
-    if(!$(event.data.that).find("a").hasClass("active")) {
-        event.data.callback();
-    }
-}
-
-$("#nav-bar-chart").click({"that": this, "callback": initBarChartSection}, navClick);
-$("#nav-pie-chart").click({"that": this, "callback": initPieChartSection}, navClick);
-$("#nav-word-cloud").click({"that": this, "callback": initWordCloudSection}, navClick);
-$("#nav-responses").click({"that": this, "callback": initResponsesSection}, navClick);
-$("#nav-analysis").click({"that": this, "callback": initAnalysisSection}, navClick);
-
-function initSection(sectionId) {
-    $("ul.nav-tabs li.nav-item a.nav-link.active").removeClass("active");
-    $("ul.nav-tabs li.nav-item#nav-"+sectionId+" a.nav-link").addClass("active");
-
-    $(".section").css("display", "none");
-    $("#section-"+sectionId).css("display", "block");
-}
-
 function initBarChartSection() {
-    initSection("bar-chart");
     initBarChart("bar-chart", labels, data, backgroundColor, borderColor);
 }
 
 function initPieChartSection() {
-    initSection("pie-chart");
     initPieChart("pie-chart", labels, data, backgroundColor, borderColor);
 }
 
-function initAnalysisSection() {
-    initSection("analysis");
-}
-
 function initWordCloudSection(json) {
-    initSection("word-cloud");
     wordCloudData = JSON.parse(json);
     initWordCloud();
-}
-
-function initResponsesSection() {
-    initSection("responses");
 }
 
 function initBarChart(id, labels, data, backgroundColor, borderColor) {

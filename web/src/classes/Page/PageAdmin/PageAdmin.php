@@ -22,8 +22,18 @@ class PageAdmin
         // Load all sessions
         $sessions = DatabaseSessionIdentifier::loadAllSessions($mysqli);
 
+        // Load all users
+        $users = DatabaseUser::loadAllUsers($mysqli);
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Admin");
+
+        $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         $data["sessions"] = $sessions;
+        $data["users"] = $users;
         echo $templates->render("admin/admin", $data);
     }
 }

@@ -234,4 +234,93 @@ class DatabaseUser
 
         return false;
     }
+
+    /**
+     * Loads all users
+     * @param mysqli $mysqli
+     * @return User[]|null
+     */
+    public static function loadAllUsers($mysqli) {
+
+        // Run query to get all users
+        $sql = "SELECT *
+                FROM `yacrs_user`";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        // Create a new array for users
+        $users = [];
+
+        // Loop for every row
+        while($row = $result->fetch_assoc()) {
+            $user = new User($row);
+            $users[] = $user;
+        }
+
+        return $users;
+    }
+
+    /**
+     * Update user in database
+     * @param User $user User as User object
+     * @param mysqli $mysqli Database connection
+     * @return bool Success?
+     */
+    public static function update($user, $mysqli) {
+
+        // Make variables safe for database use
+        $userID                 = Database::safe($user->getId(), $mysqli);
+        $username               = Database::safe($user->getUsername(), $mysqli);
+        $givenName              = Database::safe($user->getGivenName(), $mysqli);
+        $surname                = Database::safe($user->getSurname(), $mysqli);
+        $email                  = Database::safe($user->getEmail(), $mysqli);
+        $isSessionCreator       = Database::safe($user->isSessionCreator(), $mysqli);
+        $isAdmin                = Database::safe($user->isAdmin(), $mysqli);
+
+        // Convert boolean values to string for use in query
+        $isSessionCreator       = bool2dbString($isSessionCreator);
+        $isAdmin                = bool2dbString($isAdmin);
+
+        // Run query to update table
+        $sql = "UPDATE `yacrs_user`
+                SET
+                  `username`                    = '$username',
+                  `givenName`                   = '$givenName',
+                  `surname`                     = '$surname',
+                  `isSessionCreatorOverride`    = '$isSessionCreator',
+                  `isAdminOverride`             = '$isAdmin',
+                  `email`                       = '$email'
+                WHERE `userID` = '$userID'";
+        $result = $mysqli->query($sql);
+
+        // If error with result
+        if(!$result) return null;
+
+        return true;
+    }
+
+    /**
+     * Delete user in database
+     * @param int $userID
+     * @param mysqli $mysqli Database connection
+     * @return bool Success?
+     */
+    public static function delete($userID, $mysqli) {
+
+        // Make variables safe for database use
+        $userID = Database::safe($userID, $mysqli);
+
+        // Run query to update table
+        $sql = "DELETE FROM `yacrs_response` WHERE `userID` = $userID;
+                DELETE FROM `yacrs_responseMcq` WHERE `userID` = $userID;
+                DELETE FROM `yacrs_sessionHistory` WHERE `userID` = $userID;
+                DELETE FROM `yacrs_sessions` WHERE `ownerID` = $userID;
+                DELETE FROM `yacrs_sessionsAdditionalUsers` WHERE `userID` = $userID;
+                DELETE FROM `yacrs_user` WHERE `userID` = $userID;";
+
+        $result = $mysqli->multi_query($sql);
+
+        return !!$result;
+    }
 }

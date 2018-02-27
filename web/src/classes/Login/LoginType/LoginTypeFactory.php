@@ -23,6 +23,9 @@ class LoginTypeFactory
             case "some":
                 return new LoginTypeSome();
                 break;
+            case "native":
+                return new LoginTypeNative();
+                break;
             case "yacrs_v1":
                 return new LoginTypeYacrsV1();
                 break;

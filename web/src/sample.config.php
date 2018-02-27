@@ -6,7 +6,8 @@ $config["title"]                         = "YACRS";
 $config["baseUrl"]                       = isset($_SERVER['HTTPS']) ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . "/";
 $config["login"]["type"]                 = "some";
 
-// "%A %e %B %Y at %H:%M"
+// Whether user's can register new accounts (Only for native login system)
+$config["login"]["register"]             = true;
 
 $config["datetime"]["date"]["short"]     = "d/m/y";
 $config["datetime"]["date"]["long"]      = "d F Y \\a\\t";
@@ -25,8 +26,12 @@ $config["database"]["name"]              = getenv("MYSQL_DATABASE");
 $config["ldap"]["host"]                  = "130.209.13.173";
 $config["ldap"]["context"]               = "o=Gla";
 
-$config["user"]["admin"][0]               = "2198207s";
-$config["user"]["admin"][1]               = "a";
+// Manual username password combos. Used for initial setting up of admin users.
+$config["user"]["users"]["admin"]        = "password";
+
+// Users who should always be admin
+$config["user"]["admin"][0]               = "admin";
+$config["user"]["admin"][1]               = "2198207s";
 
 // Details used for LDAP bind
 //$config["ldap"]["bind"]["user"] = "";

@@ -104,6 +104,9 @@ $this->layout("template",
                         Created <?=date("d/m/Y H:i", $question->getCreated())?>
                     </span>
                 </div>
+                <div class="drag pull-right">
+                    <i class="fa fa-bars" aria-hidden="true" draggable="true"></i>
+                </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
                         <button type="button" class="btn btn-light btn-light-border deactivate width-xs-full" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">

@@ -94,107 +94,109 @@ function getColour($colours, $i) {
     </div>
 <?php endif; ?>
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" data-target="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
-        <li class="nav-item" id="nav-bar-chart">
+        <li class="nav-item" id="nav-bar-chart" data-target="section-bar-chart" data-callback="initBarChartSection">
             <a class="nav-link active" href="#">Bar Chart</a>
         </li>
-        <li class="nav-item" id="nav-pie-chart">
+        <li class="nav-item" id="nav-pie-chart" data-target="section-pie-chart" data-callback="initPieChartSection">
             <a class="nav-link" href="#">Pie Chart</a>
         </li>
-        <li class="nav-item" id="nav-responses">
+        <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
     <?php endif; ?>
     <?php if(isset($responsesWordCloud)): ?>
-        <li class="nav-item" id="nav-word-cloud">
-            <a class="nav-link" href="#">Word Cloud</a>
+        <li class="nav-item" id="nav-word-cloud" data-target="section-word-cloud">
+            <a class="nav-link active" href="#">Word Cloud</a>
         </li>
-        <li class="nav-item" id="nav-responses">
+        <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
-        <li class="nav-item" id="nav-analysis">
+        <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Analysis</a>
         </li>
     <?php endif; ?>
 </ul>
 
-<?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
-    <div id="section-bar-chart" class="section">
-        <canvas id="bar-chart" width="400" height="200"></canvas>
-    </div>
-    <div id="section-pie-chart" class="section" style="display: none;">
-        <canvas id="pie-chart" width="400" height="200"></canvas>
-    </div>
-<?php endif; ?>
+<div class="sections" id="sections">
+    <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
+        <div id="section-bar-chart" class="section">
+            <canvas id="bar-chart" width="400" height="200"></canvas>
+        </div>
+        <div id="section-pie-chart" class="section display-none">
+            <canvas id="pie-chart" width="400" height="200"></canvas>
+        </div>
+    <?php endif; ?>
 
-<?php // The word cloud bit ?>
-<?php if(isset($responsesWordCloud)): ?>
-    <div id="section-word-cloud" class="section">
-        <div id="wordcloud"></div>
-    </div>
-    <div id="section-analysis" class="section" style="display: none;">
-        <div id="analysis"></div>
-    </div>
-<?php endif; ?>
-<?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>
-    <div id="section-responses" class="section" style="display: none;">
-        <button id="display-personal" class="btn btn-primary width-xs-full">Display Personal Information</button>
-        <button id="hide-personal" class="btn btn-primary width-xs-full">Hide Personal Information</button>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th class="username" scope="col">Username</th>
-                <th class="fullname" scope="col">Full Name</th>
-                <th scope="col">Time</th>
-                <th scope="col">Response</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php if(isset($responsesText)): ?>
-                <?php foreach($responsesText as $response): ?>
-                    <tr>
-                        <td class="username">
-                            <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
-                        </td>
-                        <td class="fullname">
-                            <?=$this->e($response->getUser()->getFullName())?>
-                        </td>
-                        <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
-                        <td><?=$this->e($response->getResponse())?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php elseif(isset($userMcqResponses)): ?>
-                <?php foreach($userMcqResponses as $response): ?>
-                    <tr>
-                        <td class="username">
-                            <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
-                        </td>
-                        <td class="fullname">
-                            <?=$this->e($response->getUser()->getFullName())?>
-                        </td>
-                        <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
-                        <td><?=$this->e($response->getResponse())?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php elseif(isset($userMrqResponses)): ?>
-                <?php foreach($userMrqResponses as $response): ?>
-                    <tr>
-                        <td class="username">
-                            <?=$this->e($user->isGuest()) ? "Guest" : $this->e($user->getUsername())?>
-                        </td>
-                        <td class="fullname">
-                            <?=$this->e($user->getFullName())?>
-                        </td>
-                        <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
-                        <td><?=$this->e($response->getResponse())?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-<?php endif; ?>
+    <?php // The word cloud bit ?>
+    <?php if(isset($responsesWordCloud)): ?>
+        <div id="section-word-cloud" class="section">
+            <div id="wordcloud"></div>
+        </div>
+        <div id="section-analysis" class="section display-none">
+            <div id="analysis"></div>
+        </div>
+    <?php endif; ?>
+    <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>
+        <div id="section-responses" class="section display-none">
+            <button id="display-personal" class="btn btn-primary width-xs-full">Display Personal Information</button>
+            <button id="hide-personal" class="btn btn-primary width-xs-full">Hide Personal Information</button>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="username" scope="col">Username</th>
+                    <th class="fullname" scope="col">Full Name</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Response</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(isset($responsesText)): ?>
+                    <?php foreach($responsesText as $response): ?>
+                        <tr>
+                            <td class="username">
+                                <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
+                            </td>
+                            <td class="fullname">
+                                <?=$this->e($response->getUser()->getFullName())?>
+                            </td>
+                            <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
+                            <td><?=$this->e($response->getResponse())?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php elseif(isset($userMcqResponses)): ?>
+                    <?php foreach($userMcqResponses as $response): ?>
+                        <tr>
+                            <td class="username">
+                                <?=$response->getUser()->isGuest() ? "Guest" : $this->e($response->getUser()->getUsername())?>
+                            </td>
+                            <td class="fullname">
+                                <?=$this->e($response->getUser()->getFullName())?>
+                            </td>
+                            <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
+                            <td><?=$this->e($response->getResponse())?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php elseif(isset($userMrqResponses)): ?>
+                    <?php foreach($userMrqResponses as $response): ?>
+                        <tr>
+                            <td class="username">
+                                <?=$this->e($user->isGuest()) ? "Guest" : $this->e($user->getUsername())?>
+                            </td>
+                            <td class="fullname">
+                                <?=$this->e($user->getFullName())?>
+                            </td>
+                            <td><?=date($config["datetime"]["datetime"]["long"], $response->getTime())?></td>
+                            <td><?=$this->e($response->getResponse())?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+</div>
 
 <script>
     <?php if(isset($responsesMcq)): ?>

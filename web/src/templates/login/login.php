@@ -25,10 +25,18 @@ $this->layout("template",
 
 <form id="login" action="<?=$this->e($config["baseUrl"])?>login/" method="post">
     <h1>Login</h1>
-    <input id="username" name="username" class="form-control" placeholder="Username" type="text">
-    <input id="password" name="password" class="form-control" placeholder="Password" type="password">
+    <div class="loginGroup">
+        <input id="username" name="username" class="form-control" placeholder="Username" type="text">
+        <input id="password" name="password" class="form-control" placeholder="Password" type="password">
+    </div>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+    <?php
+    // If using native login and registartion has been enabled
+    if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
+        <a href="<?=$this->e($config["baseUrl"])?>register/" class="btn btn-sm btn-light btn-light-border btn-block" type="submit">Register</a>
+    <?php endif; ?>
     <div id="anonymous">
         <a href="<?=$this->e($config["baseUrl"])?>login/anonymous/">Anonymous Guess Access</a>
     </div>

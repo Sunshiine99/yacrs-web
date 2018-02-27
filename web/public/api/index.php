@@ -48,6 +48,18 @@ Flight::route("/session/@sessionID/question/@sessionQuestionID/edit/", array("Ap
 Flight::route("/session/@sessionID/question/@sessionQuestionID/users/", array("ApiSessionQuestion", "users"));
 
 
+
+
+Flight::route("/user/", array("ApiUser", "listUsers"));
+Flight::route("/user/@userID/", array("ApiUser", "details"));
+Flight::route("/user/@userID/edit/", array("ApiUser", "edit"));
+Flight::route("/user/@userID/delete/", array("ApiUser", "delete"));
+
+
+
+
+
+
 Flight::map('error', array("ApiError", "handler"));
 Flight::map('notFound', array("ApiError", "notFound"));
 

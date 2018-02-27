@@ -31,7 +31,12 @@ class Database
 
             // INTEGER
             case 1;
-                die("NOT IMPLEMENTED");
+                $digits = strlen($string);
+                while($digits > $length){
+                    $string = $string/10;
+                    $digits--;
+                }
+                die(round($string, 0, PHP_ROUND_HALF_DOWN));
                 break;
         }
 

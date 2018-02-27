@@ -12,8 +12,8 @@ class DatabaseSessionQuestion
     public static function insert($sessionID, $questionID, $mysqli) {
 
         // Make items database safe
-        $sessionID  = Database::safe($sessionID, $mysqli);
-        $questionID = Database::safe($questionID, $mysqli);
+        $sessionID  = Database::safe____new($sessionID, $mysqli, 11, 1);
+        $questionID = Database::safe____new($questionID, $mysqli, 11, 1);
 
         $sql = "INSERT INTO `yacrs_sessionQuestions` (
                     `sessionID`,
@@ -38,7 +38,7 @@ class DatabaseSessionQuestion
     public static function delete($sessionQuestionID, $mysqli) {
 
         // Make items database safe
-        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
 
         $sql = "DELETE FROM `yacrs_sessionQuestions`
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
@@ -60,8 +60,8 @@ class DatabaseSessionQuestion
      */
     public static function update($question, $session, $mysqli) {
         $active = Database::safe(bool2dbString($question->isActive()), $mysqli);
-        $sessionID = Database::safe($session->getSessionID(), $mysqli);
-        $sessionQuestionID = Database::safe($question->getSessionQuestionID(), $mysqli);
+        $sessionID = Database::safe____new($session->getSessionID(), $mysqli, 11, 1);
+        $sessionQuestionID = Database::safe____new($question->getSessionQuestionID(), $mysqli, 11, 1);
 
         // If activating question and this is a teacher led question
         if($question->isActive() && $session->getQuestionControlMode() === 0) {
@@ -94,7 +94,7 @@ class DatabaseSessionQuestion
      * @return array|null
      */
     public static function loadSessionQuestions($sessionID, $mysqli) {
-        $sessionID  = Database::safe($sessionID, $mysqli);
+        $sessionID  = Database::safe____new($sessionID, $mysqli, 11, 1);
 
         $sql = "SELECT sq.`ID` as `sessionQuestionID`, q.`questionID`, sq.`active`
                 FROM
@@ -135,7 +135,7 @@ class DatabaseSessionQuestion
      * @return Question|null
      */
     public static function loadQuestion($sessionQuestionID, $mysqli) {
-        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
+        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
 
         // Run SQL query to get question ID
         $sql = "SELECT `ID`, `sessionID`, `questionID`, `active`
@@ -168,7 +168,7 @@ class DatabaseSessionQuestion
      * @return Question|null
      */
     public static function loadActiveQuestion($sessionID, $questionNumber = 0, $mysqli) {
-        $sessionID      = Database::safe($sessionID, $mysqli);
+        $sessionID      = Database::safe____new($sessionID, $mysqli, 11, 1);
         $questionNumber = Database::safe($questionNumber, $mysqli);
 
         // Run SQL query to get active question
@@ -197,7 +197,7 @@ class DatabaseSessionQuestion
      * @return Question[]|null
      */
     public static function loadAllActiveQuestions($sessionID, $mysqli) {
-        $sessionID      = Database::safe($sessionID, $mysqli);
+        $sessionID      = Database::safe____new($sessionID, $mysqli, 11, 1);
 
         // Run SQL query to get all active questions
         $sql = "SELECT `ID`, `questionID`
@@ -224,7 +224,7 @@ class DatabaseSessionQuestion
     }
 
     public static function countActiveQuestions($sessionID, $mysqli) {
-        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionID = Database::safe($sessionID, $mysqli, 11, 1);
 
         // Run SQL query to get number of questions
         $sql = "SELECT count(`ID`) as count
@@ -250,7 +250,7 @@ class DatabaseSessionQuestion
      * @return bool
      */
     public static function questionActivate($sessionQuestionID, $active = true, $mysqli) {
-        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
+        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
         $active = $active ? "1" : "0";
 
         $sql = "UPDATE `yacrs_sessionQuestions`
@@ -269,8 +269,8 @@ class DatabaseSessionQuestion
      * @return int[]
      */
     public static function users($sessionID, $sessionQuestionID, $mysqli) {
-        $sessionID = Database::safe($sessionID, $mysqli);
-        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
+        $sessionID = Database::safe____new($sessionID, $mysqli, 11, 1);
+        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
 
         $sql = "SELECT answered.answered, total.total
                 FROM
@@ -340,7 +340,7 @@ class DatabaseSessionQuestion
      * @return bool
      */
     public static function reorder($sessionID, $order, $mysqli) {
-        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionID = Database::safe____new($sessionID, $mysqli, 11, 1);
 
         // TODO LOCK
 

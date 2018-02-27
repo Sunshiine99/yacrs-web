@@ -33,7 +33,7 @@ class DatabaseSessionIdentifier
      * @return int|null;
      */
     public static function loadSessionID($sessionIdentifier, $mysqli) {
-        $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
+        $sessionIdentifier = Database::safe____new($sessionIdentifier, $mysqli, 11, 1);
 
         $sql = "SELECT *
                 FROM `yacrs_sessionIdentifier` as si
@@ -48,7 +48,7 @@ class DatabaseSessionIdentifier
     }
 
     public static function delete($sessionIdentifier, $mysqli) {
-        $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
+        $sessionIdentifier = Database::safe____new($sessionIdentifier, $mysqli,11 ,1);
 
         //Delete from questions
         $sql = "DELETE FROM `yacrs_sessionIdentifier`

@@ -12,13 +12,13 @@ class DatabaseSession
     public static function insert($session, $mysqli) {
 
         // Make variables safe for database use
-        $ownerID                = Database::safe($session->getOwner(), $mysqli);
+        $ownerID                = Database::safe____new($session->getOwner(), $mysqli, 11, 1);
         $title                  = Database::safe____new($session->getTitle(), $mysqli, 80);
         $courseID               = Database::safe____new($session->getCourseID(), $mysqli, 20);
         $allowGuests            = Database::safe($session->getAllowGuests(), $mysqli);
         $onSessionList          = Database::safe($session->getOnSessionList(), $mysqli);
-        $questionControlMode    = Database::safe($session->getQuestionControlMode(), $mysqli);
-        $defaultTimeLimit       = Database::safe($session->getDefaultTimeLimit(), $mysqli);
+        $questionControlMode    = Database::safe____new($session->getQuestionControlMode(), $mysqli, 11, 1);
+        $defaultTimeLimit       = Database::safe____new($session->getDefaultTimeLimit(), $mysqli, 11, 1);
         $allowModifyAnswer      = Database::safe($session->getAllowModifyAnswer(), $mysqli);
         $allowQuestionReview    = Database::safe($session->getAllowQuestionReview(), $mysqli);
         $classDiscussionEnabled = Database::safe($session->getClassDiscussionEnabled(), $mysqli);
@@ -107,12 +107,12 @@ class DatabaseSession
 
         // Make variables safe for database use
         $sessionID              = Database::safe($session->getSessionID(), $mysqli);
-        $title                  = Database::safe($session->getTitle(), $mysqli);
-        $courseID               = Database::safe($session->getCourseID(), $mysqli);
+        $title                  = Database::safe____new($session->getTitle(), $mysqli, 80);
+        $courseID               = Database::safe____new($session->getCourseID(), $mysqli, 20);
         $allowGuests            = Database::safe($session->getAllowGuests(), $mysqli);
         $onSessionList          = Database::safe($session->getOnSessionList(), $mysqli);
-        $questionControlMode    = Database::safe($session->getQuestionControlMode(), $mysqli);
-        $defaultTimeLimit       = Database::safe($session->getDefaultTimeLimit(), $mysqli);
+        $questionControlMode    = Database::safe____new($session->getQuestionControlMode(), $mysqli, 11, 1);
+        $defaultTimeLimit       = Database::safe____new($session->getDefaultTimeLimit(), $mysqli, 11, 1);
         $allowModifyAnswer      = Database::safe($session->getAllowModifyAnswer(), $mysqli);
         $allowQuestionReview    = Database::safe($session->getAllowQuestionReview(), $mysqli);
         $classDiscussionEnabled = Database::safe($session->getClassDiscussionEnabled(), $mysqli);
@@ -156,7 +156,7 @@ class DatabaseSession
         foreach($session->getAdditionalUsers() as $additionalUser) {
 
             // Get additional user ID
-            $additionalUserId = Database::safe(DatabaseUser::getUserId($additionalUser, $mysqli), $mysqli);
+            $additionalUserId = Database::safe____new(DatabaseUser::getUserId($additionalUser, $mysqli), $mysqli, 80);
 
             // If user ID was found
             if($additionalUserId) {
@@ -229,7 +229,7 @@ class DatabaseSession
     public static function loadUserSessions($userId, $mysqli) {
 
         // Make variables safe for database use
-        $userId = Database::safe($userId, $mysqli);
+        $userId = Database::safe____new($userId, $mysqli, 11, 1);
 
         // SQL query to load all sessions that the user can edit
         $sql = "SELECT *
@@ -278,7 +278,7 @@ class DatabaseSession
             $session->setOwner($username);
 
             // Make the session ID safe for SQL query
-            $sessionID = Database::safe($session->getSessionID(), $mysqli);
+            $sessionID = Database::safe____new($session->getSessionID(), $mysqli, 11, 1);
 
             // SQL query to get additional users
             $sql = "SELECT username
@@ -321,7 +321,7 @@ class DatabaseSession
     public static function delete($sessionIdentifier, $mysqli) {
 
         // Make variables safe for database use
-        $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
+        $sessionIdentifier = Database::safe____new($sessionIdentifier, $mysqli, 11, 1);
 
         //Get the sessionID
         $sql = "SELECT `sessionID`
@@ -372,7 +372,7 @@ class DatabaseSession
      * @return Session[]|null
      */
     public static function loadUserHistoryAndEditableSessions($userID, $mysqli) {
-        $userID = Database::safe($userID, $mysqli);
+        $userID = Database::safe____new($userID, $mysqli, 11, 1);
 
         // Run query to get session IDs
         $sql = "SELECT `sessionID`, `sessionIdentifier`, MAX(`time`) as time
@@ -450,7 +450,7 @@ class DatabaseSession
 
     public static function loadUserActiveSessions($userID, $mysqli){
 
-        $userID = Database::safe($userID, $mysqli);
+        $userID = Database::safe____new($userID, $mysqli, 11, 1);
 
         $sql = "SELECT si.`sessionIdentifier`
                 FROM `yacrs_sessions` as s,

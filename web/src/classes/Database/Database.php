@@ -14,6 +14,31 @@ class Database
     }
 
     /**
+     * Make string safe for use in database
+     * @param $string
+     * @param mysqli $mysqli
+     * @param int $length
+     * @param int $type
+     * @return mixed
+     */
+    public static function safe____new($string, $mysqli, $length=64, $type=0) {
+        switch($type) {
+
+            // STRING
+            case 0;
+                $string = substr($string, $length);
+                break;
+
+            // INTEGER
+            case 1;
+                die("NOT IMPLEMENTED");
+                break;
+        }
+
+        return $mysqli->real_escape_string($string);
+    }
+
+    /**
      * TODO: REMOVE
      * @param mysqli $mysqli
      * @param int|null $line

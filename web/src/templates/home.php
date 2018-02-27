@@ -35,7 +35,7 @@ $this->layout("template",
             <form method="POST" action="<?=$this->e($config["baseUrl"])?>session/join/" class="form-inline">
                 <div class="input-group element-center">
                     <input name="sessionID" id="sessionID" class="form-control" placeholder="Session Identifier"
-                           type="text">
+                           type="text" maxlength="11">
                     <span class="input-group-btn">
                         <input name="submit" value="Join Session" class="btn btn-primary btn-lg" type="submit">
                     </span>

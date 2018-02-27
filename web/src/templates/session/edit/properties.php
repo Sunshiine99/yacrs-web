@@ -76,13 +76,13 @@ else {
     <div class="form-group row">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
-            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Title">
+            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Title" maxlength="80">
         </div>
     </div>
     <div class="form-group row advanced">
         <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier</label>
         <div class="col-sm-9">
-            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)">
+            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)" maxlength="20">
         </div>
     </div>
     <div class="form-group row">
@@ -183,7 +183,7 @@ else {
                 <?php $i = 0; ?>
                 <?php foreach($users as $user): ?>
                     <div class="input-group input-add-more-item">
-                        <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1">
+                        <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1" maxlength="80">
                         <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
@@ -192,7 +192,7 @@ else {
                 <?php endforeach; ?>
                 <?php else:?>
                     <div class="input-group input-add-more-item">
-                        <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1">
+                        <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1" maxlength="80">
                         <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>

@@ -100,7 +100,7 @@ else {
     <div class="form-group row" id="questions-row">
         <label class="col-sm-2 control-label" for="question">Question</label>
         <div class="col-sm-10">
-            <input class="form-control" name="question" id="mcQuestion" value="<?=isset($question)?$this->e($question->getQuestion()):""?>" size="80" type="text" tabindex="1">
+            <input class="form-control" name="question" id="mcQuestion" value="<?=isset($question)?$this->e($question->getQuestion()):""?>" size="80" type="text" tabindex="1" maxlength="80">
         </div>
     </div>
 
@@ -114,7 +114,7 @@ else {
                     <?php $i = 0; ?>
                     <?php foreach ($choices as $choice): ?>
                         <div class="input-group input-add-more-item<?=$choice->isCorrect()?" correct":""?>">
-                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1">
+                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1" maxlength="80">
                             <input id="mcq-choice-id-<?=$i?>" name="mcq-choice-id-<?=$i?>" class="mcq-choice-id" type="hidden" value="<?=$this->e($choice->getChoiceID())?>">
                             <input id="mcq-choice-correct-<?=$i?>" name="mcq-choice-correct-<?=$i?>" class="mcq-choice-correct" type="hidden" value="<?=$choice->isCorrect()?"true":"false"?>">
                             <button class="incorrect btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">

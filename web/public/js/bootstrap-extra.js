@@ -106,15 +106,6 @@ body.on("click", ".confirm-delete .cancel", function(event) {
     actions.css("display", "inline-flex");
 });
 
-
-$(".actions-confirm-delete .actions .delete").click(function() {
-
-});
-
-$(".confirm-delete .cancel").click(function() {
-
-});
-
 /********************************************************************
  * Click Href, Click Post
  ********************************************************************/

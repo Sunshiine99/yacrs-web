@@ -317,6 +317,7 @@ class DatabaseSessionQuestion
             $output["total"] = $output["answered"];
         }
 
+        /*
         try {
             $rand = rand(100, 999);
         }
@@ -326,7 +327,73 @@ class DatabaseSessionQuestion
 
         $output["answered"] = (time() % 100) * 5;
         $output["total"] = 500;
+        */
 
         return $output;
+    }
+
+    /**
+     * Reorder questions in a session
+     * @param int $sessionID
+     * @param array $order Of form E.g. [2, 3, 5, 4] Where 2,3,4,5 are session question IDs in a new order
+     * @param mysqli $mysqli
+     * @return bool
+     */
+    public static function reorder($sessionID, $order, $mysqli) {
+        $sessionID = Database::safe($sessionID, $mysqli);
+
+        // TODO LOCK
+
+        // Run query to get all existing session questions
+        $sql = "SELECT *
+                FROM `yacrs_sessionQuestions` as sq
+                WHERE sq.`sessionID` = $sessionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        // Loop for every old session question
+        while($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+
+        // Ensure every item in new order was in old order
+        $i = 0;
+        foreach($order as $o) {
+            $flag = false;
+            foreach($rows as $row) {
+                if($row["questionID"] == $o) {
+                    $array["ID"][] = $rows[$i]["ID"];
+                    $array["questionID"][] = $o;
+                    $array["active"][] = $row["active"];
+                    $flag = true;
+                    break;
+                }
+            }
+            if(!$flag) {
+                return null;
+            }
+            $i++;
+        }
+
+        // Build Query
+        $sql = "START TRANSACTION;";
+        for($i=0; $i<count($array["ID"]); $i++) {
+            $ID         = Database::safe($array["ID"][$i],          $mysqli);
+            $questionID = Database::safe($array["questionID"][$i],  $mysqli);
+            $active     = Database::safe($array["active"][$i],      $mysqli);
+
+            $sql .= " UPDATE `yacrs_sessionQuestions` as sq SET sq.`questionID` = '$questionID', sq.`active` = '$active' WHERE sq.`ID` = $ID;";
+        }
+        $sql .= " COMMIT;";
+
+        $mysqli->multi_query($sql);
+        while ($mysqli->next_result());
+
+        if ($mysqli->errno) {
+            return false;
+        }
+
+        return true;
     }
 }

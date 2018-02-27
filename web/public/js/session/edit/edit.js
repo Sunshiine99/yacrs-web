@@ -1,4 +1,16 @@
-$(".question-list .confirm-delete .confirm").click(function () {
+function updateQuestionNumbers() {
+
+    // For each question
+    var i = 1;
+    $($("ul.question-list li.list-group-item").get().reverse()).each(function(index) {
+
+        // Update the question number
+        $(this).find("div.question-number").text(i + ".");
+        i++;
+    });
+}
+
+$("body").on("click", ".question-list .confirm-delete .confirm", function(event) {
 
     // Disable button clicked to indicate that something is happening
     $(this).attr("disabled", "disabled");
@@ -44,14 +56,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
         var actionsConfirmDelete = $(that).closest(".actions-confirm-delete");
         actionsConfirmDelete.find(".actions").css("display", "inline-flex");
 
-        // For each question
-        var i = 1;
-        $(listGroup.find("li.list-group-item").get().reverse()).each(function(index) {
-
-            // Update the question number
-            $(this).find("div.question-number").text(i + ".");
-            i++;
-        });
+        updateQuestionNumbers();
     });
 });
 
@@ -224,13 +229,34 @@ function sessionDrop(e) {
     // Produce array of questions (and whether they are active) in the correct order
     var qs = [];
     questionList.find("li.question-item").each(function(item) {
-        qs.push([
-            parseInt($(this).attr("data-session-question-id")),
-            $(this).hasClass("active-question")
-        ]);
+        qs.push(parseInt($(this).attr("data-question-id")));
     });
 
-    alert(JSON.stringify(qs));
+    qs.reverse();
+
+    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content");
+
+    // Construct URL for API request
+    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/reorder/?order=" + JSON.stringify(qs);
+
+    // Make an api request
+    $.getJSON(url, function(data) {
+
+        // If successful, update question numbers
+        if(data["success"] === true) {
+            updateQuestionNumbers();
+        }
+
+        // Otherwise, display an error
+        else {
+            alerter({
+                title: "Error",
+                message: "Could not reorder questions for an unknown reason",
+                type: "danger",
+                dismissable: true
+            });
+        }
+    });
 
     return false;
 }

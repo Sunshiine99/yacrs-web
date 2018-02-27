@@ -92,7 +92,7 @@ $this->layout("template",
             $class = $question->isActive() ? " active-question" : "";
 
             ?>
-            <li class="list-group-item question-item<?=$this->e($class)?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+            <li class="list-group-item question-item<?=$this->e($class)?>" data-question-id="<?=$this->e($question->getQuestionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                 <div class="question-number pull-left">
                     <?=$qi?>.
                 </div>

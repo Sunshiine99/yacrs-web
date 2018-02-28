@@ -13,7 +13,7 @@ class DatabaseLogin
     public static function checkLogin($username, $password, $mysqli) {
 
         // Make username and password databas safe
-        $username = Database::safe____new($username, $mysqli, 80);
+        $username = Database::safe($username, $mysqli);
         $password = Database::safe($password, $mysqli);
 
         // Run query to select user from database
@@ -61,10 +61,10 @@ class DatabaseLogin
         $passwordHashed = (string)password_hash($password, PASSWORD_BCRYPT);
 
         // Make variables database safe
-        $username = Database::safe____new($username, $mysqli, 80);
+        $username = Database::safe($username, $mysqli);
         $passwordHashed = Database::safe($passwordHashed, $mysqli);
-        $givenName = Database::safe____new($givenName, $mysqli, 64);
-        $surname = Database::safe____new($surname, $mysqli, 64);
+        $givenName = Database::safe($givenName, $mysqli);
+        $surname = Database::safe($surname, $mysqli);
         $email = Database::safe($email, $mysqli);
 
         // Run query to add user to users table
@@ -96,7 +96,7 @@ class DatabaseLogin
         // Hash the password
         $passwordHashed = (string)password_hash($password, PASSWORD_BCRYPT);
 
-        $username = Database::safe____new($username, $mysqli, 80);
+        $username = Database::safe($username, $mysqli);
         $passwordHashed = Database::safe($passwordHashed, $mysqli);
 
         $sql = "UPDATE `yacrs_user` as u

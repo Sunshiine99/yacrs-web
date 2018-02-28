@@ -31,12 +31,7 @@ class Database
 
             // INTEGER
             case 1;
-                $digits = strlen($string);
-                while($digits > $length){
-                    $string = $string/10;
-                    $digits--;
-                }
-                $string = round($string, 0, PHP_ROUND_HALF_DOWN);
+                $string = substr($string, 0, $length);
                 break;
         }
 

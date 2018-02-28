@@ -21,7 +21,7 @@ class DatabaseApiKey
         $i = 0;
 
         // Make username database safe
-        $username = Database::safe____new($user->getUsername(), $mysqli, 80);
+        $username = Database::safe($user->getUsername(), $mysqli);
 
         // Generate new api key
         $key = self::generateApiKey();

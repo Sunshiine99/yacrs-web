@@ -9,7 +9,7 @@ class DatabaseQuestion
      * @return Question|null
      */
     public static function load($questionID, $mysqli) {
-        $questionID = Database::safe____new($questionID, $mysqli, 11, 1);
+        $questionID = Database::safe($questionID, $mysqli);
 
         // Run SQL query to get question
         $sql = "SELECT
@@ -58,7 +58,7 @@ class DatabaseQuestion
      * @return QuestionMcq|null
      */
     public static function loadMcq($question, $questionID, $mysqli) {
-        $questionID = Database::safe____new($questionID, $mysqli, 11, 1);
+        $questionID = Database::safe($questionID, $mysqli);
 
         // Run SQL query to get MCQ choices
         $sql = "SELECT `ID`, `choice`, `correct`
@@ -87,7 +87,7 @@ class DatabaseQuestion
     public static function insert($question, $mysqli) {
 
         // Make variables safe for database use
-        $text       = Database::safe____new($question->getQuestion(), $mysqli, 80);
+        $text       = Database::safe($question->getQuestion(), $mysqli);
         $type       = self::questionTypeToId($question->getType());
 
         // Run query to insert into yacrs_questions table
@@ -107,7 +107,7 @@ class DatabaseQuestion
         if(!$result) return null;
 
         // Get the question ID
-        $questionID = Database::safe____new($mysqli->insert_id, $mysqli, 11, 1);
+        $questionID = Database::safe($mysqli->insert_id, $mysqli);
 
         switch(get_class($question)) {
             case "QuestionMcq":
@@ -126,13 +126,13 @@ class DatabaseQuestion
      */
     private static function insertMcq($question, $questionID, $mysqli) {
 
-        $questionID = Database::safe____new($questionID, $mysqli, 11, 1);
+        $questionID = Database::safe($questionID, $mysqli);
 
         // Foreach choice
         foreach($question->getChoices() as $choice) {
 
             // Make text safe for database
-            $text = Database::safe____new($choice->getChoice(), $mysqli, 80);
+            $text = Database::safe($choice->getChoice(), $mysqli);
 
             // Get database representation of correct boolean
             $correct = $choice->isCorrect() ? "1" : "0";
@@ -159,8 +159,8 @@ class DatabaseQuestion
      * @return bool
      */
     public static function update($question, $mysqli) {
-        $questionText = Database::safe____new($question->getQuestion(), $mysqli, 80);
-        $questionID = Database::safe____new($question->getQuestionID(), $mysqli, 11, 1);
+        $questionText = Database::safe($question->getQuestion(), $mysqli);
+        $questionID = Database::safe($question->getQuestionID(), $mysqli);
 
         $sql = "UPDATE `yacrs_questions`
                 SET
@@ -191,7 +191,7 @@ class DatabaseQuestion
      * @return bool
      */
     private static function updateMcq($question, $mysqli) {
-        $questionID = Database::safe____new($question->getQuestionID(), $mysqli, 11, 1);
+        $questionID = Database::safe($question->getQuestionID(), $mysqli);
 
         // Get the new choices
         $choices = $question->getChoices();
@@ -217,7 +217,7 @@ class DatabaseQuestion
             if($row["ID"] != $choices[$i]->getChoiceID()) {
 
                 // Make the old choice ID database safe
-                $choiceID = Database::safe____new($row["ID"], $mysqli, 11, 1);
+                $choiceID = Database::safe($row["ID"], $mysqli);
 
                 // Delete this old choice
                 $sql = "DELETE FROM `yacrs_questionsMcqChoices`
@@ -232,9 +232,9 @@ class DatabaseQuestion
 
 
                 // Make the choice text and choice ID database safe
-                $choice = Database::safe____new($choices[$i]->getChoice(), $mysqli, 80);
+                $choice = Database::safe($choices[$i]->getChoice(), $mysqli);
                 $correct = Database::safe(bool2dbString($choices[$i]->isCorrect()), $mysqli);
-                $choiceID = Database::safe____new($choices[$i]->getChoiceID(), $mysqli, 11, 1);
+                $choiceID = Database::safe($choices[$i]->getChoiceID(), $mysqli);
 
                 // Update the old choice
                 $sql = "UPDATE `yacrs_questionsMcqChoices`
@@ -253,7 +253,7 @@ class DatabaseQuestion
         while($i < count($choices)) {
 
             // Make this choice text database safe
-            $choice = Database::safe____new($choices[$i]->getChoice(), $mysqli, 80);
+            $choice = Database::safe($choices[$i]->getChoice(), $mysqli);
 
             // Add this new choice
             $sql = "INSERT INTO `yacrs_questionsMcqChoices` (`questionID`, `choice`)

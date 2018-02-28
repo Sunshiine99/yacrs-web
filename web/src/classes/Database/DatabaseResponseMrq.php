@@ -27,8 +27,8 @@ class DatabaseResponseMrq
      * @return bool
      */
     public static function update($sessionQuestionID, $userID, $choices, $question, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
-        $userID             = Database::safe____new($userID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $userID             = Database::safe($userID, $mysqli);
 
         // SQL query to delete existing choices
         // TODO: Actually update
@@ -53,8 +53,8 @@ class DatabaseResponseMrq
      * @return Response[]
      */
     public static function loadUserResponses($sessionQuestionID, $userID, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
-        $userID             = Database::safe____new($userID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $userID             = Database::safe($userID, $mysqli);
 
         // Run query to get the ID
         $sql = "SELECT rmcq.`ID`, rmcq.`choiceID`
@@ -87,7 +87,7 @@ class DatabaseResponseMrq
      * @return array|null
      */
     public static function loadResponses($sessionQuestionID, $mysqli) {
-        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
         $sql = "SELECT r.userID, username, time, choice, r.choiceID
                 FROM
@@ -132,7 +132,7 @@ class DatabaseResponseMrq
     }
 
     public static function getCorrectChoices($questionID, $mysqli){
-        $questionID  = Database::safe____new($questionID, $mysqli, 11, 1);
+        $questionID  = Database::safe($questionID, $mysqli);
 
         $sql = "SELECT choice
                 FROM

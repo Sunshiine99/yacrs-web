@@ -11,8 +11,8 @@ class DatabaseSessionHistory
      * @return int|null
      */
     public static function insert($user, $session, $mysqli) {
-        $userID = Database::safe____new($user->getId(), $mysqli, 11, 1);
-        $sessionID = Database::safe____new($session->getSessionID(), $mysqli, 11, 1);
+        $userID = Database::safe($user->getId(), $mysqli);
+        $sessionID = Database::safe($session->getSessionID(), $mysqli);
 
         // Run query to insert
         $sql = "INSERT INTO `yacrs_sessionHistory` (`userID`, `sessionID`, `time`)

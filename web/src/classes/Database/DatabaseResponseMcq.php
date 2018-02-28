@@ -11,9 +11,9 @@ class DatabaseResponseMcq
      * @return int|null
      */
     public static function insert($sessionQuestionID, $userID, $choiceID, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
-        $userID             = Database::safe____new($userID, $mysqli, 11, 1);
-        $choiceID           = Database::safe____new($choiceID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $userID             = Database::safe($userID, $mysqli);
+        $choiceID           = Database::safe($choiceID, $mysqli);
 
         $sql = "INSERT INTO `yacrs_responseMcq` (`time`, `sessionQuestionID`, `userID`, `choiceID`) 
                 VALUES ('".time()."', '$sessionQuestionID', '$userID', '$choiceID')";
@@ -32,7 +32,7 @@ class DatabaseResponseMcq
      * @return null
      */
     public static function loadChoicesTotal($sessionQuestionID, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
 
         $sql = "SELECT
                     sq.`ID` as sessionQuestionID,
@@ -76,8 +76,8 @@ class DatabaseResponseMcq
      * @return Response|null ID of existing response
      */
     public static function loadUserResponse($sessionQuestionID, $userID, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
-        $userID             = Database::safe____new($userID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $userID             = Database::safe($userID, $mysqli);
 
         // Run query to get the ID
         $sql = "SELECT rmcq.`ID`, rmcq.`choiceID`
@@ -101,8 +101,8 @@ class DatabaseResponseMcq
     }
 
     public static function update($responseID, $choiceID, $mysqli) {
-        $responseID = Database::safe____new($responseID, $mysqli, 11, 1);
-        $choiceID   = Database::safe____new($choiceID, $mysqli, 11, 1);
+        $responseID = Database::safe($responseID, $mysqli);
+        $choiceID   = Database::safe($choiceID, $mysqli);
 
         $sql = "UPDATE `yacrs_responseMcq`
                 SET
@@ -126,7 +126,7 @@ class DatabaseResponseMcq
      * @return array|null
      */
     public static function loadResponses($sessionQuestionID, $mysqli) {
-        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
         $sql = "SELECT r.userID, username, time, choice, r.`choiceID`
                 FROM

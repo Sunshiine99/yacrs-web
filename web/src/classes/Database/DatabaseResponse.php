@@ -11,8 +11,8 @@ class DatabaseResponse
      * @return int|null
      */
     public static function insert($sessionQuestionID, $userID, $response, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
-        $userID             = Database::safe____new($userID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $userID             = Database::safe($userID, $mysqli);
         $response           = Database::safe($response, $mysqli);
 
         $sql = "INSERT INTO `yacrs_response` (`time`, `sessionQuestionID`, `userID`, `response`) 
@@ -33,8 +33,8 @@ class DatabaseResponse
      * @return Response|null ID of existing response
      */
     public static function loadUserResponse($sessionQuestionID, $userID, $mysqli) {
-        $sessionQuestionID  = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
-        $userID             = Database::safe____new($userID, $mysqli, 11, 1);
+        $sessionQuestionID  = Database::safe($sessionQuestionID, $mysqli);
+        $userID             = Database::safe($userID, $mysqli);
 
         // Run query to get the ID
         $sql = "SELECT r.`ID`, r.`response`
@@ -58,7 +58,7 @@ class DatabaseResponse
     }
 
     public static function update($responseID, $response, $mysqli) {
-        $responseID = Database::safe____new($responseID, $mysqli, 11, 1);
+        $responseID = Database::safe($responseID, $mysqli);
         $response   = Database::safe($response, $mysqli);
 
         $sql = "UPDATE `yacrs_response`
@@ -83,7 +83,7 @@ class DatabaseResponse
      * @return Response[]|null
      */
     public static function loadResponses($sessionQuestionID, $mysqli) {
-        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
         $sql = "SELECT r.`userID`, username, time, response
                 FROM
@@ -114,7 +114,7 @@ class DatabaseResponse
     }
 
     public static function loadWordCloud($sessionQuestionID, $mysqli) {
-        $sessionQuestionID = Database::safe____new($sessionQuestionID, $mysqli, 11, 1);
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
         $sql = "SELECT response
                 FROM `yacrs_response` as r

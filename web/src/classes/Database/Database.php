@@ -36,7 +36,7 @@ class Database
                     $string = $string/10;
                     $digits--;
                 }
-                $string = round($string, 0, PHP_ROUND_HALF_DOWN);
+                die(round($string, 0, PHP_ROUND_HALF_DOWN));
                 break;
         }
 

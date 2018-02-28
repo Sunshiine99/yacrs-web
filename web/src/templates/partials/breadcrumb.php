@@ -7,7 +7,7 @@
 <div class="container">
     <nav id="breadcrumb" aria-label="breadcrumb" role="navigation">
         <div class="breadcrumb-right pull-right">
-            <a href="<?=$this->e($config["baseUrl"].getLastPage())?>">Back</a>
+            <a href="#" onclick="window.history.back();">Back</a>
         </div>
         <ol class="breadcrumb">
             <?php foreach($breadcrumbs->getItems() as $breadcrumb): ?>

@@ -139,7 +139,7 @@ else {
                 </div>
                 <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
                     <input class="submit btn btn-primary" name="submit" value="<?=$saveText?>" type="submit" tabindex="1">
-                    <a href="<?=$this->e($config["baseUrl"].getLastPage())?>" class="btn btn-light btn-light-border">Cancel</a>
+                    <a onclick="history.back()" class="btn btn-light btn-light-border">Cancel</a>
                     <button class="btn btn-light btn-light-border input-add-more-input float-right" type="button">
                         Add Another Choice
                     </button>
@@ -151,7 +151,7 @@ else {
         <div id="question-text" class="form-group row question">
             <div class="col-sm-10 offset-sm-2">
                 <input class="submit btn btn-primary" name="submit" value="<?=$saveText?>" type="submit" tabindex="1">
-                <a href="<?=$this->e($config["baseUrl"].getLastPage())?>" class="btn btn-light btn-light-border">Cancel</a>
+                <a onclick="history.back()" class="btn btn-light btn-light-border">Cancel</a>
             </div>
         </div>
     <?php endif; ?>

@@ -210,7 +210,7 @@ else {
     <div class="form-group row">
         <div class="col-sm-9 offset-sm-3">
             <input class="submit btn btn-primary margin-xs-bottom-10 width-xs-50percent-2point5px" name="submit" value="<?=$submitText?>" type="submit">
-            <a href="<?=$this->e($config["baseUrl"].getLastPage())?>" class="submit btn btn-light btn-light-border margin-xs-bottom-10 width-xs-50percent-2point5px">Cancel</a>
+            <a onclick="window.history.back();" class="submit btn btn-light btn-light-border margin-xs-bottom-10 width-xs-50percent-2point5px">Cancel</a>
 
             <div class="pull-right width-xs-full">
                 <a id="view-advanced-settings" class="btn btn-light btn-light-border width-xs-full">

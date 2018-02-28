@@ -49,7 +49,7 @@ class ApiSession
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {

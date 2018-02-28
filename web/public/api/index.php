@@ -43,6 +43,7 @@ Flight::route("/session/@sessionID/question/new/text/", array("ApiSessionQuestio
 Flight::route("/session/@sessionID/question/new/textlong/", array("ApiSessionQuestionNew", "textLong"));
 
 Flight::route("/session/@sessionID/question/@sessionQuestionID/", array("ApiSessionQuestion", "viewSessionQuestion"));
+Flight::route("/session/@sessionID/question/@sessionQuestionID/results/", array("ApiSessionQuestion", "questionResults"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/delete/", array("ApiSessionQuestion", "deleteSessionQuestion"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/edit/", array("ApiSessionQuestion", "edit"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/users/", array("ApiSessionQuestion", "users"));

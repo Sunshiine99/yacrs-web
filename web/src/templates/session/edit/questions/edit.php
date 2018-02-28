@@ -8,6 +8,7 @@
  * @var $alert Alert
  * @var $session Session
  * @var $question Question|QuestionMcq|QuestionText|QuestionTextLong
+ * @var $screenshot boolean
  */
 $this->layout("template",
     [
@@ -74,6 +75,12 @@ else {
 <h2 class="page-section">
     <?=$this->e($newEditText)?> Question
 </h2>
+
+<?php if($screenshot): ?>
+    <div id="screenshot-container">
+        <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+    </div>
+<?php endif; ?>
 
 <form id="" action="." method="POST" class="form-horizontal<?=$new?" new":""?>">
 

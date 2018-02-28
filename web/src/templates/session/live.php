@@ -232,6 +232,8 @@
                     <i class="fa fa-power-off"></i>
                 </a>
             </div>
+            <div id="base"></div>
+            <img id="my-preview"/>
         </div>
 
         <?php if(!isDesktopApp()): ?>

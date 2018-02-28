@@ -36,7 +36,7 @@ class PageSessionEditQuestion extends PageSessionEdit
 
     /**
      * Submits a new session
-     * @param int $sessionID
+     * @param int $sessionIdentifier
      */
     public static function addSubmit($sessionIdentifier) {
         /**
@@ -127,6 +127,9 @@ class PageSessionEditQuestion extends PageSessionEdit
         // Get question whilst ensuring permissions are kept
         $question = self::setupQuestion($sessionID, $sessionQuestionID, $mysqli);
 
+        // Load whether a screenshot exists
+        $screenshot = !!DatabaseSessionQuestionScreenshot::loadSessionQuestionID($sessionQuestionID, $mysqli);
+
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
@@ -140,6 +143,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $data["session"] = $session;
         $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
+        $data["screenshot"] = $screenshot;
         echo $templates->render("session/edit/questions/edit", $data);
     }
 
@@ -210,6 +214,52 @@ class PageSessionEditQuestion extends PageSessionEdit
         DatabaseQuestion::update($question, $mysqli);
 
         header("Location: " . $config["baseUrl"] . "session/$sessionIdentifier/edit/");
+        die();
+    }
+
+
+    public static function screenshot($sessionIdentifier, $sessionQuestionID) {
+        /**
+         * Setup basic session variables (Type hinting below to avoid IDE error messages)
+         * @var $templates League\Plates\Engine
+         * @var $data array
+         * @var $config array
+         * @var $user User
+         * @var $mysqli mysqli
+         * @var $session Session
+         */
+        extract(self::setup($sessionIdentifier));
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
+        // Load filename
+        $filename = DatabaseSessionQuestionScreenshot::loadSessionQuestionID($sessionQuestionID, $mysqli);
+
+        if(!$filename) {
+            PageError::error404();
+            die();
+        }
+
+        // Load extension
+        $extension = Upload::getExtensionFromFilename($filename);
+
+        // Load header
+        $header = Upload::getHeaderFromExtension($extension);
+
+        header("Content-type: $header");
+
+        if(!file_exists("/var/www/uploads/" . $filename)) {
+            PageError::error404();
+            die();
+        }
+
+        echo readfile("/var/www/uploads/" . $filename);
         die();
     }
 

@@ -25,3 +25,13 @@ form.new .question:not(#question-mcq) {
 .input-add-more-item.correct button.correct {
     display: none;
 }
+
+#screenshot-container {
+    height: 400px;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+    #screenshot-container img {
+        height: 100%;
+    }

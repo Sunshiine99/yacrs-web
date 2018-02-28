@@ -97,6 +97,7 @@ Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]
 Flight::route("POST /session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "editSubmit"));
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "edit"));
 
+Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/screenshot/", array("PageSessionEditQuestion", "screenshot"));
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/delete/", array("PageSessionEditQuestion", "delete"));
 
 Flight::route("POST /session/@id:[0-9]*/edit/question/new/", array("PageSessionEditQuestion", "addSubmit"));

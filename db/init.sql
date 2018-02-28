@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Feb 13, 2018 at 03:05 PM
--- Server version: 5.7.20
+-- Generation Time: Feb 28, 2018 at 05:49 PM
+-- Server version: 5.7.21
 -- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -165,6 +165,18 @@ CREATE TABLE `yacrs_sessionQuestions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `yacrs_sessionQuestionScreenshot`
+--
+
+CREATE TABLE `yacrs_sessionQuestionScreenshot` (
+  `ID` int(11) NOT NULL,
+  `sessionQuestionID` int(11) NOT NULL,
+  `screenshotID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `yacrs_sessions`
 --
 
@@ -199,6 +211,17 @@ CREATE TABLE `yacrs_sessionsAdditionalUsers` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `yacrs_uploads`
+--
+
+CREATE TABLE `yacrs_uploads` (
+  `ID` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `yacrs_user`
 --
 
@@ -209,7 +232,9 @@ CREATE TABLE `yacrs_user` (
   `surname` varchar(64) DEFAULT NULL,
   `isSessionCreatorOverride` tinyint(1) DEFAULT NULL,
   `isAdminOverride` tinyint(1) DEFAULT NULL,
-  `isGuest` tinyint(4) NOT NULL DEFAULT '0'
+  `isGuest` tinyint(4) NOT NULL DEFAULT '0',
+  `password` char(128) DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -284,6 +309,12 @@ ALTER TABLE `yacrs_sessionQuestions`
   ADD KEY `yacrs_sessionQuestions_questionID` (`questionID`);
 
 --
+-- Indexes for table `yacrs_sessionQuestionScreenshot`
+--
+ALTER TABLE `yacrs_sessionQuestionScreenshot`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `yacrs_sessions`
 --
 ALTER TABLE `yacrs_sessions`
@@ -299,10 +330,17 @@ ALTER TABLE `yacrs_sessionsAdditionalUsers`
   ADD KEY `yacrs_sessionsAdditionalUsers_userID` (`userID`);
 
 --
+-- Indexes for table `yacrs_uploads`
+--
+ALTER TABLE `yacrs_uploads`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `yacrs_user`
 --
 ALTER TABLE `yacrs_user`
-  ADD PRIMARY KEY (`userID`);
+  ADD PRIMARY KEY (`userID`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -369,6 +407,12 @@ ALTER TABLE `yacrs_sessionQuestions`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `yacrs_sessionQuestionScreenshot`
+--
+ALTER TABLE `yacrs_sessionQuestionScreenshot`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `yacrs_sessions`
 --
 ALTER TABLE `yacrs_sessions`
@@ -378,6 +422,12 @@ ALTER TABLE `yacrs_sessions`
 -- AUTO_INCREMENT for table `yacrs_sessionsAdditionalUsers`
 --
 ALTER TABLE `yacrs_sessionsAdditionalUsers`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yacrs_uploads`
+--
+ALTER TABLE `yacrs_uploads`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --

@@ -10,7 +10,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $questions = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
         $output = [];
@@ -29,7 +29,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $result = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
 
@@ -104,7 +104,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $questions = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
         $questions = array_reverse($questions["questions"]);
@@ -194,7 +194,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $sessionID = $session->getSessionID();
 
@@ -227,6 +227,48 @@ class ApiSessionQuestion
         }
 
         $result = DatabaseSessionQuestion::reorder($session->getSessionID(), $order, $mysqli);
+
+        if(!$result) {
+            ApiError::unknown();
+            die();
+        }
+
+        $output = [];
+        $output["success"] = true;
+        Api::output($output);
+    }
+
+    /**
+     * @param int $sessionIdentifier
+     * @param int $sessionQuestionID
+     */
+    public static function screenshot($sessionIdentifier, $sessionQuestionID) {
+        /**
+         * Setup basic session question variables (Type hinting below to avoid IDE error messages)
+         * @var $mysqli mysqli
+         * @var $user User
+         * @var $session Session
+         * @var $question Question
+         */
+        extract(self::setupSessionQuestion($sessionIdentifier, $sessionQuestionID));
+
+        // Create a new upload object
+        $upload = new Upload("/var/www/uploads/");
+
+        // Use posted base64 data
+        $upload->base64($_REQUEST["base64"]);
+
+        // If not valid data
+        if(!$upload->isValid()) {
+            ApiError::unknown();
+            die();
+        }
+
+        // Save to disk
+        $upload->save();
+
+        // Insert item into database
+        $result = DatabaseSessionQuestionScreenshot::insertFilename($upload->getFilename(), $sessionQuestionID, $mysqli);
 
         if(!$result) {
             ApiError::unknown();

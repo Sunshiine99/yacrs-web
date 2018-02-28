@@ -27,11 +27,12 @@ $config["ldap"]["host"]                  = "130.209.13.173";
 $config["ldap"]["context"]               = "o=Gla";
 
 // Manual username password combos. Used for initial setting up of admin users.
-$config["user"]["users"]["admin"]        = "password";
+$config["user"]["users"][""]        = "";
 
 // Users who should always be admin
 $config["user"]["admin"][0]               = "admin";
 $config["user"]["admin"][1]               = "2198207s";
+$config["user"]["admin"][2]               = "";
 
 // Details used for LDAP bind
 //$config["ldap"]["bind"]["user"] = "";

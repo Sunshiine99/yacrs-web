@@ -46,6 +46,8 @@ Flight::route("/session/@sessionID/question/@sessionQuestionID/", array("ApiSess
 Flight::route("/session/@sessionID/question/@sessionQuestionID/delete/", array("ApiSessionQuestion", "deleteSessionQuestion"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/edit/", array("ApiSessionQuestion", "edit"));
 Flight::route("/session/@sessionID/question/@sessionQuestionID/users/", array("ApiSessionQuestion", "users"));
+Flight::route("/session/@sessionID/question/@sessionQuestionID/screenshot/", array("ApiSessionQuestion", "screenshot"));
+
 
 
 

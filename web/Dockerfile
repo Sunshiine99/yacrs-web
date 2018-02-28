@@ -46,5 +46,7 @@ RUN wget https://phar.phpunit.de/phpunit-5.7.9.phar -O phpunit.phar && \
 WORKDIR /var/www
 COPY . /var/www
 
+RUN chown -R www-data:www-data /var/www/uploads
+
 # Install composer dependencies
 RUN composer install -o

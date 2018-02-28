@@ -200,6 +200,7 @@ class DatabaseSession
 
         // Create a new session with the loaded attributes
         $session = new Session($row);
+        $session->setOwner($row["owner"]);
 
         //Set the session Identifier cause otherwise it is 0
         $sql = "SELECT sessionIdentifier

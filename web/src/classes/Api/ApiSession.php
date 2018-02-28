@@ -158,7 +158,6 @@ class ApiSession
 
     public static function startSession($sessionIdentifier){
 
-        //TODO check if a session is already running for the owner
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
@@ -180,7 +179,7 @@ class ApiSession
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {
@@ -232,7 +231,7 @@ class ApiSession
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {

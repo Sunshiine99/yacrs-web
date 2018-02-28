@@ -32,7 +32,7 @@ class ApiSessionQuestion
         $arr = self::setupSession($sessionIdentifier);
 
         $result = DatabaseSessionQuestion::loadSessionQuestions($arr["session"]->getSessionID(), $arr["mysqli"]);
-        
+
         $active = $result["active"];
         $activeSessionQuestionID = $result["activeSessionQuestionID"];
 

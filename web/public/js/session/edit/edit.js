@@ -239,12 +239,14 @@ function sessionDrop(e) {
     // Construct URL for API request
     var url = baseUrl + "api/session/" + sessionIdentifier + "/question/reorder/?order=" + JSON.stringify(qs);
 
+    updateQuestionNumbers();
+
     // Make an api request
     $.getJSON(url, function(data) {
 
         // If successful, update question numbers
         if(data["success"] === true) {
-            updateQuestionNumbers();
+
         }
 
         // Otherwise, display an error

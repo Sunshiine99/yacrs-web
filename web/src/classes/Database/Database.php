@@ -26,7 +26,7 @@ class Database
 
             // STRING
             case 0;
-                $string = substr($string, $length);
+                $string = substr($string, 0, $length);
                 break;
 
             // INTEGER

@@ -13,8 +13,8 @@ class DatabaseSession
 
         // Make variables safe for database use
         $ownerID                = Database::safe($session->getOwner(), $mysqli);
-        $title                  = Database::safe____new($session->getTitle(), $mysqli, 80);
-        $courseID               = Database::safe____new($session->getCourseID(), $mysqli, 20);
+        $title                  = Database::safe($session->getTitle(), $mysqli);
+        $courseID               = Database::safe($session->getCourseID(), $mysqli);
         $allowGuests            = Database::safe($session->getAllowGuests(), $mysqli);
         $onSessionList          = Database::safe($session->getOnSessionList(), $mysqli);
         $questionControlMode    = Database::safe($session->getQuestionControlMode(), $mysqli);
@@ -70,7 +70,7 @@ class DatabaseSession
         foreach($session->getAdditionalUsers() as $additionalUser) {
 
             // Get additional user ID
-            $additionalUserId = Database::safe____new(DatabaseUser::getUserId($additionalUser, $mysqli), $mysqli, 80);
+            $additionalUserId = Database::safe(DatabaseUser::getUserId($additionalUser, $mysqli), $mysqli);
 
             // If user ID was found
             if($additionalUserId) {

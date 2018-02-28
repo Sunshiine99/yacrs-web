@@ -29,10 +29,10 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        $arr = self::setupSession($sessionIdentifier);
 
-        $result = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
-
+        $result = DatabaseSessionQuestion::loadSessionQuestions($arr["session"]->getSessionID(), $arr["mysqli"]);
+        
         $active = $result["active"];
         $activeSessionQuestionID = $result["activeSessionQuestionID"];
 

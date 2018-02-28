@@ -201,6 +201,20 @@ class DatabaseSession
         // Create a new session with the loaded attributes
         $session = new Session($row);
 
+        //Set the session Identifier cause otherwise it is 0
+        $sql = "SELECT sessionIdentifier
+                FROM
+                    `yacrs_sessionIdentifier` as s
+                WHERE s.`sessionID` = '$sessionID'";
+        $result = $mysqli->query($sql);
+
+        // If error with result
+        if(!$result) return null;
+
+        // Load row from database
+        $row = $result->fetch_assoc();
+        $session->setSessionIdentifier($row["sessionIdentifier"]);
+
         // SQL query to get additional users
         $sql = "SELECT username
                 FROM

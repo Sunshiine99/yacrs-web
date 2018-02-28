@@ -10,7 +10,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $questions = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
         $output = [];
@@ -29,9 +29,9 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        $arr = self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
-        $result = DatabaseSessionQuestion::loadSessionQuestions($arr["session"]->getSessionID(), $arr["mysqli"]);
+        $result = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
 
         $active = $result["active"];
         $activeSessionQuestionID = $result["activeSessionQuestionID"];
@@ -104,7 +104,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $questions = DatabaseSessionQuestion::loadSessionQuestions($session->getSessionID(), $mysqli);
         $questions = array_reverse($questions["questions"]);
@@ -194,7 +194,7 @@ class ApiSessionQuestion
          * @var $user User
          * @var $session Session
          */
-        self::setupSession($sessionIdentifier);
+        extract(self::setupSession($sessionIdentifier));
 
         $sessionID = $session->getSessionID();
 

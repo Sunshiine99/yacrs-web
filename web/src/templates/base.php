@@ -73,7 +73,7 @@ $noHeaderFooter = isset($noHeaderFooter) ? !!$noHeaderFooter : false;
         }
         ?>
         <main role="main">
-            <?php $this->insert("partials/breadcrumb", ["breadcrumbs" => $breadcrumbs]) ?>
+            <?php $this->insert("partials/breadcrumb", ["breadcrumbs" => $breadcrumbs, "config" => $config]) ?>
             <?=$this->section("preContent")?>
             <div class="container">
                 <div id="alert">

@@ -2,6 +2,38 @@
 include("autoload.php");
 session_start();
 
+$path = $_GET["path"];
+
+if(!isset($_SESSION["history"]))
+    $_SESSION["history"] = [];
+
+// If this is the previous page, remove the last item
+else {
+
+    // If this was the page before hte last page visited
+    if($_SESSION["history"][count($_SESSION["history"])-2] == $path) {
+
+        // Remove the last item
+        array_pop($_SESSION["history"]);
+    }
+
+    // Otherwise, if this isn't the same page as last time (e.g. not a refresh_
+    elseif($_SESSION["history"][count($_SESSION["history"])-1] != $path) {
+
+        // Add new item to history
+        array_push($_SESSION["history"], $_GET["path"]);
+    }
+}
+
+function getLastPage() {
+    if(count($_SESSION["history"]) > 2) {
+        return $_SESSION["history"][count($_SESSION["history"])-2];
+    }
+    else {
+        return "";
+    }
+}
+
 // Enable error logging
 Flight::set('flight.log_errors', true);
 

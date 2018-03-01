@@ -162,7 +162,7 @@ html, body {
                     }
 
                     body main .session-list .list-group-item .session-number {
-                        color: #B59079;
+                        color: #ffb949;
                     }
 
                     body main .session-list .list-group-item .session-date {
@@ -176,6 +176,13 @@ html, body {
 
         body main ul.pagination li.page-item a {
             outline: none;
+        }
+
+        .fa-trash-o{    /*trash icon*/
+            color: #aa2935;
+        }
+        .fa-pencil{
+            color: green;
         }
 
 body footer {

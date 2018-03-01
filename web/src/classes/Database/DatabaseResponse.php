@@ -144,6 +144,7 @@ class DatabaseResponse
                 $dict[$r] = isset($dict[$r]) ? $dict[$r] + 1 : 1;
             }
         }
+
         $dict = StopWords::removeStop($dict);
 
         $output = [];

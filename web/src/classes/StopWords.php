@@ -6,7 +6,7 @@ class StopWords
     "be", "been", "being", "below", "between", "both", "but", "by", "can", "cannot",
     "could", "couldn", "did", "didn", "do", "does", "doesn't", "doing", "don",
     "down", "each", "few", "for", "from", "further", "had", "hadn", "has", "hasn",
-    "have", "haven", "having", "he", "he", "he", "he", "her", "here", "here", "on", "only",
+    "have", "haven", "having", "he", "he", "he", "he", "her", "here", "here", "on", "once", "only",
     "hers", "herself", "him", "himself", "his", "how", "i", "not", "of", "off",
     "if", "in", "into", "is", "isn", "it", "it", "its", "itself", "let", "me", "more",
     "most", "mustn", "my", "m", "s", "t", "d", "ll", "ve", "re", "myself", "no", "nor",
@@ -17,7 +17,7 @@ class StopWords
     "where", "which", "too", "up", "while", "who", "whom", "why", "with",
     "would", "wouldn", "you", "was", "wasn",
     "your", "yours", "yourself", "yourselves", "than", "that", "the", "their",
-    "theirs", "them", "themselves", "then");
+    "theirs", "them", "themselves", "then", "");
 
 
     public static function isInStop($word){

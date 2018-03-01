@@ -31,6 +31,7 @@
 
             button, a:hover{
                 color: #ffb949;
+                text-decoration: none;
             }
 
             .display-none {
@@ -63,7 +64,7 @@
                 top: 0;
                 padding: 10px;
                 background-color: #003865;
-                min-height: 80px;
+                min-height: 70px;
                 /*min-width: 940px;*/
                 min-width: 815px;
             }
@@ -90,7 +91,7 @@
                 }
 
                     .view .logo-container img {
-                        height: 80px;
+                        height: 60px;
                     }
 
                 .view .question-container {

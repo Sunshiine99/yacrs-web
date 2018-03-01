@@ -184,6 +184,11 @@ html, body {
         .fa-pencil{
             color: green;
         }
+        .fa-bars{
+            font-size: 25px;
+            margin-right:5px;
+
+        }
 
 body footer {
     position: relative;

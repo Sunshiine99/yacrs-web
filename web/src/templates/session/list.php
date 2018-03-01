@@ -15,8 +15,8 @@
             <?php $created = date($config["datetime"]["datetime"]["long"], $s->getCreated()); ?>
             <li class="list-group-item session-item">
                 <div class="pull-left">
-                    <span class="session-title">
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/<?=$s->checkIfUserCanEdit($user)?"edit/":""?>">
+                    <span id="session-link" class="session-title">
+                        <a id="session-link-url" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/<?=$s->checkIfUserCanEdit($user)?"edit/":""?>">
                             <?=$s->getTitle()?$this->e($s->getTitle()):"Session"?>
                         </a>
                     </span>

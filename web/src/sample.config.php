@@ -1,7 +1,7 @@
 <?php
 $config = [];
 
-$config["version"]                       = "2.0.0indev";
+$config["version"]                       = "2.0.0rc1";
 $config["title"]                         = "YACRS";
 $config["baseUrl"]                       = isset($_SERVER['HTTPS']) ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . "/";
 $config["login"]["type"]                 = "some";
@@ -27,12 +27,10 @@ $config["ldap"]["host"]                  = "130.209.13.173";
 $config["ldap"]["context"]               = "o=Gla";
 
 // Manual username password combos. Used for initial setting up of admin users.
-$config["user"]["users"][""]        = "";
+$config["user"]["users"]["admin"]        = "dufbYqFuU4EV8WgE";
 
 // Users who should always be admin
 $config["user"]["admin"][0]               = "admin";
-$config["user"]["admin"][1]               = "2198207s";
-$config["user"]["admin"][2]               = "";
 
 // Details used for LDAP bind
 //$config["ldap"]["bind"]["user"] = "";

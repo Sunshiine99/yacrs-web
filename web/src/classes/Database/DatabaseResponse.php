@@ -131,12 +131,12 @@ class DatabaseResponse
             // Get the response
             $response = $row["response"];
 
+            // Remove everything except letters
+            $response = preg_replace("/[^a-z]+/i", " ", $response);
+
             $responseExplode = explode(" ", $response);
 
             foreach($responseExplode as $r) {
-
-                // Remove everything except letters
-                $r = preg_replace("/[^a-z]+/i", "", $r);
 
                 // Make only the first letter uppercase
                 $r = strtolower($r);
@@ -144,6 +144,7 @@ class DatabaseResponse
                 $dict[$r] = isset($dict[$r]) ? $dict[$r] + 1 : 1;
             }
         }
+
         $dict = StopWords::removeStop($dict);
 
         $output = [];

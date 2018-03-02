@@ -162,7 +162,8 @@ html, body {
                     }
 
                     body main .session-list .list-group-item .session-number {
-                        color: #B59079;
+                        color: #ffb949;
+                       /* color: #aa2935;*/
                     }
 
                     body main .session-list .list-group-item .session-date {
@@ -176,6 +177,37 @@ html, body {
 
         body main ul.pagination li.page-item a {
             outline: none;
+        }
+
+        #session-link:hover{
+            font-weight: bold;
+        }
+        #session-link-url:hover{
+            text-decoration: none;
+        }
+
+        .fa-trash-o{    /*trash icon*/
+            color: #aa2935;
+        }
+
+        .fa-pencil{     /*edit icon*/
+            color: green;
+        }
+
+        .fa-eye{        /*responses icon*/
+            color: saddlebrown;
+        }
+
+        .fa-bars{       /*hamburger*/
+            font-size: 25px;
+            margin-right:5px;
+            color: black;
+        }
+
+        .fa-play{
+        }
+        .fa-stop{
+            color: red;
         }
 
 body footer {

@@ -15,8 +15,8 @@
             <?php $created = date($config["datetime"]["datetime"]["long"], $s->getCreated()); ?>
             <li class="list-group-item session-item">
                 <div class="pull-left">
-                    <span class="session-title">
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/<?=$s->checkIfUserCanEdit($user)?"edit/":""?>">
+                    <span id="session-link" class="session-title">
+                        <a id="session-link-url" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/<?=$s->checkIfUserCanEdit($user)?"edit/":""?>">
                             <?=$s->getTitle()?$this->e($s->getTitle()):"Session"?>
                         </a>
                     </span>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="actions-confirm-delete width-xs-full">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                        <?php if(isDesktopApp()): ?>
+                        <?php if(isDesktopApp() && $s->getQuestionControlMode() === 0): ?>
                             <button type="button" class="btn btn-light btn-light-border width-xs-full" onclick="liveViewEnter(<?=$this->e($s->getSessionIdentifier())?>)">
                                 <i class="fa fa-play"></i> Run
                             </button>

@@ -46,4 +46,12 @@ class ApiError
         Api::output($output);
         die();
     }
+
+    public static function custom($code, $message) {
+        $output = [];
+        $output["error"]["code"]    = $code;
+        $output["error"]["message"] = $message;
+        Api::output($output);
+        die();
+    }
 }

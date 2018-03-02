@@ -31,6 +31,7 @@
 
             button, a:hover{
                 color: #ffb949;
+                text-decoration: none;
             }
 
             .display-none {
@@ -63,7 +64,7 @@
                 top: 0;
                 padding: 10px;
                 background-color: #003865;
-                min-height: 80px;
+                min-height: 70px;
                 /*min-width: 940px;*/
                 min-width: 815px;
             }
@@ -82,7 +83,7 @@
 
                 .view .logo-container {
                     float: left;
-                    margin-right: 20px;
+                    margin-right: 10px;
                 }
 
                 .view.compact .logo-container {
@@ -90,12 +91,12 @@
                 }
 
                     .view .logo-container img {
-                        height: 80px;
+                        height: 70px;
                     }
 
                 .view .question-container {
                     width: 320px;
-                    height: 80px;
+                    height: 70px;
                     position: relative;
                     float: left;
                 }
@@ -121,34 +122,44 @@
 
                 .view .button-container {
                     float: left;
-                    height: 80px;
-                    line-height: 80px;
+                    height: 70px;
+                    line-height: 70px;
                     margin-left: 10px;
                     margin-right: 10px;
                     text-align: center;
                 }
 
-                .view .button-container.icon {
-                    font-size: 35px;
+                .view .button-container.icon { /* results icon*/
+                    font-size: 30px;
                 }
 
-                .view .button-container.nav {
+                .view .button-container.nav { /*navigation arrows */
                     font-size: 40px;
                 }
 
-                .view .button-container.activate {
-                    font-size: 18px;
-                    width: 90px;
+                .view .button-container.activate { /* Status text */
+                    font-size: 20px;
+                    width: 100px;
                 }
 
-                .view .button-container.new-question {
-                    margin-left: 20px;
+                .view .button-container.new-question { /*add question icon*/
+                    font-size: 30px;
                 }
 
-                .view .button-container.question-type {}
+                .view #question-type {
+                    vertical-align: middle;
+                    margin-bottom: 3px;
+                }
 
-                    .view .button-container.question-type select {
-                        width: 150px;
+                    .view .button-container.question-type select { /*drop down menu*/
+                        width: 110px;
+                    }
+
+                    .view .button-container.new-question-submit{ /*submit new question icon*/
+                        font-size: 30px;
+                        float: right;
+
+
                     }
 
                 .view .button-container.users {
@@ -212,20 +223,16 @@
                 <select id="question-type">
                     <option value="mcq_d">MCQ A-D</option>
                     <option value="mcq_e">MCQ A-E</option>
-                    <option value="mcq_f">MCQ A-F</option>
-                    <option value="mcq_g">MCQ A-G</option>
-                    <option value="mcq_h">MCQ A-H</option>
                     <option value="mrq_d">MRQ A-D</option>
                     <option value="mrq_e">MRQ A-E</option>
-                    <option value="mrq_f">MRQ A-F</option>
-                    <option value="mrq_g">MRQ A-G</option>
-                    <option value="mrq_h">MRQ A-H</option>
                     <option value="text">Text</option>
                     <option value="textlong">Long Text</option>
                     <option value="truefalse">True/False</option>
                     <option value="truefalsedk">True/False/Don't Know</option>
                 </select>
-                <button id="new-question-submit" class="btn btn-primary">+</button>
+                <a id="new-question-submit" href="#" class="button-container new-question-submit">
+                    <i class="fa fa-plus-square"></i>
+                </a>
             </div>
             <div class="button-container power">
                 <a id="power" href="#">
@@ -254,6 +261,7 @@
             }
             catch(e) {}
         </script>
+        <script src="<?= $this->e($config["baseUrl"]) ?>js/jquery.visible.min.js"></script>
         <script src = "<?=$this->e($config["baseUrl"])?>js/popper.min.js" ></script>
         <script src="<?= $this->e($config["baseUrl"]) ?>js/bootstrap-4.0.0-beta.2.min.js"></script>
         <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>

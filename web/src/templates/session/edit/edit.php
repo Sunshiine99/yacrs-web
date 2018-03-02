@@ -38,7 +38,7 @@ $this->layout("template",
             <h3>Session Identifier: <?=$this->e($session->getSessionIdentifier())?></h3>
         </div>
         <div class="col-sm-3">
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full" style="margin-left: 10px">Edit Properties</a>
             <?php if(isDesktopApp() && $session->getQuestionControlMode() === 0): ?>
                 <a onclick="liveViewEnter(<?=$this->e($session->getSessionIdentifier())?>)" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
             <?php endif; ?>
@@ -105,7 +105,7 @@ $this->layout("template",
                     </span>
                 </div>
                 <div class="drag pull-right">
-                    <i class="fa fa-bars" aria-hidden="true" draggable="true" style="font-size: 30px;padding: 9px 0;"></i>
+                    <i class="fa fa-bars" aria-hidden="true" draggable="true""></i> <!--style="font-size: 30px;padding: 9px 0;-->
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">

@@ -45,8 +45,19 @@ try {
     });
 
     // When the screenshot is done
-    ipcRenderer.on("liveViewScreenshotDone", function (e, args) {
-        liveViewScreenshotDone(args);
+    ipcRenderer.on("liveViewTakeScreenshotDone", function (e, base64data) {
+
+        // Construct the URL for the api communication
+        var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/screenshot/";
+
+        // Post the screenshot
+        $.post(url, { base64: base64data}).done(function(data) {
+
+            // If the post was not successful, log error
+            if(data["success"] !== true) {
+                console.log("Could not send screenshot");
+            }
+        });
     });
 }
 
@@ -367,6 +378,8 @@ function activate() {
 
             // If desktop app, take a screenshot and send it to the server
             if(isDesktopApp()) {
+                takeScreenshot("image/png");
+                /*
                 takeScreenshot(function(base64data){
 
                     // Construct the URL for the api communication
@@ -380,6 +393,7 @@ function activate() {
                             }
                         });
                 },"image/png");
+                */
             }
 
             startLoadUsersInterval();

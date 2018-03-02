@@ -260,18 +260,23 @@ class ApiSessionQuestion
 
         // If not valid data
         if(!$upload->isValid()) {
-            ApiError::unknown();
+            ApiError::custom("uploadInvalid", "The uploaded image was invalid");
             die();
         }
 
         // Save to disk
-        $upload->save();
+        $result = $upload->save();
+
+        if(!$result) {
+            ApiError::custom("couldNotSaveImage", "The server could not save the uploaded image");
+            die();
+        }
 
         // Insert item into database
         $result = DatabaseSessionQuestionScreenshot::insertFilename($upload->getFilename(), $sessionQuestionID, $mysqli);
 
         if(!$result) {
-            ApiError::unknown();
+            ApiError::custom("databaseError", "Could not add image details to database");
             die();
         }
 

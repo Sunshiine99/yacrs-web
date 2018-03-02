@@ -47,8 +47,14 @@ class Upload
         $path = $this->getDirectory() . $this->getFilename();
 
         // If file doesn't already exist, write it to file
-        if(!file_exists($path))
-            file_put_contents($path, $this->data);
+        if(!file_exists($path)) {
+            try {
+                file_put_contents($path, $this->data);
+            }
+            catch(Exception $e) {
+                return null;
+            }
+        }
 
         return $path;
     }

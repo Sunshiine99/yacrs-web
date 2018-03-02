@@ -77,10 +77,6 @@ function ready(si) {
     startLoadAllQuestionsInterval();
 }
 
-function liveViewScreenshotDone(base64data) {
-    document.getElementById("my-preview").setAttribute("src", base64data);
-}
-
 /**
  * Starts repeatedly loading all questions
  */

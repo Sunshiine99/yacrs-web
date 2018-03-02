@@ -132,7 +132,9 @@ $noHeaderFooter = isset($noHeaderFooter) ? !!$noHeaderFooter : false;
         </script>
 
         <script src="<?=$this->e($config["baseUrl"])?>js/bootstrap-extra.js" crossorigin="anonymous"></script>
-
+        <?php if(!isDesktopApp()): ?>
+            <script src="<?=$this->e($config["baseUrl"])?>js/web-app.js" crossorigin="anonymous"></script>
+        <?php endif; ?>
         <?=$this->section("end")?>
     </body>
 </html>

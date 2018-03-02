@@ -6,6 +6,8 @@ var active = false;
 var sessionIdentifier = null;
 var sessionQuestionID = null;
 var questionNumber = null;
+
+var expanded = false;
 var loadQuestionsInterval = null;
 var loadUsersInterval = null;
 
@@ -250,6 +252,7 @@ function loadQuestions(callback) {
             $("#activate").addClass("not-active");
             $("#deactivate").addClass("not-active");
             $("#responses").addClass("not-active");
+            $("#new-question").removeClass("not-active");
         }
     });
 }
@@ -375,25 +378,11 @@ function activate() {
             // If desktop app, take a screenshot and send it to the server
             if(isDesktopApp()) {
                 takeScreenshot("image/png");
-                /*
-                takeScreenshot(function(base64data){
-
-                    // Construct the URL for the api communication
-                    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/screenshot/";
-
-                    $.post(url, { base64: base64data})
-                        .done(function(data) {
-                            if(data["success"] !== true) {
-                                console.log(JSON.stringify(data));
-                                //console.log("Could not send screenshot");
-                            }
-                        });
-                },"image/png");
-                */
             }
 
             startLoadUsersInterval();
         });
+        expandedModeExit();
     });
 }
 
@@ -414,6 +403,9 @@ function activateDone(callback) {
     if(callback) {
         callback();
     }
+
+    if(isDesktopApp())
+        resize();
 }
 
 function deactivate() {
@@ -423,6 +415,7 @@ function deactivate() {
         deactivateDone(function() {
             stopLoadUsersInterval();
             startLoadAllQuestionsInterval();
+            expandedModeExit();
         });
     });
 }
@@ -441,6 +434,9 @@ function deactivateDone(callback) {
     if(callback) {
         callback();
     }
+
+    if(isDesktopApp())
+        resize();
 }
 
 /**
@@ -485,16 +481,7 @@ $("#new-question").click(newQuestion);
 $("#new-question-submit").click(newQuestionSubmit);
 
 function newQuestion() {
-
-    // If desktop app, enter app into expanded mode
-    if(isDesktopApp()) {
-        liveViewExpand(true, false);
-    }
-
-    // Enter CSS into expanded mode
-    $(".view").addClass("expanded");
-    $(".button-container.new-question").addClass("display-none");
-    $(".button-container.question-type").removeClass("display-none");
+    expandedModeEnter();
 }
 
 function newQuestionSubmit() {
@@ -505,15 +492,7 @@ function newQuestionSubmit() {
         sessionQuestionID = data["sessionQuestionID"];
         displayQuestion(function() {
 
-            // If desktop app, exit app from expanded mode
-            if(isDesktopApp()) {
-                liveViewExpand(false, false);
-            }
-
-            // Enter CSS into expanded mode
-            $(".view").removeClass("expanded");
-            $(".button-container.new-question").removeClass("display-none");
-            $(".button-container.question-type").addClass("display-none");
+            expandedModeExit();
         });
     });
 }
@@ -568,6 +547,39 @@ function exit() {
 }
 
 /**********************************************************************************************************
+ * Expanded mode
+ *********************************************************************************************************/
+
+function expandedModeEnter() {
+    // If desktop app, enter app into expanded mode
+    if(isDesktopApp()) {
+        liveViewExpand(true, false);
+    }
+
+    // Enter CSS into expanded mode
+    $(".view").addClass("expanded");
+    $(".button-container.new-question").addClass("display-none");
+    $(".button-container.question-type").removeClass("display-none");
+
+    expanded = true;
+}
+
+function expandedModeExit() {
+
+    // If desktop app, exit app from expanded mode
+    if(isDesktopApp()) {
+        liveViewExpand(false, false);
+    }
+
+    // Enter CSS into expanded mode
+    $(".view").removeClass("expanded");
+    $(".button-container.new-question").removeClass("display-none");
+    $(".button-container.question-type").addClass("display-none");
+
+    expanded = false;
+}
+
+/**********************************************************************************************************
  * DEBUG
  *********************************************************************************************************/
 
@@ -586,4 +598,46 @@ $("#debug-session-join").click(function() {
  */
 function isDesktopApp() {
     return !!electron;
+}
+
+/**********************************************************************************************************
+ * Resize
+ *********************************************************************************************************/
+
+if(isDesktopApp()) {
+
+    function resize() {
+        var width = $(window).width();
+        var height = $(window).height();
+
+        var view = $(".view");
+        view.css("min-width", width+"px");
+        view.css("max-width", width+"px");
+        view.css("min-height", height+"px");
+
+        var buttonContainer = $(".button-container");
+        buttonContainer.css("height", (height-20)+"px");
+        buttonContainer.css("line-height", (height-20)+"px");
+
+        var questionContainer = $(".question-container");
+        questionContainer.css("height", (height-20)+"px");
+
+        var logo = $(".logo-container img");
+        logo.css("height", (height-20)+"px");
+
+        // If power button is not on screen
+        /*
+        if(!$('#power').visible(true)) {
+            questionContainer.css("width", (questionContainer.width()-10)+"px");
+            ready(true);
+        }*/
+    }
+
+    $(document).ready(function() {
+        resize();
+    });
+
+    $(window).resize(function() {
+        resize();
+    });
 }

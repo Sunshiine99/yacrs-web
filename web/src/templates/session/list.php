@@ -29,7 +29,7 @@
                 </div>
                 <div class="actions-confirm-delete width-xs-full">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                        <?php if(isDesktopApp()): ?>
+                        <?php if(isDesktopApp() && $s->getQuestionControlMode() === 0): ?>
                             <button type="button" class="btn btn-light btn-light-border width-xs-full" onclick="liveViewEnter(<?=$this->e($s->getSessionIdentifier())?>)">
                                 <i class="fa fa-play"></i> Run
                             </button>

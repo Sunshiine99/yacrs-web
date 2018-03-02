@@ -83,7 +83,7 @@
 
                 .view .logo-container {
                     float: left;
-                    margin-right: 20px;
+                    margin-right: 10px;
                 }
 
                 .view.compact .logo-container {
@@ -91,7 +91,7 @@
                 }
 
                     .view .logo-container img {
-                        height: 60px;
+                        height: 70px;
                     }
 
                 .view .question-container {
@@ -167,7 +167,7 @@
                 }
 
                 .view .button-container.power {
-                    float: left;
+                    float: right;
                     font-size: 30px;
                 }
 
@@ -261,6 +261,7 @@
             }
             catch(e) {}
         </script>
+        <script src="<?= $this->e($config["baseUrl"]) ?>js/jquery.visible.min.js"></script>
         <script src = "<?=$this->e($config["baseUrl"])?>js/popper.min.js" ></script>
         <script src="<?= $this->e($config["baseUrl"]) ?>js/bootstrap-4.0.0-beta.2.min.js"></script>
         <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>

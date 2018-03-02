@@ -317,7 +317,6 @@ class DatabaseSessionQuestion
             $output["total"] = $output["answered"];
         }
 
-        /*
         try {
             $rand = rand(100, 999);
         }
@@ -327,7 +326,6 @@ class DatabaseSessionQuestion
 
         $output["answered"] = (time() % 100) * 5;
         $output["total"] = 500;
-        */
 
         return $output;
     }

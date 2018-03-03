@@ -209,12 +209,9 @@ class DatabaseQuestion
 
         // Loop for every old choice
         while($row = $result->fetch_assoc()) {
-
-            // If choice does not exist, or it is equal to null return error
-            if(!isset($choices[$i]) || !$choices[$i]) return null;
-
-            // If this old choice is not the same as the new choice in this position
-            if($row["ID"] != $choices[$i]->getChoiceID()) {
+            
+            // If this choice doesn't exist anymore or this old choice is not the same as the new choice in this position
+            if(!isset($choices[$i]) || $row["ID"] != $choices[$i]->getChoiceID()) {
 
                 // Make the old choice ID database safe
                 $choiceID = Database::safe($row["ID"], $mysqli);

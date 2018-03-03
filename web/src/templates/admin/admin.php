@@ -73,9 +73,11 @@ $this->layout("template",
                         </div>
                         <div class="actions-confirm-delete width-xs-full">
                             <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
-                                <a href="<?=$this->e($config["baseUrl"])?>changepassword/<?=$this->e($u->getUsername())?>/" type="button" class="btn btn-light btn-light-border width-xs-full">
-                                    Change Password
-                                </a>
+                                <?php if(!$u->isGuest()): ?>
+                                    <a href="<?=$this->e($config["baseUrl"])?>changepassword/<?=$this->e($u->getUsername())?>/" type="button" class="btn btn-light btn-light-border width-xs-full">
+                                        Change Password
+                                    </a>
+                                <?php endif; ?>
                                 <?php if($u->isAdmin()): ?>
                                     <button type="button" class="btn btn-light btn-light-border width-xs-full admin-remove">
                                         Remove Admin

@@ -244,7 +244,8 @@ class DatabaseUser
 
         // Run query to get all users
         $sql = "SELECT *
-                FROM `yacrs_user`";
+                FROM `yacrs_user`
+                ORDER BY isGuest ASC, userID ASC";
         $result = $mysqli->query($sql);
 
         if(!$result) return null;

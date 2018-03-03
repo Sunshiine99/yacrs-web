@@ -277,4 +277,71 @@ class ApiSession
         $sessions = DatabaseSession::loadUserActiveSessions($userID, $mysqli);
         Api::output($sessions);
     }
+
+    public static function getResults($sessionIdentifier){
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
+        // Load session
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
+
+        // If a session was not loaded, output error
+        if(!$session) {
+            $output["error"]["code"]    = "invalidSessionId";
+            $output["error"]["message"] = "Invalid Session ID";
+            Api::output($output);
+            die();
+        }
+
+        // If user cannot stop this session
+        if($session->getOwner() !== $user->getUsername()) {
+            ApiError::permissionDenied();
+        }
+
+        $questionsArr = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli)["questions"];
+
+        $output = [];
+
+        foreach ($questionsArr as $question) {
+
+
+            if ($question->getType() == "mcq" or $question->getType() == "mrq") {
+                $results = DatabaseResponseMcq::loadResponses($question->getSessionQuestionID(), $mysqli);
+            } else {
+                $results = DatabaseResponse::loadResponses($question->getSessionQuestionID(), $mysqli);
+            }
+
+            $questionArr = [];
+            $questionArr["questionID"] = $question->getSessionQuestionID();
+
+            foreach ($results as $response) {
+                $temp = [];
+                $temp["choice"] = $response->getResponse();
+                $temp["username"] = $response->getUsername();
+                array_push($questionArr, $temp);
+            }
+
+            array_push($output, $questionArr);
+        }
+
+        Api::output($output);
+    }
 }

@@ -186,28 +186,10 @@ html, body {
             text-decoration: none;
         }
 
-        .fa-trash-o{    /*trash icon*/
-            color: #aa2935;
-        }
-
-        .fa-pencil{     /*edit icon*/
-            color: green;
-        }
-
-        .fa-eye{        /*responses icon*/
-            color: saddlebrown;
-        }
-
         .fa-bars{       /*hamburger*/
             font-size: 25px;
             margin-right:5px;
             color: black;
-        }
-
-        .fa-play{
-        }
-        .fa-stop{
-            color: red;
         }
 
 body footer {

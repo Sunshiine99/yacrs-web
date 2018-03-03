@@ -21,10 +21,10 @@ class ScoringDefault implements Scoring
      * @return float
      */
     public static function scoreMultiple($userCorrectCount, $userIncorrectCount, $correctTotal, $optionsTotal) {
-        if($correctTotal === 0) {
+        if($correctTotal === 0 or $userCorrectCount === 0) {
             return 0;
         }
 
-        return round($userCorrectCount/($userCorrectCount+$userIncorrectCount),1);
+        return round($userCorrectCount/$correctTotal,1);
     }
 }

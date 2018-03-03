@@ -78,7 +78,18 @@ else {
 
 <?php if($screenshot): ?>
     <div id="screenshot-container">
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse1">Screenshot</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
         <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+                </div>
+            </div>
+        </div>
     </div>
 <?php endif; ?>
 

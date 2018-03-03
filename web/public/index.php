@@ -81,8 +81,6 @@ Flight::route("/session/", array("PageSession", "sessions"));
 Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
 Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
 
-Flight::route("/session/live/", array("PageSessionLive", "live"));
-
 Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
 Flight::route("/session/@id:[0-9]*/edit/export/", array("PageSessionExport", "export"));
 

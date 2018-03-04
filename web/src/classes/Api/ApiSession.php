@@ -83,13 +83,12 @@ class ApiSession
         }
 
         $data = $_REQUEST;
-        $data["sessionID"] = $sessionIdentifier;
 
         $output = [];
 
         // If this is an existing session
         if($sessionIdentifier) {
-            $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+            $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
             $session->fromArray($data);
             DatabaseSession::update($session, $mysqli);
         }
@@ -100,7 +99,7 @@ class ApiSession
             $session->setOwner($user->getId());
             $sessionIdentifier = DatabaseSession::insert($session, $mysqli);
         }
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
         $output = $session->toArray();
         Api::output($output);
     }

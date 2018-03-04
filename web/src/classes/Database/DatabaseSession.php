@@ -167,7 +167,6 @@ class DatabaseSession
                 $result = $mysqli->query($sql);
             }
         }
-
         return true;
     }
 
@@ -200,7 +199,7 @@ class DatabaseSession
 
         // Create a new session with the loaded attributes
         $session = new Session($row);
-        $session->setOwner($row["owner"]);
+        $session->fromArray($row);
 
         //Set the session Identifier cause otherwise it is 0
         $sql = "SELECT sessionIdentifier

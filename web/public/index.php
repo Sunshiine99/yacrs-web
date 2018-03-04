@@ -114,15 +114,10 @@ Flight::route("/session/new/", array("PageSessionNew", "add"));
 Flight::route("/admin/", array("PageAdmin", "admin"));
 
 /**************************************************************
- * Help
+ * Generic
  **************************************************************/
-Flight::route("/help/", array("PageHelp","help"));
-
-/**************************************************************
- * Test
- **************************************************************/
-Flight::route("/test/screenshot/", array("PageTest","screenshot"));
-
+Flight::route("/help/", array("PageGeneric", "help"));
+Flight::route("/download/", array("PageGeneric", "download"));
 
 /**************************************************************
  * API

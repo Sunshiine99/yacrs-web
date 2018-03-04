@@ -232,6 +232,10 @@ ul.list-group li.list-group-item {
     border-color: #bbb;
 }
 
+.width-full {
+    width: 100%!important;
+}
+
 @media (max-width: 576px) {
     .width-xs-full {
         width: 100%!important;

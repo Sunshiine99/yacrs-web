@@ -35,6 +35,9 @@ $this->layout("template",
                     <li class="nav-item">
                         <a class="nav-link" href="#homepagedesktop" data-toggle="pill">Home Page</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#liveview" data-toggle="pill">Live View</a>
+                    </li>
                 <?php endif; ?>
 
             <li class="nav-item">
@@ -74,6 +77,7 @@ $this->layout("template",
             <div id="viewresponses" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-7.jpg" width="100%" ></div>
             <div id="homepagebasic" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-8.jpg" width="100%" ></div>
             <div id="homepagedesktop" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-9.jpg" width="100%" ></div>
+            <div id="liveview" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-10.jpg" width="100%" ></div>
 
         </div>
 

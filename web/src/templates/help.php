@@ -23,9 +23,12 @@ $this->layout("template",
             <li class="nav-item">
                 <a class="nav-link active" href="#faqlogin" data-toggle="pill" >FAQ/Login</a>
             </li>
+
+            <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
             <li class="nav-item">
                 <a class="nav-link" href="#homepage" data-toggle="pill">Home Page</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#newsession" data-toggle="pill">Creating a New Session</a>
             </li>
@@ -42,6 +45,13 @@ $this->layout("template",
                 <a class="nav-link" href="#viewresponses"data-toggle="pill">Viewing Responses</a>
             </li>
 
+            <?php else: ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#basichelp" data-toggle="pill">Home Page</a>
+                </li>
+            <?php endif; ?>
+
         </ul>
     </div>
 
@@ -54,6 +64,7 @@ $this->layout("template",
             <div id="editsession" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-5.jpg" width="100%" ></div>
             <div id="addquestions" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-6.jpg" width="100%" ></div>
             <div id="viewresponses" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-7.jpg" width="100%" ></div>
+            <div id="basichelp" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-8.jpg" width="100%" ></div>
         </div>
 
 

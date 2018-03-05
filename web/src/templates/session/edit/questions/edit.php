@@ -77,6 +77,8 @@ else {
 </h2>
 
 <?php if($screenshot): ?>
+    <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+    <!--
     <div id="screenshot-container">
         <div class="panel-group">
             <div class="panel panel-default">
@@ -86,11 +88,11 @@ else {
                     </h4>
                 </div>
                 <div id="collapse1" class="panel-collapse collapse">
-        <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
                 </div>
             </div>
         </div>
     </div>
+    -->
 <?php endif; ?>
 
 <form id="" action="." method="POST" class="form-horizontal<?=$new?" new":""?>">

@@ -26,12 +26,8 @@ form.new .question:not(#question-mcq) {
     display: none;
 }
 
-#screenshot-container {
-    height: 400px;
+#screenshot {
     max-width: 100%;
-    margin-bottom: 20px;
+    max-height: 500px;
+    margin-bottom: 10px;
 }
-
-    #screenshot-container img {
-        height: 100%;
-    }

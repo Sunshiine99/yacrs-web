@@ -24,10 +24,18 @@ $this->layout("template",
                 <a class="nav-link active" href="#faqlogin" data-toggle="pill" >FAQ/Login</a>
             </li>
 
+
             <?php if($user->isSessionCreator() || $user->isAdmin()): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="#homepage" data-toggle="pill">Home Page</a>
-            </li>
+
+                <?php if(!isDesktopApp()): ?>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#homepage" data-toggle="pill">Home Page</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#homepagedesktop" data-toggle="pill">Home Page</a>
+                    </li>
+                <?php endif; ?>
 
             <li class="nav-item">
                 <a class="nav-link" href="#newsession" data-toggle="pill">Creating a New Session</a>
@@ -48,7 +56,7 @@ $this->layout("template",
             <?php else: ?>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#basichelp" data-toggle="pill">Home Page</a>
+                    <a class="nav-link" href="#homepagebasic" data-toggle="pill">Home Page</a>
                 </li>
             <?php endif; ?>
 
@@ -64,7 +72,9 @@ $this->layout("template",
             <div id="editsession" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-5.jpg" width="100%" ></div>
             <div id="addquestions" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-6.jpg" width="100%" ></div>
             <div id="viewresponses" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-7.jpg" width="100%" ></div>
-            <div id="basichelp" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-8.jpg" width="100%" ></div>
+            <div id="homepagebasic" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-8.jpg" width="100%" ></div>
+            <div id="homepagedesktop" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-9.jpg" width="100%" ></div>
+
         </div>
 
 

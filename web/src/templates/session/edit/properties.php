@@ -90,7 +90,8 @@ else {
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-3 offset-sm-3">
+        <div class="col-sm-3 offset-sm"></div>
+        <div class="col-sm offset-sm">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="allowGuests">
@@ -98,7 +99,7 @@ else {
                     Allow Anonymous Guest Users</label>
             </div>
         </div>
-        <div class="col-sm-3 advanced">
+        <div class="col-sm advanced">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="onSessionList">

@@ -219,7 +219,9 @@ class PageSessionExport
             self::setHeader($i + 2, 4, "Q$i", $sheet);
 
         // Add column heading for total score
-        self::setHeader($questionCount + 3, 4, "Total", $sheet);
+        self::setHeader($questionCount + 3, 4, "Total Marks", $sheet);
+        $column = $sheet->getCellByColumnAndRow($questionCount + 3, 4)->getColumn();
+        $sheet->getColumnDimension($column)->setAutoSize(true);
 
         // Foreach user, add to overview
         $row = 5;

@@ -200,7 +200,8 @@ class ApiSession
         $result = DatabaseSessionQuestion::questionActivate($sessionQuestionID, true, $mysqli);
 
         if($result == true){
-            Api::output(true);
+            $output["success"] = true;
+            Api::output($output);
         }
         else{
             ApiError::unknown();
@@ -248,13 +249,15 @@ class ApiSession
         $activeQuestion = DatabaseSessionQuestion::loadAllActiveQuestions($sessionID, $mysqli);
         //If there is no active question return false
         if(count($activeQuestion) == 0){
-            Api::output(false);
+            $output["success"] = false;
+            Api::output($output);
         }
         else{
             //Get the active question's id and stop it
             $activeID = $activeQuestion[0]->toArray()["sessionQuestionID"];
             $result = DatabaseSessionQuestion::questionActivate($activeID, 0, $mysqli);
-            Api::output(true);
+            $output["success"] = true;
+            Api::output($output);
         }
     }
 

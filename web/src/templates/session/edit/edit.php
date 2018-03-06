@@ -53,7 +53,7 @@ $this->layout("template",
 <div id="add-question-row" class="row">
     <div id="add-question-select-row" class="col-sm-10">
         <select id="add-question-select" class="form-control" data-custom-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/new/">
-            <option value="custom">Custom Question</option>
+            <option value="custom">Editable Custom Question</option>
             <option value="mcq_d">Generic Multiple Choice Question A-D</option>
             <option value="mcq_e">Generic Multiple Choice Question A-E</option>
             <option value="mcq_f">Generic Multiple Choice Question A-F</option>

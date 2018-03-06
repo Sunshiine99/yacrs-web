@@ -76,7 +76,12 @@ class PageSessionEditProperties
                 // If there is an index associated with this user, store it
                 if(isset($_POST["user-" . $index])) {
                     $username = $_POST["user-" . $index];
-                    // Add a new user
+                    //If user does not exist output error
+                    if(!DatabaseUser::checkUserExists($username, $mysqli)){
+                        PageError::generic("Additional user does not exist", "One of the additional users you have typed does not exist");
+                        die();
+                    }
+                    // Else add the new user
                     $session->addAdditionalUser($username);
                 }
 

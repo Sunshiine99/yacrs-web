@@ -240,7 +240,7 @@ class PageSessionExport
             // Add lookup formula for each question
             for($i = 1; $i <= $questionCount; $i++) {
 
-                $score = key_exists($i, $user["scores"]) ? $user["scores"][$i] : 0;
+                $score = key_exists($i, $user["scores"]) ? $user["scores"][$i] : " ";
                 self::setDataCell($i + 2, $row, $score, $sheet);
             }
 

@@ -138,10 +138,15 @@ else {
                             <input id="mcq-choice-id-<?=$i?>" name="mcq-choice-id-<?=$i?>" class="mcq-choice-id" type="hidden" value="<?=$this->e($choice->getChoiceID())?>">
                             <input id="mcq-choice-correct-<?=$i?>" name="mcq-choice-correct-<?=$i?>" class="mcq-choice-correct" type="hidden" value="<?=$choice->isCorrect()?"true":"false"?>">
                             <button class="incorrect btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
-                                <i class="fa fa-times" aria-hidden="true"></i> Incorrect
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                <div class="tooltip">Incorrect
+                                    <span class="tooltiptext"> Mark as incorrect</span>
+                                </div>
                             </button>
                             <button class="correct btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
-                                <i class="fa fa-check" aria-hidden="true"></i> Correct
+                                <i class="fa fa-check" aria-hidden="true"></i><div class="tooltip"> Correct
+                                    <span class="tooltiptext"> Mark as correct</span>
+                                </div>
                             </button>
                             <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>

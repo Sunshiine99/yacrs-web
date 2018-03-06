@@ -73,7 +73,7 @@ else {
 <form action="." method="POST" class="form-horizontal" style="display:block; width: 100%;">
     <input name="sessionIdentifier" value="<?=$this->e($session->getSessionIdentifier())?>" type="hidden">
     <input name="sessionID" value="<?=$this->e($session->getSessionID())?>" type="hidden">
-    <div class="form-group row">
+    <div class="form-group row basic">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
             <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder=" Eg History 2B" maxlength="80">
@@ -91,7 +91,7 @@ else {
     </div>
     <div class="form-group row">
         <div class="col-sm-3 offset-sm"></div>
-        <div class="col-sm offset-sm">
+        <div class="col-sm offset-sm basic">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="allowGuests">
@@ -120,7 +120,7 @@ else {
     </div>
     <fieldset>
         <legend class="advanced">Question settings</legend>
-        <div class="form-group row">
+        <div class="form-group row basic">
             <label class="col-sm-3 control-label" for="questionControlMode">
                 Question Control Mode
                 <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
@@ -160,7 +160,7 @@ else {
         </div>-->
         <div class="form-group row">
             <div class="col-sm-3 offset-sm"></div>
-            <div class="col-sm offset-sm">
+            <div class="col-sm offset-sm basic">
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowModifyAnswer">
@@ -259,5 +259,8 @@ else {
 
     .advanced {
         display: none;
+    }
+
+    .basic{
     }
 </style>

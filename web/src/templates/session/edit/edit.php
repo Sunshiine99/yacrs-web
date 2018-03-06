@@ -57,13 +57,9 @@ $this->layout("template",
             <option value="mcq_d">Generic Multiple Choice Question A-D</option>
             <option value="mcq_e">Generic Multiple Choice Question A-E</option>
             <option value="mcq_f">Generic Multiple Choice Question A-F</option>
-            <option value="mcq_g">Generic Multiple Choice Question A-G</option>
-            <option value="mcq_h">Generic Multiple Choice Question A-H</option>
             <option value="mrq_d">Generic Multiple Response Question A-D</option>
             <option value="mrq_e">Generic Multiple Response Question A-E</option>
             <option value="mrq_f">Generic Multiple Response Question A-F</option>
-            <option value="mrq_g">Generic Multiple Response Question A-G</option>
-            <option value="mrq_h">Generic Multiple Response Question A-H</option>
             <option value="text">Text Input</option>
             <option value="textlong">Long Text Input</option>
             <option value="truefalse">True/False</option>

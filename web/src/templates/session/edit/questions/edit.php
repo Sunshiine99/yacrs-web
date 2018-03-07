@@ -77,7 +77,10 @@ else {
 </h2>
 
 <?php if($screenshot): ?>
+    <a href="#collapseScreenshot" data-toggle="collapse">Show Screenshot</a>
+    <div id="collapseScreenshot" class="collapse">
     <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+    </div>
     <!--
     <div id="screenshot-container">
         <div class="panel-group">

@@ -80,7 +80,7 @@ $this->layout("template",
             <div id="liveview" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-10.jpg" width="100%" ></div>
 
         </div>
-
+.
 
 
 

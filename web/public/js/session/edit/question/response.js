@@ -81,7 +81,7 @@ function initWordCloud() {
     var id = "wordcloud";
 
     d3.wordcloud()
-        .size([$("main .container").width(), 600])
+        .size([$("main .container").width(), 500])
         .fill(d3.scale.ordinal().range(["#884400", "#448800", "#888800", "#444400"]))
         .words(data)
         .onwordclick(function (d, i) {

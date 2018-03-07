@@ -73,20 +73,25 @@ else {
 <form action="." method="POST" class="form-horizontal" style="display:block; width: 100%;">
     <input name="sessionIdentifier" value="<?=$this->e($session->getSessionIdentifier())?>" type="hidden">
     <input name="sessionID" value="<?=$this->e($session->getSessionID())?>" type="hidden">
-    <div class="form-group row">
+    <div class="form-group row basic">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
-            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Title" maxlength="80">
+            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder=" Eg History 2B" maxlength="80">
         </div>
     </div>
     <div class="form-group row advanced">
-        <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier</label>
+        <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier
+            <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="Used to import class list.">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a>
+        </label>
         <div class="col-sm-9">
-            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)" maxlength="20">
+            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Eg COMPSCI1357 " maxlength="20">
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-3 offset-sm-3">
+        <div class="col-sm-3 offset-sm"></div>
+        <div class="col-sm offset-sm basic">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="allowGuests">
@@ -94,7 +99,7 @@ else {
                     Allow Anonymous Guest Users</label>
             </div>
         </div>
-        <div class="col-sm-3 advanced">
+        <div class="col-sm advanced">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="onSessionList">
@@ -115,7 +120,7 @@ else {
     </div>
     <fieldset>
         <legend class="advanced">Question settings</legend>
-        <div class="form-group row">
+        <div class="form-group row basic">
             <label class="col-sm-3 control-label" for="questionControlMode">
                 Question Control Mode
                 <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
@@ -154,7 +159,8 @@ else {
             </div>
         </div>-->
         <div class="form-group row">
-            <div class="col-sm-4 offset-sm-3">
+            <div class="col-sm-3 offset-sm"></div>
+            <div class="col-sm offset-sm basic">
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowModifyAnswer">
@@ -253,5 +259,8 @@ else {
 
     .advanced {
         display: none;
+    }
+
+    .basic{
     }
 </style>

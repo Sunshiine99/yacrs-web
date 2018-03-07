@@ -11,7 +11,7 @@ $("#view-advanced-settings").click(function() {
     $(".advanced").css("display", "flex");
 
     // Hide all of the basic settings
-    //$(".basic").css("display", "none");
+    $(".basic").css("display", "none");
 
     // Hide the show advanced settings button
     $(this).css("display", "none");
@@ -26,7 +26,7 @@ $("#view-advanced-settings").click(function() {
 $("#hide-advanced-settings").click(function() {
 
     //Show all basic settings
-    //$(".basic").css("display", "flex");
+    $(".basic").css("display", "flex");
 
     // Hide all of the advanced settings
     $(".advanced").css("display", "none");

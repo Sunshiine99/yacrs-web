@@ -31,20 +31,21 @@ $this->layout("template",
 );
 
 $backgroundColours = [];
-$backgroundColours[] = "rgba(255, 99, 132, 0.2)";
-$backgroundColours[] = "rgba(54, 162, 235, 0.2)";
-$backgroundColours[] = "rgba(255, 206, 86, 0.2)";
-$backgroundColours[] = "rgba(75, 192, 192, 0.2)";
-$backgroundColours[] = "rgba(153, 102, 255, 0.2)";
-$backgroundColours[] = "rgba(255, 159, 64, 0.2)";
+$backgroundColours[] = "rgba(255, 99, 132, 0.5)";
+$backgroundColours[] = "rgba(54, 162, 235, 0.5)";
+$backgroundColours[] = "rgba(23, 0, 77, 0.5)";
+$backgroundColours[] = "rgba(3, 158, 0, 0.5)";
+$backgroundColours[] = "rgba(153, 102, 255, 0.5)";
+$backgroundColours[] = "rgba(255, 128, 0, 0.5)";
 
 $borderColours = [];
 $borderColours[] = "rgba(255,99,132,1)";
 $borderColours[] = "rgba(54, 162, 235, 1)";
-$borderColours[] = "rgba(255, 206, 86, 1)";
-$borderColours[] = "rgba(75, 192, 192, 1)";
+$borderColours[] = "rgba(23, 0, 77, 1)";
+$borderColours[] = "rgba(3, 158, 0, 1)";
 $borderColours[] = "rgba(153, 102, 255, 1)";
-$borderColours[] = "rgba(255, 159, 64, 1)";
+$borderColours[] = "rgba(255, 128, 0, 1)";
+$borderColours[] = "rgba(23, 0, 77, 1)";
 
 function getColour($colours, $i) {
     return $colours[$i%count($colours)];

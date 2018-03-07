@@ -13,13 +13,17 @@
 ul.nav-tabs li.nav-item a.nav-link {
     outline: 0;
 }
+
 .ui-tooltip {
-    font-size: 23px;
+    font-size: 25px;
     text-align: center;
-    box-shadow: none;
     padding: 0;
+    border:2px solid black;
 }
 .ui-tooltip-content {
     position: relative;
-    padding: 0.3em;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
 }

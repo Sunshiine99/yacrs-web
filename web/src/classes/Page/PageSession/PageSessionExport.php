@@ -105,7 +105,7 @@ class PageSessionExport
 
         $responses = $dbr::loadResponses($sessionQuestionID, $mysqli);
 
-        $i = 7;
+        $i = 8;
         foreach($responses as $response) {
 
             $user = $response->getUser() === null ? new User() : $response->getUser();
@@ -276,6 +276,7 @@ class PageSessionExport
         self::setHeader(1, 2, "Type", $sheet);
         self::setHeader(1, 3, "Answer", $sheet);
         self::setHeader(1, 4, "Date/Time", $sheet);
+        self::setHeader(1, 5, "Total Responses", $sheet);
 
         // Add question details values
         self::setDataCell(2, 1, $question->getQuestion(), $sheet);
@@ -289,14 +290,22 @@ class PageSessionExport
         }
         self::setDataCell(2, 3, $correctChoices, $sheet);
         self::setDataCell(2, 4, date($config["datetime"]["datetime"]["long"], $question->getCreated()), $sheet);
+        $row = 7;
+        try{
+            $responseClass = DatabaseResponseFactory::create($question->getType());
+            $responses = count($responseClass::loadResponses($question->getSessionQuestionID(), $mysqli));
+            self::setDataCell(2, 5, $responses, $sheet);
+        }
+        catch(Exception $e){
+        }
 
         // Add headings
-        self::setHeader(1, 6, "Username", $sheet);
-        self::setHeader(2, 6, "Full Name", $sheet);
-        self::setHeader(3, 6, "Date/Time", $sheet);
-        self::setHeader(4, 6, "Response", $sheet);
-        self::setHeader(5, 6, "Correct?", $sheet);
-        self::setHeader(6, 6, "Points", $sheet);
+        self::setHeader(1, $row, "Username", $sheet);
+        self::setHeader(2, $row, "Full Name", $sheet);
+        self::setHeader(3, $row, "Date/Time", $sheet);
+        self::setHeader(4, $row, "Response", $sheet);
+        self::setHeader(5, $row, "Correct?", $sheet);
+        self::setHeader(6, $row, "Points", $sheet);
 
         // Auto resize all columns
         for($i = 1; $i <= 5; $i++)

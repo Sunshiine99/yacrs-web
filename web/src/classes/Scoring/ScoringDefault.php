@@ -25,6 +25,6 @@ class ScoringDefault implements Scoring
             return 0;
         }
 
-        return round($userCorrectCount/$correctTotal,1);
+        return round($userCorrectCount/($userCorrectCount + $userIncorrectCount),2);
     }
 }

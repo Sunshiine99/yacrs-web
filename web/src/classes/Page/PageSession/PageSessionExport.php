@@ -280,7 +280,7 @@ class PageSessionExport
 
         // Add question details values
         self::setDataCell(2, 1, $question->getQuestion(), $sheet);
-        self::setDataCell(2, 2, $question->getTypeDisplay(), $sheet);
+        self::setDataCell(2, 2, $question->getTypeDisplay() . " Question", $sheet);
         // If it is a mcq or mrq get the correct answers and display them
         if($question->getType() == "mcq" || $question->getType() == "mrq"){
             $correctChoices = DatabaseResponseMrq::getCorrectChoices($question->getQuestionID(), $mysqli);

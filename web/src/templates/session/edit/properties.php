@@ -119,7 +119,6 @@ else {
         </div>-->
     </div>
     <fieldset>
-        <legend class="advanced">Question settings</legend>
         <div class="form-group row basic">
             <label class="col-sm-3 control-label" for="questionControlMode">
                 Question Control Mode
@@ -168,7 +167,7 @@ else {
                         Allow students to change their answer</label>
                 </div>
             </div>
-            <!--<div class="col-sm-5">
+            <!--<div class="col-sm-5">-
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowQuestionReview">
@@ -262,5 +261,6 @@ else {
     }
 
     .basic{
+        display:flex;
     }
 </style>

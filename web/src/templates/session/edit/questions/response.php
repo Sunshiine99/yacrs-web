@@ -45,7 +45,6 @@ $borderColours[] = "rgba(23, 0, 77, 1)";
 $borderColours[] = "rgba(3, 158, 0, 1)";
 $borderColours[] = "rgba(153, 102, 255, 1)";
 $borderColours[] = "rgba(255, 128, 0, 1)";
-$borderColours[] = "rgba(23, 0, 77, 1)";
 
 function getColour($colours, $i) {
     return $colours[$i%count($colours)];

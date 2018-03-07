@@ -40,7 +40,6 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Number of Votes',
                 data: data,
                 backgroundColor: backgroundColor,
                 borderColor: borderColor,
@@ -54,6 +53,9 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
                         beginAtZero:true
                     }
                 }]
+            },
+            legend: {
+                display: false
             }
         }
     });
@@ -66,7 +68,6 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Number of Votes',
                 data: data,
                 backgroundColor: backgroundColor,
                 borderColor: borderColor,

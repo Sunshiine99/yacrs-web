@@ -347,6 +347,7 @@ class Session
      * @return bool
      */
     public function hasAdditionalUser($username) {
+        if(!$username) return false;
         return in_array($username, $this->additionalUsers);
     }
 

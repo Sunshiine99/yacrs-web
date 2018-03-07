@@ -1,1 +1,8 @@
 PyMySQL
+sklearn
+pandas
+nltk
+matplotlib
+scipy
+mpld3
+jinja2

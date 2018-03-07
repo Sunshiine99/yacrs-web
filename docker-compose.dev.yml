@@ -30,6 +30,7 @@ services:
         - MYSQL_HOST=db
     networks:
         - internal
+    restart: always
   composer:
     restart: "no"
     image: "composer/composer:php5"

@@ -64,6 +64,7 @@ class PageSessionEditQuestionResponse
         if(in_array($question->getType(), array("text", "textlong"))) {
             $responsesWordCloud = DatabaseResponse::loadWordcloud($sessionQuestionID, $mysqli);
             $responsesText = DatabaseResponse::loadResponses($sessionQuestionID, $mysqli);
+            $analysis = DatabaseAnalysis::load($sessionQuestionID, $mysqli);
         }
 
         elseif($question->getType() == "mcq") {
@@ -76,6 +77,7 @@ class PageSessionEditQuestionResponse
             $userMrqResponses = DatabaseResponseMrq::loadResponses($sessionQuestionID, $mysqli);
         }
 
+        $data["analysis"] = $analysis;
         $data["responsesMrq"] = $responsesMrq;
         $data["userMrqResponses"] = $userMrqResponses;
         $data["user"] = $user;

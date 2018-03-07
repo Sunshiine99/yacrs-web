@@ -28,6 +28,10 @@ function initPieChartSection() {
     initPieChart("pie-chart", labels, data, backgroundColor, borderColor);
 }
 
+function initAnalysisSection() {
+    initAnalysisChart("analysis-chart");
+}
+
 function initWordCloudSection(json) {
     wordCloudData = JSON.parse(json);
     initWordCloud();
@@ -73,6 +77,26 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
                 borderColor: borderColor,
                 borderWidth: 1
             }]
+        }
+    });
+}
+
+function initAnalysisChart(id) {
+    var ctx = document.getElementById(id).getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bubble',
+        data: analysisData,
+        options: {
+            tooltips: {
+                callbacks: {
+                    title: function() {
+                        return '';
+                    },
+                    label: function(item, data) {
+                        return analysisLabels[item.datasetIndex][item.index];
+                    }
+                }
+            }
         }
     });
 }

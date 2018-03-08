@@ -114,7 +114,7 @@ function getColour($colours, $i) {
         <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
-        <li class="nav-item" id="nav-analysis" data-target="section-analysis" data-callback="initAnalysisSection">
+        <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Analysis</a>
         </li>
     <?php endif; ?>
@@ -200,6 +200,19 @@ function getColour($colours, $i) {
 </div>
 
 <script>
+
+    var backgroundColours = [
+        <?php
+        foreach($backgroundColours as $colour) {
+            echo "'$colour',";
+        }
+        ?>
+    ];
+
+    function getColour(colours, i) {
+        return colours[i%colours.length]
+    }
+
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
         var labels = [
             <?php foreach($responsesMcq as $response): ?>
@@ -224,44 +237,4 @@ function getColour($colours, $i) {
             <?php endfor; ?>
         ];
     <?php endif; ?>
-
-    <?php if(isset($analysis)): ?>
-
-        var analysisData = {
-            datasets: [
-
-            <?php // Loop foreach cluster ?>
-            <?php for($i = 0; $i < count($analysis); $i++): ?>
-                <?php $cluster = $analysis[$i] ?>
-                {
-                    label: ['Cluster <?=($i+1)?>'],
-                    data: [
-                        <?php foreach($cluster as $item): ?>
-                        {
-                            x: <?=$item["x"]?>,
-                            y: <?=$item["y"]?>,
-                            r: 5,
-                            label: "LABEL"
-                        },
-                        <?php endforeach; ?>
-                    ],
-                    backgroundColor: "<?=$backgroundColours[$i%count($backgroundColours)]?>"
-                },
-            <?php endfor; ?>
-            ]
-        };
-
-        var analysisLabels = [
-            <?php // Loop foreach cluster ?>
-            <?php for($i = 0; $i < count($analysis); $i++): ?>
-                <?php $cluster = $analysis[$i] ?>
-                [
-                    <?php foreach($cluster as $item): ?>
-                        "<?=$item["response"]?>",
-                    <?php endforeach; ?>
-                ],
-            <?php endfor; ?>
-        ];
-    <?php endif; ?>
-
 </script>

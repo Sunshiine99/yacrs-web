@@ -3,9 +3,13 @@
 class Api
 {
 
-    public static function output($output = []) {
+    public static function outputJson($json) {
         header('Content-Type: application/json');
-        echo json_encode($output);
+        echo $json;
+    }
+
+    public static function output($output = []) {
+        self::outputJson(json_encode($output));
     }
 
     /**

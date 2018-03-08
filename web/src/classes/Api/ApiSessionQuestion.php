@@ -251,8 +251,7 @@ class ApiSessionQuestion
      * @param int $sessionIdentifier
      * @param int $sessionQuestionID
      */
-    public static function screenshot($sessionIdentifier, $sessionQuestionID)
-    {
+    public static function screenshot($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session question variables (Type hinting below to avoid IDE error messages)
          * @var $mysqli mysqli
@@ -295,8 +294,87 @@ class ApiSessionQuestion
         Api::output($output);
     }
 
-    private static function setupSession($sessionIdentifier)
-    {
+    public static function questionResults($sessionIdentifier, $sessionQuestionID) {
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session id, display error
+        if (!$sessionID) {
+            ApiError::notFoundCustom("Session Not Found");
+            die();
+        }
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if (!$user) {
+            ApiError::invalidApiKey();
+            die();
+        }
+
+        $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
+
+        $output = [];
+
+        if($question->getType() == "mcq" or $question->getType() == "mrq"){
+            $results = DatabaseResponseMcq::loadResponses($sessionQuestionID, $mysqli);
+        }
+        else{
+            $results = DatabaseResponse::loadResponses($sessionQuestionID, $mysqli);
+        }
+
+        foreach ($results as $response) {
+            $temp = [];
+            $temp["choice"] = $response->getResponse();
+            $temp["username"] = $response->getUsername();
+            array_push($output, $temp);
+        }
+
+        Api::output($output);
+    }
+
+    private static function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
+    /**
+     * @param int $sessionIdentifier
+     * @param int $sessionQuestionID
+     */
+    public static function analysis($sessionIdentifier, $sessionQuestionID) {
+        /**
+         * Setup basic session question variables (Type hinting below to avoid IDE error messages)
+         * @var $mysqli mysqli
+         * @var $user User
+         * @var $session Session
+         * @var $question Question
+         */
+        extract(self::setupSessionQuestion($sessionIdentifier, $sessionQuestionID));
+
+        $sessionQuestionID = escapeshellarg($sessionQuestionID);
+
+        $command = escapeshellcmd("/var/www/src/analysis/analysis.py $sessionQuestionID");
+        exec($command, $output, $return);
+
+        $output = $output[0];
+        //print_r($output);
+
+        /*
+        if($return !== 0 || !self::isJson($output)) {
+            ApiError::unknown();
+            die();
+        }*/
+
+        Api::outputJson($output);
+    }
+
+    private static function setupSession($sessionIdentifier) {
 
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
@@ -369,50 +447,5 @@ class ApiSessionQuestion
             "session" => $session,
             "question" => $question
         ];
-    }
-
-    public static function questionResults($sessionIdentifier, $sessionQuestionID)
-    {
-
-        // Connect to database
-        $databaseConnect = Flight::get("databaseConnect");
-        $mysqli = $databaseConnect();
-
-        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
-
-        // If invalid session id, display error
-        if (!$sessionID) {
-            ApiError::notFoundCustom("Session Not Found");
-            die();
-        }
-
-        // Get user from API
-        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
-
-        // Check the API Key and get the username of the user
-        if (!$user) {
-            ApiError::invalidApiKey();
-            die();
-        }
-
-        $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
-
-        $output = [];
-
-        if($question->getType() == "mcq" or $question->getType() == "mrq"){
-            $results = DatabaseResponseMcq::loadResponses($sessionQuestionID, $mysqli);
-        }
-        else{
-            $results = DatabaseResponse::loadResponses($sessionQuestionID, $mysqli);
-        }
-
-        foreach ($results as $response) {
-            $temp = [];
-            $temp["choice"] = $response->getResponse();
-            $temp["username"] = $response->getUsername();
-            array_push($output, $temp);
-        }
-
-        Api::output($output);
     }
 }

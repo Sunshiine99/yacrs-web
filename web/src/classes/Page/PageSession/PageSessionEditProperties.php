@@ -77,7 +77,7 @@ class PageSessionEditProperties
                 if(isset($_POST["user-" . $index])) {
                     $username = $_POST["user-" . $index];
                     //If user does not exist output error
-                    if(!DatabaseUser::checkUserExists($username, $mysqli)){
+                    if(!DatabaseUser::checkUserExists($username, $mysqli) and $username != ""){
                         PageError::generic("Additional user does not exist", "One of the additional users you have typed does not exist");
                         die();
                     }

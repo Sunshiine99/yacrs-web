@@ -363,13 +363,11 @@ class ApiSessionQuestion
         exec($command, $output, $return);
 
         $output = $output[0];
-        //print_r($output);
 
-        /*
         if($return !== 0 || !self::isJson($output)) {
             ApiError::unknown();
             die();
-        }*/
+        }
 
         Api::outputJson($output);
     }

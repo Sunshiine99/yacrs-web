@@ -126,7 +126,7 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 
@@ -173,7 +173,7 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 
@@ -226,7 +226,7 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 
@@ -365,7 +365,7 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 

@@ -2,63 +2,68 @@ var wordCloudData;
 
 $(document).ready(function() {
 
-    // TODO
+    if(wordCloudData) {
 
-    // Construct URL for API communication
-    var url = baseUrl + "api/session/1/question/2/analysis/";
+        // Construct URL for API communication
+        var url = baseUrl + "api/session/1/question/2/analysis/";
 
-    // Make an api request
-    $.getJSON(url, function(data) {
+        // Make an api request
+        $.getJSON(url, function(data) {
 
-        var dataFormatted = [];
-
-        data.forEach(function(item) {
-
-            var cluster = parseInt(item.cluster);
-
-            if(!(cluster in dataFormatted)) {
-                dataFormatted[cluster] = [];
+            if(data["error"]) {
+                return;
             }
 
-            dataFormatted[cluster].push({
-                "x": item.x,
-                "y": item.y,
-                "responseID": item.responseID,
-                "response": item.response,
-                "r": 5
-            });
-        });
+            var dataFormatted = [];
 
-        var analysisData = {
-            datasets: []
-        };
+            data.forEach(function(item) {
 
-        var analysisLabels = [];
-        var i = 0;
+                var cluster = parseInt(item.cluster);
 
-        dataFormatted.forEach(function(cluster) {
+                if(!(cluster in dataFormatted)) {
+                    dataFormatted[cluster] = [];
+                }
 
-            if(!(i in analysisLabels))
-                analysisLabels[i] = [];
-
-            if(!(i in analysisData.datasets))
-                analysisData.datasets[i] = {
-                    label: ["Cluster " + (i+1)],
-                    data: [],
-                    backgroundColor: getColour(backgroundColours, i)
-                };
-
-
-            cluster.forEach(function(item) {
-                analysisData.datasets[i].data.push(item);
-                analysisLabels[i].push(item.response);
+                dataFormatted[cluster].push({
+                    "x": item.x,
+                    "y": item.y,
+                    "responseID": item.responseID,
+                    "response": item.response,
+                    "r": 5
+                });
             });
 
-            i++;
-        });
+            var analysisData = {
+                datasets: []
+            };
 
-        initAnalysisChart("analysis-chart", analysisData, analysisLabels);
-    });
+            var analysisLabels = [];
+            var i = 0;
+
+            dataFormatted.forEach(function(cluster) {
+
+                if(!(i in analysisLabels))
+                    analysisLabels[i] = [];
+
+                if(!(i in analysisData.datasets))
+                    analysisData.datasets[i] = {
+                        label: ["Cluster " + (i+1)],
+                        data: [],
+                        backgroundColor: getColour(backgroundColours, i)
+                    };
+
+
+                cluster.forEach(function(item) {
+                    analysisData.datasets[i].data.push(item);
+                    analysisLabels[i].push(item.response);
+                });
+
+                i++;
+            });
+
+            initAnalysisChart("analysis-chart", analysisData, analysisLabels);
+        });
+    }
 });
 
 
@@ -146,6 +151,7 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
 }
 
 function initAnalysisChart(id, analysisData, analysisLabels) {
+    $("#no-analysis-error").remove();
     var ctx = document.getElementById(id).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bubble',

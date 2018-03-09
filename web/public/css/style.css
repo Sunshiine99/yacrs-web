@@ -184,12 +184,11 @@ html, body {
         #session-link-url:hover{
             text-decoration: none;
         }
-
-        .fa-bars{       /*hamburger*/
-            font-size: 25px;
-            margin-right:5px;
-            color: black;
-        }
+                #dragable{
+                font-size: 20px;
+                margin-right:5px;
+                color: black;
+                }
 
 body footer {
     position: relative;

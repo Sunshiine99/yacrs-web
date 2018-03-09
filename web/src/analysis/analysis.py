@@ -23,6 +23,16 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.manifold import MDS
 import matplotlib.pyplot as plt, mpld3
 
+def error(code, message):
+    output = {
+        "error": {
+            "code": code,
+            "message": message,
+        }
+    }
+    print(json.dumps(output))
+    sys.exit()
+
 # Get MySQL database info from environment
 db_host = os.environ['MYSQL_HOST']
 db_user = os.environ['MYSQL_DATABASE']
@@ -84,7 +94,7 @@ pipeline = Pipeline([('vect', TfidfVectorizer(max_df=0.8, max_features=20000,
 try:
     pipeline.fit(response_frame['response'])
 except ValueError:
-    print("    ERROR: Not enough clusters")
+    error("notEnoughClusters", "notEnoughClusters");
     sys.exit()
 
 matrix = pipeline.named_steps['vect'].fit_transform(response_frame['response'])

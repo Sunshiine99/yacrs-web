@@ -76,9 +76,10 @@ else {
     <div class="form-group row basic">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
-            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder=" Eg History 2B" maxlength="80">
+            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Eg History 2B" maxlength="80">
         </div>
     </div>
+    <!--
     <div class="form-group row advanced">
         <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier
             <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="Used to import class list.">
@@ -89,6 +90,7 @@ else {
             <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Eg COMPSCI1357 " maxlength="20">
         </div>
     </div>
+    -->
     <div class="form-group row">
         <div class="col-sm-3 offset-sm"></div>
         <div class="col-sm offset-sm basic">
@@ -96,7 +98,8 @@ else {
                 <label>
                     <input type="hidden" value="0" name="allowGuests">
                     <input name="allowGuests" id="allowGuests" value="1" type="checkbox"<?=$allowGuests?>>
-                    Allow Anonymous Guest Users</label>
+                    Allow Anonymous Guest Users
+                </label>
             </div>
         </div>
         <div class="col-sm advanced">
@@ -108,15 +111,6 @@ else {
                 </label>
             </div>
         </div>
-        <!--<div class="col-sm-3">
-            <div class="checkbox">
-                <label>
-                    <input type="hidden" value="0" name="classDiscussionEnabled">
-                    <input name="classDiscussionEnabled" id="classDiscussionEnabled" value="1" type="checkbox"<?=$classDiscussionEnabled?>>
-                    Enable Class Discussion
-                </label>
-            </div>
-        </div>-->
     </div>
     <fieldset>
         <div class="form-group row basic">
@@ -177,26 +171,29 @@ else {
             </div>-->
         </div>
     </fieldset>
-    <fieldset class="advanced">
-    <div id="additional" class="form-group row question">
-        <label for="definition" class="control-label col-sm-3">
-            <span>Additional users who can run session</span>
+    <div class="form-group row advanced">
+        <label class="col-sm-3 control-label" for="courseIdentifier">
+            Additional Users
+            <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
+                      Allows additional users to edit and run your session">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a>
         </label>
         <div class="col-sm-9">
-            <div id="add-more-choices" class="input-add-more-container" data-minimum-count="1">
+            <div id="add-more-choices" class="input-add-more-container" data-minimum-count="0">
                 <?php if(count($users) > 0):?>
-                <?php $i = 0; ?>
-                <?php foreach($users as $user): ?>
-                    <div class="input-group input-add-more-item">
-                        <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1" maxlength="80">
-                        <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <?php $i++; ?>
-                <?php endforeach; ?>
+                    <?php $i = 0; ?>
+                    <?php foreach($users as $user): ?>
+                        <div class="input-group input-add-more-item">
+                            <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1" maxlength="80">
+                            <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
                 <?php else:?>
-                    <div class="input-group input-add-more-item">
+                    <div class="input-group input-add-more-item display-none">
                         <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1" maxlength="80">
                         <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -205,26 +202,25 @@ else {
                 <?php endif?>
             </div>
             <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
-                <button class="btn btn-light btn-light-border input-add-more-input float-right" type="button">
-                    Add Another User
+                <button class="btn btn-primary input-add-more-input float-right width-xs-full" type="button">
+                    Add User
                 </button>
             </div>
         </div>
     </div>
-    </fieldset>
     <div class="form-group row">
         <div class="col-sm-9 offset-sm-3">
             <input class="submit btn btn-primary margin-xs-bottom-10 width-xs-50percent-2point5px" name="submit" value="<?=$submitText?>" type="submit">
             <a onclick="goBack()" class="submit btn btn-light btn-light-border margin-xs-bottom-10 width-xs-50percent-2point5px">Cancel</a>
 
-            <div class="pull-right width-xs-full">
-                <a id="view-advanced-settings" class="btn btn-light btn-light-border width-xs-full">
-                    View Advanced Settings
-                </a>
-                <a id="hide-advanced-settings" class="btn btn-light btn-light-border width-xs-full">
-                    Hide Advanced Settings
-                </a>
-            </div>
+<!--            <div class="pull-right width-xs-full">-->
+<!--                <a id="view-advanced-settings" class="btn btn-light btn-light-border width-xs-full">-->
+<!--                    View Advanced Settings-->
+<!--                </a>-->
+<!--                <a id="hide-advanced-settings" class="btn btn-light btn-light-border width-xs-full">-->
+<!--                    Hide Advanced Settings-->
+<!--                </a>-->
+<!--            </div>-->
         </div>
     </div>
 </form>
@@ -256,11 +252,11 @@ else {
         border: 1px solid #ced4da;
     }
 
-    .advanced {
-        display: none;
-    }
+    /*.advanced {*/
+        /*display: none;*/
+    /*}*/
 
-    .basic{
-        display:flex;
-    }
+    /*.basic{*/
+        /*display:flex;*/
+    /*}*/
 </style>

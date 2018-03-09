@@ -16,8 +16,8 @@ $(".input-add-more-button .input-add-more-input").click(function () {
 
     var dataInputContainerFirstChild = dataInputContainer.find("> :first-child");
 
-    if(dataInputContainerFirstChild.css("visibility") === "hidden") {
-        dataInputContainerFirstChild.css("visibility", "visible")
+    if(dataInputContainerFirstChild.hasClass("display-none")) {
+        dataInputContainerFirstChild.removeClass("display-none");
     }
 
     else {
@@ -35,8 +35,10 @@ $(".input-add-more-button .input-add-more-input").click(function () {
         // Add new item using the first
         dataInputContainer.append(dataInputContainerFirstChild[0].outerHTML);
 
+        var lastChild = dataInputContainer.find(":last-child");
+
         // Get new last child
-        input = dataInputContainer.find(":last-child .input-add-more-input");
+        input =  lastChild.find(".input-add-more-input");
 
         // Clear input values in this new item
         input.attr("value", "");
@@ -72,7 +74,9 @@ function addMoreDelete(that) {
 
         // If there is only one child left, only hide it
         if(inputAddMoreContainer.children().length === 1) {
-            $(that).closest(".input-add-more-item").css("visibility", "hidden");
+            var closestAddMoreItem = $(that).closest(".input-add-more-item");
+            closestAddMoreItem.find("input").val("");
+            closestAddMoreItem.addClass("display-none");
         }
 
         // Otherwise, remove the item

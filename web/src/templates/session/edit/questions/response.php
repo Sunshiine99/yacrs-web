@@ -14,7 +14,7 @@
  * @var $responsesText Response[]
  * @var $live boolean
  * @var $question Question
- * @var $analysis array
+ * @var $session Session
  */
 
 // Ensure $live is a valid boolean
@@ -56,6 +56,8 @@ function getColour($colours, $i) {
 <?php $this->push("head"); ?>
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/session/edit/question/response.css" />
+    <meta name="sessionIdentifier" content="<?=$session->getSessionIdentifier()?>" />
+    <meta name="sessionQuestionID" content="<?=$question->getSessionQuestionID()?>" />
 <?php $this->end(); ?>
 
 <?php $this->push("end"); ?>
@@ -136,6 +138,7 @@ function getColour($colours, $i) {
             <div id="wordcloud"></div>
         </div>
         <div id="section-analysis" class="section display-none">
+            <div id="no-analysis-error">No Analysis Available</div>
             <canvas id="analysis-chart" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>

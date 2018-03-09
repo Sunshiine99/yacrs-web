@@ -54,12 +54,12 @@ $this->layout("template",
     <div id="add-question-select-row" class="col-sm-10">
         <select id="add-question-select" class="form-control" data-custom-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/new/">
             <option value="custom">Editable Custom Question</option>
-            <option value="mcq_d">Generic Multiple Choice Question A-D</option>
-            <option value="mcq_e">Generic Multiple Choice Question A-E</option>
-            <option value="mcq_f">Generic Multiple Choice Question A-F</option>
-            <option value="mrq_d">Generic Multiple Response Question A-D</option>
-            <option value="mrq_e">Generic Multiple Response Question A-E</option>
-            <option value="mrq_f">Generic Multiple Response Question A-F</option>
+            <option value="mcq_d">Multiple Choice Question A-D</option>
+            <option value="mcq_e">Multiple Choice Question A-E</option>
+            <option value="mcq_f">Multiple Choice Question A-F</option>
+            <option value="mrq_d">Multiple Response Question A-D</option>
+            <option value="mrq_e">Multiple Response Question A-E</option>
+            <option value="mrq_f">Multiple Response Question A-F</option>
             <option value="text">Text Input</option>
             <option value="textlong">Long Text Input</option>
             <option value="truefalse">True/False</option>
@@ -101,7 +101,7 @@ $this->layout("template",
                     </span>
                 </div>
                 <div class="drag pull-right">
-                    <i class="fa fa-bars" aria-hidden="true" draggable="true""></i> <!--style="font-size: 30px;padding: 9px 0;-->
+                    <i class="fa fa-arrows-alt" id="dragable" aria-hidden="true" draggable="true""></i>
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">

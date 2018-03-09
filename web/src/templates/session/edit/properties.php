@@ -172,10 +172,10 @@ else {
         </div>
     </fieldset>
     <div class="form-group row advanced">
-        <label class="col-sm-3 control-label" for="courseIdentifier">
+        <label class="col-sm-6 control-label" for="courseIdentifier">
             Additional users who can run session
         </label>
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             <div id="add-more-choices" class="input-add-more-container" data-minimum-count="0">
                 <?php if(count($users) > 0):?>
                     <?php $i = 0; ?>
@@ -198,7 +198,7 @@ else {
                 <?php endif?>
             </div>
             <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
-                <button class="btn btn-light btn-light-border input-add-more-input float-right width-xs-full" type="button">
+                <button class="btn btn-primary input-add-more-input float-right width-xs-full" type="button">
                     Add User
                 </button>
             </div>
@@ -209,14 +209,14 @@ else {
             <input class="submit btn btn-primary margin-xs-bottom-10 width-xs-50percent-2point5px" name="submit" value="<?=$submitText?>" type="submit">
             <a onclick="goBack()" class="submit btn btn-light btn-light-border margin-xs-bottom-10 width-xs-50percent-2point5px">Cancel</a>
 
-            <div class="pull-right width-xs-full">
-                <a id="view-advanced-settings" class="btn btn-light btn-light-border width-xs-full">
-                    View Advanced Settings
-                </a>
-                <a id="hide-advanced-settings" class="btn btn-light btn-light-border width-xs-full">
-                    Hide Advanced Settings
-                </a>
-            </div>
+<!--            <div class="pull-right width-xs-full">-->
+<!--                <a id="view-advanced-settings" class="btn btn-light btn-light-border width-xs-full">-->
+<!--                    View Advanced Settings-->
+<!--                </a>-->
+<!--                <a id="hide-advanced-settings" class="btn btn-light btn-light-border width-xs-full">-->
+<!--                    Hide Advanced Settings-->
+<!--                </a>-->
+<!--            </div>-->
         </div>
     </div>
 </form>
@@ -248,11 +248,11 @@ else {
         border: 1px solid #ced4da;
     }
 
-    .advanced {
-        display: none;
-    }
+    /*.advanced {*/
+        /*display: none;*/
+    /*}*/
 
-    .basic{
-        display:flex;
-    }
+    /*.basic{*/
+        /*display:flex;*/
+    /*}*/
 </style>

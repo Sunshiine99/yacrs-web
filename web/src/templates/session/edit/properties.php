@@ -79,6 +79,7 @@ else {
             <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Eg History 2B" maxlength="80">
         </div>
     </div>
+    <!--
     <div class="form-group row advanced">
         <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier
             <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="Used to import class list.">
@@ -89,6 +90,7 @@ else {
             <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Eg COMPSCI1357 " maxlength="20">
         </div>
     </div>
+    -->
     <div class="form-group row">
         <div class="col-sm-3 offset-sm"></div>
         <div class="col-sm offset-sm basic">

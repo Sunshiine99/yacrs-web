@@ -172,10 +172,14 @@ else {
         </div>
     </fieldset>
     <div class="form-group row advanced">
-        <label class="col-sm-6 control-label" for="courseIdentifier">
-            Additional users who can run session
+        <label class="col-sm-3 control-label" for="courseIdentifier">
+            Additional Users
+            <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
+                      Allows additional users to edit and run your session">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a>
         </label>
-        <div class="col-sm-6">
+        <div class="col-sm-9">
             <div id="add-more-choices" class="input-add-more-container" data-minimum-count="0">
                 <?php if(count($users) > 0):?>
                     <?php $i = 0; ?>

@@ -246,7 +246,9 @@ function sessionDrop(e) {
 
         // If successful, update question numbers
         if(data["success"] === true) {
-
+            //temporary solution to the problem
+            //TODO think of something clever
+            location.reload();
         }
 
         // Otherwise, display an error

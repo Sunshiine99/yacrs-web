@@ -373,10 +373,10 @@ class ApiSessionQuestion
             die();
         }
 
-        //if(!self::isJson($output)) {
-        //    ApiError::custom("analysisError", "The analysis produced an invalid output");
-        //    die();
-        //}
+        if(!self::isJson($output)) {
+            ApiError::custom("analysisError", "The analysis produced an invalid output");
+            die();
+        }
 
         Api::outputJson($output);
     }

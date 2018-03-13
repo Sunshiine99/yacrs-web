@@ -31,3 +31,13 @@ form.new .question:not(#question-mcq) {
     max-height: 500px;
     margin-bottom: 10px;
 }
+
+.editquestionheader {
+    display: flex;
+    align-items:center;
+}
+
+#screenshotbutton a:link { color: #0075B0; }
+#screenshotbutton a:visited { color: #0075B0; }
+#screenshotbutton a:hover { color: #0075B0; }
+#screenshotbutton a:active { color: #0075B0; }

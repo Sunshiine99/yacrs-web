@@ -100,6 +100,6 @@ class DatabaseApiKey
                 WHERE `yacrs_apiKey`.`key`='$key'";
         $result = $mysqli->query($sql);
 
-        return $result ? true : false;
+        return !!$result;
     }
 }

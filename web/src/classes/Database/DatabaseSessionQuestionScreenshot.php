@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: d
- * Date: 28/02/18
- * Time: 16:45
- */
 
 class DatabaseSessionQuestionScreenshot
 {

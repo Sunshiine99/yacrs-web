@@ -25,8 +25,7 @@ class DatabaseQuestion
                   AND q.`type` = qt.`ID`";
         $result = $mysqli->query($sql);
 
-        // Check if successful, display and log error if not
-        Database::checkError($mysqli, __LINE__, __FILE__);
+        if(!$result) return null;
 
         if($result->num_rows==0) {
             return null;
@@ -66,8 +65,7 @@ class DatabaseQuestion
                 WHERE qmcqc.`questionID` = $questionID";
         $result = $mysqli->query($sql);
 
-        // Check if successful, display and log error if not
-        Database::checkError($mysqli, __LINE__, __FILE__);
+        if(!$result) return null;
 
         // Loop for every MCQ choice
         while($row = $result->fetch_assoc()) {
@@ -148,6 +146,8 @@ class DatabaseQuestion
                     '$text',
                     '$correct')";
             $result = $mysqli->query($sql);
+
+            if(!$result) return null;
         }
 
         return true;
@@ -169,12 +169,7 @@ class DatabaseQuestion
                 WHERE `yacrs_questions`.`questionID` = $questionID";
         $result = $mysqli->query($sql);
 
-        if(!$result) {
-            die("Error " . $mysqli->error);
-        }
-
-        // Check if successful, display and log error if not
-        Database::checkError($mysqli, __LINE__, __FILE__);
+        if(!$result) return null;
 
         switch(get_class($question)) {
             case "QuestionMcq":

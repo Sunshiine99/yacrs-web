@@ -4,8 +4,11 @@ $(document).ready(function() {
 
     if(wordCloudData) {
 
+        var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content");
+        var sessionQuestionID = $("meta[name=sessionQuestionID]").attr("content");
+        
         // Construct URL for API communication
-        var url = baseUrl + "api/session/1/question/2/analysis/";
+        var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/analysis/";
 
         // Make an api request
         $.getJSON(url, function(data) {

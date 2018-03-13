@@ -42,6 +42,8 @@ class DatabaseUser
                 WHERE `yacrs_user`.`username` = '$username'";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         // If user details existed in the database
         if($result->num_rows == 1) {
 
@@ -105,9 +107,9 @@ class DatabaseUser
     }
 
     /**
-     * @param int $username
+     * @param int $userID
      * @param mysqli $mysqli
-     * @return User
+     * @return User|null
      */
     public static function loadDetailsFromUserID($userID, $mysqli) {
         $userID = Database::safe($userID, $mysqli);
@@ -183,6 +185,8 @@ class DatabaseUser
                 WHERE `yacrs_user`.`username` = '$username'";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         // If user details existed in the database
         if($result->num_rows == 1) {
             return true;
@@ -201,6 +205,8 @@ class DatabaseUser
                 FROM `yacrs_user`
                 WHERE `yacrs_user`.`username` = '$username'";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // If user details existed in the database
         if($result->num_rows == 1) {
@@ -223,6 +229,8 @@ class DatabaseUser
                 FROM `yacrs_user`
                 WHERE `yacrs_user`.`userID` = '$userID'";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // If user details existed in the database
         if($result->num_rows == 1) {
@@ -320,8 +328,13 @@ class DatabaseUser
                 DELETE FROM `yacrs_sessionsAdditionalUsers` WHERE `userID` = $userID;
                 DELETE FROM `yacrs_user` WHERE `userID` = $userID;";
 
-        $result = $mysqli->multi_query($sql);
+        $mysqli->multi_query($sql);
 
-        return !!$result;
+        // If error running one of the queries, return null
+        while ($mysqli->next_result());
+        if ($mysqli->errno)
+            return null;
+
+        return true;
     }
 }

@@ -19,9 +19,7 @@ class DatabaseResponse
                 VALUES ('".time()."', '$sessionQuestionID', '$userID', '$response')";
         $result = $mysqli->query($sql);
 
-        if(!$result) {
-            return null;
-        }
+        if(!$result) return null;
 
         return $mysqli->insert_id;
     }
@@ -42,6 +40,8 @@ class DatabaseResponse
                 WHERE r.`sessionQuestionID` = $sessionQuestionID
                 AND r.`userID` = $userID";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // If the user hasn't submitted a response, return null
         if($result->num_rows <= 0) {
@@ -68,12 +68,9 @@ class DatabaseResponse
                 WHERE `yacrs_response`.`ID` = $responseID";
         $result = $mysqli->query($sql);
 
-        if($result) {
-            return $responseID;
-        }
-        else {
-            return null;
-        }
+        if(!$result) return null;
+
+        return $responseID;
     }
 
     /**

@@ -154,7 +154,6 @@ class DatabaseResponse
             $word = [];
             $word["text"] = $key;
             $word["size"] = $value;
-            $word["alert"] = "The word is '$key'";
             $output[] = $word;
         }
 

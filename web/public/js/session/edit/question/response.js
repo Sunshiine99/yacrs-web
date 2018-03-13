@@ -6,7 +6,7 @@ $(document).ready(function() {
 
         var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content");
         var sessionQuestionID = $("meta[name=sessionQuestionID]").attr("content");
-        
+
         // Construct URL for API communication
         var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/analysis/";
 

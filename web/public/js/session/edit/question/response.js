@@ -32,7 +32,8 @@ $(document).ready(function() {
                     "y": item.y,
                     "responseID": item.responseID,
                     "response": item.response,
-                    "r": 5
+                    "cluster_label": item.cluster_label,
+                    "r": 7.5
                 });
             });
 
@@ -50,7 +51,7 @@ $(document).ready(function() {
 
                 if(!(i in analysisData.datasets))
                     analysisData.datasets[i] = {
-                        label: ["Cluster " + (i+1)],
+                        label: [cluster[0].cluster_label],
                         data: [],
                         backgroundColor: getColour(backgroundColours, i)
                     };
@@ -58,7 +59,7 @@ $(document).ready(function() {
 
                 cluster.forEach(function(item) {
                     analysisData.datasets[i].data.push(item);
-                    analysisLabels[i].push(item.response);
+                    analysisLabels[i].push(item.responseID);
                 });
 
                 i++;
@@ -169,7 +170,23 @@ function initAnalysisChart(id, analysisData, analysisLabels) {
                         return analysisLabels[item.datasetIndex][item.index];
                     }
                 }
-            }
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        drawBorder: false,
+                        display:false
+                    },
+                    display: false
+                }],
+                yAxes: [{
+                    gridLines: {
+                        drawBorder:false,
+                        display:false
+                    },
+                    display: false
+                }]
+            },
         }
     });
 }

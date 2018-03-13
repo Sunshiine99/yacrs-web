@@ -6,8 +6,6 @@ class PageLogin
     public static function login() {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
-
-        //$data["breadcrumbs"] = $breadcrumbs;
         echo $templates->render("login/login", $data);
     }
 

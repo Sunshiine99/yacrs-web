@@ -22,8 +22,12 @@ class PageAdmin
         // Load all sessions
         $sessions = DatabaseSessionIdentifier::loadAllSessions($mysqli);
 
+        if(!$sessions) PageError::error500("Could not load sessions in ".__FILE__." on line ".__LINE__);
+
         // Load all users
         $users = DatabaseUser::loadAllUsers($mysqli);
+
+        if(!$users) PageError::error500("Could not load users in ".__FILE__." on line ".__LINE__);
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();

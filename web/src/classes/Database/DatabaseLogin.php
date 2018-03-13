@@ -22,6 +22,8 @@ class DatabaseLogin
                 WHERE u.`username` = '$username'";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         // If the username does not exist, return null
         if($result->num_rows<=0)
             return null;
@@ -78,9 +80,7 @@ class DatabaseLogin
         }
 
         // If query was not successful
-        if(!$result) {
-            return null;
-        }
+        if(!$result) return null;
 
         return true;
     }

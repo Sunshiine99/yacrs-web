@@ -254,12 +254,12 @@ class PageSessionEditQuestion extends PageSessionEdit
 
         header("Content-type: $header");
 
-        if(!file_exists("/var/www/uploads/" . $filename)) {
+        if(!file_exists($config["baseDir"] . "/uploads/" . $filename)) {
             PageError::error404();
             die();
         }
 
-        echo readfile("/var/www/uploads/" . $filename);
+        echo readfile($config["baseDir"] . "/uploads/" . $filename);
         die();
     }
 

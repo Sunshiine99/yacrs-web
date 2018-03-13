@@ -68,15 +68,6 @@ class PageSession extends Page
 
             header("Location: " . $config["baseUrl"]);
             die();
-            /*
-            PageError::generic(
-                "Error Joining Session",
-                "You do not have permission to join this session. This may be caused by logging in as a guest user",
-                403,
-                true
-            );
-            die();
-            */
         }
 
         // If this is a student paced session
@@ -84,6 +75,8 @@ class PageSession extends Page
 
             // Get total number of questions
             $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($session->getSessionID(), $mysqli);
+
+            if(!$totalQuestions) PageError::error500("Could not load total number of questions in ".__FILE__." on line ".__LINE__);
 
             // Get current question number
             $questionNumber = isset($_GET["q"]) ? intval($_GET["q"]) - 1 : 0;
@@ -110,6 +103,8 @@ class PageSession extends Page
         // Load active question
         $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
+        if(!$question) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
+
         $responses = null;
 
         // If a question is active
@@ -118,11 +113,14 @@ class PageSession extends Page
             // If MCQ, load response
             if(get_class($question) == "QuestionMcq") {
                 $response = DatabaseResponseMcq::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
+                //if(!$response) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
             }
 
             // If MRQ load array of Response
             elseif(get_class($question) == "QuestionMrq") {
                 $responses = DatabaseResponseMrq::loadUserResponses($question->getSessionQuestionID(), $user->getId(), $mysqli);
+
+                //if(!$responses) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
 
                 // Ensures there is always **a** response in the $response variable. Would only be used if a bug occurs.
                 // Probably not really needed TODO maybe?
@@ -132,6 +130,8 @@ class PageSession extends Page
 
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
+
+                if(!$response) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
             }
         }
 
@@ -140,7 +140,9 @@ class PageSession extends Page
         }
 
         // Add to session history
-        DatabaseSessionHistory::insert($user, $session, $mysqli);
+        $result = DatabaseSessionHistory::insert($user, $session, $mysqli);
+
+        if(!$result) PageError::error500("Could not update history in ".__FILE__." on line ".__LINE__);
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -175,8 +177,12 @@ class PageSession extends Page
         // Load the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
+        if(!$session) PageError::error500("Could not load session in ".__FILE__." on line ".__LINE__);
+
         // Load database session question
         $question = DatabaseSessionQuestion::loadQuestion($_POST["sessionQuestionID"], $mysqli);
+
+        if(!$question) PageError::error500("Could not load question in ".__FILE__." on line ".__LINE__);
 
         // Get the question number
         $questionNumber = intval($_POST["questionNumber"]);
@@ -205,8 +211,10 @@ class PageSession extends Page
                     $choice = intval($value) - 1;
 
                     // Ensure choice is valid
-                    if($choice < 0 || $choice >= count($question->getChoices()))
-                        die("Error"); // TODO
+                    if($choice < 0 || $choice >= count($question->getChoices())) {
+                        PageError::error500("Invalid choice in ".__FILE__." on line ".__LINE__);
+                        die();
+                    }
 
                     array_push($choices, $choice);
                 }
@@ -242,7 +250,7 @@ class PageSession extends Page
                 if(!DatabaseResponseMrq::insert($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli)) {
 
                     // If error inserting, display error
-                    PageError::error500("DatabaseResponseMrq::insert error on line " . __LINE__ . " of file " . __FILE__);
+                    PageError::error500("DatabaseResponseMrq::insert error in ".__FILE__." on line ".__LINE__);
                     die();
                 }
             }
@@ -293,7 +301,7 @@ class PageSession extends Page
                 if(!DatabaseResponseMcq::insert($_POST["sessionQuestionID"], $user->getId(), $choice->getChoiceID(), $mysqli)) {
 
                     // If error inserting, display error
-                    PageError::error500("DatabaseResponseMcq::insert error on line " . __LINE__ . " of file " . __FILE__);
+                    PageError::error500("DatabaseResponseMcq::insert error in ".__FILE__." on line ".__LINE__);
                     die();
                 }
             }
@@ -327,7 +335,7 @@ class PageSession extends Page
                 if(!DatabaseResponse::insert($_POST["sessionQuestionID"], $user->getId(), $_POST["answer"], $mysqli)) {
 
                     // If error inserting, display error
-                    PageError::error500("DatabaseResponse::insert error on line " . __LINE__ . " of file " . __FILE__);
+                    PageError::error500("DatabaseResponse::insert error in ".__FILE__." on line ".__LINE__);
                     die();
                 }
             }

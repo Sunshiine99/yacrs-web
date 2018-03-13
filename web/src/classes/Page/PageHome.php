@@ -17,6 +17,8 @@ class PageHome
 
         $sessions = DatabaseSession::loadUserHistoryAndEditableSessions($user->getId(), $mysqli);
 
+        if(!$sessions) PageError::error500("Could not load user's sessions in ".__FILE__." on line ".__LINE__);
+
         $data["sessions"] = $sessions;
 
         $data["user"] = $user;

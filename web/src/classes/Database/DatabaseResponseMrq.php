@@ -37,8 +37,7 @@ class DatabaseResponseMrq
                   AND `yacrs_responseMcq`.`userID` = $userID;";
         $result = $mysqli->query($sql);
 
-        if(!$result)
-            return false;
+        if(!$result) return null;
 
         self::insert($sessionQuestionID, $userID, $choices, $question, $mysqli);
 
@@ -62,6 +61,8 @@ class DatabaseResponseMrq
                 WHERE rmcq.`sessionQuestionID` = $sessionQuestionID
                 AND rmcq.`userID` = $userID";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // If the user hasn't submitted a response, return null
         if($result->num_rows <= 0) {

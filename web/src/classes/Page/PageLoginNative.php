@@ -68,6 +68,8 @@ class PageLoginNative
 
         $register = DatabaseLogin::register($_POST["username"], $_POST["password"], $_POST["givenName"], $_POST["surname"], $_POST["email"], $mysqli);
 
+        if(!$register) PageError::error500("Could not register user in ".__FILE__." on line ".__LINE__);
+
         // If username already exists
         if($register === 100) {
 
@@ -196,10 +198,7 @@ class PageLoginNative
         // Therefore, user is allowed to change password. So change it
         $result = DatabaseLogin::updatePassword($username, $_POST["newPassword"], $mysqli);
 
-        if(!$result) {
-            PageError::error500();
-            die();
-        }
+        if(!$result) PageError::error500("Could not update password in ".__FILE__." on line ".__LINE__);
 
         // If admin, forward to admin page once done. Otherwise, forward home.
         $url = $user->isAdmin() ? $config["baseUrl"] . "admin?users" : $config["baseUrl"];

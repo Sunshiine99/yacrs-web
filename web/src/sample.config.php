@@ -42,3 +42,5 @@ $config["ldap"]["sessionCreatorRules"][] = array("field" => "dn", "contains" => 
 $config["ldap"]["sessionCreatorRules"][] = array("field" => "homezipcode", "match" => "PGR");
 $config["ldap"]["sessionCreatorRules"][] = array("field" => "uid", "regex" => "/^[a-z]{2,3}[0-9]+[a-z]$/");
 //$config["ldap"]["sessionCreatorRules"][] = array('field'=>'mail', 'regex'=>'/[a-zA-Z]+\.[a-zA-Z]+.*?@glasgow\.ac\.uk/');
+
+$config["baseDir"] = dirname(dirname(__FILE__));

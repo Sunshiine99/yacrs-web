@@ -44,9 +44,13 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         $sql = "DELETE FROM `yacrs_questionsMcqChoices`
                 WHERE `yacrs_questionsMcqChoices`.`questionID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         return $result ? true : false;
     }
@@ -82,8 +86,7 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
-        if(!$result)
-            return false;
+        if(!$result) return null;
 
         return DatabaseQuestion::update($question, $mysqli);
     }
@@ -233,6 +236,8 @@ class DatabaseSessionQuestion
                   AND sq.`active` = 1";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         if($result->num_rows <= 0) {
             return null;
         }
@@ -258,7 +263,9 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
-        return isset($result);
+        if(!$result) return null;
+
+        return true;
     }
 
     /**
@@ -379,11 +386,11 @@ class DatabaseSessionQuestion
         $sql .= " COMMIT;";
 
         $mysqli->multi_query($sql);
-        while ($mysqli->next_result());
 
-        if ($mysqli->errno) {
-            return false;
-        }
+        // If error running one of the queries, return null
+        while ($mysqli->next_result());
+        if ($mysqli->errno)
+            return null;
 
         return true;
     }

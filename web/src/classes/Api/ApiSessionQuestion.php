@@ -17,6 +17,8 @@ class ApiSessionQuestion
         $output = [];
 
         foreach ($questions["questions"] as $question) {
+            /** @var $question Question */
+
             $output[] = $question->toArray();
         }
 
@@ -357,15 +359,22 @@ class ApiSessionQuestion
          */
         extract(self::setupSessionQuestion($sessionIdentifier, $sessionQuestionID));
 
+        $config = Flight::get("config");
+
         $sessionQuestionID = escapeshellarg($sessionQuestionID);
 
-        $command = escapeshellcmd("/var/www/src/analysis/analysis.py $sessionQuestionID");
+        $command = escapeshellcmd($config["baseDir"] . "/src/analysis/analysis.py $sessionQuestionID");
         exec($command, $output, $return);
 
         $output = $output[0];
 
-        if($return !== 0 || !self::isJson($output)) {
-            ApiError::unknown();
+        if($return !== 0) {
+            ApiError::custom("analysisError", "The analysis execution failed");
+            die();
+        }
+
+        if(!self::isJson($output)) {
+            ApiError::custom("analysisError", "The analysis produced an invalid output");
             die();
         }
 
@@ -418,8 +427,7 @@ class ApiSessionQuestion
      * @param $sessionQuestionID
      * @return array
      */
-    private static function setupSessionQuestion($sessionIdentifier, $sessionQuestionID)
-    {
+    private static function setupSessionQuestion($sessionIdentifier, $sessionQuestionID) {
         /**
          * Setup basic session variables (Type hinting below to avoid IDE error messages)
          * @var $mysqli mysqli
@@ -433,8 +441,6 @@ class ApiSessionQuestion
 
         // If this question does not belong to this session
         if (!$question || $question->getSessionID() != $session->getSessionID()) {
-
-            // TODO: Implement nicer error
             ApiError::unknown();
             die();
         }

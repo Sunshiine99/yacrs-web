@@ -72,30 +72,30 @@ else {
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/question/edit.js"></script>
 <?php $this->end(); ?>
 
-<h2 class="page-section">
-    <?=$this->e($newEditText)?> Question
-</h2>
-
-<?php if($screenshot): ?>
-    <a href="#collapseScreenshot" data-toggle="collapse">Show Screenshot</a>
-    <div id="collapseScreenshot" class="collapse">
-    <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+<div class="row editquestionheader">
+    <div class="col-sm-10">
+        <h2 class="page-section">
+            <?=$this->e($newEditText)?> Question
+        </h2>
     </div>
-    <!--
-    <div id="screenshot-container">
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse1">Screenshot</a>
-                    </h4>
-                </div>
-                <div id="collapse1" class="panel-collapse collapse">
-                </div>
-            </div>
+
+    <?php if($screenshot): ?>
+    <div class = "col-sm-2">
+        <div id="screenshotbutton">
+            <h5 class="page-section">
+                <a id="screenshotlink" href="#collapseScreenshot" data-toggle="collapse">Show Screenshot</a>
+            </h5>
         </div>
     </div>
-    -->
+    <?php endif; ?>
+</div>
+
+
+<?php if($screenshot): ?>
+        <div id="collapseScreenshot" class="collapse">
+        <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+        </div>
+
 <?php endif; ?>
 
 <form id="" action="." method="POST" class="form-horizontal<?=$new?" new":""?>">

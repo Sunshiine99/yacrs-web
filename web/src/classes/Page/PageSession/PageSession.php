@@ -128,8 +128,8 @@ class PageSession extends Page
 
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
-
-                if(!$response) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+                
+                //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
             }
         }
 

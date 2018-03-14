@@ -35,9 +35,9 @@ $this->layout("template",
     <?php
     // If using native login and registartion has been enabled
     if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
-        <a href="<?=$this->e($config["baseUrl"])?>register/" class="btn btn-sm btn-light btn-light-border btn-block" type="submit">Register</a>
+        <a href="<?=$this->e($config["baseUrl"])?>register/" class="btn btn-lg btn-primary btn-block" role="button">Register</a>
     <?php endif; ?>
     <div id="anonymous">
-        <a href="<?=$this->e($config["baseUrl"])?>login/anonymous/">Anonymous Guess Access</a>
+        <a href="<?=$this->e($config["baseUrl"])?>login/anonymous/">Anonymous Guest Access</a>
     </div>
 </form>

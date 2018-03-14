@@ -92,7 +92,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -119,7 +119,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -162,7 +162,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -233,7 +233,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -241,7 +241,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         // Load filename
         $filename = DatabaseSessionQuestionScreenshot::loadSessionQuestionID($sessionQuestionID, $mysqli);
 
-        if(!$filename) {
+        if($filename === null) {
             PageError::error404();
             die();
         }
@@ -273,14 +273,14 @@ class PageSessionEditQuestion extends PageSessionEdit
     private static function setupQuestion($sessionID, $sessionQuestionID, $mysqli) {
 
         // If no session question ID, go up a page
-        if(!$sessionQuestionID)
+        if($sessionQuestionID === null)
             header("Location: ..");
 
         // Load the question
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
 
         // Display a 404 if the question wasn't loaded or this question doesn't belong to this session
-        if(!$question || $sessionID != $question->getSessionID()) {
+        if($question === null || $sessionID != $question->getSessionID()) {
             PageError::error404();
             die();
         }

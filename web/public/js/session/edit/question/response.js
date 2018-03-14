@@ -44,10 +44,20 @@ $(document).ready(function() {
             var analysisLabels = [];
             var i = 0;
 
+            barLabels = [];
+            barData = [];
+            bgColors = [];
+            borColors = [];
+
             dataFormatted.forEach(function(cluster) {
 
                 if(!(i in analysisLabels))
                     analysisLabels[i] = [];
+
+                barLabels.push(cluster[0].cluster_label);
+                barData.push(cluster.length);
+                bgColors.push(getColour(backgroundColours, i));
+                borColors.push(getColour(backgroundColours, i+3));
 
                 if(!(i in analysisData.datasets))
                     analysisData.datasets[i] = {
@@ -65,7 +75,9 @@ $(document).ready(function() {
                 i++;
             });
 
+
             initAnalysisChart("analysis-chart", analysisData, analysisLabels);
+            initBarChart("bar-analysis", barLabels, barData, bgColors, borColors);
         });
     }
 });
@@ -104,6 +116,7 @@ function initWordCloudSection(json) {
 }
 
 function initBarChart(id, labels, data, backgroundColor, borderColor) {
+    $("#no-analysis-error-2").remove();
     var ctx = document.getElementById(id).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',

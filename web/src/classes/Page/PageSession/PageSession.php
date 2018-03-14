@@ -43,7 +43,7 @@ class PageSession extends Page
         $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If invalid session, forward home with error
-        if (!$session) {
+        if ($session === null) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -57,7 +57,7 @@ class PageSession extends Page
         }
 
         // If user cannot view this session, display an error
-        if(!$session->checkIfUserCanView($user)) {
+        if($session->checkIfUserCanView($user) === null) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -103,8 +103,11 @@ class PageSession extends Page
         // Load active question
         $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
+<<<<<<< HEAD
         if($question === null) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
 
+=======
+>>>>>>> 8bfdf720e8b91bace34e3060873d67e02c720c2a
         $responses = null;
 
         // If a question is active
@@ -131,7 +134,11 @@ class PageSession extends Page
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
 
+<<<<<<< HEAD
                 if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+=======
+                //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+>>>>>>> 8bfdf720e8b91bace34e3060873d67e02c720c2a
             }
         }
 
@@ -177,12 +184,12 @@ class PageSession extends Page
         // Load the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
-        if(!$session) PageError::error500("Could not load session in ".__FILE__." on line ".__LINE__);
+        if($session === null) PageError::error500("Could not load session in ".__FILE__." on line ".__LINE__);
 
         // Load database session question
         $question = DatabaseSessionQuestion::loadQuestion($_POST["sessionQuestionID"], $mysqli);
 
-        if(!$question) PageError::error500("Could not load question in ".__FILE__." on line ".__LINE__);
+        if($question === null) PageError::error500("Could not load question in ".__FILE__." on line ".__LINE__);
 
         // Get the question number
         $questionNumber = intval($_POST["questionNumber"]);
@@ -237,7 +244,7 @@ class PageSession extends Page
 
             // If an existing response was found
             elseif($response) {
-                if(!DatabaseResponseMrq::update($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli)) {
+                if(DatabaseResponseMrq::update($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli) === null) {
 
                     // If error updating, display error
                     PageError::error500("DatabaseResponseMrq::update error on line " . __LINE__ . " of file " . __FILE__);
@@ -247,7 +254,7 @@ class PageSession extends Page
 
             // Otherwise, insert the response
             else {
-                if(!DatabaseResponseMrq::insert($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli)) {
+                if(DatabaseResponseMrq::insert($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli) === null) {
 
                     // If error inserting, display error
                     PageError::error500("DatabaseResponseMrq::insert error in ".__FILE__." on line ".__LINE__);
@@ -288,7 +295,7 @@ class PageSession extends Page
             // If an existing response was found
             elseif($response) {
 
-                if(!DatabaseResponseMcq::update($response->getResponseID(), $choice->getChoiceID(), $mysqli)) {
+                if(DatabaseResponseMcq::update($response->getResponseID(), $choice->getChoiceID(), $mysqli) === null) {
 
                     // If error updating, display error
                     PageError::error500("DatabaseResponseMcq::update error on line " . __LINE__ . " of file " . __FILE__);
@@ -298,7 +305,7 @@ class PageSession extends Page
 
             // Otherwise, insert the response
             else {
-                if(!DatabaseResponseMcq::insert($_POST["sessionQuestionID"], $user->getId(), $choice->getChoiceID(), $mysqli)) {
+                if(DatabaseResponseMcq::insert($_POST["sessionQuestionID"], $user->getId(), $choice->getChoiceID(), $mysqli) === null) {
 
                     // If error inserting, display error
                     PageError::error500("DatabaseResponseMcq::insert error in ".__FILE__." on line ".__LINE__);
@@ -322,7 +329,7 @@ class PageSession extends Page
 
             // If an existing response was found
             elseif($response) {
-                if(!DatabaseResponse::update($response->getResponseID(), $_POST["answer"], $mysqli)) {
+                if(DatabaseResponse::update($response->getResponseID(), $_POST["answer"], $mysqli) === null) {
 
                     // If error updating, display error
                     PageError::error500("DatabaseResponse::update error on line " . __LINE__ . " of file " . __FILE__);
@@ -332,7 +339,7 @@ class PageSession extends Page
 
             // Otherwise, insert the response
             else {
-                if(!DatabaseResponse::insert($_POST["sessionQuestionID"], $user->getId(), $_POST["answer"], $mysqli)) {
+                if(DatabaseResponse::insert($_POST["sessionQuestionID"], $user->getId(), $_POST["answer"], $mysqli) === null) {
 
                     // If error inserting, display error
                     PageError::error500("DatabaseResponse::insert error in ".__FILE__." on line ".__LINE__);

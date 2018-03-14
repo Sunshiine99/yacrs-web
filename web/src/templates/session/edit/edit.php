@@ -101,7 +101,7 @@ $this->layout("template",
                     </span>
                 </div>
                 <div class="drag pull-right">
-                    <i class="fa fa-arrows-alt" id="dragable" aria-hidden="true" draggable="true""></i>
+                   <i class="fa fa-arrows-alt" aria-hidden="true" ><!-- id="dragable"-->  <!--draggable="true""--></i>
                 </div>
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">

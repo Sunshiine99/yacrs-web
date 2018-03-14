@@ -15,6 +15,7 @@ import sys
 import pandas as pd
 import re
 import nltk
+import math
 from nltk.stem.snowball import SnowballStemmer
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -102,6 +103,36 @@ dist = 1 - cosine_similarity(matrix)
 
 clusters = pipeline.named_steps['clust'].labels_.tolist()
 
+cluster_list = [[], [], []]
+for i, cluster in enumerate(clusters):
+    cluster_list[cluster] = cluster_list[cluster] + re.findall(r"[\w']+|[.,!?;]", response_frame['response'][i])
+for i in range(len(cluster_list)):
+    cluster_list[i] = [word.lower() for word in cluster_list[i] if word not in stopwords]
+
+def tf(word, cluster):
+    return cluster.count(word) / len(cluster)
+
+def n_containing(word, cluster_list):
+    return sum(1 for cluster in cluster_list if word in cluster)
+
+def idf(word, cluster_list):
+    return math.log(len(cluster_list) / (1 + n_containing(word, cluster_list)))
+
+def tfidf(word, cluster, bloblist):
+    return tf(word, cluster) * idf(word, cluster_list)
+
+cluster_labels = []
+for i, cluster in enumerate(cluster_list):
+    scores = {word: tfidf(word, cluster, cluster_list) for word in cluster}
+    sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    label = ""
+    for word, score in sorted_words[:2]:
+        if label == "":
+            label = word
+        else:
+            label += ", " + word
+    cluster_labels.append(label)
+
 mds = MDS(n_components=2, dissimilarity='precomputed', random_state=1)
 pos = mds.fit_transform(dist)
 x, y, = pos[:, 0], pos[:, 1]
@@ -150,15 +181,16 @@ for c in cluster_frame.values:
     cluster = c[3]
     x = c[4]
     y = c[5]
-    
+
     output.append({
         "responseID": responseID,
         "response": response,
         "cluster": cluster,
+	"cluster_label": cluster_labels[cluster],
         "x": x,
         "y": y
     });
-    
+
 # Disconnect from database
 db.close()
 

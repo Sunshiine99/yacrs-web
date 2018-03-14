@@ -12,9 +12,12 @@ class DatabaseResponseMrq
      * @return bool
      */
     public static function insert($sessionQuestionID, $userID, $choices, $question, $mysqli) {
+        if(is_null($sessionQuestionID) || is_null($userID) || is_null($choices) || is_null($question))
+            return null;
         foreach($choices as $c) {
             $choice = $question->getChoices()[$c];
-            DatabaseResponseMcq::insert($sessionQuestionID, $userID, $choice->getChoiceID(), $mysqli);
+            $result = DatabaseResponseMcq::insert($sessionQuestionID, $userID, $choice->getChoiceID(), $mysqli);
+            if($result === null)return null;
         }
         return true;
     }

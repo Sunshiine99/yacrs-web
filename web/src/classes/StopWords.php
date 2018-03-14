@@ -21,17 +21,17 @@ class StopWords
 
 
     public static function isInStop($word){
-        foreach(self::words as $str){
-            if(strcmp($word, $str) == 0) return true;
-        }
-        return false;
+        return in_array($word, self::getStop());
     }
 
     public static function removeStop($dict){
+        $i = 0;
         $arr = [];
         foreach($dict as $key => $value) {
-            if(!self::isInStop($key)){
-                $arr[$key] = $value;
+            $value = strtolower($value);
+            if(!self::isInStop($value)){
+                $arr[$i] = $value;
+                $i++;
             }
         }
         return $arr;

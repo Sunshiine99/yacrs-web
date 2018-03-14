@@ -18,7 +18,7 @@ final class DatabaseSessionIdentifierTest extends TestCase{
         // Create a new user
         $user = TestHelper::userSessionCreator($config, $mysqli);
 
-        $this->assertNull(DatabaseSessionIdentifier::loadSession(156734345, $mysqli));
-        $this->assertNull(DatabaseSessionIdentifier::loadSession("23", $mysqli));
+        $this->assertNull(DatabaseSessionIdentifier::loadSession("asdasdas", $mysqli));
+        $this->assertNull(DatabaseSessionIdentifier::loadSession(null, $mysqli));
     }
 }

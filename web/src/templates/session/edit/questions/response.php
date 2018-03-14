@@ -32,15 +32,15 @@ $this->layout("template",
 );
 
 $backgroundColours = [];
-$backgroundColours[] = "rgba(255, 99, 132, 0.5)";
-$backgroundColours[] = "rgba(54, 162, 235, 0.5)";
-$backgroundColours[] = "rgba(23, 0, 77, 0.5)";
-$backgroundColours[] = "rgba(3, 158, 0, 0.5)";
-$backgroundColours[] = "rgba(153, 102, 255, 0.5)";
-$backgroundColours[] = "rgba(255, 128, 0, 0.5)";
+$backgroundColours[] = "rgba(255, 99, 132, 1)";
+$backgroundColours[] = "rgba(54, 162, 235, 1)";
+$backgroundColours[] = "rgba(23, 0, 77, 1)";
+$backgroundColours[] = "rgba(3, 158, 0, 1)";
+$backgroundColours[] = "rgba(153, 102, 255, 1)";
+$backgroundColours[] = "rgba(255, 128, 0, 1)";
 
 $borderColours = [];
-$borderColours[] = "rgba(255,99,132,1)";
+$borderColours[] = "rgba(255,99,132, 1)";
 $borderColours[] = "rgba(54, 162, 235, 1)";
 $borderColours[] = "rgba(23, 0, 77, 1)";
 $borderColours[] = "rgba(3, 158, 0, 1)";
@@ -116,11 +116,14 @@ function getColour($colours, $i) {
         <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
+    <?php endif; ?>
+    <?php if($question->getType() == "textlong"): ?>
         <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Analysis</a>
         </li>
     <?php endif; ?>
 </ul>
+
 
 <div class="sections" id="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
@@ -131,15 +134,17 @@ function getColour($colours, $i) {
             <canvas id="pie-chart" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>
+    <?php if($question->getType() == "textlong"): ?>
+        <div id="section-analysis" class="section display-none">
+            <div id="no-analysis-error">No Analysis Available</div>
+            <canvas id="analysis-chart" width="400" height="200"></canvas>
+        </div>
+    <?php endif; ?>
 
     <?php // The word cloud bit ?>
     <?php if(isset($responsesWordCloud)): ?>
         <div id="section-word-cloud" class="section">
             <div id="wordcloud"></div>
-        </div>
-        <div id="section-analysis" class="section display-none">
-            <div id="no-analysis-error">No Analysis Available</div>
-            <canvas id="analysis-chart" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>
     <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>

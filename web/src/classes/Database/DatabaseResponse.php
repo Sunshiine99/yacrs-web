@@ -133,16 +133,20 @@ class DatabaseResponse
 
             $responseExplode = explode(" ", $response);
 
-            foreach($responseExplode as $r) {
+            $responseExplode = StopWords::removeStop($responseExplode);
+
+            foreach($responseExplode as $key => $value) {
 
                 // Make only the first letter uppercase
-                $r = strtolower($r);
+                //$value = strtolower($value);
 
-                $dict[$r] = isset($dict[$r]) ? $dict[$r] + 1 : 1;
+                $dict[$value] = isset($dict[$value]) ? $dict[$value] + 1 : 1;
             }
         }
 
-        $dict = StopWords::removeStop($dict);
+//        print_r($dict);
+//        die();
+//        //$dict = StopWords::removeStop($dict);
 
         $output = [];
 
@@ -150,7 +154,6 @@ class DatabaseResponse
             $word = [];
             $word["text"] = $key;
             $word["size"] = $value;
-            $word["alert"] = "The word is '$key'";
             $output[] = $word;
         }
 

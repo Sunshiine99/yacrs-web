@@ -99,27 +99,30 @@ function getColour($colours, $i) {
 
 <ul class="nav nav-tabs" data-target="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
+        <li class="nav-item" id="nav-responses" data-target="section-responses">
+            <a class="nav-link" href="#">Responses</a>
+        </li>
         <li class="nav-item" id="nav-bar-chart" data-target="section-bar-chart" data-callback="initBarChartSection">
             <a class="nav-link active" href="#">Bar Chart</a>
         </li>
         <li class="nav-item" id="nav-pie-chart" data-target="section-pie-chart" data-callback="initPieChartSection">
             <a class="nav-link" href="#">Pie Chart</a>
         </li>
-        <li class="nav-item" id="nav-responses" data-target="section-responses">
-            <a class="nav-link" href="#">Responses</a>
-        </li>
     <?php endif; ?>
     <?php if(isset($responsesWordCloud)): ?>
-        <li class="nav-item" id="nav-word-cloud" data-target="section-word-cloud">
-            <a class="nav-link active" href="#">Word Cloud</a>
-        </li>
         <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
+        </li>
+        <li class="nav-item" id="nav-word-cloud" data-target="section-word-cloud">
+            <a class="nav-link active" href="#">Word Cloud</a>
         </li>
     <?php endif; ?>
     <?php if($question->getType() == "textlong"): ?>
         <li class="nav-item" id="nav-analysis" data-target="section-analysis">
-            <a class="nav-link" href="#">Analysis</a>
+            <a class="nav-link" href="#">Response Clusters</a>
+        </li>
+        <li class="nav-item" id="nav-bar-analysis" data-target="section-bar-analysis">
+            <a class="nav-link" href="#">Response Cluster Counts</a>
         </li>
     <?php endif; ?>
 </ul>
@@ -138,6 +141,10 @@ function getColour($colours, $i) {
         <div id="section-analysis" class="section display-none">
             <div id="no-analysis-error">No Analysis Available</div>
             <canvas id="analysis-chart" width="400" height="200"></canvas>
+        </div>
+        <div id="section-bar-analysis" class="section display-none">
+            <div id="no-analysis-error-2">No Analysis Available</div>
+            <canvas id="bar-analysis" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>
 

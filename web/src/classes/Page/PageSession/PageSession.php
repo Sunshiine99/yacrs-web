@@ -76,7 +76,7 @@ class PageSession extends Page
             // Get total number of questions
             $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($session->getSessionID(), $mysqli);
 
-            if(!$totalQuestions) PageError::error500("Could not load total number of questions in ".__FILE__." on line ".__LINE__);
+            if($totalQuestions === null) PageError::error500("Could not load total number of questions in ".__FILE__." on line ".__LINE__);
 
             // Get current question number
             $questionNumber = isset($_GET["q"]) ? intval($_GET["q"]) - 1 : 0;
@@ -103,7 +103,7 @@ class PageSession extends Page
         // Load active question
         $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
-        if(!$question) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
+        if($question === null) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
 
         $responses = null;
 
@@ -131,7 +131,7 @@ class PageSession extends Page
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
 
-                if(!$response) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+                if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
             }
         }
 
@@ -142,7 +142,7 @@ class PageSession extends Page
         // Add to session history
         $result = DatabaseSessionHistory::insert($user, $session, $mysqli);
 
-        if(!$result) PageError::error500("Could not update history in ".__FILE__." on line ".__LINE__);
+        if($result === null) PageError::error500("Could not update history in ".__FILE__." on line ".__LINE__);
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();

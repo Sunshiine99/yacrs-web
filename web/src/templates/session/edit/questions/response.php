@@ -121,12 +121,9 @@ function getColour($colours, $i) {
         <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Analysis</a>
         </li>
-        <div id="section-analysis" class="section display-none">
-            <div id="no-analysis-error">No Analysis Available</div>
-            <canvas id="analysis-chart" width="400" height="200"></canvas>
-        </div>
     <?php endif; ?>
 </ul>
+
 
 <div class="sections" id="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
@@ -135,6 +132,12 @@ function getColour($colours, $i) {
         </div>
         <div id="section-pie-chart" class="section display-none">
             <canvas id="pie-chart" width="400" height="200"></canvas>
+        </div>
+    <?php endif; ?>
+    <?php if($question->getType() == "textlong"): ?>
+        <div id="section-analysis" class="section display-none">
+            <div id="no-analysis-error">No Analysis Available</div>
+            <canvas id="analysis-chart" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>
 

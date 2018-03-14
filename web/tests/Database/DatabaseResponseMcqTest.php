@@ -34,4 +34,49 @@ final class DatabaseResponseMcqTest extends TestCase
 
         $this->assertNotNull($result);
     }
+
+    public function testInsertNull(){
+        global $config;
+
+        // Connect to the database
+        $mysqli = TestHelper::databaseConnect($config);
+
+        $this->assertNull(
+            DatabaseResponseMcq::insert(null,
+                null, null, null, $mysqli));
+
+        $this->assertNull(
+            DatabaseResponseMcq::insert(0,
+                0, null, new QuestionMrq(), $mysqli));
+    }
+
+    public function testUpdateNull(){
+        global $config;
+
+        // Connect to the database
+        $mysqli = TestHelper::databaseConnect($config);
+
+        $this->assertNull(
+            DatabaseResponseMcq::update(null,
+                null, null, null, $mysqli));
+
+        $this->assertNull(
+            DatabaseResponseMcq::insert(0,
+                0, null, new QuestionMrq(), $mysqli));
+    }
+
+    public function testLoadUserResponsesOnNull(){
+        global $config;
+
+        // Connect to the database
+        $mysqli = TestHelper::databaseConnect($config);
+
+        $this->assertNull(
+            DatabaseResponseMcq::loadUserResponses(0, 0, $mysqli)
+        );
+
+        $this->assertNull(
+            DatabaseResponseMcq::loadUserResponses(null, null, $mysqli)
+        );
+    }
 }

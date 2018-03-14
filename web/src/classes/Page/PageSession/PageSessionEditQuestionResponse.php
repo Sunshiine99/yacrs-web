@@ -42,7 +42,7 @@ class PageSessionEditQuestionResponse
 
         $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
-        if(!$session) {
+        if($session === null) {
             PageError::error500();
             die();
         }
@@ -52,7 +52,7 @@ class PageSessionEditQuestionResponse
         // Load the question from the database
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
 
-        if(!$question || $sessionID!=$question->getSessionID()) {
+        if($question === null || $sessionID!=$question->getSessionID()) {
             header("Location: ..");
             die();
         }

@@ -38,30 +38,25 @@ $this->layout("template",
                     <span class="os">Windows</span>
                 </button>
                 <div class="dropdown-menu btn btn-light btn-lg width-full download" aria-labelledby="windowsDropdown">
-                    <a class="dropdown-item" href="#">installer .exe</a>
-                    <a class="dropdown-item" href="#">64-bit .zip</a>
-                    <a class="dropdown-item" href="#">32-bit .zip</a>
+                    <a class="dropdown-item" href="#">.exe</a>
+                    <a class="dropdown-item" href="#">x64 .zip</a>
+                    <a class="dropdown-item" href="#">x86_64 .zip</a>
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <!-- href="https://www.dropbox.com/sh/1ptq1dyj5y15oxw/AAASIItlXGfDVBrO93FKOaOya?dl=0&lst=" -->
-            <div class="dropdown">
-                <button id="macDropdown" class="btn btn-primary btn-lg width-full download" target="_blank" data-toggle="dropdown" aria-haspopup="true", aria-expanded="false">
-                    <i class="fa fa-apple icon" aria-hidden="true"></i>
-                    <span class="os">macOS</span>
-                </button>
-                <div class="dropdown-menu btn btn-light btn-lg width-full download" aria-labelledby="macDropdown">
-                    <a class="dropdown-item" href="#">Some Mac Installer</a>
-                </div>
-            </div>
+            <a class="btn btn-primary btn-lg width-full download" target="_blank" href="#">
+                <i class="fa fa-apple icon" aria-hidden="true"></i>
+                <span class="os">macOS</span>
+            </a>
         </div>
         <div class="col-sm-4">
             <!-- href="https://www.dropbox.com/sh/1xaatvmciq0uq2s/AAD-UkL_05qdDuhAKA_XZwxia?dl=0&lst=" -->
             <div class="dropdown">
                 <button id="linuxDropdown" class="btn btn-primary btn-lg width-full download" target="_blank" data-toggle="dropdown" aria-haspopup="true", aria-expanded="false">
                     <i class="fa fa-linux icon" aria-hidden="true"></i>
-                    <span class="os">macOS</span>
+                    <span class="os">Linux</span>
                 </button>
                 <div class="dropdown-menu btn btn-light btn-lg width-full download" aria-labelledby="linuxDropdown">
                     <a class="dropdown-item" href="#">x64 .appImage</a>

@@ -1,5 +1,31 @@
 FROM php:5.6-apache
 
+# Setup /var/www as work directory and add all code to it
+WORKDIR /var/www
+COPY . /var/www
+
+RUN \
+    apt-get update && \
+    apt-get install -y \
+        build-essential \
+        python3 \
+        python3-dev \
+        python3-setuptools \
+        python3-numpy \
+        python3-scipy \
+        python3-pip \
+        libatlas-dev \
+        libatlas3gf-base \
+        python3-pandas \
+        python3-nltk \
+        python3-matplotlib \
+        python3-mpld3 \
+        python3-jinja2 && \
+    python3 -m pip install \
+        PyMySQL \
+        scikit-learn && \
+    python3 -c "import nltk; nltk.download('stopwords', download_dir='/usr/share/nltk_data'); nltk.download('punkt', download_dir='/usr/share/nltk_data')"
+
 # Enable PHP extensions
 RUN docker-php-ext-install mysqli
 
@@ -42,9 +68,13 @@ RUN wget https://phar.phpunit.de/phpunit-5.7.9.phar -O phpunit.phar && \
     chmod +x phpunit.phar && \
     mv phpunit.phar /usr/local/bin/phpunit
 
-# Setup /var/www as work directory and add all code to it
-WORKDIR /var/www
-COPY . /var/www
+# Make uploads directory writable by the web server
+RUN chown -R www-data:www-data /var/www/uploads
 
 # Install composer dependencies
 RUN composer install -o
+
+
+
+#######################################################################################################################
+

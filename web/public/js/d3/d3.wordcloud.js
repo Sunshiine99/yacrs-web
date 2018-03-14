@@ -67,7 +67,12 @@
 
       svg = element.append("svg");
       vis = svg.append("g").attr("transform", "translate(" + [layout.size()[0] >> 1, layout.size()[1] >> 1] + ")");
-
+      //adding zoom function
+        //svg.attr("width", "100%")
+        //svg.attr("height", "100%")
+        //svg.call(d3.behavior.zoom().on("zoom", function () {
+        //    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+        //})).append("g")
       update();
       svg.on('resize', function() { update() });
     }
@@ -136,7 +141,7 @@
         })
         .on("mouseover", function(d, i) {
           if (onwordclick !== undefined) {
-              d3.select(this).transition().style('font-size', d.size + 3 + 'px');
+              d3.select(this).transition().style('font-size', d.size + 8 + 'px');
           }
         })
         .on("mouseout", function(d, i) {

@@ -49,7 +49,7 @@ class ApiSession
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {
@@ -83,13 +83,12 @@ class ApiSession
         }
 
         $data = $_REQUEST;
-        $data["sessionID"] = $sessionIdentifier;
 
         $output = [];
 
         // If this is an existing session
         if($sessionIdentifier) {
-            $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+            $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
             $session->fromArray($data);
             DatabaseSession::update($session, $mysqli);
         }
@@ -100,7 +99,7 @@ class ApiSession
             $session->setOwner($user->getId());
             $sessionIdentifier = DatabaseSession::insert($session, $mysqli);
         }
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
         $output = $session->toArray();
         Api::output($output);
     }
@@ -127,7 +126,7 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 
@@ -158,7 +157,6 @@ class ApiSession
 
     public static function startSession($sessionIdentifier){
 
-        //TODO check if a session is already running for the owner
         // Connect to database
         $databaseConnect = Flight::get("databaseConnect");
         $mysqli = $databaseConnect();
@@ -175,12 +173,12 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {
@@ -202,7 +200,8 @@ class ApiSession
         $result = DatabaseSessionQuestion::questionActivate($sessionQuestionID, true, $mysqli);
 
         if($result == true){
-            Api::output(true);
+            $output["success"] = true;
+            Api::output($output);
         }
         else{
             ApiError::unknown();
@@ -227,12 +226,12 @@ class ApiSession
 
         // If invalid session identifier, display 404
         if(!$sessionID) {
-            PageError::error404();
+            ApiError::unknown();
             die();
         }
 
         // Load session
-        $session = DatabaseSession::loadSession($sessionIdentifier, $mysqli);
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If a session was not loaded, output error
         if(!$session) {
@@ -250,13 +249,15 @@ class ApiSession
         $activeQuestion = DatabaseSessionQuestion::loadAllActiveQuestions($sessionID, $mysqli);
         //If there is no active question return false
         if(count($activeQuestion) == 0){
-            Api::output(false);
+            $output["success"] = false;
+            Api::output($output);
         }
         else{
             //Get the active question's id and stop it
             $activeID = $activeQuestion[0]->toArray()["sessionQuestionID"];
             $result = DatabaseSessionQuestion::questionActivate($activeID, 0, $mysqli);
-            Api::output(true);
+            $output["success"] = true;
+            Api::output($output);
         }
     }
 
@@ -277,5 +278,114 @@ class ApiSession
 
         $sessions = DatabaseSession::loadUserActiveSessions($userID, $mysqli);
         Api::output($sessions);
+    }
+
+    public static function getResults($sessionIdentifier){
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            PageError::error404();
+            die();
+        }
+
+        // Load session
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
+
+        // If a session was not loaded, output error
+        if(!$session) {
+            $output["error"]["code"]    = "invalidSessionId";
+            $output["error"]["message"] = "Invalid Session ID";
+            Api::output($output);
+            die();
+        }
+
+        // If user cannot stop this session
+        if($session->getOwner() !== $user->getUsername()) {
+            ApiError::permissionDenied();
+        }
+
+        $questionsArr = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli)["questions"];
+
+        $output = [];
+
+        foreach ($questionsArr as $question) {
+
+
+            if ($question->getType() == "mcq" or $question->getType() == "mrq") {
+                $results = DatabaseResponseMcq::loadResponses($question->getSessionQuestionID(), $mysqli);
+            } else {
+                $results = DatabaseResponse::loadResponses($question->getSessionQuestionID(), $mysqli);
+            }
+
+            $questionArr = [];
+            $questionArr["questionID"] = $question->getSessionQuestionID();
+
+            foreach ($results as $response) {
+                $temp = [];
+                $temp["choice"] = $response->getResponse();
+                $temp["username"] = $response->getUsername();
+                array_push($questionArr, $temp);
+            }
+
+            array_push($output, $questionArr);
+        }
+
+        Api::output($output);
+    }
+
+    public static function export($sessionIdentifier){
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        // Get user from API
+        $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
+
+        // Check the API Key and get the username of the user
+        if(!$user) {
+            ApiError::invalidApiKey();
+        }
+
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+
+        // If invalid session identifier, display 404
+        if(!$sessionID) {
+            ApiError::unknown();
+            die();
+        }
+
+        // Load session
+        $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
+
+        // If a session was not loaded, output error
+        if(!$session) {
+            $output["error"]["code"]    = "invalidSessionId";
+            $output["error"]["message"] = "Invalid Session ID";
+            Api::output($output);
+            die();
+        }
+
+        // If user cannot stop this session
+        if($session->getOwner() !== $user->getUsername()) {
+            ApiError::permissionDenied();
+        }
+
+        //export
+        PageSessionExport::export($sessionIdentifier);
     }
 }

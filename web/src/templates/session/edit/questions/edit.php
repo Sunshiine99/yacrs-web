@@ -8,6 +8,7 @@
  * @var $alert Alert
  * @var $session Session
  * @var $question Question|QuestionMcq|QuestionText|QuestionTextLong
+ * @var $screenshot boolean
  */
 $this->layout("template",
     [
@@ -71,9 +72,31 @@ else {
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/question/edit.js"></script>
 <?php $this->end(); ?>
 
-<h2 class="page-section">
-    <?=$this->e($newEditText)?> Question
-</h2>
+<div class="row editquestionheader">
+    <div class="col-sm-10">
+        <h2 class="page-section">
+            <?=$this->e($newEditText)?> Question
+        </h2>
+    </div>
+
+    <?php if($screenshot): ?>
+    <div class = "col-sm-2">
+        <div id="screenshotbutton">
+            <h5 class="page-section">
+                <a id="screenshotlink" href="#collapseScreenshot" data-toggle="collapse">Show Screenshot</a>
+            </h5>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
+
+
+<?php if($screenshot): ?>
+        <div id="collapseScreenshot" class="collapse">
+        <img id="screenshot" src="<?=$this->e($config["baseUrl"])?>session/<?=$session->getSessionIdentifier()?>/edit/question/<?=$question->getSessionQuestionID()?>/screenshot/"/>
+        </div>
+
+<?php endif; ?>
 
 <form id="" action="." method="POST" class="form-horizontal<?=$new?" new":""?>">
 
@@ -100,7 +123,7 @@ else {
     <div class="form-group row" id="questions-row">
         <label class="col-sm-2 control-label" for="question">Question</label>
         <div class="col-sm-10">
-            <input class="form-control" name="question" id="mcQuestion" value="<?=isset($question)?$this->e($question->getQuestion()):""?>" size="80" type="text" tabindex="1">
+            <input class="form-control" name="question" id="mcQuestion" value="<?=isset($question)?$this->e($question->getQuestion()):""?>" size="80" type="text" tabindex="1" maxlength="80">
         </div>
     </div>
 
@@ -114,11 +137,11 @@ else {
                     <?php $i = 0; ?>
                     <?php foreach ($choices as $choice): ?>
                         <div class="input-group input-add-more-item<?=$choice->isCorrect()?" correct":""?>">
-                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1">
+                            <input id="mcq-choice-<?=$i?>" name="mcq-choice-<?=$i?>" class="form-control input-add-more-input mcq-choice" type="text" value="<?=$this->e($choice->getChoice())?>" tabindex="1" maxlength="80">
                             <input id="mcq-choice-id-<?=$i?>" name="mcq-choice-id-<?=$i?>" class="mcq-choice-id" type="hidden" value="<?=$this->e($choice->getChoiceID())?>">
                             <input id="mcq-choice-correct-<?=$i?>" name="mcq-choice-correct-<?=$i?>" class="mcq-choice-correct" type="hidden" value="<?=$choice->isCorrect()?"true":"false"?>">
                             <button class="incorrect btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
-                                <i class="fa fa-times" aria-hidden="true"></i> Incorrect
+                                    <i class="fa fa-times" aria-hidden="true"></i> Incorrect
                             </button>
                             <button class="correct btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                                 <i class="fa fa-check" aria-hidden="true"></i> Correct
@@ -132,7 +155,7 @@ else {
                 </div>
                 <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
                     <input class="submit btn btn-primary" name="submit" value="<?=$saveText?>" type="submit" tabindex="1">
-                    <a onclick="history.back()" class="btn btn-light btn-light-border">Cancel</a>
+                    <a onclick="goBack()" class="btn btn-light btn-light-border">Cancel</a>
                     <button class="btn btn-light btn-light-border input-add-more-input float-right" type="button">
                         Add Another Choice
                     </button>
@@ -144,7 +167,7 @@ else {
         <div id="question-text" class="form-group row question">
             <div class="col-sm-10 offset-sm-2">
                 <input class="submit btn btn-primary" name="submit" value="<?=$saveText?>" type="submit" tabindex="1">
-                <a onclick="history.back()" class="btn btn-light btn-light-border">Cancel</a>
+                <a onclick="goBack()" class="btn btn-light btn-light-border">Cancel</a>
             </div>
         </div>
     <?php endif; ?>

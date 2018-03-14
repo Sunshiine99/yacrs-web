@@ -19,9 +19,7 @@ class DatabaseResponse
                 VALUES ('".time()."', '$sessionQuestionID', '$userID', '$response')";
         $result = $mysqli->query($sql);
 
-        if(!$result) {
-            return null;
-        }
+        if(!$result) return null;
 
         return $mysqli->insert_id;
     }
@@ -42,6 +40,8 @@ class DatabaseResponse
                 WHERE r.`sessionQuestionID` = $sessionQuestionID
                 AND r.`userID` = $userID";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // If the user hasn't submitted a response, return null
         if($result->num_rows <= 0) {
@@ -68,12 +68,9 @@ class DatabaseResponse
                 WHERE `yacrs_response`.`ID` = $responseID";
         $result = $mysqli->query($sql);
 
-        if($result) {
-            return $responseID;
-        }
-        else {
-            return null;
-        }
+        if(!$result) return null;
+
+        return $responseID;
     }
 
     /**
@@ -131,20 +128,25 @@ class DatabaseResponse
             // Get the response
             $response = $row["response"];
 
+            // Remove everything except letters
+            $response = preg_replace("/[^a-z]+/i", " ", $response);
+
             $responseExplode = explode(" ", $response);
 
-            foreach($responseExplode as $r) {
+            $responseExplode = StopWords::removeStop($responseExplode);
 
-                // Remove everything except letters
-                $r = preg_replace("/[^a-z]+/i", "", $r);
+            foreach($responseExplode as $key => $value) {
 
                 // Make only the first letter uppercase
-                $r = strtolower($r);
+                //$value = strtolower($value);
 
-                $dict[$r] = isset($dict[$r]) ? $dict[$r] + 1 : 1;
+                $dict[$value] = isset($dict[$value]) ? $dict[$value] + 1 : 1;
             }
         }
-        $dict = StopWords::removeStop($dict);
+
+//        print_r($dict);
+//        die();
+//        //$dict = StopWords::removeStop($dict);
 
         $output = [];
 
@@ -152,7 +154,6 @@ class DatabaseResponse
             $word = [];
             $word["text"] = $key;
             $word["size"] = $value;
-            $word["alert"] = "The word is '$key'";
             $output[] = $word;
         }
 

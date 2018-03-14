@@ -63,7 +63,14 @@ Flight::route("POST /login/", array("PageLogin", "loginSubmit"));
 Flight::route("/login/", array("PageLogin", "login"));
 Flight::route("POST /login/anonymous/", array("PageLogin", "anonymousSubmit"));
 Flight::route("/login/anonymous/", array("PageLogin", "anonymous"));
+
 Flight::route("/logout/", array("PageLogout", "logout"));
+
+Flight::route("POST /register/", array("PageLoginNative", "registerSubmit"));
+Flight::route("/register/", array("PageLoginNative", "register"));
+Flight::route("POST /changepassword/", array("PageLoginNative", "changePasswordSubmit"));
+Flight::route("/changepassword/", array("PageLoginNative", "changePassword"));
+Flight::route("/changepassword/@username/", array("PageLoginNative", "changePassword"));
 
 /**************************************************************
  * Sessions
@@ -75,7 +82,6 @@ Flight::route("POST /session/@id:[0-9]*/", array("PageSession", "viewSubmit"));
 Flight::route("/session/@id:[0-9]*/", array("PageSession", "view"));
 
 Flight::route("/session/@id:[0-9]*/edit/", array("PageSessionEdit", "edit"));
-Flight::route("/session/@id:[0-9]*/edit/class/", array("PageSessionEdit", "classMode"));
 Flight::route("/session/@id:[0-9]*/edit/export/", array("PageSessionExport", "export"));
 
 Flight::route("POST /session/@id:[0-9]*/edit/properties/", array("PageSessionEditProperties", "submit"));
@@ -84,10 +90,12 @@ Flight::route("/session/@id:[0-9]*/edit/properties/", array("PageSessionEditProp
 Flight::route("/session/@sessionID:[0-9]*/edit/question/", array("PageSessionEdit", "question"));
 
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionEditQuestionResponse", "response"));
+Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]*/response/live/", array("PageSessionEditQuestionResponse", "live"));
 
 Flight::route("POST /session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "editSubmit"));
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/", array("PageSessionEditQuestion", "edit"));
 
+Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/screenshot/", array("PageSessionEditQuestion", "screenshot"));
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@questionID:[0-9]*/delete/", array("PageSessionEditQuestion", "delete"));
 
 Flight::route("POST /session/@id:[0-9]*/edit/question/new/", array("PageSessionEditQuestion", "addSubmit"));
@@ -104,6 +112,12 @@ Flight::route("/session/new/", array("PageSessionNew", "add"));
  * Admin
  **************************************************************/
 Flight::route("/admin/", array("PageAdmin", "admin"));
+
+/**************************************************************
+ * Generic
+ **************************************************************/
+Flight::route("/help/", array("PageGeneric", "help"));
+Flight::route("/download/", array("PageGeneric", "download"));
 
 /**************************************************************
  * API

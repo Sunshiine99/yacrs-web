@@ -16,8 +16,8 @@ $(".input-add-more-button .input-add-more-input").click(function () {
 
     var dataInputContainerFirstChild = dataInputContainer.find("> :first-child");
 
-    if(dataInputContainerFirstChild.css("visibility") === "hidden") {
-        dataInputContainerFirstChild.css("visibility", "visible")
+    if(dataInputContainerFirstChild.hasClass("display-none")) {
+        dataInputContainerFirstChild.removeClass("display-none");
     }
 
     else {
@@ -35,8 +35,10 @@ $(".input-add-more-button .input-add-more-input").click(function () {
         // Add new item using the first
         dataInputContainer.append(dataInputContainerFirstChild[0].outerHTML);
 
+        var lastChild = dataInputContainer.find(":last-child");
+
         // Get new last child
-        input = dataInputContainer.find(":last-child .input-add-more-input");
+        input =  lastChild.find(".input-add-more-input");
 
         // Clear input values in this new item
         input.attr("value", "");
@@ -72,7 +74,9 @@ function addMoreDelete(that) {
 
         // If there is only one child left, only hide it
         if(inputAddMoreContainer.children().length === 1) {
-            $(that).closest(".input-add-more-item").css("visibility", "hidden");
+            var closestAddMoreItem = $(that).closest(".input-add-more-item");
+            closestAddMoreItem.find("input").val("");
+            closestAddMoreItem.addClass("display-none");
         }
 
         // Otherwise, remove the item
@@ -88,7 +92,9 @@ initAddMoreDelete($(".input-add-more-container .input-add-more-input.delete"));
  * Confirm Delete
  ********************************************************************/
 
-$(".actions-confirm-delete .actions .delete").click(function() {
+var body = $("body");
+
+body.on("click", ".actions-confirm-delete .actions .delete", function(event) {
     var actions = $(this).closest(".actions");
     var actionsConfirmDelete = $(this).closest(".actions-confirm-delete");
     var confirmDelete = actionsConfirmDelete.find(".confirm-delete");
@@ -96,7 +102,7 @@ $(".actions-confirm-delete .actions .delete").click(function() {
     confirmDelete.css("display", "inline-flex");
 });
 
-$(".confirm-delete .cancel").click(function() {
+body.on("click", ".confirm-delete .cancel", function(event) {
     var actionsConfirmDelete = $(this).closest(".actions-confirm-delete");
     var actions = actionsConfirmDelete.find(".actions");
     var confirmDelete = actionsConfirmDelete.find(".confirm-delete");
@@ -125,4 +131,30 @@ $.extend({
         $('<form action="'+location+'" method="POST">'+form+'</form>').appendTo('body').submit();
     }
 
+});
+
+/********************************************************************
+ * Navigation Tabs
+ ********************************************************************/
+
+$("ul.nav-tabs li.nav-item").click(function() {
+    var targetID = $(this).attr("data-target");
+    var navTabs = $(this).closest("ul.nav-tabs");
+    var sectionsContainerID = navTabs.attr("data-target");
+
+    // Hide all sections
+    $("#" + sectionsContainerID).find(".section").addClass("display-none");
+
+    // Display the target section
+    $("#" + targetID).removeClass("display-none");
+
+    // Change the tab
+    navTabs.find("li.nav-item a").removeClass("active");
+    $(this).find("a").addClass("active");
+
+    // Run callback if it exists
+    var callback = window[$(this).attr("data-callback")];
+    if(typeof callback === 'function') {
+        callback();
+    }
 });

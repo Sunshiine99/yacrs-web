@@ -50,14 +50,7 @@ class DatabaseSessionIdentifier
     public static function delete($sessionIdentifier, $mysqli) {
         $sessionIdentifier = Database::safe($sessionIdentifier, $mysqli);
 
-        //Delete from questions
-        $sql = "DELETE FROM `yacrs_sessionIdentifier`
-                WHERE `sessionIdentifier` = $sessionIdentifier";
-        $result = $mysqli->query($sql);
-
-        if(!$result) return null;
-
-        return true;
+        return DatabaseSession::delete($sessionIdentifier, $mysqli);
     }
 
     /**

@@ -22,6 +22,11 @@ class PageSessionEditProperties
             header("Location: "  . $config["baseUrl"]);
             die();
         }
+        $arr = [];
+        $users = $session->getAdditionalUsers();
+        foreach ($users as $u){
+            array_push($arr, DatabaseUser::loadDetailsFromUsername($u, $mysqli));
+        }
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -35,6 +40,7 @@ class PageSessionEditProperties
         $data["session"] = $session;
         $data["additionalUsersCsv"] = $session->getAdditionalUsersCsv();
         $data["user"] = $user;
+        $data["additionalUsers"] = $arr;
         $data["breadcrumbs"] = $breadcrumbs;
 
         echo $templates->render("session/edit/properties", $data);
@@ -57,9 +63,34 @@ class PageSessionEditProperties
         $session = new Session($_POST);
         $session->setOwner($user->getId());
 
+        // Load new users
+        foreach ($_POST as $key => $value) {
+
+            preg_match("/(user-)(\w*[0-9]\w*)/", $key, $matches);
+
+            if($matches) {
+
+                // Get the user index from the regex matches
+                $index = $matches[2];
+
+                // If there is an index associated with this user, store it
+                if(isset($_POST["user-" . $index])) {
+                    $username = $_POST["user-" . $index];
+                    //If user does not exist output error
+                    if(!DatabaseUser::checkUserExists($username, $mysqli) and $username != ""){
+                        PageError::generic("Additional user does not exist", "One of the additional users you have typed does not exist");
+                        die();
+                    }
+                    // Else add the new user
+                    $session->addAdditionalUser($username);
+                }
+
+            }
+        }
+
         DatabaseSession::update($session, $mysqli);
 
-        header("Location: "  .$config["baseUrl"]);
+        header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/");
         die();
     }
 }

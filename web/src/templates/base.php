@@ -8,7 +8,12 @@
  * @var $alert Alert
  * @var $logo string
  * @var $footer string
+ * @var $noHeaderFooter bool
  */
+
+// Ensure $noHeaderFooter is a valid boolean
+$noHeaderFooter = isset($noHeaderFooter) ? !!$noHeaderFooter : false;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,12 +22,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title><?=isset($title) ? $this->e($title)." | " : ""?>YACRS</title>
         <meta name="description" content="<?=$this->e($description)?>">
-
         <meta name="mobile-web-app-capable" content="yes">
-        <meta name="theme-color" content="#003865">
-        <link rel="apple-touch-icon" sizes="128x128" href="<?=$this->e($config["baseUrl"])?>img/uofg/icon_hi.png">
-        <link rel="apple-touch-icon" sizes="64x64" href="<?=$this->e($config["baseUrl"])?>img/uofg/icon_small.png">
-
         <title>YACRS</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
@@ -38,7 +38,7 @@
             <link href="<?=$this->e($config["baseUrl"])?>css/style-desktop.css" rel="stylesheet">
         <?php endif; ?>
     </head>
-    <body>
+    <body<?=$noHeaderFooter ? " class='noHeaderFooter'" : ""?>>
         <!--[if lt IE 9]>
         <div id="incompatible-browser">
             <h1>Incompatible Browser</h1>
@@ -67,7 +67,11 @@
             </p>
         </div>
         <![endif]-->
-        <?php $this->insert("partials/navigation", ["config" => $config, "logo" => $logo, "user" => $user]) ?>
+        <?php
+        if(!$noHeaderFooter) {
+            $this->insert("partials/navigation", ["config" => $config, "logo" => $logo, "user" => $user]);
+        }
+        ?>
         <main role="main">
             <?php $this->insert("partials/breadcrumb", ["breadcrumbs" => $breadcrumbs]) ?>
             <?=$this->section("preContent")?>
@@ -79,7 +83,7 @@
             </div>
             <?=$this->section("postContent")?>
         </main>
-        <?php if(!isDesktopApp()): ?>
+        <?php if(!isDesktopApp() && !$noHeaderFooter): ?>
             <footer class="footer">
                 <?php $this->insert(isset($footer) ? $footer : "partials/footer", ["config" => $config]) ?>
             </footer>
@@ -88,7 +92,10 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="<?=$this->e($config["baseUrl"])?>js/jquery-3.2.1.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
+        <script src="<?=$this->e($config["baseUrl"])?>js/jquery-3.2.1.min.js"></script>
+        <?php if(isDesktopApp()): ?>
+            <script>try { window.$ = window.jQuery = module.exports; } catch(e) {}</script>
+        <?php endif; ?>
         <script src="<?=$this->e($config["baseUrl"])?>js/popper.min.js"></script>
         <script src="<?=$this->e($config["baseUrl"])?>js/bootstrap-4.0.0-beta.2.min.js"></script>
 
@@ -125,7 +132,9 @@
         </script>
 
         <script src="<?=$this->e($config["baseUrl"])?>js/bootstrap-extra.js" crossorigin="anonymous"></script>
-
+        <?php if(!isDesktopApp()): ?>
+            <script src="<?=$this->e($config["baseUrl"])?>js/web-app.js" crossorigin="anonymous"></script>
+        <?php endif; ?>
         <?=$this->section("end")?>
     </body>
 </html>

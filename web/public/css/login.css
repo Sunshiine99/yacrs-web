@@ -5,19 +5,28 @@
     text-align: center;
 }
 
-#login input {
+#login .loginGroup {
+    margin-top: 10px;
+}
+
+#login .loginGroup input {
     box-shadow: none;
 }
 
-#login #username {
+#login .loginGroup input:first-of-type:not(:only-of-type) {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-#login #password {
+#login .loginGroup input:last-of-type:not(:only-of-type) {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
+}
+
+#login .loginGroup input:not(:first-of-type):not(:last-of-type):not(:only-of-type) {
+    border-radius: 0;
+    margin-bottom: -1px;
 }
 
 #login button {

@@ -22,6 +22,11 @@ class ApiLogin
         // Check whether login is valid
         $user = Login::checkLogin($username, $password, $config, $mysqli, false);
 
+        if($user === null) {
+            ApiError::unknown();
+            die();
+        }
+
         // If invalid login, output an error
         if(!$user) {
             $output["error"]["code"] = "loginInvalid";

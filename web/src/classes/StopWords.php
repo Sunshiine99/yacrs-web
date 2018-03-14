@@ -2,49 +2,36 @@
 
 class StopWords
 {
-    const words = array("a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all",
-        "almost", "alone", "along", "already", "also","although","always","am","among", "amongst", "amoungst",
-        "amount",  "an", "and", "another", "any","anyhow","anyone","anything","anyway", "anywhere", "are", "around",
-        "as",  "at", "back","be","became", "because","become","becomes", "becoming", "been", "before", "beforehand",
-        "behind", "being", "below", "beside", "besides", "between", "beyond", "bill", "both", "bottom","but", "by",
-        "call", "can", "cannot", "cant", "co", "con", "could", "cry", "describe", "detail", "do", "done",
-        "down", "due", "during", "each", "eg", "eight", "either", "eleven","else", "elsewhere", "empty", "enough",
-        "etc", "even", "ever", "every", "everyone", "everything", "everywhere", "except", "few", "fifteen",
-        "fill", "find", "fire", "first", "five", "for", "former", "formerly", "forty", "found",
-        "from", "front", "full", "further", "get", "give", "go", "had", "has", "hasnt", "have", "he", "hence",
-        "her", "here", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "him", "himself", "his",
-        "how", "however", "hundred", "i", "ie", "if", "in", "inc", "indeed", "interest", "into", "is", "it", "its",
-        "itself", "keep", "last", "latter", "latterly", "least", "less", "ltd", "made", "many", "may", "me",
-        "meanwhile", "might", "mill", "mine", "more", "moreover", "most", "mostly", "move", "much", "must", "my",
-        "myself", "name", "namely", "neither", "never", "nevertheless", "next", "no", "nobody",
-        "none", "nor", "not", "nothing", "now", "nowhere", "of", "off", "often", "on", "once", "one", "only",
-        "onto", "or", "other", "others", "otherwise", "our", "ours", "ourselves", "out", "over", "own","part", "per",
-        "perhaps", "please", "put", "rather", "same", "see", "seem", "seemed", "seeming", "seems", "serious",
-        "several", "she", "should", "show", "side", "since", "sincere", "six", "sixty", "so", "some", "somehow",
-        "someone", "something", "sometime", "sometimes", "somewhere", "still", "such", "system", "take", "ten", "than",
-        "that", "the", "their", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "therefore",
-        "therein", "thereupon", "these", "they", "thin", "third", "this", "those", "though", "three", "through",
-        "throughout", "thus", "to", "together", "too", "top", "toward", "towards", "twelve", "twenty",
-        "two", "un", "under", "until", "up", "upon", "us", "very", "via", "was", "we", "well", "were", "what",
-        "whatever", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein",
-        "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whoever", "whole", "whom",
-        "whose", "why", "will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself",
-        "yourselves", "the");
+    const words = array("a", "about", "all", "am", "an", "and", "any", "are", "aren", "as", "at",
+    "be", "been", "being", "below", "between", "both", "but", "by", "can", "cannot",
+    "could", "couldn", "did", "didn", "do", "does", "doesn't", "doing", "don",
+    "down", "each", "few", "for", "from", "further", "had", "hadn", "has", "hasn",
+    "have", "haven", "having", "he", "he", "he", "he", "her", "here", "here", "on", "once", "only",
+    "hers", "herself", "him", "himself", "his", "how", "i", "not", "of", "off",
+    "if", "in", "into", "is", "isn", "it", "it", "its", "itself", "let", "me", "more",
+    "most", "mustn", "my", "m", "s", "t", "d", "ll", "ve", "re", "myself", "no", "nor",
+    "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan",
+    "she", "she", "she", "she", "should", "shouldn", "so", "some", "such", "through", "to",
+    "there", "there", "these", "they", "this", "those",
+    "we", "were", "weren", "what", "what s", "when",
+    "where", "which", "too", "up", "while", "who", "whom", "why", "with",
+    "would", "wouldn", "you", "was", "wasn",
+    "your", "yours", "yourself", "yourselves", "than", "that", "the", "their",
+    "theirs", "them", "themselves", "then", "");
 
 
-    public static function checkInStop($word){
-        $word = strtolower(trim($word));
-        foreach(self::words as $str){
-            if(strcmp($word, $str) == 0) return true;
-        }
-        return false;
+    public static function isInStop($word){
+        return in_array($word, self::getStop());
     }
 
     public static function removeStop($dict){
+        $i = 0;
         $arr = [];
         foreach($dict as $key => $value) {
-            if(!self::checkInStop($key)){
-                $arr[$key] = $value;
+            $value = strtolower($value);
+            if(!self::isInStop($value)){
+                $arr[$i] = $value;
+                $i++;
             }
         }
         return $arr;

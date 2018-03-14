@@ -6,8 +6,6 @@ class PageLogin
     public static function login() {
         $templates = Flight::get("templates");
         $data = Flight::get("data");
-
-        //$data["breadcrumbs"] = $breadcrumbs;
         echo $templates->render("login/login", $data);
     }
 
@@ -24,6 +22,11 @@ class PageLogin
             $_POST["password"],
             $config,
             $mysqli);
+
+        if($user === null) {
+            PageError::error500("Error loading user");
+            die();
+        }
 
         // If invalid login
         if(!$user) {

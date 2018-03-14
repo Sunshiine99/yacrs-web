@@ -1,12 +1,13 @@
 <?php
 $config = [];
 
-$config["version"]                       = "2.0.0indev";
+$config["version"]                       = "2.0.0rc1";
 $config["title"]                         = "YACRS";
 $config["baseUrl"]                       = isset($_SERVER['HTTPS']) ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . "/";
 $config["login"]["type"]                 = "some";
 
-// "%A %e %B %Y at %H:%M"
+// Whether user's can register new accounts (Only for native login system)
+$config["login"]["register"]             = true;
 
 $config["datetime"]["date"]["short"]     = "d/m/y";
 $config["datetime"]["date"]["long"]      = "d F Y \\a\\t";
@@ -25,8 +26,11 @@ $config["database"]["name"]              = getenv("MYSQL_DATABASE");
 $config["ldap"]["host"]                  = "130.209.13.173";
 $config["ldap"]["context"]               = "o=Gla";
 
-$config["user"]["admin"][0]               = "2198207s";
-$config["user"]["admin"][1]               = "a";
+// Manual username password combos. Used for initial setting up of admin users.
+$config["user"]["users"]["admin"]        = "dufbYqFuU4EV8WgE";
+
+// Users who should always be admin
+$config["user"]["admin"][0]               = "admin";
 
 // Details used for LDAP bind
 //$config["ldap"]["bind"]["user"] = "";
@@ -38,3 +42,5 @@ $config["ldap"]["sessionCreatorRules"][] = array("field" => "dn", "contains" => 
 $config["ldap"]["sessionCreatorRules"][] = array("field" => "homezipcode", "match" => "PGR");
 $config["ldap"]["sessionCreatorRules"][] = array("field" => "uid", "regex" => "/^[a-z]{2,3}[0-9]+[a-z]$/");
 //$config["ldap"]["sessionCreatorRules"][] = array('field'=>'mail', 'regex'=>'/[a-zA-Z]+\.[a-zA-Z]+.*?@glasgow\.ac\.uk/');
+
+$config["baseDir"] = dirname(dirname(__FILE__));

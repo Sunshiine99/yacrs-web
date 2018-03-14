@@ -19,9 +19,7 @@ class DatabaseResponseMcq
                 VALUES ('".time()."', '$sessionQuestionID', '$userID', '$choiceID')";
         $result = $mysqli->query($sql);
 
-        if(!$result) {
-            return null;
-        }
+        if(!$result) return null;
 
         return $mysqli->insert_id;
     }
@@ -86,6 +84,8 @@ class DatabaseResponseMcq
                 AND rmcq.`userID` = $userID";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         // If the user hasn't submitted a response, return null
         if($result->num_rows <= 0) {
             return null;
@@ -111,12 +111,9 @@ class DatabaseResponseMcq
                 WHERE `yacrs_responseMcq`.`ID` = $responseID";
         $result = $mysqli->query($sql);
 
-        if($result) {
-            return $responseID;
-        }
-        else {
-            return null;
-        }
+        if(!$result) return null;
+
+        return $responseID;
     }
 
     /**

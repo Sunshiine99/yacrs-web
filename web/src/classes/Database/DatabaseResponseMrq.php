@@ -12,9 +12,12 @@ class DatabaseResponseMrq
      * @return bool
      */
     public static function insert($sessionQuestionID, $userID, $choices, $question, $mysqli) {
+        if(is_null($sessionQuestionID) || is_null($userID) || is_null($choices) || is_null($question))
+            return null;
         foreach($choices as $c) {
             $choice = $question->getChoices()[$c];
-            DatabaseResponseMcq::insert($sessionQuestionID, $userID, $choice->getChoiceID(), $mysqli);
+            $result = DatabaseResponseMcq::insert($sessionQuestionID, $userID, $choice->getChoiceID(), $mysqli);
+            if($result === null)return null;
         }
         return true;
     }
@@ -37,8 +40,7 @@ class DatabaseResponseMrq
                   AND `yacrs_responseMcq`.`userID` = $userID;";
         $result = $mysqli->query($sql);
 
-        if(!$result)
-            return false;
+        if(!$result) return null;
 
         self::insert($sessionQuestionID, $userID, $choices, $question, $mysqli);
 
@@ -62,6 +64,8 @@ class DatabaseResponseMrq
                 WHERE rmcq.`sessionQuestionID` = $sessionQuestionID
                 AND rmcq.`userID` = $userID";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         // If the user hasn't submitted a response, return null
         if($result->num_rows <= 0) {
@@ -89,7 +93,7 @@ class DatabaseResponseMrq
     public static function loadResponses($sessionQuestionID, $mysqli) {
         $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
-        $sql = "SELECT r.userID, username, time, choice
+        $sql = "SELECT r.userID, username, time, choice, r.choiceID
                 FROM
                     `yacrs_responseMcq` as r,
                     `yacrs_user` as u,
@@ -111,6 +115,7 @@ class DatabaseResponseMrq
                 //if the user has more than one response add the choice to the responses
                 if($response->getResponseID() == $row["userID"]){
                     $response->setResponse($response->getResponse() . ", " . $row["choice"]);
+                    $response->setChoiceID($response->getChoiceID() . ", " . $row["choiceID"]);
                     $flag = 1;
                     break;
                 }
@@ -119,12 +124,36 @@ class DatabaseResponseMrq
                 $response = new Response();
                 $response->setResponse($row["choice"]);
                 $response->setTime($row["time"]);
+                $response->setChoiceID($row["choiceID"]);
                 $response->setUsername($row["username"]);
+                $response->setUser(DatabaseUser::loadDetailsFromUserID($row["userID"], $mysqli));
                 $response->setResponseID($row["userID"]);
                 $responses[] = $response;
             }
         }
 
         return $responses;
+    }
+
+    public static function getCorrectChoices($questionID, $mysqli){
+        $questionID  = Database::safe($questionID, $mysqli);
+
+        $sql = "SELECT choice
+                FROM
+                    `yacrs_questionsMcqChoices`
+                WHERE
+                    `correct` = 1
+                    AND `questionID` = $questionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        $choices = "";
+
+        while($row = $result->fetch_assoc()){
+            $choices = $choices . $row["choice"] . " ";
+        }
+
+        return $choices;
     }
 }

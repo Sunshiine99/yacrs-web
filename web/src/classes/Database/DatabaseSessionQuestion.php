@@ -44,9 +44,13 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         $sql = "DELETE FROM `yacrs_questionsMcqChoices`
                 WHERE `yacrs_questionsMcqChoices`.`questionID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
 
         return $result ? true : false;
     }
@@ -82,8 +86,7 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
-        if(!$result)
-            return false;
+        if(!$result) return null;
 
         return DatabaseQuestion::update($question, $mysqli);
     }
@@ -91,7 +94,7 @@ class DatabaseSessionQuestion
     /**
      * @param int $sessionID
      * @param mysqli $mysqli
-     * @return array
+     * @return array|null
      */
     public static function loadSessionQuestions($sessionID, $mysqli) {
         $sessionID  = Database::safe($sessionID, $mysqli);
@@ -119,6 +122,7 @@ class DatabaseSessionQuestion
 
             if($row["active"]) {
                 $output["active"] = true;
+                $output["activeSessionQuestionID"] = $row["sessionQuestionID"];
                 $question->setActive(true);
             }
 
@@ -232,6 +236,8 @@ class DatabaseSessionQuestion
                   AND sq.`active` = 1";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         if($result->num_rows <= 0) {
             return null;
         }
@@ -257,10 +263,135 @@ class DatabaseSessionQuestion
                 WHERE `yacrs_sessionQuestions`.`ID` = $sessionQuestionID";
         $result = $mysqli->query($sql);
 
-        return isset($result);
+        if(!$result) return null;
+
+        return true;
     }
 
-    public static function loadCurrentQuestionNumber() {
+    /**
+     * Get the total number of users in a session and the number of users who have answered this question
+     * @param int $sessionID
+     * @param int $sessionQuestionID
+     * @param mysqli $mysqli
+     * @return int[]
+     */
+    public static function users($sessionID, $sessionQuestionID, $mysqli) {
+        $sessionID = Database::safe($sessionID, $mysqli);
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
 
+        $sql = "SELECT answered.answered, total.total
+                FROM
+                (
+                    SELECT count(time) as answered
+                    FROM
+                    (
+                        (
+                            SELECT r.time, r.sessionQuestionID, r.userID
+                            FROM `yacrs_response` as r
+                            WHERE r.sessionQuestionID = $sessionQuestionID
+                        )
+                        UNION
+                        (
+                            SELECT r.time, r.sessionQuestionID, r.userID
+                            FROM `yacrs_responseMcq` as r
+                            WHERE r.sessionQuestionID = $sessionQuestionID
+                        )
+                    ) as answeredCount
+                ) AS answered,
+                (
+                    SELECT count(totalCount.userID) as total
+                    FROM
+                    (
+                        SELECT userID
+                        FROM `yacrs_sessionHistory` as sh
+                        WHERE sh.`sessionID` = $sessionID
+                        GROUP BY userID
+                    ) as totalCount
+                ) as total";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        // Fetch the row returned from the table
+        $row = $result->fetch_assoc();
+
+        $output = [];
+        $output["answered"] = intval($row["answered"]);
+        $output["total"] = intval($row["total"]) - 1; // Remove 1 as this includes owner
+
+        // If owner has answered the question, increase total
+        if($output["answered"] > $output["total"]) {
+            $output["total"] = $output["answered"];
+        }
+
+        //$output["answered"] = (time() % 100) * 5;
+        //$output["total"] = 500;
+
+        return $output;
+    }
+
+    /**
+     * Reorder questions in a session
+     * @param int $sessionID
+     * @param array $order Of form E.g. [2, 3, 5, 4] Where 2,3,4,5 are session question IDs in a new order
+     * @param mysqli $mysqli
+     * @return bool
+     */
+    public static function reorder($sessionID, $order, $mysqli) {
+        $sessionID = Database::safe($sessionID, $mysqli);
+
+        // TODO LOCK
+
+        // Run query to get all existing session questions
+        $sql = "SELECT *
+                FROM `yacrs_sessionQuestions` as sq
+                WHERE sq.`sessionID` = $sessionID";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        // Loop for every old session question
+        while($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+
+        // Ensure every item in new order was in old order
+        $i = 0;
+        foreach($order as $o) {
+            $flag = false;
+            foreach($rows as $row) {
+                if($row["questionID"] == $o) {
+                    $array["ID"][] = $rows[$i]["ID"];
+                    $array["questionID"][] = $o;
+                    $array["active"][] = $row["active"];
+                    $flag = true;
+                    break;
+                }
+            }
+            if(!$flag) {
+                return null;
+            }
+            $i++;
+        }
+
+        // Build Query
+        $sql = "START TRANSACTION;";
+        for($i=0; $i<count($array["ID"]); $i++) {
+            $ID         = Database::safe($array["ID"][$i],          $mysqli);
+            $questionID = Database::safe($array["questionID"][$i],  $mysqli);
+            $active     = Database::safe($array["active"][$i],      $mysqli);
+
+            $sql .= " UPDATE `yacrs_sessionQuestions` as sq SET sq.`questionID` = '$questionID', sq.`active` = '$active' WHERE sq.`ID` = $ID;";
+        }
+        $sql .= " COMMIT;";
+
+        $mysqli->multi_query($sql);
+
+        // If error running one of the queries, return null
+        while ($mysqli->next_result());
+        if ($mysqli->errno)
+            return null;
+
+        return true;
     }
 }

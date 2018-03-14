@@ -1,4 +1,4 @@
-body {
+body:not(.noHeaderFooter) {
     padding-top: 5rem;
 }
 
@@ -94,10 +94,17 @@ html, body {
     body main {
         overflow:auto;
         min-height: 100%;
+        background-color: #fff;
+    }
+
+    body main {
 
         /* Footer Height (90px) + Padding (25px) */
         padding-bottom:115px;
-        background-color: #fff;
+    }
+
+    body.noHeaderFooter main {
+        padding-bottom:0;
     }
 
         body main #breadcrumb {
@@ -155,7 +162,7 @@ html, body {
                     }
 
                     body main .session-list .list-group-item .session-number {
-                        color: #B59079;
+                        color: #e18c85;
                     }
 
                     body main .session-list .list-group-item .session-date {
@@ -170,6 +177,18 @@ html, body {
         body main ul.pagination li.page-item a {
             outline: none;
         }
+
+        #session-link:hover{
+            font-weight: bold;
+        }
+        #session-link-url:hover{
+            text-decoration: none;
+        }
+                #dragable{
+                font-size: 20px;
+                margin-right:5px;
+                color: black;
+                }
 
 body footer {
     position: relative;
@@ -205,8 +224,14 @@ body footer {
     display: none;
 }
 
+
+
 ul.list-group li.list-group-item {
     border-color: #bbb;
+}
+
+.width-full {
+    width: 100%!important;
 }
 
 @media (max-width: 576px) {
@@ -217,4 +242,26 @@ ul.list-group li.list-group-item {
     .margin-xs-bottom-10 {
         margin-bottom: 10px;
     }
+
+    .width-xs-50percent-2point5px {
+        width: calc(50% - 2.5px)!important;
+    }
+}
+
+/******************************************************************************
+ * Bootstrap Pills Override for Help View
+ ******************************************************************************/
+
+.nav-pills > li > a.active {
+    background-color: #003865!important;
+}
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
 }

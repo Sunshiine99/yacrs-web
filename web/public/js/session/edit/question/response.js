@@ -1,5 +1,75 @@
 var wordCloudData;
 
+$(document).ready(function() {
+
+    if(wordCloudData) {
+
+        var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content");
+        var sessionQuestionID = $("meta[name=sessionQuestionID]").attr("content");
+
+        // Construct URL for API communication
+        var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/analysis/";
+
+        // Make an api request
+        $.getJSON(url, function(data) {
+
+            if(data["error"]) {
+                return;
+            }
+
+            var dataFormatted = [];
+
+            data.forEach(function(item) {
+
+                var cluster = parseInt(item.cluster);
+
+                if(!(cluster in dataFormatted)) {
+                    dataFormatted[cluster] = [];
+                }
+
+                dataFormatted[cluster].push({
+                    "x": item.x,
+                    "y": item.y,
+                    "responseID": item.responseID,
+                    "response": item.response,
+                    "cluster_label": item.cluster_label,
+                    "r": 7.5
+                });
+            });
+
+            var analysisData = {
+                datasets: []
+            };
+
+            var analysisLabels = [];
+            var i = 0;
+
+            dataFormatted.forEach(function(cluster) {
+
+                if(!(i in analysisLabels))
+                    analysisLabels[i] = [];
+
+                if(!(i in analysisData.datasets))
+                    analysisData.datasets[i] = {
+                        label: [cluster[0].cluster_label],
+                        data: [],
+                        backgroundColor: getColour(backgroundColours, i)
+                    };
+
+
+                cluster.forEach(function(item) {
+                    analysisData.datasets[i].data.push(item);
+                    analysisLabels[i].push(item.responseID);
+                });
+
+                i++;
+            });
+
+            initAnalysisChart("analysis-chart", analysisData, analysisLabels);
+        });
+    }
+});
+
 /**
  * When the button to display usernames is clicked
  */
@@ -20,47 +90,17 @@ $("#hide-personal").click(function() {
     $("#display-personal").css("display", "inline")
 });
 
-/**
- * Runs when a nav item is clicked.
- * @param event
- */
-function navClick(event) {
-    if(!$(event.data.that).find("a").hasClass("active")) {
-        event.data.callback();
-    }
-}
-
-$("#nav-bar-chart").click({"that": this, "callback": initBarChartSection}, navClick);
-$("#nav-pie-chart").click({"that": this, "callback": initPieChartSection}, navClick);
-$("#nav-word-cloud").click({"that": this, "callback": initWordCloudSection}, navClick);
-$("#nav-responses").click({"that": this, "callback": initResponsesSection}, navClick);
-
-function initSection(sectionId) {
-    $("ul.nav-tabs li.nav-item a.nav-link.active").removeClass("active");
-    $("ul.nav-tabs li.nav-item#nav-"+sectionId+" a.nav-link").addClass("active");
-
-    $(".section").css("display", "none");
-    $("#section-"+sectionId).css("display", "block");
-}
-
 function initBarChartSection() {
-    initSection("bar-chart");
     initBarChart("bar-chart", labels, data, backgroundColor, borderColor);
 }
 
 function initPieChartSection() {
-    initSection("pie-chart");
     initPieChart("pie-chart", labels, data, backgroundColor, borderColor);
 }
 
 function initWordCloudSection(json) {
-    initSection("word-cloud");
     wordCloudData = JSON.parse(json);
     initWordCloud();
-}
-
-function initResponsesSection() {
-    initSection("responses");
 }
 
 function initBarChart(id, labels, data, backgroundColor, borderColor) {
@@ -70,7 +110,6 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Number of Votes',
                 data: data,
                 backgroundColor: backgroundColor,
                 borderColor: borderColor,
@@ -84,6 +123,9 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
                         beginAtZero:true
                     }
                 }]
+            },
+            legend: {
+                display: false
             }
         }
     });
@@ -96,7 +138,6 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Number of Votes',
                 data: data,
                 backgroundColor: backgroundColor,
                 borderColor: borderColor,
@@ -106,12 +147,49 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
     });
 }
 
+function initAnalysisChart(id, analysisData, analysisLabels) {
+    $("#no-analysis-error").remove();
+    var ctx = document.getElementById(id).getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bubble',
+        data: analysisData,
+        options: {
+            tooltips: {
+                callbacks: {
+                    title: function() {
+                        return '';
+                    },
+                    label: function(item, data) {
+                        return analysisLabels[item.datasetIndex][item.index];
+                    }
+                }
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        drawBorder: false,
+                        display:false
+                    },
+                    display: false
+                }],
+                yAxes: [{
+                    gridLines: {
+                        drawBorder:false,
+                        display:false
+                    },
+                    display: false
+                }]
+            },
+        }
+    });
+}
+
 function initWordCloud() {
     var data = wordCloudData;
     var id = "wordcloud";
 
     d3.wordcloud()
-        .size([$("main .container").width(), 600])
+        .size([$("main .container").width(), 500])
         .fill(d3.scale.ordinal().range(["#884400", "#448800", "#888800", "#444400"]))
         .words(data)
         .onwordclick(function (d, i) {

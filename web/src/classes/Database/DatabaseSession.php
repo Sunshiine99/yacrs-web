@@ -60,8 +60,7 @@ class DatabaseSession
                     ".time().")";
         $result = $mysqli->query($sql);
 
-        if(!$result)
-            return null;
+        if(!$result) return null;
 
         // Get the session ID
         $sessionID = Database::safe($mysqli->insert_id, $mysqli);
@@ -79,6 +78,8 @@ class DatabaseSession
                 $sql = "INSERT INTO `yacrs_sessionsAdditionalUsers` (`sessionID`, `userID`)
                         VALUES ('$sessionID', '$additionalUserId'); ";
                 $result = $mysqli->query($sql);
+
+                if(!$result) return null;
             }
         }
 
@@ -87,8 +88,7 @@ class DatabaseSession
                 VALUES ('$sessionID') ";
         $result = $mysqli->query($sql);
 
-        if(!$result)
-            return null;
+        if(!$result) return null;
 
         // Get the session identifier
         $sessionIdentifier = Database::safe($mysqli->insert_id, $mysqli);
@@ -165,9 +165,10 @@ class DatabaseSession
                 $sql = "INSERT INTO `yacrs_sessionsAdditionalUsers` (`sessionID`, `userID`)
                         VALUES ('$sessionID', '$additionalUserId'); ";
                 $result = $mysqli->query($sql);
+
+                if(!$result) return null;
             }
         }
-
         return true;
     }
 
@@ -200,6 +201,21 @@ class DatabaseSession
 
         // Create a new session with the loaded attributes
         $session = new Session($row);
+        $session->fromArray($row);
+
+        //Set the session Identifier cause otherwise it is 0
+        $sql = "SELECT sessionIdentifier
+                FROM
+                    `yacrs_sessionIdentifier` as s
+                WHERE s.`sessionID` = '$sessionID'";
+        $result = $mysqli->query($sql);
+
+        // If error with result
+        if(!$result) return null;
+
+        // Load row from database
+        $row = $result->fetch_assoc();
+        $session->setSessionIdentifier($row["sessionIdentifier"]);
 
         // SQL query to get additional users
         $sql = "SELECT username
@@ -289,13 +305,11 @@ class DatabaseSession
                       AND sau.`userID` = u.`userID`";
             $result2 = $mysqli->query($sql);
 
-            // If query was successful
-            if($result2) {
+            if(!$result2) return null;
 
-                // Loop for every row and add additional user
-                while($row2 = $result2->fetch_assoc()) {
-                    $session->addAdditionalUser($row2["username"]);
-                }
+            // Loop for every row and add additional user
+            while($row2 = $result2->fetch_assoc()) {
+                $session->addAdditionalUser($row2["username"]);
             }
 
             // Add session to array of sessions
@@ -328,6 +342,9 @@ class DatabaseSession
                 FROM `yacrs_sessionIdentifier`
                 WHERE `sessionIdentifier` = $sessionIdentifier";
         $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
         $row = $result->fetch_assoc();
         $sessionID = $row["sessionID"];
 
@@ -337,32 +354,33 @@ class DatabaseSession
                 WHERE `sessionID` = $sessionID";
         $result2 = $mysqli->query($sql);
 
-        // If query was successful
-        if($result2) {
-            // Loop for every row
-            while($row2 = $result2->fetch_assoc()) {
-                $questionID = $row2["questionID"];
-                DatabaseSessionQuestion::delete($questionID, $mysqli);
-                //Delete from questions
-                $sql = "DELETE FROM `yacrs_questions`
-                        WHERE `questionID` = $questionID";
-                $result = $mysqli->query($sql);
-            }
-        }
+        if(!$result2) return null;
 
+        // Loop for every row
+        while($row2 = $result2->fetch_assoc()) {
+            $questionID = $row2["questionID"];
+            DatabaseSessionQuestion::delete($questionID, $mysqli);
+            //Delete from questions
+            $sql = "DELETE FROM `yacrs_questions`
+                        WHERE `questionID` = $questionID";
+            $result = $mysqli->query($sql);
+        }
 
         //Delete from sessionIdentifier
         $sql = "DELETE FROM `yacrs_sessionIdentifier`
                 WHERE `yacrs_sessionIdentifier`.`sessionIdentifier` = $sessionIdentifier";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
+
         //Delete from sessions
         $sql = "DELETE FROM `yacrs_sessions`
                 WHERE `sessionID` = $sessionID";
         $result = $mysqli->query($sql);
 
+        if(!$result) return null;
 
-        return $result ? true : false;
+        return true;
     }
 
     /**

@@ -5,8 +5,33 @@ class PageSessionEditQuestionResponse
 
     public static function response($sessionIdentifier, $sessionQuestionID) {
         $templates = Flight::get("templates");
-        $data = Flight::get("data");
         $config = Flight::get("config");
+        $data = self::setup($sessionIdentifier, $sessionQuestionID, $config);
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem(($data["session"]->getTitle() ? $data["session"]->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
+        $breadcrumbs->addItem("Edit", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
+        //$breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
+        $breadcrumbs->addItem("Responses");
+        $data["breadcrumbs"] = $breadcrumbs;
+
+        echo $templates->render("session/edit/questions/response", $data);
+    }
+
+    public static function live($sessionIdentifier, $sessionQuestionID) {
+        $templates = Flight::get("templates");
+        $config = Flight::get("config");
+        $data = self::setup($sessionIdentifier, $sessionQuestionID, $config);
+        $data["live"] = true;
+        echo $templates->render("session/edit/questions/response", $data);
+    }
+
+    private static function setup($sessionIdentifier, $sessionQuestionID, $config) {
+        $data = Flight::get("data");
 
         // Ensure the user is logged in
         $user = Page::ensureUserLoggedIn($config);
@@ -51,26 +76,16 @@ class PageSessionEditQuestionResponse
             $userMrqResponses = DatabaseResponseMrq::loadResponses($sessionQuestionID, $mysqli);
         }
 
-        // Setup Page breadcrumbs
-        $breadcrumbs = new Breadcrumb();
-        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
-        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Edit", $config["baseUrl"]."session/$sessionIdentifier/edit/");
-        $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
-        $breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
-        $breadcrumbs->addItem("Responses");
-
-
         $data["responsesMrq"] = $responsesMrq;
         $data["userMrqResponses"] = $userMrqResponses;
-        $data["breadcrumbs"] = $breadcrumbs;
         $data["user"] = $user;
         $data["responsesMcq"] = $responsesMcq;
         $data["userMcqResponses"] = $userMcqResponses;
         $data["responsesWordCloud"] = $responsesWordCloud;
         $data["responsesText"] = $responsesText;
         $data["session"] = $session;
-        echo $templates->render("session/edit/questions/response", $data);
+        $data["question"] = $question;
+
+        return $data;
     }
 }

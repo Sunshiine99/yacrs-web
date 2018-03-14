@@ -13,6 +13,14 @@ function mcqChoiceIncorrectClick(that) {
     inputGroup.find("input.mcq-choice-correct").val("false");
 }
 
+$("#screenshotlink").click(function() {
+    var element = document.getElementById('screenshotlink');
+    if (element.innerHTML === 'Show Screenshot') element.innerHTML = 'Hide Screenshot';
+    else {
+        element.innerHTML = 'Show Screenshot';
+    }
+});
+
 $("button.correct").click(function() {
     mcqChoiceCorrectClick(this);
 });

@@ -5,6 +5,7 @@
  * @var $description string
  * @var $breadcrumbs Breadcrumb
  * @var $user User
+ * @var $additionalUsers array User
  * @var $alert Alert
  * @var $session Session
  */
@@ -30,13 +31,30 @@ $classDiscussionEnabled = $session->getClassDiscussionEnabled() ? " checked" : "
 
 $submitText = $session->getSessionID() ? "Save" : "Create";
 
-?>
+// Whether this is a new session
+$new = $session->getSessionID() ? 0 : 1;
 
+// If this is a new session, 0 additional users
+if($new) {
+
+    // Array of possible choices
+    $users = [];
+}
+
+// Otherwise not a new session
+else {
+
+    // add users to array
+    $users = $additionalUsers;
+}
+
+?>
 <?php $this->push("head"); ?>
     <link href="<?=$this->e($config["baseUrl"])?>css/session/edit/properties.css" rel="stylesheet">
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
+    <script>var SessionNew = <?=$new ? "true": "false"?>;</script>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/properties.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
@@ -46,36 +64,45 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
             <h1><?=$this->e($title)?></h1>
         </div>
         <?php if($session->getSessionIdentifier()): ?>
-            <div class="float-right">
-                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-primary pull-right">Edit Session</a>
+            <div class="float-right width-xs-full">
+                <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/" class="btn btn-primary pull-right width-xs-full">Edit Session</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
 <form action="." method="POST" class="form-horizontal" style="display:block; width: 100%;">
+    <input name="sessionIdentifier" value="<?=$this->e($session->getSessionIdentifier())?>" type="hidden">
     <input name="sessionID" value="<?=$this->e($session->getSessionID())?>" type="hidden">
-    <div class="form-group row">
+    <div class="form-group row basic">
         <label class="col-sm-3 control-label" for="title">Title</label>
         <div class="col-sm-9">
-            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Title">
+            <input class="form-control" name="title" id="title" value="<?=$this->e($session->getTitle())?>" size="80" type="text" placeholder="Eg History 2B" maxlength="80">
         </div>
     </div>
+    <!--
     <div class="form-group row advanced">
-        <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier</label>
+        <label class="col-sm-3 control-label" for="courseIdentifier">Course Identifier
+            <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="Used to import class list.">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a>
+        </label>
         <div class="col-sm-9">
-            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Course Identifier (To Import Class List)">
+            <input class="form-control" name="courseID" id="courseID" value="<?=$this->e($session->getCourseID())?>" size="20" type="text" placeholder="Eg COMPSCI1357 " maxlength="20">
         </div>
     </div>
+    -->
     <div class="form-group row">
-        <div class="col-sm-3 offset-sm-3">
+        <div class="col-sm-3 offset-sm"></div>
+        <div class="col-sm offset-sm basic">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="allowGuests">
                     <input name="allowGuests" id="allowGuests" value="1" type="checkbox"<?=$allowGuests?>>
-                    Allow Anonymous Guest Users</label>
+                    Allow Anonymous Guest Users
+                </label>
             </div>
         </div>
-        <div class="col-sm-3 advanced">
+        <div class="col-sm advanced">
             <div class="checkbox">
                 <label>
                     <input type="hidden" value="0" name="onSessionList">
@@ -84,19 +111,9 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                 </label>
             </div>
         </div>
-        <div class="col-sm-3">
-            <div class="checkbox">
-                <label>
-                    <input type="hidden" value="0" name="classDiscussionEnabled">
-                    <input name="classDiscussionEnabled" id="classDiscussionEnabled" value="1" type="checkbox"<?=$classDiscussionEnabled?>>
-                    Enable Class Discussion
-                </label>
-            </div>
-        </div>
     </div>
     <fieldset>
-        <legend class="advanced">Question settings</legend>
-        <div class="form-group row">
+        <div class="form-group row basic">
             <label class="col-sm-3 control-label" for="questionControlMode">
                 Question Control Mode
                 <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
@@ -121,7 +138,7 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                 </select>
             </div>
         </div>
-        <div class="form-group row advanced">
+        <!--<div class="form-group row advanced">
             <label for="defaultTimeLimit" class="col-sm-3 col-form-label">Default Time Limit</label>
             <div class="col-sm-2">
                 <label class="form-check-label">
@@ -133,9 +150,10 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                 <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
                        type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
-        </div>
+        </div>-->
         <div class="form-group row">
-            <div class="col-sm-4 offset-sm-3">
+            <div class="col-sm-3 offset-sm"></div>
+            <div class="col-sm offset-sm basic">
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowModifyAnswer">
@@ -143,39 +161,66 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
                         Allow students to change their answer</label>
                 </div>
             </div>
-            <div class="col-sm-5">
+            <!--<div class="col-sm-5">-
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowQuestionReview">
                         <input name="allowQuestionReview" id="allowQuestionReview" value="1" type="checkbox"<?=$allowQuestionReview?>>
                         Allow Students to view their answers after class</label>
                 </div>
-            </div>
+            </div>-->
         </div>
     </fieldset>
-    <fieldset class="advanced">
-        <legend>Additional Users</legend>
-        <div class="form-group row">
-            <label class="col-sm-3 control-label" for="teachers">Additional users who can run session (comma delimited
-                list of user IDs)</label>
-            <div class="col-sm-9">
-                <input class="form-control" name="additionalUsersCsv" id="additionalUsersCsv" value="<?=$this->e($session->getAdditionalUsersCsv())?>" size="80" type="text">
+    <div class="form-group row advanced">
+        <label class="col-sm-3 control-label" for="courseIdentifier">
+            Additional Users
+            <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
+                      Allows additional users to edit and run your session">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a>
+        </label>
+        <div class="col-sm-9">
+            <div id="add-more-choices" class="input-add-more-container" data-minimum-count="0">
+                <?php if(count($users) > 0):?>
+                    <?php $i = 0; ?>
+                    <?php foreach($users as $user): ?>
+                        <div class="input-group input-add-more-item">
+                            <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1" maxlength="80">
+                            <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                <?php else:?>
+                    <div class="input-group input-add-more-item display-none">
+                        <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1" maxlength="80">
+                        <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                <?php endif?>
+            </div>
+            <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
+                <button class="btn btn-primary input-add-more-input float-right width-xs-full" type="button">
+                    Add User
+                </button>
             </div>
         </div>
-    </fieldset>
+    </div>
     <div class="form-group row">
         <div class="col-sm-9 offset-sm-3">
-            <input class="submit btn btn-primary" name="submit" value="<?=$submitText?>" type="submit">
-            <a onclick="window.history.back();" class="submit btn btn-light btn-light-border">Cancel</a>
+            <input class="submit btn btn-primary margin-xs-bottom-10 width-xs-50percent-2point5px" name="submit" value="<?=$submitText?>" type="submit">
+            <a onclick="goBack()" class="submit btn btn-light btn-light-border margin-xs-bottom-10 width-xs-50percent-2point5px">Cancel</a>
 
-            <div class="pull-right">
-                <a id="view-advanced-settings" class="btn btn-light btn-light-border">
-                    View Advanced Settings
-                </a>
-                <a id="hide-advanced-settings" class="btn btn-light btn-light-border">
-                    Hide Advanced Settings
-                </a>
-            </div>
+<!--            <div class="pull-right width-xs-full">-->
+<!--                <a id="view-advanced-settings" class="btn btn-light btn-light-border width-xs-full">-->
+<!--                    View Advanced Settings-->
+<!--                </a>-->
+<!--                <a id="hide-advanced-settings" class="btn btn-light btn-light-border width-xs-full">-->
+<!--                    Hide Advanced Settings-->
+<!--                </a>-->
+<!--            </div>-->
         </div>
     </div>
 </form>
@@ -207,7 +252,11 @@ $submitText = $session->getSessionID() ? "Save" : "Create";
         border: 1px solid #ced4da;
     }
 
-    .advanced {
-        display: none;
-    }
+    /*.advanced {*/
+        /*display: none;*/
+    /*}*/
+
+    /*.basic{*/
+        /*display:flex;*/
+    /*}*/
 </style>

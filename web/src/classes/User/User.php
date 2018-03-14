@@ -49,9 +49,14 @@ class User
         $this->givenName        = isset($array["givenName"])        ? $array["givenName"]           : $this->givenName;
         $this->surname          = isset($array["surname"])          ? $array["surname"]             : $this->surname;
         $this->email            = isset($array["email"])            ? $array["email"]               : $this->email;
-        $this->isSessionCreator = isset($array["isSessionCreator"]) ? $array["isSessionCreator"]    : $this->isSessionCreator;
-        $this->isAdmin          = isset($array["isAdmin"])          ? $array["isAdmin"]             : $this->isAdmin;
-        $this->isGuest          = isset($array["isGuest"])          ? $array["isGuest"]             : $this->isGuest;
+        $this->isSessionCreator = isset($array["isSessionCreator"]) ? text2bool($array["isSessionCreator"])    : $this->isSessionCreator;
+        $this->isAdmin          = isset($array["isAdmin"])          ? text2bool($array["isAdmin"])             : $this->isAdmin;
+        $this->isGuest          = isset($array["isGuest"])          ? text2bool($array["isGuest"])             : $this->isGuest;
+
+        // TODO
+        $this->isSessionCreator = isset($array["isSessionCreatorOverride"]) ? text2bool($array["isSessionCreatorOverride"])    : $this->isSessionCreator;
+        $this->isAdmin          = isset($array["isAdminOverride"])          ? text2bool($array["isAdminOverride"])             : $this->isAdmin;
+        $this->id               = isset($array["userID"])               ? intval($array["userID"])                  : $this->id;
     }
 
     /**
@@ -144,6 +149,9 @@ class User
         // If a surname is available add it to the output
         if($this->surname !== null)
             $output .= $this->surname;
+
+        if(!$output)
+            $output = $this->username;
 
         return $output;
     }

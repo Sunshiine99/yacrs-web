@@ -44,11 +44,14 @@
                         <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>admin/">Admin</a>
                     </li>
                 <?php endif; ?>
+                    <li class="nav-item">
+                        <a class ="nav-link" href="<?=$this->e($config["baseUrl"])?>help/">Help</a>
+                    </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <span class="navbar-text d-none d-md-block d-lg-block d-xl-block">
-                        <?=$this->e($user->getGivenName())?> <?=$this->e($user->getSurname())?>
+                        <?=$this->e($user->getFullName())?>
                     </span>
                 </li>
                 <li class="nav-item">

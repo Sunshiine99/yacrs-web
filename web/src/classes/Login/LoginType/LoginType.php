@@ -5,10 +5,11 @@ interface LoginType
 
     /**
      * Checks login username and password
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @param array $config
+     * @param mysqli $mysqli
      * @return User|null
      */
-    public static function checkLogin($username, $password, $config);
+    public static function checkLogin($username, $password, $config, $mysqli = null);
 }

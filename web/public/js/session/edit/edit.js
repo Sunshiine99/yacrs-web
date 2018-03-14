@@ -1,9 +1,22 @@
-$(".question-list .confirm-delete .confirm").click(function () {
+function updateQuestionNumbers() {
+
+    // For each question
+    var i = 1;
+    $($("ul.question-list li.list-group-item").get().reverse()).each(function(index) {
+
+        // Update the question number
+        $(this).find("div.question-number").text(i + ".");
+        i++;
+    });
+}
+
+$("body").on("click", ".question-list .confirm-delete .confirm", function(event) {
 
     // Disable button clicked to indicate that something is happening
     $(this).attr("disabled", "disabled");
 
     var listGroupItem = $(this).closest(".list-group-item");
+    var sessionQuestionID = listGroupItem.attr("data-session-question-id");
 
     // Find the list group
     var listGroup = listGroupItem.closest("ul.list-group");
@@ -11,7 +24,7 @@ $(".question-list .confirm-delete .confirm").click(function () {
     var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
 
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + $(this).attr("data-session-question-id") + "/delete/";
+    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/delete/";
 
     // Store this for access when this is no longer "this"
     var that = this;
@@ -43,22 +56,17 @@ $(".question-list .confirm-delete .confirm").click(function () {
         var actionsConfirmDelete = $(that).closest(".actions-confirm-delete");
         actionsConfirmDelete.find(".actions").css("display", "inline-flex");
 
-        // For each question
-        var i = 1;
-        $(listGroup.find("li.list-group-item").get().reverse()).each(function(index) {
-
-            // Update the question number
-            $(this).find("div.question-number").text(i + ".");
-            i++;
-        });
+        updateQuestionNumbers();
     });
 });
 
-$(".question-list .activate").click(function () {
+var questionList = $(".question-list");
+
+questionList.on("click", ".activate", function(event) {
     activateDeactivateQuestion(this, true);
 });
 
-$(".question-list .deactivate").click(function () {
+questionList.on("click", ".deactivate", function(event) {
     activateDeactivateQuestion(this, false);
 });
 
@@ -71,110 +79,6 @@ $("#activate-all").click(function () {
 $("#deactivate-all").click(function () {
     $(".question-list .deactivate").click();
 });
-
-function addGenericQuestion(url, type) {
-
-    // Make an api request
-    $.getJSON(url, function(data) {
-
-        // If delete was successful, delete html element
-        if(data["type"] === type) {
-            location.reload();
-        }
-
-        else {
-            alerter({
-                title: "Error",
-                message: "Could not add question for an unknown reason",
-                type: "danger",
-                dismissable: true
-            });
-        }
-    });
-}
-
-/**
- * Add a new generic choices (MCQ/MRQ) question
- * @param numChoices The number of choices
- * @param type mcq or mrq
- */
-function addGenericChoicesQuestion(numChoices, type) {
-    if(numChoices > 26 | numChoices <= 0)
-        return;
-
-    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
-
-    // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/new/" + type + "/";
-
-    // Add URL parameters
-    url += "?question=Generic " + type.toUpperCase() + " Question A-" + String.fromCharCode(65 + numChoices - 1) + "&";
-
-    // Add generic choice (I.e. A, B, C, D)
-    for (var i = 0; i < numChoices; i++) {
-
-        // Add choice to URL as parameter
-        url += "choice-" + i + "=" + String.fromCharCode(65 + i);
-
-        // If not the last choice, add "&" ready for next choice
-        if(i < numChoices-1) {
-            url += "&";
-        }
-    }
-
-    addGenericQuestion(url, type);
-}
-
-/**
- * Add a new generic true/false question
- * @param dontKnow Whether don't know is also an option
- */
-function addGenericTrueFalseQuestion(dontKnow) {
-    dontKnow = dontKnow===true;
-
-    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
-
-    // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/new/mcq/";
-
-    // Add URL parameters
-    url += "?question=Generic True/False";
-    if(dontKnow)
-        url += "/Don't Know";
-    url += " Question";
-
-    // Add true/false
-    url += "&choice-0=True";
-    url += "&choice-1=False";
-
-    if(dontKnow)
-        url += "&choice-2=Don't Know";
-
-    addGenericQuestion(url, "mcq");
-}
-
-
-/**
- * Add a new generic text question
- * @param long If a long text question
- */
-function addGenericTextQuestion(long) {
-    long = long===true;
-
-    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
-
-    // Get the question type from whether it is a long text question
-    var type = long ? "textlong" : "text";
-    var typeView = long ? "Long Text" : "Text";
-
-    // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/new/" + type + "/";
-
-    // Add URL parameters
-    url += "?question=Generic " + typeView + " Question";
-
-    addGenericQuestion(url, type);
-}
 
 $("#add-question-submit").click(function() {
 
@@ -190,50 +94,12 @@ $("#add-question-submit").click(function() {
     // Otherwise, actually add a question
     else {
 
-        switch(addQuestionSelect.val()) {
-            case "mcq_d":
-                addGenericChoicesQuestion(4, "mcq");
-                break;
-            case "mcq_e":
-                addGenericChoicesQuestion(5, "mcq");
-                break;
-            case "mcq_f":
-                addGenericChoicesQuestion(6, "mcq");
-                break;
-            case "mcq_g":
-                addGenericChoicesQuestion(7, "mcq");
-                break;
-            case "mcq_h":
-                addGenericChoicesQuestion(8, "mcq");
-                break;
-            case "mrq_d":
-                addGenericChoicesQuestion(4, "mrq");
-                break;
-            case "mrq_e":
-                addGenericChoicesQuestion(5, "mrq");
-                break;
-            case "mrq_f":
-                addGenericChoicesQuestion(6, "mrq");
-                break;
-            case "mrq_g":
-                addGenericChoicesQuestion(7, "mrq");
-                break;
-            case "mrq_h":
-                addGenericChoicesQuestion(8, "mrq");
-                break;
-            case "text":
-                addGenericTextQuestion(false);
-                break;
-            case "textlong":
-                addGenericTextQuestion(true);
-                break;
-            case "truefalse":
-                addGenericTrueFalseQuestion(false);
-                break;
-            case "truefalsedk":
-                addGenericTrueFalseQuestion(true);
-                break;
-        }
+        var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
+
+        // Add the selected generic question, when done refresh
+        addGenericQuestionFromCode(addQuestionSelect.val(), sessionIdentifier, function() {
+            location.reload();
+        });
     }
 });
 
@@ -249,8 +115,10 @@ function activateDeactivateQuestion(that, activate) {
 
     var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content").toString();
 
+    var sessionQuestionID = listGroupItem.attr("data-session-question-id");
+
     // Construct URL for API request
-    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + $(that).attr("data-session-question-id") + "/edit/?active=";
+    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/" + sessionQuestionID + "/edit/?active=";
 
     $(that).attr("disabled", "disabled");
 
@@ -298,3 +166,123 @@ function activateDeactivateQuestion(that, activate) {
         $(that).removeAttr("disabled");
     });
 }
+
+
+/*******************************************************************************************************************
+ * Make questions reorderable
+ *******************************************************************************************************************/
+
+var dragSrcEl = null;
+
+function sessionDragStart(e) {
+    // Target (this) element is the source node.
+    dragSrcEl = this;
+
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.outerHTML);
+
+    this.classList.add('dragElem');
+}
+function sessionDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault(); // Necessary. Allows us to drop.
+    }
+    this.classList.add('over');
+
+    e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+    return false;
+}
+
+function sessionDragEnter(e) {
+    // this / e.target is the current hover target.
+}
+
+function sessionDragLeave(e) {
+    this.classList.remove('over');  // this / e.target is previous target element.
+}
+
+function sessionDrop(e) {
+    // this/e.target is current target element.
+
+    if (e.stopPropagation) {
+        e.stopPropagation(); // Stops some browsers from redirecting.
+    }
+
+    // Don't do anything if dropping the same column we're dragging.
+    if (dragSrcEl != this) {
+        // Set the source column's HTML to the HTML of the column we dropped on.
+        //alert(this.outerHTML);
+        //dragSrcEl.innerHTML = this.innerHTML;
+        //this.innerHTML = e.dataTransfer.getData('text/html');
+        this.parentNode.removeChild(dragSrcEl);
+        var dropHTML = e.dataTransfer.getData('text/html');
+        this.insertAdjacentHTML('beforebegin',dropHTML);
+        var dropElem = this.previousSibling;
+        addDnDHandlers(dropElem);
+
+    }
+    this.classList.remove('over');
+
+    var questionList = $(this).closest(".question-list");
+
+    // Produce array of questions (and whether they are active) in the correct order
+    var qs = [];
+    questionList.find("li.question-item").each(function(item) {
+        qs.push(parseInt($(this).attr("data-question-id")));
+    });
+
+    qs.reverse();
+
+    var sessionIdentifier = $("meta[name=sessionIdentifier]").attr("content");
+
+    // Construct URL for API request
+    var url = baseUrl + "api/session/" + sessionIdentifier + "/question/reorder/?order=" + JSON.stringify(qs);
+
+    updateQuestionNumbers();
+
+    // Make an api request
+    $.getJSON(url, function(data) {
+
+        // If successful, update question numbers
+        if(data["success"] === true) {
+            //temporary solution to the problem
+            //TODO think of something clever
+            location.reload();
+        }
+
+        // Otherwise, display an error
+        else {
+            alerter({
+                title: "Error",
+                message: "Could not reorder questions for an unknown reason",
+                type: "danger",
+                dismissable: true
+            });
+        }
+    });
+
+    return false;
+}
+
+function sessionDragEnd(e) {
+    // this/e.target is the source node.
+    this.classList.remove('over');
+
+    /*[].forEach.call(cols, function (col) {
+      col.classList.remove('over');
+    });*/
+}
+
+function addDnDHandlers(elem) {
+    elem.addEventListener('dragstart', sessionDragStart, false);
+    elem.addEventListener('dragenter', sessionDragEnter, false);
+    elem.addEventListener('dragover', sessionDragOver, false);
+    elem.addEventListener('dragleave', sessionDragLeave, false);
+    elem.addEventListener('drop', sessionDrop, false);
+    elem.addEventListener('dragend', sessionDragEnd, false);
+
+}
+
+var cols = document.querySelectorAll('.question-list .question-item');
+[].forEach.call(cols, addDnDHandlers);

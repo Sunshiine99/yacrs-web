@@ -27,6 +27,7 @@ $this->layout("template",
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
+    <script src="<?=$this->e($config["baseUrl"])?>js/session/generic-questions.js" crossorigin="anonymous"></script>
     <script src="<?=$this->e($config["baseUrl"])?>js/session/edit/edit.js" crossorigin="anonymous"></script>
 <?php $this->stop(); ?>
 
@@ -37,14 +38,11 @@ $this->layout("template",
             <h3>Session Identifier: <?=$this->e($session->getSessionIdentifier())?></h3>
         </div>
         <div class="col-sm-3">
-            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full">Edit Properties</a>
-            <?php if(isDesktopApp()): ?>
-                <a onclick="enterLiveView()" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
+            <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full" style="margin-left: 10px">Edit Properties</a>
+            <?php if(isDesktopApp() && $session->getQuestionControlMode() === 0): ?>
+                <a onclick="liveViewEnter(<?=$this->e($session->getSessionIdentifier())?>)" class="btn btn-light btn-light-border pull-right width-xs-full">Run Session</a>
             <?php endif; ?>
         </div>
-        <script>
-            prepareLiveView(<?=$this->e($session->getSessionIdentifier())?>);
-        </script>
     </h1>
 </div>
 <div class="row">
@@ -55,17 +53,13 @@ $this->layout("template",
 <div id="add-question-row" class="row">
     <div id="add-question-select-row" class="col-sm-10">
         <select id="add-question-select" class="form-control" data-custom-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/new/">
-            <option value="custom">Custom Question</option>
-            <option value="mcq_d">Generic Multiple Choice Question A-D</option>
-            <option value="mcq_e">Generic Multiple Choice Question A-E</option>
-            <option value="mcq_f">Generic Multiple Choice Question A-F</option>
-            <option value="mcq_g">Generic Multiple Choice Question A-G</option>
-            <option value="mcq_h">Generic Multiple Choice Question A-H</option>
-            <option value="mrq_d">Generic Multiple Response Question A-D</option>
-            <option value="mrq_e">Generic Multiple Response Question A-E</option>
-            <option value="mrq_f">Generic Multiple Response Question A-F</option>
-            <option value="mrq_g">Generic Multiple Response Question A-G</option>
-            <option value="mrq_h">Generic Multiple Response Question A-H</option>
+            <option value="custom">Editable Custom Question</option>
+            <option value="mcq_d">Multiple Choice Question A-D</option>
+            <option value="mcq_e">Multiple Choice Question A-E</option>
+            <option value="mcq_f">Multiple Choice Question A-F</option>
+            <option value="mrq_d">Multiple Response Question A-D</option>
+            <option value="mrq_e">Multiple Response Question A-E</option>
+            <option value="mrq_f">Multiple Response Question A-F</option>
             <option value="text">Text Input</option>
             <option value="textlong">Long Text Input</option>
             <option value="truefalse">True/False</option>
@@ -94,7 +88,7 @@ $this->layout("template",
             $class = $question->isActive() ? " active-question" : "";
 
             ?>
-            <li class="list-group-item question-item<?=$this->e($class)?>">
+            <li class="list-group-item question-item<?=$this->e($class)?>" data-question-id="<?=$this->e($question->getQuestionID())?>" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
                 <div class="question-number pull-left">
                     <?=$qi?>.
                 </div>
@@ -106,30 +100,32 @@ $this->layout("template",
                         Created <?=date("d/m/Y H:i", $question->getCreated())?>
                     </span>
                 </div>
+                <div class="drag pull-right">
+                    <i class="fa fa-arrows-alt" id="dragable" aria-hidden="true" draggable="true""></i>
+                </div>
                 <div class="actions-confirm-delete">
-                    <div class="btn-group pull-right actions" aria-label="Actions">
-                        <button type="button" class="btn btn-light btn-light-border deactivate" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
-                            <i class='fa fa-stop'></i> Close
+                    <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
+                        <button type="button" class="btn btn-light btn-light-border deactivate width-xs-full">
+                            <i class='fa fa-stop'></i><span class="d-none d-sm-inline"> Close</span>
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border activate" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
-                            <i class='fa fa-play'></i> Activate
+                        <button type="button" class="btn btn-light btn-light-border activate width-xs-full">
+                            <i class='fa fa-play'></i><span class="d-none d-sm-inline"> Activate</span>
                         </button>
-
-                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border">
-                            <i class="fa fa-eye"></i> Responses
+                        <a href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/response/" class="btn btn-light btn-light-border width-xs-full">
+                            <i class="fa fa-eye"></i><span class="d-none d-sm-inline"> Responses</span>
                         </a>
-                        <a class="btn btn-light btn-light-border" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/">
-                            <i class="fa fa-pencil"></i> Edit
+                        <a class="btn btn-light btn-light-border width-xs-full" href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/question/<?=$this->e($question->getSessionQuestionID())?>/">
+                            <i class="fa fa-pencil"></i><span class="d-none d-sm-inline"> Edit</span>
                         </a>
-                        <button type="button" class="btn btn-light btn-light-border delete">
-                            <i class="fa fa-trash-o"></i> Delete
+                        <button type="button" class="btn btn-light btn-light-border delete width-xs-full">
+                            <i class="fa fa-trash-o"></i><span class="d-none d-sm-inline"> Delete</span>
                         </button>
                     </div>
-                    <div class="btn-group pull-right confirm-delete" aria-label="Confirm Delete">
-                        <button type="button" class="btn btn-danger btn-danger-border confirm" data-session-question-id="<?=$this->e($question->getSessionQuestionID())?>">
+                    <div class="btn-group pull-right confirm-delete width-xs-full" aria-label="Confirm Delete">
+                        <button type="button" class="btn btn-danger btn-danger-border confirm width-xs-full">
                             <i class="fa fa-check"></i> Confirm
                         </button>
-                        <button type="button" class="btn btn-light btn-light-border cancel">
+                        <button type="button" class="btn btn-light btn-light-border cancel width-xs-full">
                             <i class="fa fa-times"></i> Cancel
                         </button>
                     </div>

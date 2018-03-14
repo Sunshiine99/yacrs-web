@@ -53,6 +53,9 @@ class Session
     /** @var int */
     private $lastUpdate = null;
 
+    /** @var string */
+    private $scoringType = "default";
+
     /**
      * Session constructor.
      * @param array|null $array
@@ -344,6 +347,7 @@ class Session
      * @return bool
      */
     public function hasAdditionalUser($username) {
+        if(!$username) return false;
         return in_array($username, $this->additionalUsers);
     }
 
@@ -373,5 +377,32 @@ class Session
      */
     public function setLastUpdate($lastUpdate) {
         $this->lastUpdate = $lastUpdate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScoringType() {
+        return $this->scoringType;
+    }
+
+    /**
+     * @param string $scoringType
+     */
+    public function setScoringType($scoringType) {
+        $this->scoringType = $scoringType;
+    }
+
+    /**
+     * @return Scoring|ScoringDefault
+     */
+    public function getScoring() {
+        try {
+            $scoring = ScoringFactory::create($this->getScoringType());
+        }
+        catch(Exception $e) {
+            $scoring = new ScoringDefault();
+        }
+        return $scoring;
     }
 }

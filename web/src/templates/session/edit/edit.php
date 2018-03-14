@@ -100,9 +100,15 @@ $this->layout("template",
                         Created <?=date("d/m/Y H:i", $question->getCreated())?>
                     </span>
                 </div>
+<<<<<<< HEAD
+<!--                <div class="drag pull-right">-->
+<!--                    <i class="fa fa-arrows-alt" id="dragable" aria-hidden="true" draggable="true""></i>-->
+<!--                </div>-->
+=======
                 <div class="drag pull-right">
                    <i class="fa fa-arrows-alt" aria-hidden="true" ><!-- id="dragable"-->  <!--draggable="true""--></i>
                 </div>
+>>>>>>> f3701df5d1ffd07a1e5beb1f9631f7a31cf8b166
                 <div class="actions-confirm-delete">
                     <div class="btn-group pull-right actions width-xs-full" aria-label="Actions">
                         <button type="button" class="btn btn-light btn-light-border deactivate width-xs-full">

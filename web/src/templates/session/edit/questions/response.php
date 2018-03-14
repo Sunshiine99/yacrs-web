@@ -116,9 +116,15 @@ function getColour($colours, $i) {
         <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
+    <?php endif; ?>
+    <?php if($question->getType() == "textlong"): ?>
         <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Analysis</a>
         </li>
+        <div id="section-analysis" class="section display-none">
+            <div id="no-analysis-error">No Analysis Available</div>
+            <canvas id="analysis-chart" width="400" height="200"></canvas>
+        </div>
     <?php endif; ?>
 </ul>
 
@@ -136,10 +142,6 @@ function getColour($colours, $i) {
     <?php if(isset($responsesWordCloud)): ?>
         <div id="section-word-cloud" class="section">
             <div id="wordcloud"></div>
-        </div>
-        <div id="section-analysis" class="section display-none">
-            <div id="no-analysis-error">No Analysis Available</div>
-            <canvas id="analysis-chart" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>
     <?php if(isset($responsesText) || isset($userMcqResponses) || isset($userMrqResponses)): ?>

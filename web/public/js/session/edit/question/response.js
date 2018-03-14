@@ -70,13 +70,6 @@ $(document).ready(function() {
     }
 });
 
-
-
-
-
-
-
-
 /**
  * When the button to display usernames is clicked
  */

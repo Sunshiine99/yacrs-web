@@ -119,14 +119,14 @@ def idf(word, cluster_list):
     return math.log(len(cluster_list) / (1 + n_containing(word, cluster_list)))
 
 def tfidf(word, cluster, bloblist):
-    return tf(word, cluster) * idf(word, cluster_list)    
-    
+    return tf(word, cluster) * idf(word, cluster_list)
+
 cluster_labels = []
 for i, cluster in enumerate(cluster_list):
     scores = {word: tfidf(word, cluster, cluster_list) for word in cluster}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     label = ""
-    for word, score in sorted_words[:3]:
+    for word, score in sorted_words[:2]:
         if label == "":
             label = word
         else:
@@ -181,7 +181,7 @@ for c in cluster_frame.values:
     cluster = c[3]
     x = c[4]
     y = c[5]
-    
+
     output.append({
         "responseID": responseID,
         "response": response,
@@ -190,7 +190,7 @@ for c in cluster_frame.values:
         "x": x,
         "y": y
     });
-    
+
 # Disconnect from database
 db.close()
 

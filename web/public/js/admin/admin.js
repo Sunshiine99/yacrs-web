@@ -87,6 +87,18 @@ function userChangeSessionCreator(that, sessionCreator) {
     });
 }
 
+$("button.show-guests").click(function() {
+    $(".guest").css("display", "inline");
+    $(".show-guests").css("display", "none");
+    $(".hide-guests").css("display", "inline");
+});
+
+$("button.hide-guests").click(function() {
+    $(".guest").css("display", "none");
+    $(".show-guests").css("display", "inline");
+    $(".hide-guests").css("display", "none");
+});
+
 $("button.admin-add").click(function() {
     userChangeAdmin(this, true);
 });

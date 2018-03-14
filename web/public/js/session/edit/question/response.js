@@ -133,7 +133,14 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
             scales: {
                 yAxes: [{
                     ticks: {
+                        fontSize:20,
+                        stepSize: 1,
                         beginAtZero:true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontSize:20,
                     }
                 }]
             },
@@ -177,6 +184,12 @@ function initAnalysisChart(id, analysisData, analysisLabels) {
                     }
                 }
             },
+            legend: {
+                display: true,
+                labels: {
+                    fontSize: 20
+                }
+            },
             scales: {
                 xAxes: [{
                     gridLines: {
@@ -191,7 +204,7 @@ function initAnalysisChart(id, analysisData, analysisLabels) {
                         display:false
                     },
                     display: false
-                }]
+                }],
             },
         }
     });

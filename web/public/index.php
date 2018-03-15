@@ -87,6 +87,8 @@ Flight::route("/session/@id:[0-9]*/edit/export/", array("PageSessionExport", "ex
 Flight::route("POST /session/@id:[0-9]*/edit/properties/", array("PageSessionEditProperties", "submit"));
 Flight::route("/session/@id:[0-9]*/edit/properties/", array("PageSessionEditProperties", "properties"));
 
+Flight::route("/session/@id:[0-9]*/review/", array("PageSession", "review"));
+
 Flight::route("/session/@sessionID:[0-9]*/edit/question/", array("PageSessionEdit", "question"));
 
 Flight::route("/session/@sessionID:[0-9]*/edit/question/@sessionQuestionID:[0-9]*/response/", array("PageSessionEditQuestionResponse", "response"));

@@ -161,14 +161,14 @@ else {
                         Allow students to change their answer</label>
                 </div>
             </div>
-            <!--<div class="col-sm-5">-
+            <div class="col-sm-5">
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowQuestionReview">
                         <input name="allowQuestionReview" id="allowQuestionReview" value="1" type="checkbox"<?=$allowQuestionReview?>>
                         Allow Students to view their answers after class</label>
                 </div>
-            </div>-->
+            </div>
         </div>
     </fieldset>
     <?php if($new || $session->checkIfUserIsOwner($user)):?>

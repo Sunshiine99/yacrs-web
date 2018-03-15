@@ -99,7 +99,7 @@ class DatabaseSessionQuestion
     public static function loadSessionQuestions($sessionID, $mysqli) {
         $sessionID  = Database::safe($sessionID, $mysqli);
 
-        $sql = "SELECT sq.`ID` as `sessionQuestionID`, q.`questionID`, sq.`active`
+        $sql = "SELECT sq.`ID` as `sessionQuestionID`, q.`questionID`, sq.`active`, q.`question`
                 FROM
                     `yacrs_sessionQuestions` as sq,
                     `yacrs_questions` as q
@@ -119,6 +119,7 @@ class DatabaseSessionQuestion
             $question = DatabaseQuestion::load($row["questionID"], $mysqli);
             $question->setSessionQuestionID($row["sessionQuestionID"]);
             $question->setSessionID($sessionID);
+            $question->setQuestion($row["question"]);
 
             if($row["active"]) {
                 $output["active"] = true;

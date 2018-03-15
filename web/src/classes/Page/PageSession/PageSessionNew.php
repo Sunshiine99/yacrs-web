@@ -67,7 +67,7 @@ class PageSessionNew
 
         $sessionID = DatabaseSession::insert($session, $mysqli);
 
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error500("Could not create session");
             die();
         }

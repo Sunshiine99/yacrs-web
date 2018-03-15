@@ -60,11 +60,17 @@ $this->layout("template",
         <?=$this->fetch("session/list", ["sessions" => $sessions, "user" => $user, "config" => $config])?>
     </div>
     <div id="section-users" class="section display-none">
+        <button type="button" class="btn btn-primary btn-light-border width-xs-full show-guests">
+            Show Guests
+        </button>
+        <button type="button" class="btn btn-primary btn-light-border width-xs-full hide-guests">
+            Hide Guests
+        </button>
         <ul class="list-group users-list">
             <?php // If user has sessions, display them ?>
             <?php if(sizeof($users) > 0): ?>
                 <?php foreach($users as $u): ?>
-                    <li class="list-group-item session-item" data-user-id="<?=$this->e($u->getId())?>">
+                    <li class="list-group-item session-item <?=$u->isGuest()?"guest":"not-guest"?>" data-user-id="<?=$this->e($u->getId())?>">
                         <div class="pull-left">
                             <?=$this->e($u->getFullName())?><br>
                             <span class="text-muted">
@@ -115,3 +121,15 @@ $this->layout("template",
         </ul>
     </div>
 </div>
+<style>
+    .guest {
+        display: none;
+    }
+    .show-guests {
+        margin-bottom: 10px;
+    }
+    .hide-guests {
+        display: none;
+        margin-bottom: 10px;
+    }
+</style>

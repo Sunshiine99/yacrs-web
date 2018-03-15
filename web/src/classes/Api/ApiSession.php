@@ -277,7 +277,11 @@ class ApiSession
         $userID = $user->getId();
 
         $sessions = DatabaseSession::loadUserActiveSessions($userID, $mysqli);
-        Api::output($sessions);
+        $arr = [];
+        foreach($sessions as $key => $value){
+            if(!in_array($value, $arr)) array_push($arr, $value);
+        }
+        Api::output($arr);
     }
 
     public static function getResults($sessionIdentifier){

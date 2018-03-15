@@ -103,11 +103,8 @@ class PageSession extends Page
         // Load active question
         $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
-<<<<<<< HEAD
         if($question === null) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
 
-=======
->>>>>>> 8bfdf720e8b91bace34e3060873d67e02c720c2a
         $responses = null;
 
         // If a question is active
@@ -134,11 +131,8 @@ class PageSession extends Page
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
 
-<<<<<<< HEAD
                 if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
-=======
                 //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
->>>>>>> 8bfdf720e8b91bace34e3060873d67e02c720c2a
             }
         }
 

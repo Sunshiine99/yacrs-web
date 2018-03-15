@@ -64,6 +64,15 @@ body main .question-list {
             margin-right: 10px;
         }
 
+        body main .question-list li.question-item:not(.active-question) .question-timer {
+            display: none;
+        }
+
+        body main .question-list li.question-item .question-timer {
+            color: red;
+            font-weight: bold;
+        }
+
         body main .question-list li.question-item .actions,
         body main .question-list li.question-item .confirm-delete {
             margin-top: 5px;

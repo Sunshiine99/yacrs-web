@@ -25,6 +25,7 @@ $this->layout("template",
     <meta name="sessionID" content="<?=$this->e($session->getSessionID())?>" />
     <meta name="sessionIdentifier" content="<?=$this->e($session->getSessionIdentifier())?>" />
     <meta name="defaultTimeLimit" content="<?=$this->e($session->getDefaultTimeLimit())?>" />
+    <meta name="questionControlMode" content="<?=$this->e($session->getQuestionControlMode())?>" />
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
@@ -100,7 +101,7 @@ $this->layout("template",
                     </span>
                     <span class="question-timer">
                         <?php
-                            if($session->getDefaultTimeLimit() != 0 && $question->isActive()) {
+                            if($session->getDefaultTimeLimit() != 0 && $question->isActive() && $session->getQuestionControlMode() === 0) {
                                 echo $session->getDefaultTimeLimit();
                                 $timerEnabled = true;
                             }

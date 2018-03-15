@@ -1,3 +1,5 @@
+var countdownInterval = null;
+
 function updateQuestionNumbers() {
 
     // For each question
@@ -63,12 +65,22 @@ $("body").on("click", ".question-list .confirm-delete .confirm", function(event)
 var questionList = $(".question-list");
 
 questionList.on("click", ".activate", function(event) {
+
+    // Get questionControlMode and defaultTimeLimit from meta tags
+    var questionControlMode = parseInt($("meta[name=questionControlMode]").attr("content").toString());
     var defaultTimeLimit = parseInt($("meta[name=defaultTimeLimit]").attr("content").toString());
-    if(defaultTimeLimit > 0) {
-        var questionItem = $(this).closest("li.question-item");
-        questionItem.find(".question-timer").text(defaultTimeLimit);
+
+    // If session has default time limit, and running in teacher led more
+    if(defaultTimeLimit > 0 && questionControlMode === 0) {
+
+        // Set the value of the timer
+        $(this).closest("li.question-item").find(".question-timer").text(defaultTimeLimit);
+
+        // Start th countdown
         startCountdown();
     }
+
+    // Activate the question
     activateDeactivateQuestion(this, true);
 });
 
@@ -299,24 +311,42 @@ var cols = document.querySelectorAll('.question-list .question-item');
 
 function startCountdown() {
 
-    $(".question-timer").each(function() {
+    function countdown(first) {
+        var that = $("li.question-item.active-question .question-timer");
 
-        function countdown(that, first) {
+        // If not exactly 1 active question
+        if(that.length !== 1) {
+
+            // Stop timer value
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+
+            // Clear timer display
+            $(that).text("");
+        }
+
+        else {
             var time = parseInt($(that).text());
-            if(time <= 0) {
+            if(time <= 0 && !isNaN(time)) {
                 clearInterval(countdownInterval);
+                countdownInterval = null;
                 activateDeactivateQuestion(that, false);
             }
             else {
                 $(that).text(first ? time : time-1);
             }
         }
+    }
 
-        var that = this;
+    // If the interval is running, stop it
+    if(countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
 
-        countdown(that, true);
-        var countdownInterval = setInterval(function() {
-            countdown(that, false);
-        }, 1000);
-    });
+    countdown(true);
+    countdownInterval = setInterval(function() {
+        console.log("countdownInterval");
+        countdown(false);
+    }, 1000);
 }

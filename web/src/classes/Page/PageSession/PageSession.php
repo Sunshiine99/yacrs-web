@@ -131,7 +131,7 @@ class PageSession extends Page
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
 
-                if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+                //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
                 //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
             }
         }
@@ -344,6 +344,86 @@ class PageSession extends Page
 
         header("Location: ." . ($questionNumber>0 ? "?q=".($questionNumber+1) : ""));
         die();
+    }
+
+    public static function review($sessionIdentifier){
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $config = Flight::get("config");
+
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        //Load session and session ID
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        //Load the questions in the session
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli)["questions"];
+
+        $arr = [];
+
+        //For each question check the type and get the responses
+        foreach ($questions as $q){
+            //Get the question type
+            $type = $q->getType();
+
+            //If it is a text question
+            if($type == "text" || $type == "textlong"){
+                //Get the question response, create a response object and push to array
+                $response = DatabaseResponse::loadUserResponse($q->getSessionQuestionID(), $user->getId(), $mysqli);
+
+                //If there is no response continue to next question
+                if($response === null)continue;
+                $res = new Response();
+                $res->setResponse($response->getResponse());
+                $res->setUsername($q->getQuestion());
+                array_push($arr, $res);
+            }
+            //Else it is either mcq or mrq
+            else{
+                if($type == "mcq"){
+                    $responses = DatabaseResponseMcq::loadUserChoices($q->getSessionQuestionID(), $user->getId(), $mysqli);
+                    //If there is no response continue to next question
+                    if(count($responses) == 0)continue;
+                    $response = $responses[0]->getResponse();
+                    $res = new Response();
+                    $res->setResponse($response);
+                    $res->setUsername($q->getQuestion());
+                    array_push($arr, $res);
+                }
+                elseif($type == "mrq"){
+
+                    $responses = DatabaseResponseMcq::loadUserChoices($q->getSessionQuestionID(), $user->getId(), $mysqli);
+                    //If there is no response continue to next question
+                    if(count($responses) == 0)continue;
+                    $str = "";
+                    foreach ($responses as $response){
+                        $str = $str . " " . $response->getResponse();
+                    }
+                    $res = new Response();
+                    $res->setResponse($str);
+                    $res->setUsername($q->getQuestion());
+                    array_push($arr, $res);
+                }
+            }
+        }
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem("Review");
+
+        $data["responses"] = $arr;
+        $data["session"] = $session;
+        $data["breadcrumbs"] = $breadcrumbs;
+        $data["user"] = $user;
+        echo $templates->render("session/review", $data);
     }
 
     private static function noChoiceMade($questionNumber) {

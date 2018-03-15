@@ -153,4 +153,41 @@ class DatabaseResponseMcq
 
         return $responses;
     }
+
+
+    /**
+     * Load an array of the choices for a mcq or mrq question
+     * @param $sessionQuestionID
+     * @param $mysqli
+     * @param $userID
+     * @return array|null
+     */
+    public static function loadUserChoices($sessionQuestionID, $userID, $mysqli) {
+        $sessionQuestionID = Database::safe($sessionQuestionID, $mysqli);
+        $userID = Database::safe($userID, $mysqli);
+
+        $sql = "SELECT choice
+                FROM
+                    `yacrs_responseMcq` as r,
+                    `yacrs_user` as u,
+                    `yacrs_questionsMcqChoices` as m
+                WHERE r.`sessionQuestionID` = $sessionQuestionID
+                  AND r.`userID` = u.`userID`
+                  AND u.`userID` = $userID
+                  AND m.`ID` = r.`choiceID`";
+        $result = $mysqli->query($sql);
+
+        if(!$result) return null;
+
+        $responses = [];
+
+        // Foreach row returned
+        while($row = $result->fetch_assoc()) {
+            $response = new Response();
+            $response->setResponse($row["choice"]);
+            array_push($responses, $response);
+        }
+
+        return $responses;
+    }
 }

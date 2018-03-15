@@ -36,10 +36,13 @@
                         <?php endif; ?>
                         <?php
                         // If the user can edit this session, view edit controls
-                        if($s->checkIfUserCanEdit($user)):
-                        ?>
+                        if($s->checkIfUserCanEdit($user)):?>
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
+                            </button>
+                        <?php elseif($s->getAllowQuestionReview()): ?>
+                            <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/review/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
+                                <i class="fa fa-pencil"></i> Review
                             </button>
                         <?php endif; ?>
                         <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">

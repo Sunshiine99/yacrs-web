@@ -138,7 +138,7 @@ else {
                 </select>
             </div>
         </div>
-        <!--<div class="form-group row advanced">
+        <div class="form-group row advanced">
             <label for="defaultTimeLimit" class="col-sm-3 col-form-label">Default Time Limit</label>
             <div class="col-sm-2">
                 <label class="form-check-label">
@@ -150,7 +150,7 @@ else {
                 <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
                        type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
-        </div>-->
+        </div>
         <div class="form-group row">
             <div class="col-sm-3 offset-sm"></div>
             <div class="col-sm offset-sm basic">

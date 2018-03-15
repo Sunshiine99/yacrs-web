@@ -63,6 +63,12 @@ $("body").on("click", ".question-list .confirm-delete .confirm", function(event)
 var questionList = $(".question-list");
 
 questionList.on("click", ".activate", function(event) {
+    var defaultTimeLimit = parseInt($("meta[name=defaultTimeLimit]").attr("content").toString());
+    if(defaultTimeLimit > 0) {
+        var questionItem = $(this).closest("li.question-item");
+        questionItem.find(".question-timer").text(defaultTimeLimit);
+        startCountdown();
+    }
     activateDeactivateQuestion(this, true);
 });
 
@@ -286,3 +292,31 @@ function addDnDHandlers(elem) {
 
 var cols = document.querySelectorAll('.question-list .question-item');
 [].forEach.call(cols, addDnDHandlers);
+
+/*******************************************************************************************************************
+ * Question Timer
+ *******************************************************************************************************************/
+
+function startCountdown() {
+
+    $(".question-timer").each(function() {
+
+        function countdown(that, first) {
+            var time = parseInt($(that).text());
+            if(time <= 0) {
+                clearInterval(countdownInterval);
+                activateDeactivateQuestion(that, false);
+            }
+            else {
+                $(that).text(first ? time : time-1);
+            }
+        }
+
+        var that = this;
+
+        countdown(that, true);
+        var countdownInterval = setInterval(function() {
+            countdown(that, false);
+        }, 1000);
+    });
+}

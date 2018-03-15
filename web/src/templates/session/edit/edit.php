@@ -24,6 +24,7 @@ $this->layout("template",
     <link rel="stylesheet" href="<?=$this->e($config["baseUrl"])?>css/session/edit/edit.css">
     <meta name="sessionID" content="<?=$this->e($session->getSessionID())?>" />
     <meta name="sessionIdentifier" content="<?=$this->e($session->getSessionIdentifier())?>" />
+    <meta name="defaultTimeLimit" content="<?=$this->e($session->getDefaultTimeLimit())?>" />
 <?php $this->stop(); ?>
 
 <?php $this->push("end"); ?>
@@ -84,6 +85,7 @@ $this->layout("template",
         <?php
         $i = 1;
         $qi = count($questions["questions"]);
+        $timerEnabled = false;
         foreach($questions["questions"] as $question):
             $class = $question->isActive() ? " active-question" : "";
 
@@ -95,6 +97,14 @@ $this->layout("template",
                 <div class="pull-left details">
                     <span class="question-title">
                         <?=$question->getQuestion() ? $this->e($question->getQuestion()) : $question->getTypeDisplay() . " Question"?>
+                    </span>
+                    <span class="question-timer">
+                        <?php
+                            if($session->getDefaultTimeLimit() != 0 && $question->isActive()) {
+                                echo $session->getDefaultTimeLimit();
+                                $timerEnabled = true;
+                            }
+                        ?>
                     </span><br>
                     <span class="question-date text-muted">
                         Created <?=date("d/m/Y H:i", $question->getCreated())?>
@@ -167,3 +177,10 @@ $this->layout("template",
         <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/export/" class="btn btn-primary width-xs-full">Export as Spreadsheet</a>
     </div>
 </div>
+<?php $this->push("end"); ?>
+    <?php if($timerEnabled): ?>
+        <script>
+            startCountdown();
+        </script>
+    <?php endif; ?>
+<?php $this->stop(); ?>

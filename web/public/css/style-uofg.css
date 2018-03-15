@@ -102,11 +102,11 @@ body footer ul li {
 
 .btn-primary {
     color: #fff;
-    background-color: #0075B0;  /* UofG Cobalt */
-    border-color: #0075B0;      /* UofG Cobalt */
+    background-color: #0075B0!important;  /* UofG Cobalt */
+    border-color: #0075B0!important;      /* UofG Cobalt */
 }
 
 .btn-primary:hover {
-    background-color: #005682;
-    border-color: #005682;
+    background-color: #005682!important;
+    border-color: #005682!important;
 }

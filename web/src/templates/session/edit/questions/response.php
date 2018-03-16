@@ -141,6 +141,15 @@ function getColour($colours, $i) {
         <div id="section-analysis" class="section display-none">
             <div id="no-analysis-error">No Analysis Available</div>
             <canvas id="analysis-chart" width="400" height="200"></canvas>
+            <div id="analysis-description" class="container">
+                <hr>
+                <h5>Cluster Graph Topic Analysis</h5>
+                <h6>Here, every dot represents a response. Responses are clustered (colored) and labeled above
+                based on the main topics they discussed. Note that these labels represent topic through
+                the two most unique words of each cluster. Dots closer together represents
+                documents with similar word structure and content. To find a count of responses in each
+                topic cluster, please see the Response Cluster Counts tab.</h6>
+            </div>
         </div>
         <div id="section-bar-analysis" class="section display-none">
             <div id="no-analysis-error-2">No Analysis Available</div>

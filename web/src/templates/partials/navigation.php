@@ -52,24 +52,32 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <?php if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
+                    <li class="nav-item">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user"></i>
+                                <?=$this->e($user->getFullName())?>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" type="button" href="<?=$this->e($config["baseUrl"])?>logout/">Logout</a>
+                                <a class="dropdown-item" type="button" href="<?=$this->e($config["baseUrl"])?>changepassword/">Change Password</a>
+                            </div>
+                        </div>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
                     <span class="navbar-text d-none d-md-block d-lg-block d-xl-block">
                         <?=$this->e($user->getFullName())?>
                     </span>
-                </li>
-                <?php if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
+                    </li>s
                     <li class="nav-item">
-                        <a id="change-password" class="nav-link" href="<?=$this->e($config["baseUrl"])?>changepassword/">
-                            Change Password
+                        <a href="<?=$this->e($config["baseUrl"])?>logout/" class="btn btn-light">
+                            <i class="fa fa-lock"></i>
+                            Logout
                         </a>
                     </li>
                 <?php endif; ?>
-                <li class="nav-item">
-                    <a href="<?=$this->e($config["baseUrl"])?>logout/" class="btn btn-light">
-                        <i class="fa fa-lock"></i>
-                        Logout
-                    </a>
-                </li>
             </ul>
         <?php endif ?>
     </div>

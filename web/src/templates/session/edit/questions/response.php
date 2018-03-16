@@ -144,10 +144,10 @@ function getColour($colours, $i) {
             <div id="analysis-description" class="container">
                 <hr>
                 <h5>Cluster Graph Topic Analysis</h5>
-                <h6>Here, every dot represents a response. Responses are clustered (colored) and labeled above
-                based on the main topics they discussed. Note that these labels represent topic through
+                <h6>Every dot represents a response. Responses are clustered (colored) and labeled above
+                based on the main topics they discuss. Note that these labels represent topics through
                 the two most unique words of each cluster. Dots closer together represents
-                documents with similar word structure and content. To find a count of responses in each
+                responses with similar word structure and content. To find the total count of responses in each
                 topic cluster, please see the Response Cluster Counts tab.</h6>
             </div>
         </div>

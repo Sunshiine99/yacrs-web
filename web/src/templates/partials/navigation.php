@@ -59,7 +59,7 @@
                 </li>
                 <?php if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>changepassword/">
+                        <a id="change-password" class="nav-link" href="<?=$this->e($config["baseUrl"])?>changepassword/">
                             Change Password
                         </a>
                     </li>

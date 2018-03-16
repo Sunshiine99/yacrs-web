@@ -58,8 +58,9 @@ $this->layout("template",
     }
     .response{
         white-space: nowrap;
-        width: 30%;
+        width: 50%;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-align: right;
     }
 </style>

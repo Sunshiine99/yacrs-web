@@ -402,8 +402,11 @@ class PageSession extends Page
                     //If there is no response continue to next question
                     if(count($responses) == 0)continue;
                     $str = "";
+                    $flag = 0;
                     foreach ($responses as $response){
+                        if($flag == 1)$str = $str . ", ";
                         $str = $str . " " . $response->getResponse();
+                        $flag = 1;
                     }
                     $res = new Response();
                     $res->setResponse($str);

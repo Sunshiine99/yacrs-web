@@ -165,6 +165,9 @@ html, body {
                         color: #e18c85;
                     }
 
+                    #sid{
+                        color: #e18c85;
+                    }
                     body main .session-list .list-group-item .session-date {
                         display: block;
                     }
@@ -223,8 +226,6 @@ body footer {
 .display-none {
     display: none;
 }
-
-
 
 ul.list-group li.list-group-item {
     border-color: #bbb;

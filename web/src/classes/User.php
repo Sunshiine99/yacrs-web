@@ -93,7 +93,7 @@ class User
      * @return string
      */
     public function getUsername() {
-        return $this->username;
+        return $this->isGuest() ? "guest-" . $this->getId() : $this->username;
     }
 
     /**
@@ -135,6 +135,9 @@ class User
      * @return string
      */
     public function getFullName() {
+        if($this->isGuest()) {
+            return "Anonymous Guest";
+        }
 
         $output = "";
 

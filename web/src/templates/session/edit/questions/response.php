@@ -32,20 +32,20 @@ $this->layout("template",
 );
 
 $backgroundColours = [];
-$backgroundColours[] = "rgba(255, 99, 132, 1)";
-$backgroundColours[] = "rgba(54, 162, 235, 1)";
-$backgroundColours[] = "rgba(23, 0, 77, 1)";
-$backgroundColours[] = "rgba(3, 158, 0, 1)";
-$backgroundColours[] = "rgba(153, 102, 255, 1)";
-$backgroundColours[] = "rgba(255, 128, 0, 1)";
+$backgroundColours[] = "rgba(212, 2, 2, 0.5)";
+$backgroundColours[] = "rgba(54, 162, 235, 0.5)";
+$backgroundColours[] = "rgba(96, 169, 24, 0.5)";
+$backgroundColours[] = "rgba(153, 102, 255, 0.5)";
+$backgroundColours[] = "rgba(255, 128, 0, 0.5)";
+$backgroundColours[] = "rgba(23, 0, 77, 0.5)";
 
 $borderColours = [];
-$borderColours[] = "rgba(255,99,132, 1)";
+$borderColours[] = "rgba(212, 2, 2, 1)";
 $borderColours[] = "rgba(54, 162, 235, 1)";
-$borderColours[] = "rgba(23, 0, 77, 1)";
-$borderColours[] = "rgba(3, 158, 0, 1)";
+$borderColours[] = "rgba(96, 169, 24, 1)";
 $borderColours[] = "rgba(153, 102, 255, 1)";
 $borderColours[] = "rgba(255, 128, 0, 1)";
+$borderColours[] = "rgba(23, 0, 77, 1)";
 
 function getColour($colours, $i) {
     return $colours[$i%count($colours)];
@@ -131,10 +131,11 @@ function getColour($colours, $i) {
 <div class="sections" id="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
         <div id="section-bar-chart" class="section">
-            <canvas id="bar-chart" width="400" height="200"></canvas>
+            <canvas id="bar-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
+</br>
         <div id="section-pie-chart" class="section display-none">
-            <canvas id="pie-chart" width="400" height="200"></canvas>
+            <canvas id="pie-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
     <?php endif; ?>
     <?php if($question->getType() == "textlong"): ?>
@@ -144,10 +145,10 @@ function getColour($colours, $i) {
             <div id="analysis-description" class="container">
                 <hr>
                 <h5>Cluster Graph Topic Analysis</h5>
-                <h6>Here, every dot represents a response. Responses are clustered (colored) and labeled above
-                based on the main topics they discussed. Note that these labels represent topic through
+                <h6>Every dot represents a response. Responses are clustered (colored) and labeled above
+                based on the main topics they discuss. Note that these labels represent topics through
                 the two most unique words of each cluster. Dots closer together represents
-                documents with similar word structure and content. To find a count of responses in each
+                responses with similar word structure and content. To find the total count of responses in each
                 topic cluster, please see the Response Cluster Counts tab.</h6>
             </div>
         </div>
@@ -237,7 +238,7 @@ function getColour($colours, $i) {
         return colours[i%colours.length]
     }
 
-    <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
+    <?php if(isset($responsesMcq)): ?>
         var labels = [
             <?php foreach($responsesMcq as $response): ?>
                 "<?=$this->e($response["choice"])?>",
@@ -260,5 +261,29 @@ function getColour($colours, $i) {
                 '<?=getColour($borderColours, $i)?>',
             <?php endfor; ?>
         ];
+    <?php endif; ?>
+    <?php if(isset($responsesMrq)): ?>
+    var labels = [
+        <?php foreach($responsesMrq as $response): ?>
+        "<?=$this->e($response["choice"])?>",
+        <?php endforeach; ?>
+    ];
+
+    var data = [
+        <?php foreach($responsesMrq as $response): ?>
+        <?=$response["count"]?$this->e($response["count"]):0?>,
+        <?php endforeach; ?>
+    ];
+
+    var backgroundColor = [
+        <?php for($i = 0; $i < count($responsesMrq); $i++): ?>
+        '<?=getColour($backgroundColours, $i)?>',
+        <?php endfor; ?>
+    ];
+    var borderColor = [
+        <?php for($i = 0; $i < count($responsesMrq); $i++): ?>
+        '<?=getColour($borderColours, $i)?>',
+        <?php endfor; ?>
+    ];
     <?php endif; ?>
 </script>

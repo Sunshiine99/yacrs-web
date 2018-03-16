@@ -205,8 +205,6 @@ class PageSessionExport
         // Add session details headings
         self::setHeader(1, 1, "Session Title", $sheet);
         self::setHeader(1, 2, "Created", $sheet);
-        self::setHeader(3, 1, "You are provided with separate tabs for each question below", $sheet);
-        $sheet->mergeCells("C1:I1");
 
         // Add session details values
         self::setDataCell(2, 1, $session->getTitle(), $sheet);

@@ -34,7 +34,8 @@
                                 <i class="fa fa-play"></i> Run
                             </button>
                         <?php endif; ?>
-                        <?php if($s->getAllowQuestionReview()): ?>
+<!--                        // If the user can edit this session, view edit controls-->
+                        <?php if($s->getAllowQuestionReview() && !$s->checkIfUserCanEdit($user)): ?>
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/review/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-book"></i> Review
                             </button>

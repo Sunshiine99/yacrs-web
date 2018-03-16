@@ -41,19 +41,19 @@ class ApiUser
          */
         extract(self::setupUser($userID));
 
-        if(!$thisUser)
-            ApiError::unknown();
+
+        if($thisUser === null)
+            ApiError::notFoundCustom("user not found");
 
         // Change user details
         $thisUser->fromArray($_REQUEST);
 
         // Update this user in the database
         $result = DatabaseUser::update($thisUser, $mysqli);
+//        if($result === null)
+//            ApiError::unknown();
 
-        if(!$result)
-            ApiError::unknown();
-
-        // Load this user again from the database tpo verify changes
+        // Load this user again from the database to verify changes
         $thisUser = DatabaseUser::loadDetailsFromUserID($userID, $mysqli);
 
         Api::output($thisUser->toArray());
@@ -95,7 +95,7 @@ class ApiUser
         $user = Api::checkApiKey($_REQUEST["key"], $mysqli);
 
         // If invalid API key
-        if(!$user) {
+        if($user === null) {
             ApiError::invalidApiKey();
             die();
         }

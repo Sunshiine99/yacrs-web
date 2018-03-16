@@ -40,6 +40,7 @@
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/edit/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Edit
                             </button>
+                        <?php endif; ?>
                         <?php if($s->getAllowQuestionReview()): ?>
                             <button data-href="<?=$this->e($config["baseUrl"])?>session/<?=$this->e($s->getSessionIdentifier())?>/review/" type="button" class="btn btn-light btn-light-border width-xs-full" onclick="onclickHref(this)">
                                 <i class="fa fa-pencil"></i> Review

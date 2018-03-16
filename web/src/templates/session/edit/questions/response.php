@@ -237,7 +237,7 @@ function getColour($colours, $i) {
         return colours[i%colours.length]
     }
 
-    <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
+    <?php if(isset($responsesMcq)): ?>
         var labels = [
             <?php foreach($responsesMcq as $response): ?>
                 "<?=$this->e($response["choice"])?>",
@@ -260,5 +260,29 @@ function getColour($colours, $i) {
                 '<?=getColour($borderColours, $i)?>',
             <?php endfor; ?>
         ];
+    <?php endif; ?>
+    <?php if(isset($responsesMrq)): ?>
+    var labels = [
+        <?php foreach($responsesMrq as $response): ?>
+        "<?=$this->e($response["choice"])?>",
+        <?php endforeach; ?>
+    ];
+
+    var data = [
+        <?php foreach($responsesMrq as $response): ?>
+        <?=$response["count"]?$this->e($response["count"]):0?>,
+        <?php endforeach; ?>
+    ];
+
+    var backgroundColor = [
+        <?php for($i = 0; $i < count($responsesMrq); $i++): ?>
+        '<?=getColour($backgroundColours, $i)?>',
+        <?php endfor; ?>
+    ];
+    var borderColor = [
+        <?php for($i = 0; $i < count($responsesMrq); $i++): ?>
+        '<?=getColour($borderColours, $i)?>',
+        <?php endfor; ?>
+    ];
     <?php endif; ?>
 </script>

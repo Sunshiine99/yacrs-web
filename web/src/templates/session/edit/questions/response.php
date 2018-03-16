@@ -131,10 +131,11 @@ function getColour($colours, $i) {
 <div class="sections" id="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
         <div id="section-bar-chart" class="section">
-            <canvas id="bar-chart" width="400" height="200"></canvas>
+            <canvas id="bar-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
+</br>
         <div id="section-pie-chart" class="section display-none">
-            <canvas id="pie-chart" width="400" height="200"></canvas>
+            <canvas id="pie-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
     <?php endif; ?>
     <?php if($question->getType() == "textlong"): ?>

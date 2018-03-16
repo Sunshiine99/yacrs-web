@@ -30,7 +30,7 @@ class Page
 
         // If user can not create sessions, forward them home
         if(!$user->isSessionCreator() && !$user->isAdmin()) {
-            header("Location: " . $config["baseUrl"]);
+            PageError::error403();
             die();
         }
     }

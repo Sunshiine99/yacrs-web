@@ -138,7 +138,7 @@ else {
                 </select>
             </div>
         </div>
-        <!--<div class="form-group row advanced">
+        <div class="form-group row advanced">
             <label for="defaultTimeLimit" class="col-sm-3 col-form-label">Default Time Limit</label>
             <div class="col-sm-2">
                 <label class="form-check-label">
@@ -150,7 +150,7 @@ else {
                 <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
                        type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
-        </div>-->
+        </div>
         <div class="form-group row">
             <div class="col-sm-3 offset-sm"></div>
             <div class="col-sm offset-sm basic">
@@ -161,53 +161,55 @@ else {
                         Allow students to change their answer</label>
                 </div>
             </div>
-            <!--<div class="col-sm-5">-
+            <div class="col-sm-5">
                 <div class="checkbox">
                     <label>
                         <input type="hidden" value="0" name="allowQuestionReview">
                         <input name="allowQuestionReview" id="allowQuestionReview" value="1" type="checkbox"<?=$allowQuestionReview?>>
                         Allow Students to view their answers after class</label>
                 </div>
-            </div>-->
+            </div>
         </div>
     </fieldset>
-    <div class="form-group row advanced">
-        <label class="col-sm-3 control-label" for="courseIdentifier">
-            Additional Users
-            <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
-                      Allows additional users to edit and run your session">
-                <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </a>
-        </label>
-        <div class="col-sm-9">
-            <div id="add-more-choices" class="input-add-more-container" data-minimum-count="0">
-                <?php if(count($users) > 0):?>
-                    <?php $i = 0; ?>
-                    <?php foreach($users as $user): ?>
-                        <div class="input-group input-add-more-item">
-                            <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1" maxlength="80">
+    <?php if($new || $session->checkIfUserIsOwner($user)):?>
+        <div class="form-group row advanced">
+            <label class="col-sm-3 control-label" for="courseIdentifier">
+                Additional Users
+                <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
+                          Allows additional users to edit and run your session">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </a>
+            </label>
+            <div class="col-sm-9">
+                <div id="add-more-choices" class="input-add-more-container" data-minimum-count="0">
+                    <?php if(count($users) > 0):?>
+                        <?php $i = 0; ?>
+                        <?php foreach($users as $user): ?>
+                            <div class="input-group input-add-more-item">
+                                <input id="user-<?=$i?>" name="user-<?=$i?>" class="form-control input-add-more-input user" type="text" value="<?=$this->e($user->getUsername())?>" tabindex="1" maxlength="80">
+                                <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    <?php else:?>
+                        <div class="input-group input-add-more-item display-none">
+                            <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1" maxlength="80">
                             <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                <?php else:?>
-                    <div class="input-group input-add-more-item display-none">
-                        <input id="user-0" name="user-0" class="form-control input-add-more-input user" type="text" value="" tabindex="1" maxlength="80">
-                        <button class="delete btn btn-light btn-light-border input-add-more-input" type="button" tabindex="2">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                <?php endif?>
-            </div>
-            <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
-                <button class="btn btn-primary input-add-more-input float-right width-xs-full" type="button">
-                    Add User
-                </button>
+                    <?php endif?>
+                </div>
+                <div id="add-more-button-container" class="col-sm-12 input-add-more-button" data-input-container-id="add-more-choices">
+                    <button class="btn btn-primary input-add-more-input float-right width-xs-full" type="button">
+                        Add User
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
     <div class="form-group row">
         <div class="col-sm-9 offset-sm-3">
             <input class="submit btn btn-primary margin-xs-bottom-10 width-xs-50percent-2point5px" name="submit" value="<?=$submitText?>" type="submit">

@@ -138,6 +138,15 @@ class Session
     }
 
     /**
+     * Check if a user is owner
+     * @param User $user
+     * @return bool
+     */
+    public function checkIfUserIsOwner($user) {
+        return $this->getOwner() === $user->getUsername() || $user->isAdmin();
+    }
+
+    /**
      * @return int
      */
     public function getSessionIdentifier() {
@@ -338,7 +347,11 @@ class Session
      * @param $username
      */
     public function addAdditionalUser($username) {
-        array_push($this->additionalUsers, $username);
+
+        // If additional user doesn't already exist
+        if(!in_array($username, $this->additionalUsers)) {
+            array_push($this->additionalUsers, $username);
+        }
     }
 
     /**

@@ -106,23 +106,19 @@ clusters = pipeline.named_steps['clust'].labels_.tolist()
 cluster_list = [[], [], []]
 for i, cluster in enumerate(clusters):
     cluster_list[cluster] = cluster_list[cluster] + re.findall(r"[\w']+|[.,!?;]", response_frame['response'][i])
+punctuation = list(['.', ',', '!', '?', ';'])
 for i in range(len(cluster_list)):
-    cluster_list[i] = [word.lower() for word in cluster_list[i] if word not in stopwords]
+    cluster_list[i] = [word.lower() for word in cluster_list[i] if word not in stopwords and word not in punctuation]
 
-def tf(word, cluster):
-    return cluster.count(word) / len(cluster)
 
-def n_containing(word, cluster_list):
-    return sum(1 for cluster in cluster_list if word in cluster)
-
-def idf(word, cluster_list):
-    return math.log(len(cluster_list) / (1 + n_containing(word, cluster_list)))
-
-def tfidf(word, cluster, bloblist):
-    return tf(word, cluster) * idf(word, cluster_list)
+def tfidf(word, cluster, cluster_list):
+    # return the term frequency multiplied by the inverse document frequency
+    # term frequency = number of times the word appears in the cluster normalized by the number of words in the cluster
+    # inverse document frequency = the log of the number of clusters normalized by the number of clusters in which the word appears at least once
+    return (cluster.count(word) / len(cluster)) * (math.log(len(cluster_list) / (1 + sum(1 for cluster in cluster_list if word in cluster))))
 
 cluster_labels = []
-for i, cluster in enumerate(cluster_list):
+for cluster in cluster_list:
     scores = {word: tfidf(word, cluster, cluster_list) for word in cluster}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     label = ""

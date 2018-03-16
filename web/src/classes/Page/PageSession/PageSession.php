@@ -43,7 +43,7 @@ class PageSession extends Page
         $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
         // If invalid session, forward home with error
-        if (!$session) {
+        if ($session === null) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -57,7 +57,7 @@ class PageSession extends Page
         }
 
         // If user cannot view this session, display an error
-        if(!$session->checkIfUserCanView($user)) {
+        if($session->checkIfUserCanView($user) === null) {
 
             $alert = new Alert();
             $alert->setType("danger");
@@ -76,7 +76,7 @@ class PageSession extends Page
             // Get total number of questions
             $totalQuestions = DatabaseSessionQuestion::countActiveQuestions($session->getSessionID(), $mysqli);
 
-            if(!$totalQuestions) PageError::error500("Could not load total number of questions in ".__FILE__." on line ".__LINE__);
+            //if($totalQuestions === null) PageError::error500("Could not load total number of questions in ".__FILE__." on line ".__LINE__);
 
             // Get current question number
             $questionNumber = isset($_GET["q"]) ? intval($_GET["q"]) - 1 : 0;
@@ -103,7 +103,7 @@ class PageSession extends Page
         // Load active question
         $question = DatabaseSessionQuestion::loadActiveQuestion($session->getSessionID(), $questionNumber, $mysqli);
 
-        if(!$question) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
+        //if($question === null) PageError::error500("Could not load active question in ".__FILE__." on line ".__LINE__);
 
         $responses = null;
 
@@ -131,7 +131,8 @@ class PageSession extends Page
             else {
                 $response = DatabaseResponse::loadUserResponse($question->getSessionQuestionID(), $user->getId(), $mysqli);
 
-                if(!$response) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+                //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
+                //if($response === null) PageError::error500("Could not load response in ".__FILE__." on line ".__LINE__);
             }
         }
 
@@ -142,7 +143,7 @@ class PageSession extends Page
         // Add to session history
         $result = DatabaseSessionHistory::insert($user, $session, $mysqli);
 
-        if(!$result) PageError::error500("Could not update history in ".__FILE__." on line ".__LINE__);
+        if($result === null) PageError::error500("Could not update history in ".__FILE__." on line ".__LINE__);
 
         // Setup Page breadcrumbs
         $breadcrumbs = new Breadcrumb();
@@ -177,12 +178,12 @@ class PageSession extends Page
         // Load the session
         $session = DatabaseSession::loadSession($sessionID, $mysqli);
 
-        if(!$session) PageError::error500("Could not load session in ".__FILE__." on line ".__LINE__);
+        if($session === null) PageError::error500("Could not load session in ".__FILE__." on line ".__LINE__);
 
         // Load database session question
         $question = DatabaseSessionQuestion::loadQuestion($_POST["sessionQuestionID"], $mysqli);
 
-        if(!$question) PageError::error500("Could not load question in ".__FILE__." on line ".__LINE__);
+        if($question === null) PageError::error500("Could not load question in ".__FILE__." on line ".__LINE__);
 
         // Get the question number
         $questionNumber = intval($_POST["questionNumber"]);
@@ -237,7 +238,7 @@ class PageSession extends Page
 
             // If an existing response was found
             elseif($response) {
-                if(!DatabaseResponseMrq::update($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli)) {
+                if(DatabaseResponseMrq::update($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli) === null) {
 
                     // If error updating, display error
                     PageError::error500("DatabaseResponseMrq::update error on line " . __LINE__ . " of file " . __FILE__);
@@ -247,7 +248,7 @@ class PageSession extends Page
 
             // Otherwise, insert the response
             else {
-                if(!DatabaseResponseMrq::insert($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli)) {
+                if(DatabaseResponseMrq::insert($_POST["sessionQuestionID"], $user->getId(), $choices, $question, $mysqli) === null) {
 
                     // If error inserting, display error
                     PageError::error500("DatabaseResponseMrq::insert error in ".__FILE__." on line ".__LINE__);
@@ -288,7 +289,7 @@ class PageSession extends Page
             // If an existing response was found
             elseif($response) {
 
-                if(!DatabaseResponseMcq::update($response->getResponseID(), $choice->getChoiceID(), $mysqli)) {
+                if(DatabaseResponseMcq::update($response->getResponseID(), $choice->getChoiceID(), $mysqli) === null) {
 
                     // If error updating, display error
                     PageError::error500("DatabaseResponseMcq::update error on line " . __LINE__ . " of file " . __FILE__);
@@ -298,7 +299,7 @@ class PageSession extends Page
 
             // Otherwise, insert the response
             else {
-                if(!DatabaseResponseMcq::insert($_POST["sessionQuestionID"], $user->getId(), $choice->getChoiceID(), $mysqli)) {
+                if(DatabaseResponseMcq::insert($_POST["sessionQuestionID"], $user->getId(), $choice->getChoiceID(), $mysqli) === null) {
 
                     // If error inserting, display error
                     PageError::error500("DatabaseResponseMcq::insert error in ".__FILE__." on line ".__LINE__);
@@ -322,7 +323,7 @@ class PageSession extends Page
 
             // If an existing response was found
             elseif($response) {
-                if(!DatabaseResponse::update($response->getResponseID(), $_POST["answer"], $mysqli)) {
+                if(DatabaseResponse::update($response->getResponseID(), $_POST["answer"], $mysqli) === null) {
 
                     // If error updating, display error
                     PageError::error500("DatabaseResponse::update error on line " . __LINE__ . " of file " . __FILE__);
@@ -332,7 +333,7 @@ class PageSession extends Page
 
             // Otherwise, insert the response
             else {
-                if(!DatabaseResponse::insert($_POST["sessionQuestionID"], $user->getId(), $_POST["answer"], $mysqli)) {
+                if(DatabaseResponse::insert($_POST["sessionQuestionID"], $user->getId(), $_POST["answer"], $mysqli) === null) {
 
                     // If error inserting, display error
                     PageError::error500("DatabaseResponse::insert error in ".__FILE__." on line ".__LINE__);
@@ -343,6 +344,89 @@ class PageSession extends Page
 
         header("Location: ." . ($questionNumber>0 ? "?q=".($questionNumber+1) : ""));
         die();
+    }
+
+    public static function review($sessionIdentifier){
+        $templates = Flight::get("templates");
+        $data = Flight::get("data");
+        $config = Flight::get("config");
+
+        // Ensure the user is logged in
+        $user = Page::ensureUserLoggedIn($config);
+
+        // Connect to database
+        $databaseConnect = Flight::get("databaseConnect");
+        $mysqli = $databaseConnect();
+
+        //Load session and session ID
+        $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
+        $session = DatabaseSession::loadSession($sessionID, $mysqli);
+
+        //Load the questions in the session
+        $questions = DatabaseSessionQuestion::loadSessionQuestions($sessionID, $mysqli)["questions"];
+
+        $arr = [];
+
+        //For each question check the type and get the responses
+        foreach ($questions as $q){
+            //Get the question type
+            $type = $q->getType();
+
+            //If it is a text question
+            if($type == "text" || $type == "textlong"){
+                //Get the question response, create a response object and push to array
+                $response = DatabaseResponse::loadUserResponse($q->getSessionQuestionID(), $user->getId(), $mysqli);
+
+                //If there is no response continue to next question
+                if($response === null)continue;
+                $res = new Response();
+                $res->setResponse($response->getResponse());
+                $res->setUsername($q->getQuestion());
+                array_push($arr, $res);
+            }
+            //Else it is either mcq or mrq
+            else{
+                if($type == "mcq"){
+                    $responses = DatabaseResponseMcq::loadUserChoices($q->getSessionQuestionID(), $user->getId(), $mysqli);
+                    //If there is no response continue to next question
+                    if(count($responses) == 0)continue;
+                    $response = $responses[0]->getResponse();
+                    $res = new Response();
+                    $res->setResponse($response);
+                    $res->setUsername($q->getQuestion());
+                    array_push($arr, $res);
+                }
+                elseif($type == "mrq"){
+
+                    $responses = DatabaseResponseMcq::loadUserChoices($q->getSessionQuestionID(), $user->getId(), $mysqli);
+                    //If there is no response continue to next question
+                    if(count($responses) == 0)continue;
+                    $str = "";
+                    $flag = 0;
+                    foreach ($responses as $response){
+                        if($flag == 1)$str = $str . ", ";
+                        $str = $str . " " . $response->getResponse();
+                        $flag = 1;
+                    }
+                    $res = new Response();
+                    $res->setResponse($str);
+                    $res->setUsername($q->getQuestion());
+                    array_push($arr, $res);
+                }
+            }
+        }
+
+        // Setup Page breadcrumbs
+        $breadcrumbs = new Breadcrumb();
+        $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
+        $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
+        $breadcrumbs->addItem("Review");
+
+        $data["responses"] = $arr;
+        $data["session"] = $session;
+        $data["breadcrumbs"] = $breadcrumbs;
+        $data["user"] = $user;
+        echo $templates->render("session/review", $data);
     }
 
     private static function noChoiceMade($questionNumber) {

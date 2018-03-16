@@ -32,7 +32,7 @@ class PageSessionEditProperties
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionID/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)"  . " Edit", $config["baseUrl"]."session/$sessionIdentifier/edit");
         $breadcrumbs->addItem("Properties");
 
         //$data = array_merge($data, $session->toArray());
@@ -47,6 +47,7 @@ class PageSessionEditProperties
     }
 
     public static function submit() {
+
         $config = Flight::get("config");
 
         // Connect to database
@@ -56,39 +57,48 @@ class PageSessionEditProperties
         // Ensure the user is logged in
         $user = Page::ensureUserLoggedIn($config);
 
-        // Ensure user is allowed to create sessions
-        Page::ensureUserIsSessionCreator($user, $config);
+        $session = DatabaseSession::loadSession($_POST["sessionID"], $mysqli);
+
+        if(!$session->checkIfUserCanEdit($user)) {
+            PageError::error403();
+            die();
+        }
 
         // Setup session from submitted data
-        $session = new Session($_POST);
-        $session->setOwner($user->getId());
+        $session->fromArray($_POST);
 
-        // Load new users
-        foreach ($_POST as $key => $value) {
+        // If user is owner
+        if($session->checkIfUserIsOwner($user)) {
 
-            preg_match("/(user-)(\w*[0-9]\w*)/", $key, $matches);
+            // Load new users
+            foreach ($_POST as $key => $value) {
 
-            if($matches) {
+                preg_match("/(user-)(\w*[0-9]\w*)/", $key, $matches);
 
-                // Get the user index from the regex matches
-                $index = $matches[2];
+                if($matches) {
 
-                // If there is an index associated with this user, store it
-                if(isset($_POST["user-" . $index])) {
-                    $username = $_POST["user-" . $index];
-                    //If user does not exist output error
-                    if(!DatabaseUser::checkUserExists($username, $mysqli) and $username != ""){
-                        PageError::generic("Additional user does not exist", "One of the additional users you have typed does not exist");
-                        die();
+                    // Get the user index from the regex matches
+                    $index = $matches[2];
+
+                    // If there is an index associated with this user, store it
+                    if(isset($_POST["user-" . $index])) {
+                        $username = $_POST["user-" . $index];
+                        //If user does not exist output error
+                        if(!DatabaseUser::checkUserExists($username, $mysqli) and $username != ""){
+                            PageError::generic("Additional user does not exist", "One of the additional users you have typed does not exist");
+                            die();
+                        }
+                        // Else add the new user
+                        $session->addAdditionalUser($username);
                     }
-                    // Else add the new user
-                    $session->addAdditionalUser($username);
-                }
 
+                }
             }
         }
 
-        DatabaseSession::update($session, $mysqli);
+        $result = DatabaseSession::update($session, $mysqli);
+
+        if(!$result) PageError::error500("Database error on line " . __LINE__ . " in file " . __FILE__);
 
         header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/");
         die();

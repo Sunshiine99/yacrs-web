@@ -38,7 +38,6 @@ body main .question-list {
     }
 
     body main .question-list li.question-item {
-        padding-right: 0;
     }
 
     /** Color of line when dragging question */
@@ -62,6 +61,15 @@ body main .question-list {
         body main .question-list li.question-item .question-number {
             line-height: 50px;
             margin-right: 10px;
+        }
+
+        body main .question-list li.question-item:not(.active-question) .question-timer {
+            display: none;
+        }
+
+        body main .question-list li.question-item .question-timer {
+            color: red;
+            font-weight: bold;
         }
 
         body main .question-list li.question-item .actions,

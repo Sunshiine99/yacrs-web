@@ -31,6 +31,7 @@
 
 #login button {
     margin-top: 10px;
+
 }
 
 #login #anonymous {
@@ -40,4 +41,8 @@
 
 #alert {
     margin-top: 10px;
+}
+
+#login-btn{
+    width: 250px;
 }

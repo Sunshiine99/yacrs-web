@@ -54,6 +54,7 @@ class ApiSessionQuestion
 
         $output["active"] = $active;
         $output["activeSessionQuestionID"] = intval($activeSessionQuestionID);
+        $output["defaultTimeLimit"] = $session->getDefaultTimeLimit();
 
         Api::output($output);
     }

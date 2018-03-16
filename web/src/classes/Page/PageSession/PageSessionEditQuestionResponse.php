@@ -12,8 +12,7 @@ class PageSessionEditQuestionResponse
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem(($data["session"]->getTitle() ? $data["session"]->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Edit", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem(($data["session"]->getTitle() ? $data["session"]->getTitle() : "Session") . " (#$sessionIdentifier)" . " Edit", $config["baseUrl"]."session/$sessionIdentifier/edit");
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
         //$breadcrumbs->addItem("Question", $config["baseUrl"]."session/$sessionIdentifier/edit/question/$sessionQuestionID/");
         $breadcrumbs->addItem("Responses");
@@ -42,7 +41,7 @@ class PageSessionEditQuestionResponse
 
         $session = DatabaseSessionIdentifier::loadSession($sessionIdentifier, $mysqli);
 
-        if(!$session) {
+        if($session === null) {
             PageError::error500();
             die();
         }
@@ -52,7 +51,7 @@ class PageSessionEditQuestionResponse
         // Load the question from the database
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
 
-        if(!$question || $sessionID!=$question->getSessionID()) {
+        if($question === null || $sessionID!=$question->getSessionID()) {
             header("Location: ..");
             die();
         }

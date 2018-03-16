@@ -23,8 +23,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Edit", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)" . " Edit", $config["baseUrl"]."session/$sessionIdentifier/edit");
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
         $breadcrumbs->addItem("New");
 
@@ -92,7 +91,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -119,7 +118,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -134,8 +133,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Edit", $config["baseUrl"]."session/$sessionIdentifier/edit/");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)"  . " Edit", $config["baseUrl"]."session/$sessionIdentifier/edit");
         $breadcrumbs->addItem("Questions", $config["baseUrl"]."session/$sessionIdentifier/edit/question/");
         $breadcrumbs->addItem("Edit");
 
@@ -162,7 +160,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -233,7 +231,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }
@@ -241,7 +239,7 @@ class PageSessionEditQuestion extends PageSessionEdit
         // Load filename
         $filename = DatabaseSessionQuestionScreenshot::loadSessionQuestionID($sessionQuestionID, $mysqli);
 
-        if(!$filename) {
+        if($filename === null) {
             PageError::error404();
             die();
         }
@@ -273,14 +271,14 @@ class PageSessionEditQuestion extends PageSessionEdit
     private static function setupQuestion($sessionID, $sessionQuestionID, $mysqli) {
 
         // If no session question ID, go up a page
-        if(!$sessionQuestionID)
+        if($sessionQuestionID === null)
             header("Location: ..");
 
         // Load the question
         $question = DatabaseSessionQuestion::loadQuestion($sessionQuestionID, $mysqli);
 
         // Display a 404 if the question wasn't loaded or this question doesn't belong to this session
-        if(!$question || $sessionID != $question->getSessionID()) {
+        if($question === null || $sessionID != $question->getSessionID()) {
             PageError::error404();
             die();
         }

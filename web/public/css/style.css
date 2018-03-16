@@ -248,6 +248,10 @@ ul.list-group li.list-group-item {
     }
 }
 
+#change-password {
+    margin-right: 15px
+}
+
 /******************************************************************************
  * Bootstrap Pills Override for Help View
  ******************************************************************************/

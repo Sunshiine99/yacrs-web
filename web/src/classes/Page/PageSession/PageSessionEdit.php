@@ -28,8 +28,7 @@ class PageSessionEdit extends PageSession
         $breadcrumbs = new Breadcrumb();
         $breadcrumbs->addItem($config["title"], $config["baseUrl"]);
         $breadcrumbs->addItem("Sessions", $config["baseUrl"]."session/");
-        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier)", $config["baseUrl"]."session/$sessionIdentifier/");
-        $breadcrumbs->addItem("Edit");
+        $breadcrumbs->addItem(($session->getTitle() ? $session->getTitle() : "Session") . " (#$sessionIdentifier) " . "Edit");
 
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
@@ -85,7 +84,7 @@ class PageSessionEdit extends PageSession
         $sessionID = DatabaseSessionIdentifier::loadSessionID($sessionIdentifier, $mysqli);
 
         // If invalid session identifier, display 404
-        if(!$sessionID) {
+        if($sessionID === null) {
             PageError::error404();
             die();
         }

@@ -44,9 +44,12 @@
                         <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>admin/">Admin</a>
                     </li>
                 <?php endif; ?>
-                    <li class="nav-item">
-                        <a class ="nav-link" href="<?=$this->e($config["baseUrl"])?>help/">Help</a>
-                    </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>download/">Download</a>
+                </li>
+                <li class="nav-item">
+                    <a class ="nav-link" href="<?=$this->e($config["baseUrl"])?>help/">Help</a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -54,6 +57,13 @@
                         <?=$this->e($user->getFullName())?>
                     </span>
                 </li>
+                <?php if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
+                    <li class="nav-item">
+                        <a id="change-password" class="nav-link" href="<?=$this->e($config["baseUrl"])?>changepassword/">
+                            Change Password
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="<?=$this->e($config["baseUrl"])?>logout/" class="btn btn-light">
                         <i class="fa fa-lock"></i>

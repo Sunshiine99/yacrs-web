@@ -44,16 +44,16 @@ $this->layout("template",
                 <a class="nav-link" href="#newsession" data-toggle="pill">Creating a New Session</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#newsessionadv"data-toggle="pill">Creating a New Session (Advanced)</a>
+                <a class="nav-link" href="#newsessionadv"data-toggle="pill">Editing Session</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#editsession"data-toggle="pill">Editing Session</a>
+                <a class="nav-link" href="#editsession"data-toggle="pill">Adding Questions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#addquestions"data-toggle="pill">Adding Questions</a>
+                <a class="nav-link" href="#addquestions"data-toggle="pill">Viewing Responses (Numerical)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#viewresponses"data-toggle="pill">Viewing Responses</a>
+                <a class="nav-link" href="#viewresponses"data-toggle="pill">Viewing Responses  (Text)</a>
             </li>
 
             <?php else: ?>
@@ -76,8 +76,8 @@ $this->layout("template",
             <div id="addquestions" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-6.jpg" width="100%" ></div>
             <div id="viewresponses" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-7.jpg" width="100%" ></div>
             <div id="homepagebasic" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-8.jpg" width="100%" ></div>
-            <div id="homepagedesktop" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-9.jpg" width="100%" ></div>
-            <div id="liveview" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-10.jpg" width="100%" ></div>
+            <div id="liveview" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-9.jpg" width="100%" ></div>
+            <div id="homepagedesktop" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-10.jpg" width="100%" ></div>
 
         </div>
 .

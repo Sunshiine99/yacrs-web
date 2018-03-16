@@ -35,6 +35,8 @@ class Login
 
             // Create a new user
             $user = new User();
+            $user->setGivenName("Joe");
+            $user->setSurname("Bloggs");
             $user->setUsername($username);
 
             // Load additional details from the database

@@ -118,12 +118,10 @@ else {
                 Question Control Mode
                 <a href="#" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="
                       <h1>Teacher Led</h1>
-                      Only one question can be shown to students at any one time and this question is controlled by
-                      the teacher throughout the class.
+                      Only one question can be activated at any one time.
 
                       <h1>Student Paced</h1>
-                      Multiple questions can be shown to students at once and they can work through them at their
-                      own pace.">
+                      Multiple questions can be activated at the same time">
                     <i class="fa fa-question-circle" aria-hidden="true"></i>
                 </a>
             </label>
@@ -143,12 +141,12 @@ else {
             <div class="col-sm-2">
                 <label class="form-check-label">
                     <input id="defaultTimeLimitEnable" class="form-check-input" value="" type="checkbox"<?=$session->getDefaultTimeLimit()!=0?" checked":""?>>
-                    Enable
+                    Enable Time Limit
                 </label>
             </div>
             <div class="col-sm-7">
-                <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit())?>" size="8"
-                       type="text" placeholder="Default Time Limit"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
+                <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit()) ." seconds"?>" size="8"
+                       type="text" placeholder="Time Limit in Seconds"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
         </div>
         <div class="form-group row">

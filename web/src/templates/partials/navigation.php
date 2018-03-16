@@ -57,6 +57,13 @@
                         <?=$this->e($user->getFullName())?>
                     </span>
                 </li>
+                <?php if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?=$this->e($config["baseUrl"])?>changepassword/">
+                            Change Password
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="<?=$this->e($config["baseUrl"])?>logout/" class="btn btn-light">
                         <i class="fa fa-lock"></i>

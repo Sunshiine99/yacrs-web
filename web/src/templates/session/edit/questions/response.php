@@ -32,20 +32,20 @@ $this->layout("template",
 );
 
 $backgroundColours = [];
-$backgroundColours[] = "rgba(255, 99, 132, 1)";
-$backgroundColours[] = "rgba(54, 162, 235, 1)";
-$backgroundColours[] = "rgba(23, 0, 77, 1)";
-$backgroundColours[] = "rgba(3, 158, 0, 1)";
-$backgroundColours[] = "rgba(153, 102, 255, 1)";
-$backgroundColours[] = "rgba(255, 128, 0, 1)";
+$backgroundColours[] = "rgba(212, 2, 2, 0.5)";
+$backgroundColours[] = "rgba(54, 162, 235, 0.5)";
+$backgroundColours[] = "rgba(96, 169, 24, 0.5)";
+$backgroundColours[] = "rgba(153, 102, 255, 0.5)";
+$backgroundColours[] = "rgba(255, 128, 0, 0.5)";
+$backgroundColours[] = "rgba(23, 0, 77, 0.5)";
 
 $borderColours = [];
-$borderColours[] = "rgba(255,99,132, 1)";
+$borderColours[] = "rgba(212, 2, 2, 1)";
 $borderColours[] = "rgba(54, 162, 235, 1)";
-$borderColours[] = "rgba(23, 0, 77, 1)";
-$borderColours[] = "rgba(3, 158, 0, 1)";
+$borderColours[] = "rgba(96, 169, 24, 1)";
 $borderColours[] = "rgba(153, 102, 255, 1)";
 $borderColours[] = "rgba(255, 128, 0, 1)";
+$borderColours[] = "rgba(23, 0, 77, 1)";
 
 function getColour($colours, $i) {
     return $colours[$i%count($colours)];

@@ -37,7 +37,7 @@ $this->layout("template",
     <h1 class="row">
         <div class="col-sm-9">
             <h1><?=$this->e($session->getTitle())?></h1>
-            <h3>Session Identifier: <?=$this->e($session->getSessionIdentifier())?></h3>
+            <h3>Session Identifier: <span id="sid"><i class="fa fa-hashtag"></i><?=$this->e($session->getSessionIdentifier())?></span></h3>
         </div>
         <div class="col-sm-3">
             <a href="<?=$config["baseUrl"]?>session/<?=$this->e($session->getSessionIdentifier())?>/edit/properties/" class="btn btn-light btn-light-border pull-right width-xs-full" style="margin-left: 10px">Edit Properties</a>

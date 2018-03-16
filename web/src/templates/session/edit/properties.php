@@ -146,7 +146,7 @@ else {
             </div>
             <div class="col-sm-7">
                 <input class="form-control" name="defaultTimeLimit" id="defaultTimeLimit" value="<?=$this->e($session->getDefaultTimeLimit()) ." seconds"?>" size="8"
-                       type="text" placeholder="Time Limit in Seconds"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
+                       type="number" placeholder="Time Limit in Seconds"<?=$session->getDefaultTimeLimit()==0?" disabled":""?>>
             </div>
         </div>
         <div class="form-group row">

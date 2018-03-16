@@ -74,4 +74,26 @@ final class DatabaseSessionQuestionTest extends TestCase{
         $this->assertNull(DatabaseSessionQuestion::countActiveQuestions("a", $mysqli));
         $this->assertNull(DatabaseSessionQuestion::countActiveQuestions(null, $mysqli));
     }
+
+    public function testQuestionActivate(){
+
+        global $config;
+
+        // Connect to the database
+        $mysqli = TestHelper::databaseConnect($config);
+
+        $this->assertNull(DatabaseSessionQuestion::questionActivate("a", true, $mysqli));
+        $this->assertNull(DatabaseSessionQuestion::questionActivate(null, true,  $mysqli));
+    }
+
+    public function testUsersNull(){
+
+        global $config;
+
+        // Connect to the database
+        $mysqli = TestHelper::databaseConnect($config);
+
+        $this->assertNull(DatabaseSessionQuestion::users("a", "b", $mysqli));
+        $this->assertNull(DatabaseSessionQuestion::users(null, null,  $mysqli));
+    }
 }

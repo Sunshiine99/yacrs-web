@@ -141,7 +141,7 @@ else {
             <div class="col-sm-2">
                 <label class="form-check-label">
                     <input id="defaultTimeLimitEnable" class="form-check-input" value="" type="checkbox"<?=$session->getDefaultTimeLimit()!=0?" checked":""?>>
-                    Enable Time Limit
+                    Enable
                 </label>
             </div>
             <div class="col-sm-7">

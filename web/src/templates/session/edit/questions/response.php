@@ -27,7 +27,8 @@ $this->layout("template",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
         "user" => $user,
-        "noHeaderFooter" => $live
+        "noHeaderFooter" => $live,
+        "alert" => $alert
     ]
 );
 

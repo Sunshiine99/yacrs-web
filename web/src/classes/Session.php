@@ -349,7 +349,7 @@ class Session
     public function addAdditionalUser($username) {
 
         // If additional user doesn't already exist
-        if(!in_array($username, $this->additionalUsers) && !$username) {
+        if(!in_array($username, $this->additionalUsers) && $username !== "") {
             array_push($this->additionalUsers, $username);
         }
     }

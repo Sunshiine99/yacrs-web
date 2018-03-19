@@ -16,6 +16,9 @@ $this->layout("template",
     ]
 );
 ?>
+<?php $this->push("head"); ?>
+    <link rel="stylesheet" type="text/css" href="<?=$this->e($config["baseUrl"])?>css/download.css" />
+<?php $this->end(); ?>
 <?php $this->push("preContent"); ?>
 <div class="jumbotron text-center">
     <div class="container">
@@ -87,7 +90,14 @@ $this->layout("template",
                             <div>
                                 Click "more info" and then click "run anyway"
                             </div>
-                            <img width="400px" src="<?=$this->e($config["baseUrl"])?>img/download/windows-protected-pc.jpg"/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="<?=$this->e($config["baseUrl"])?>img/download/windows-protected-pc-1.jpg"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <img src="<?=$this->e($config["baseUrl"])?>img/download/windows-protected-pc-2.jpg"/>
+                                </div>
+                            </div>
                         </li>
                     </ol>
                 </div>
@@ -133,7 +143,14 @@ $this->layout("template",
                             <div>
                                 Click "more info" and then click "run anyway"
                             </div>
-                            <img width="400px" src="<?=$this->e($config["baseUrl"])?>img/download/windows-protected-pc.jpg"/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="<?=$this->e($config["baseUrl"])?>img/download/windows-protected-pc-1.jpg"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <img src="<?=$this->e($config["baseUrl"])?>img/download/windows-protected-pc-2.jpg"/>
+                                </div>
+                            </div>
                         </li>
                     </ol>
                 </div>
@@ -215,34 +232,3 @@ $this->layout("template",
         </ol>
     </div>
 </div>
-<style>
-    .windows-protected-pc img {
-        width: 100%;
-    }
-
-    .download {
-        margin-bottom: 10px;
-    }
-
-    .download .icon,
-    .download .os,
-    .download .version {
-        display: block;
-    }
-
-    .download .icon {
-        font-size: 50px;
-    }
-
-    .download .os {
-        font-size: 25px;
-    }
-
-    .code {
-        font-family: monospace;
-    }
-
-    .indent {
-        margin-left: 40px;
-    }
-</style>

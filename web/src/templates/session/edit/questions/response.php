@@ -134,7 +134,7 @@ function getColour($colours, $i) {
         <div id="section-bar-chart" class="section">
             <canvas id="bar-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
-</br>
+        <br>
         <div id="section-pie-chart" class="section display-none">
             <canvas id="pie-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>

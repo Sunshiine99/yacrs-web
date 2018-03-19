@@ -134,13 +134,14 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
                 yAxes: [{
                     ticks: {
                         fontSize:20,
-                        stepSize: 1,
-                        beginAtZero:true
+                        beginAtZero:true,
+                        autoSkip: true
                     }
                 }],
                 xAxes: [{
                     ticks: {
                         fontSize:20,
+                        autoSkip: true
                     }
                 }]
             },

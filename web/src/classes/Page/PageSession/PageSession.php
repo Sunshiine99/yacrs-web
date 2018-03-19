@@ -57,7 +57,7 @@ class PageSession extends Page
         }
 
         // If user cannot view this session, display an error
-        if($session->checkIfUserCanView($user) === null) {
+        if(!$session->checkIfUserCanView($user)) {
 
             $alert = new Alert();
             $alert->setType("danger");

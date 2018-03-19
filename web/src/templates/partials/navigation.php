@@ -15,10 +15,12 @@
         </div>
         <?php endif; ?>
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
-            aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <?php if($user): ?>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
+                aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    <?php endif ?>
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <?php if($user): ?>
             <ul class="navbar-nav mr-auto">
@@ -53,16 +55,20 @@
             </ul>
             <ul class="navbar-nav">
                 <?php if($config["login"]["type"] === "native" && $config["login"]["register"]): ?>
-                    <li class="nav-item">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user"></i>
-                                <?=$this->e($user->getFullName())?>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" type="button" href="<?=$this->e($config["baseUrl"])?>logout/">Logout</a>
-                                <a class="dropdown-item" type="button" href="<?=$this->e($config["baseUrl"])?>changepassword/">Change Password</a>
-                            </div>
+                    <li class="nav-item dropdown">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                            <?=$this->e($user->getFullName())?>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-sessions">
+                            <a class="dropdown-item" type="button" href="<?=$this->e($config["baseUrl"])?>changepassword/">
+                                <i class="fa fa-pencil"></i>
+                                Change Password
+                            </a>
+                            <a class="dropdown-item" type="button" href="<?=$this->e($config["baseUrl"])?>logout/">
+                                <i class="fa fa-lock"></i>
+                                Logout
+                            </a>
                         </div>
                     </li>
                 <?php else: ?>
@@ -70,7 +76,7 @@
                     <span class="navbar-text d-none d-md-block d-lg-block d-xl-block">
                         <?=$this->e($user->getFullName())?>
                     </span>
-                    </li>s
+                    </li>
                     <li class="nav-item">
                         <a href="<?=$this->e($config["baseUrl"])?>logout/" class="btn btn-light">
                             <i class="fa fa-lock"></i>

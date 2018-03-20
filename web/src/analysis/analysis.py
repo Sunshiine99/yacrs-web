@@ -78,10 +78,10 @@ stopwords = nltk.corpus.stopwords.words('english')
 stemmer = SnowballStemmer("english")
 
 def tokenize(text):
-    tokens = [word for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
+    tokens = [word.lower() for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
     filtered_tokens = []
     for token in tokens:
-        if re.search('[a-zA-Z]', token):
+        if re.search('[a-z]', token):
             filtered_tokens.append(token)
     stems = [stemmer.stem(t) for t in filtered_tokens]
     return stems

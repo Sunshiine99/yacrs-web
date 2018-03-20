@@ -161,7 +161,30 @@ $this->layout("template",
         </ol>
     </div>
     <div id="section-mac" class="section container display-none">
-        macOS
+        <h2>Mac Installation</h2>
+        <ol>
+            <li>
+                Click the Mac operating system option above.
+            </li>
+            <li>
+                Click the file "YACRS Control-2.0.0.dmg"
+            </li>
+            <li>
+                Click the "Download" button and then choose "Direct Download".
+            </li>
+            <li>
+                Click on the downloaded file, a window will open showing the YACRS application file and your Applications folder. 
+            </li>
+			<li>
+				Simply drag the file into your Applications folder.
+			</li>
+			<li>
+				You can now run the application by navigating to your Applications folder and clicking "YACRS Control"
+			</li>
+            <li>
+                To uninstall you can simply remove the file from your Applications folder.
+            </li>
+        </ol>
     </div>
     <div id="section-linux" class="section container display-none">
         <p>

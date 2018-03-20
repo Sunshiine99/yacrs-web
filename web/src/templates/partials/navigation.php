@@ -44,9 +44,11 @@
                     <a class="nav-link" href="<?= $this->e($config["baseUrl"]) ?>admin/">Admin</a>
                 </li>
             <?php endif; ?>
-            <li class="nav-item active">
-                <a class="nav-link" href="<?= $this->e($config["baseUrl"]) ?>download/">Download</a>
-            </li>
+            <?php if(!isDesktopApp()): ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= $this->e($config["baseUrl"]) ?>download/">Download</a>
+                </li>
+            <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link" href="<?= $this->e($config["baseUrl"]) ?>help/">Help</a>
             </li>
@@ -61,12 +63,12 @@
                             <?= $this->e($user->getFullName()) ?>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-sessions">
-                            <a class="dropdown-item" type="button"
+                            <a class="dropdown-item"
                                href="<?= $this->e($config["baseUrl"]) ?>changepassword/">
                                 <i class="fa fa-pencil"></i>
                                 Change Password
                             </a>
-                            <a class="dropdown-item" type="button" href="<?= $this->e($config["baseUrl"]) ?>logout/">
+                            <a class="dropdown-item" href="<?= $this->e($config["baseUrl"]) ?>logout/">
                                 <i class="fa fa-lock"></i>
                                 Logout
                             </a>

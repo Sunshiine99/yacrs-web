@@ -100,20 +100,17 @@ function getColour($colours, $i) {
 
 <ul class="nav nav-tabs" data-target="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
-        <li class="nav-item" id="nav-responses" data-target="section-responses">
-            <a class="nav-link" href="#">Responses</a>
-        </li>
         <li class="nav-item" id="nav-bar-chart" data-target="section-bar-chart" data-callback="initBarChartSection">
             <a class="nav-link active" href="#">Bar Chart</a>
         </li>
         <li class="nav-item" id="nav-pie-chart" data-target="section-pie-chart" data-callback="initPieChartSection">
             <a class="nav-link" href="#">Pie Chart</a>
         </li>
-    <?php endif; ?>
-    <?php if(isset($responsesWordCloud)): ?>
         <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
+    <?php endif; ?>
+    <?php if(isset($responsesWordCloud)): ?>
         <li class="nav-item" id="nav-word-cloud" data-target="section-word-cloud">
             <a class="nav-link active" href="#">Word Cloud</a>
         </li>
@@ -124,6 +121,11 @@ function getColour($colours, $i) {
         </li>
         <li class="nav-item" id="nav-bar-analysis" data-target="section-bar-analysis">
             <a class="nav-link" href="#">Response Cluster Counts</a>
+        </li>
+    <?php endif; ?>
+    <?php if(isset($responsesWordCloud)): ?>
+        <li class="nav-item" id="nav-responses" data-target="section-responses">
+            <a class="nav-link" href="#">Responses</a>
         </li>
     <?php endif; ?>
 </ul>

@@ -240,6 +240,7 @@ function getColour($colours, $i) {
     }
 
     function chartJsLabelFormat(str) {
+        str = str.replace("&#039;", "'");
         var regex = /(&#)([0-9]*)(;)/;
         return str.replace(regex, "");
     }

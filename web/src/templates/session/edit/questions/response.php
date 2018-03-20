@@ -115,7 +115,7 @@ function getColour($colours, $i) {
             <a class="nav-link active" href="#">Word Cloud</a>
         </li>
     <?php endif; ?>
-    <?php if($question->getType() == "textlong"): ?>
+    <?php if($question->getType() == "textlong" || $question->getType() == "text"): ?>
         <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Response Clusters</a>
         </li>
@@ -141,9 +141,10 @@ function getColour($colours, $i) {
             <canvas id="pie-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
     <?php endif; ?>
-    <?php if($question->getType() == "textlong"): ?>
+    <?php if($question->getType() == "textlong" || $question->getType() == "text"): ?>
         <div id="section-analysis" class="section display-none">
-            <div id="no-analysis-error">No Analysis Available</div>
+            <div id="analysis-loading" class="analysis-loading">Loading...</div>
+            <div id="no-analysis-error" class="no-analysis-error display-none">No Analysis Available</div>
             <canvas id="analysis-chart" width="400" height="200"></canvas>
             <div id="analysis-description" class="container">
                 <hr>
@@ -156,7 +157,8 @@ function getColour($colours, $i) {
             </div>
         </div>
         <div id="section-bar-analysis" class="section display-none">
-            <div id="no-analysis-error-2">No Analysis Available</div>
+            <div id="analysis-loading-2" class="analysis-loading">Loading...</div>
+            <div id="no-analysis-error-2" class="no-analysis-error display-none">No Analysis Available</div>
             <canvas id="bar-analysis" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>

@@ -369,10 +369,10 @@ class ApiSessionQuestion
 
         $output = $output[0];
 
-        if($return !== 0) {
-            ApiError::custom("analysisError", "The analysis execution failed");
-            die();
-        }
+        //if($return !== 0) {
+        //    ApiError::custom("analysisError", "The analysis execution failed");
+        //    die();
+        //}
 
         if(!self::isJson($output)) {
             ApiError::custom("analysisError", "The analysis produced an invalid output");

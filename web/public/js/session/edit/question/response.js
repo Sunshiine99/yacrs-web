@@ -13,7 +13,10 @@ $(document).ready(function() {
         // Make an api request
         $.getJSON(url, function(data) {
 
+            $(".analysis-loading").addClass("display-none");
+
             if(data["error"]) {
+                $(".no-analysis-error").removeClass("display-none");
                 return;
             }
 
@@ -116,7 +119,6 @@ function initWordCloudSection(json) {
 }
 
 function initBarChart(id, labels, data, backgroundColor, borderColor) {
-    $("#no-analysis-error-2").remove();
     var ctx = document.getElementById(id).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -169,7 +171,6 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
 }
 
 function initAnalysisChart(id, analysisData, analysisLabels) {
-    $("#no-analysis-error").remove();
     var ctx = document.getElementById(id).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bubble',

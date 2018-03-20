@@ -72,7 +72,15 @@ $(document).ready(function() {
 
                 cluster.forEach(function(item) {
                     analysisData.datasets[i].data.push(item);
-                    analysisLabels[i].push(item.responseID);
+
+                    const responseLength = 100;
+                    var responseText = item.response;
+
+                    if(responseText.length > responseLength) {
+                        responseText = responseText.substr(0, responseLength) + "...";
+                    }
+
+                    analysisLabels[i].push(responseText);
                 });
 
                 i++;

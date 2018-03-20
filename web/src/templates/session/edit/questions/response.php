@@ -239,10 +239,15 @@ function getColour($colours, $i) {
         return colours[i%colours.length]
     }
 
+    function chartJsLabelFormat(str) {
+        var regex = /(&#)([0-9]*)(;)/;
+        return str.replace(regex, "");
+    }
+
     <?php if(isset($responsesMcq)): ?>
         var labels = [
             <?php foreach($responsesMcq as $response): ?>
-                "<?=$this->e($response["choice"])?>",
+            chartJsLabelFormat("<?=$this->e($response["choice"])?>"),
             <?php endforeach; ?>
         ];
 
@@ -266,7 +271,7 @@ function getColour($colours, $i) {
     <?php if(isset($responsesMrq)): ?>
     var labels = [
         <?php foreach($responsesMrq as $response): ?>
-        "<?=$this->e($response["choice"])?>",
+        chartJsLabelFormat("<?=$this->e($response["choice"])?>"),
         <?php endforeach; ?>
     ];
 

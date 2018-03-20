@@ -106,15 +106,13 @@ $this->layout("template",
                 Search "YACRS Control" in the start menu or double click the "YACRS Control" icon on the desktop to
                 start the application.
             </li>
-            <li>
-                Uninstall the application by:
-                <ol>
-                    <li>Open the "Control Panel".</li>
-                    <li>Select "Uninstall a program"</li>
-                    <li>Select YACRS Control</li>
-                    <li>Click "Uninstall" and follow any on screen prompts</li>
-                </ol>
-            </li>
+        </ol>
+        Uninstall the application by:
+        <ol>
+            <li>Open the "Control Panel".</li>
+            <li>Select "Uninstall a program"</li>
+            <li>Select YACRS Control</li>
+            <li>Click "Uninstall" and follow any on screen prompts</li>
         </ol>
         <h2>Unpacked Application</h2>
         <p>
@@ -155,10 +153,8 @@ $this->layout("template",
                     </ol>
                 </div>
             </li>
-            <li>
-                To uninstall you can simply remove the .zip archive and the newly created directory.
-            </li>
         </ol>
+        To uninstall you can simply remove the .zip archive and the newly created directory.
     </div>
     <div id="section-mac" class="section container display-none">
         <h2>Mac Installation</h2>
@@ -181,10 +177,8 @@ $this->layout("template",
 			<li>
 				You can now run the application by navigating to your Applications folder and clicking "YACRS Control"
 			</li>
-            <li>
-                To uninstall you can simply remove the file from your Applications folder.
-            </li>
         </ol>
+        To uninstall you can simply remove the file from your Applications folder.
     </div>
     <div id="section-linux" class="section container display-none">
         <p>
@@ -206,10 +200,8 @@ $this->layout("template",
                 Now the .AppImage file can be run by double clicking it or running the following command:<br>
                 <span class="code indent">$ ./yacrs-control-2.0.0-x64.AppImage</span>
             </li>
-            <li>
-                To uninstall you can simply remove the .AppImage file.
-            </li>
         </ol>
+        To uninstall you can simply remove the .AppImage file.
         <h2>Unpacked Application</h2>
         <ol>
             <li>
@@ -226,10 +218,8 @@ $this->layout("template",
                 Enter the newly created directory and run the application by running:<br>
                 <span class="code indent">$ ./yacrs-control</span>
             </li>
-            <li>
-                To uninstall you can simply remove the .zip archive and the newly created directory.
-            </li>
         </ol>
+        To uninstall you can simply remove the .zip archive and the newly created directory.
         <h2>Snap</h2>
         <ol>
             <li>
@@ -248,10 +238,8 @@ $this->layout("template",
                 command:<br>
                 <span class="code indent">$ yacrs-control</span>
             </li>
-            <li>
-                To uninstall run the following command:<br>
-                <span class="code indent">$ snap remove yacrs-control</span>
-            </li>
         </ol>
+        To uninstall run the following command:<br>
+        <span class="code indent">$ snap remove yacrs-control</span>
     </div>
 </div>

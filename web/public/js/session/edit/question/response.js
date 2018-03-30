@@ -13,7 +13,10 @@ $(document).ready(function() {
         // Make an api request
         $.getJSON(url, function(data) {
 
+            $(".analysis-loading").addClass("display-none");
+
             if(data["error"]) {
+                $(".no-analysis-error").removeClass("display-none");
                 return;
             }
 
@@ -69,7 +72,15 @@ $(document).ready(function() {
 
                 cluster.forEach(function(item) {
                     analysisData.datasets[i].data.push(item);
-                    analysisLabels[i].push(item.responseID);
+
+                    const responseLength = 100;
+                    var responseText = item.response;
+
+                    if(responseText.length > responseLength) {
+                        responseText = responseText.substr(0, responseLength) + "...";
+                    }
+
+                    analysisLabels[i].push(responseText);
                 });
 
                 i++;
@@ -116,7 +127,6 @@ function initWordCloudSection(json) {
 }
 
 function initBarChart(id, labels, data, backgroundColor, borderColor) {
-    $("#no-analysis-error-2").remove();
     var ctx = document.getElementById(id).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -134,13 +144,14 @@ function initBarChart(id, labels, data, backgroundColor, borderColor) {
                 yAxes: [{
                     ticks: {
                         fontSize:20,
-                        stepSize: 1,
-                        beginAtZero:true
+                        beginAtZero:true,
+                        autoSkip: true
                     }
                 }],
                 xAxes: [{
                     ticks: {
                         fontSize:20,
+                        autoSkip: true
                     }
                 }]
             },
@@ -168,7 +179,6 @@ function initPieChart(id, labels, data, backgroundColor, borderColor) {
 }
 
 function initAnalysisChart(id, analysisData, analysisLabels) {
-    $("#no-analysis-error").remove();
     var ctx = document.getElementById(id).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bubble',

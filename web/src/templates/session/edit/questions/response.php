@@ -27,7 +27,8 @@ $this->layout("template",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
         "user" => $user,
-        "noHeaderFooter" => $live
+        "noHeaderFooter" => $live,
+        "alert" => $alert
     ]
 );
 
@@ -99,30 +100,32 @@ function getColour($colours, $i) {
 
 <ul class="nav nav-tabs" data-target="sections">
     <?php if(isset($responsesMcq) || isset($responsesMrq)): ?>
-        <li class="nav-item" id="nav-responses" data-target="section-responses">
-            <a class="nav-link" href="#">Responses</a>
-        </li>
         <li class="nav-item" id="nav-bar-chart" data-target="section-bar-chart" data-callback="initBarChartSection">
             <a class="nav-link active" href="#">Bar Chart</a>
         </li>
         <li class="nav-item" id="nav-pie-chart" data-target="section-pie-chart" data-callback="initPieChartSection">
             <a class="nav-link" href="#">Pie Chart</a>
         </li>
-    <?php endif; ?>
-    <?php if(isset($responsesWordCloud)): ?>
         <li class="nav-item" id="nav-responses" data-target="section-responses">
             <a class="nav-link" href="#">Responses</a>
         </li>
+    <?php endif; ?>
+    <?php if(isset($responsesWordCloud)): ?>
         <li class="nav-item" id="nav-word-cloud" data-target="section-word-cloud">
             <a class="nav-link active" href="#">Word Cloud</a>
         </li>
     <?php endif; ?>
-    <?php if($question->getType() == "textlong"): ?>
+    <?php if($question->getType() == "textlong" || $question->getType() == "text"): ?>
         <li class="nav-item" id="nav-analysis" data-target="section-analysis">
             <a class="nav-link" href="#">Response Clusters</a>
         </li>
         <li class="nav-item" id="nav-bar-analysis" data-target="section-bar-analysis">
             <a class="nav-link" href="#">Response Cluster Counts</a>
+        </li>
+    <?php endif; ?>
+    <?php if(isset($responsesWordCloud)): ?>
+        <li class="nav-item" id="nav-responses" data-target="section-responses">
+            <a class="nav-link" href="#">Responses</a>
         </li>
     <?php endif; ?>
 </ul>
@@ -133,14 +136,15 @@ function getColour($colours, $i) {
         <div id="section-bar-chart" class="section">
             <canvas id="bar-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
-</br>
+        <br>
         <div id="section-pie-chart" class="section display-none">
             <canvas id="pie-chart" width="400" height="200" style="margin-top: 60px;"></canvas>
         </div>
     <?php endif; ?>
-    <?php if($question->getType() == "textlong"): ?>
+    <?php if($question->getType() == "textlong" || $question->getType() == "text"): ?>
         <div id="section-analysis" class="section display-none">
-            <div id="no-analysis-error">No Analysis Available</div>
+            <div id="analysis-loading" class="analysis-loading">Loading...</div>
+            <div id="no-analysis-error" class="no-analysis-error display-none">No Analysis Available</div>
             <canvas id="analysis-chart" width="400" height="200"></canvas>
             <div id="analysis-description" class="container">
                 <hr>
@@ -153,7 +157,8 @@ function getColour($colours, $i) {
             </div>
         </div>
         <div id="section-bar-analysis" class="section display-none">
-            <div id="no-analysis-error-2">No Analysis Available</div>
+            <div id="analysis-loading-2" class="analysis-loading">Loading...</div>
+            <div id="no-analysis-error-2" class="no-analysis-error display-none">No Analysis Available</div>
             <canvas id="bar-analysis" width="400" height="200"></canvas>
         </div>
     <?php endif; ?>
@@ -238,10 +243,16 @@ function getColour($colours, $i) {
         return colours[i%colours.length]
     }
 
+    function chartJsLabelFormat(str) {
+        str = str.replace("&#039;", "'");
+        var regex = /(&#)([0-9]*)(;)/;
+        return str.replace(regex, "");
+    }
+
     <?php if(isset($responsesMcq)): ?>
         var labels = [
             <?php foreach($responsesMcq as $response): ?>
-                "<?=$this->e($response["choice"])?>",
+            chartJsLabelFormat("<?=$this->e($response["choice"])?>"),
             <?php endforeach; ?>
         ];
 
@@ -265,7 +276,7 @@ function getColour($colours, $i) {
     <?php if(isset($responsesMrq)): ?>
     var labels = [
         <?php foreach($responsesMrq as $response): ?>
-        "<?=$this->e($response["choice"])?>",
+        chartJsLabelFormat("<?=$this->e($response["choice"])?>"),
         <?php endforeach; ?>
     ];
 

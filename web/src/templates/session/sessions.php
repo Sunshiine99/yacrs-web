@@ -14,7 +14,8 @@ $this->layout("template",
         "title" => "Sessions",
         "description" => $description,
         "breadcrumbs" => $breadcrumbs,
-        "user" => $user
+        "user" => $user,
+        "alert" => $alert
     ]
 );
 ?>

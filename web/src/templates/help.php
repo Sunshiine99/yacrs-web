@@ -15,6 +15,8 @@ $this->layout("template",
         "alert" => $alert
     ]
 );
+
+$user = !$user ? new User() : $user;
 ?>
 
 <div class="row">
@@ -68,7 +70,17 @@ $this->layout("template",
 
     <div class="col-9">
         <div class="tab-content">
-            <div id="faqlogin" class="tab-pane fade show active"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-1.jpg" width="100%" ></div>
+            <div id="faqlogin" class="tab-pane fade show active">
+                <div>
+                    <img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-1a.jpg" width="100%" />
+                </div>
+                <div style="margin-left: 85px; font-size: 20px;">
+                    <a href="<?=$this->e($config["baseUrl"])?>"><?=$this->e($config["baseUrl"])?></a>
+                </div>
+                <div>
+                    <img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-1b.jpg" width="100%" />
+                </div>
+            </div>
             <div id="homepage" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-2.jpg" width="100%" ></div>
             <div id="newsession" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-3.jpg" width="100%" ></div>
             <div id="newsessionadv" class="tab-pane fade"><img src="<?=$this->e($config["baseUrl"])?>img/help/YACRS Help-4.jpg" width="100%" ></div>

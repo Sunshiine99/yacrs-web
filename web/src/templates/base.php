@@ -14,6 +14,8 @@
 // Ensure $noHeaderFooter is a valid boolean
 $noHeaderFooter = isset($noHeaderFooter) ? !!$noHeaderFooter : false;
 
+$user = !$user ? new User() : $user;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

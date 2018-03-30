@@ -47,7 +47,6 @@ class PageSessionEditProperties
     }
 
     public static function submit() {
-
         $config = Flight::get("config");
 
         // Connect to database
@@ -67,8 +66,12 @@ class PageSessionEditProperties
         // Setup session from submitted data
         $session->fromArray($_POST);
 
+        $error = false;
+
         // If user is owner
         if($session->checkIfUserIsOwner($user)) {
+
+            $additionalUsers = [];
 
             // Load new users
             foreach ($_POST as $key => $value) {
@@ -83,24 +86,44 @@ class PageSessionEditProperties
                     // If there is an index associated with this user, store it
                     if(isset($_POST["user-" . $index])) {
                         $username = $_POST["user-" . $index];
+
                         //If user does not exist output error
                         if(!DatabaseUser::checkUserExists($username, $mysqli) and $username != ""){
-                            PageError::generic("Additional user does not exist", "One of the additional users you have typed does not exist");
-                            die();
-                        }
-                        // Else add the new user
-                        $session->addAdditionalUser($username);
-                    }
 
+                            $alert = new Alert();
+                            $alert->setType("danger");
+                            $alert->setDismissable(true);
+                            $alert->setTitle("Additional user does not exist");
+                            $alert->setMessage("One of the additional users you have typed does not exist");
+                            Alert::displayAlertSession($alert);
+                            header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/properties/");
+                            die();
+
+                            $error = true;
+
+                            break;
+                        }
+
+                        // Else add the new user
+                        array_push($additionalUsers, $username);
+                    }
                 }
             }
+
+            // If no error setting additional users, don't modify them
+            if(!$error)
+                $session->setAdditionalUsers($additionalUsers);
         }
 
         $result = DatabaseSession::update($session, $mysqli);
 
         if(!$result) PageError::error500("Database error on line " . __LINE__ . " in file " . __FILE__);
 
-        header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/");
+        if($error)
+            header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/properties/");
+
+        else
+            header("Location: "  . $config["baseUrl"] . "session/" . $session->getSessionIdentifier() . "/edit/");
         die();
     }
 }
